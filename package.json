@@ -1,0 +1,24 @@
+{
+  "name": "living-character-os",
+  "version": "1.0.0",
+  "private": true,
+  "packageManager": "pnpm@9.15.0",
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "db:migrate": "turbo run db:migrate --filter=@lcos/api",
+    "db:seed": "turbo run db:seed --filter=@lcos/api",
+    "db:generate": "turbo run db:generate --filter=@lcos/api",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\""
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "eslint": "^8.55.0",
+    "prettier": "^3.1.0",
+    "turbo": "^2.3.0",
+    "typescript": "^5.3.0"
+  }
+}

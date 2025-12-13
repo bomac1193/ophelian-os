@@ -1,0 +1,125 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Character {
+  id            String   @id @default(cuid())
+  name          String
+  aliases       String[]
+  bio           String   @default("")
+  personaTags   String[]
+  toneAllowed   String[]
+  toneForbidden String[]
+  systemPrompt  String   @default("")
+  currentArc    String?
+  timelineState Json     @default("{}")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+enum VoiceProviderEnum {
+  ELEVENLABS
+  NONE
+}
+
+model VoiceProfile {
+  id              String            @id @default(cuid())
+  provider        VoiceProviderEnum
+  providerVoiceId String?
+  label           String
+  meta            Json              @default("{}")
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+}
+
+enum SubjectTypeEnum {
+  VOICE
+  CHARACTER
+}
+
+enum LicenseTypeEnum {
+  EXCLUSIVE
+  NON_EXCLUSIVE
+  REVSHARE
+}
+
+model License {
+  id               String          @id @default(cuid())
+  ownerId          String
+  subjectType      SubjectTypeEnum
+  subjectId        String
+  consentSynthesis Boolean         @default(false)
+  consentTraining  Boolean         @default(false)
+  commercialUse    Boolean         @default(false)
+  licenseType      LicenseTypeEnum
+  royaltySplits    Json            @default("{\"voiceActor\": 50, \"creator\": 30, \"platform\": 20}")
+  terms            String?
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+
+  @@index([subjectId])
+  @@index([ownerId])
+}
+
+enum PlatformEnum {
+  X
+  TIKTOK
+  INSTAGRAM
+}
+
+enum ContentTypeEnum {
+  POST
+  SCRIPT
+}
+
+enum ContentStatusEnum {
+  DRAFT
+  APPROVED
+  PUBLISHED
+  FAILED
+}
+
+model ContentItem {
+  id           String            @id @default(cuid())
+  characterId  String
+  platform     PlatformEnum
+  contentType  ContentTypeEnum   @default(POST)
+  text         String
+  status       ContentStatusEnum @default(DRAFT)
+  scheduledFor DateTime?
+  publishedUrl String?
+  meta         Json              @default("{}")
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+
+  @@index([characterId])
+  @@index([status])
+  @@index([scheduledFor])
+}
+
+enum EventTypeEnum {
+  VOICE_SYNTHESIS
+  PUBLISH
+}
+
+model UsageEvent {
+  id             String        @id @default(cuid())
+  eventType      EventTypeEnum
+  characterId    String?
+  voiceProfileId String?
+  contentItemId  String?
+  platform       PlatformEnum?
+  seconds        Float?
+  revenueCents   Int           @default(0)
+  meta           Json          @default("{}")
+  createdAt      DateTime      @default(now())
+
+  @@index([characterId])
+  @@index([voiceProfileId])
+  @@index([createdAt])
+}

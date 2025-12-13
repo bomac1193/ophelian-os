@@ -1,0 +1,40 @@
+{
+  "name": "@lcos/api",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "lint": "eslint src --ext .ts",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev --name init",
+    "db:push": "prisma db push",
+    "db:seed": "tsx prisma/seed.ts"
+  },
+  "dependencies": {
+    "@fastify/cors": "^9.0.1",
+    "@lcos/canon": "workspace:*",
+    "@lcos/content": "workspace:*",
+    "@lcos/ledger": "workspace:*",
+    "@lcos/rights": "workspace:*",
+    "@lcos/shared": "workspace:*",
+    "@lcos/social-connectors": "workspace:*",
+    "@lcos/voice": "workspace:*",
+    "@prisma/client": "^5.7.0",
+    "dotenv": "^16.3.1",
+    "fastify": "^4.25.0",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@typescript-eslint/eslint-plugin": "^6.13.0",
+    "@typescript-eslint/parser": "^6.13.0",
+    "eslint": "^8.55.0",
+    "eslint-config-prettier": "^9.1.0",
+    "prisma": "^5.7.0",
+    "tsx": "^4.6.0",
+    "typescript": "^5.3.0"
+  }
+}
