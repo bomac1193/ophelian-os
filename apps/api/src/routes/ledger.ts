@@ -20,6 +20,7 @@ const ledgerService = createLedgerService({
 
     return events.map((e) => ({
       ...e,
+      meta: e.meta as Record<string, unknown>,
       eventType: e.eventType as 'VOICE_SYNTHESIS' | 'PUBLISH',
       platform: e.platform as 'X' | 'TIKTOK' | 'INSTAGRAM' | null,
     }));

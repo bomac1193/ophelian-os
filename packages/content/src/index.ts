@@ -23,7 +23,8 @@ const PLATFORM_LIMITS: Record<Platform, number> = {
   INSTAGRAM: 2200,
 };
 
-const PLATFORM_STYLES: Record<Platform, string> = {
+// Reserved for future LLM integration
+export const PLATFORM_STYLES: Record<Platform, string> = {
   X: 'concise and punchy',
   TIKTOK: 'trendy and engaging with hashtags',
   INSTAGRAM: 'visual and aesthetic with emojis',
@@ -55,7 +56,6 @@ function generateStubContent(
   intent: string
 ): string {
   const limit = PLATFORM_LIMITS[platform];
-  const style = PLATFORM_STYLES[platform];
 
   const templates: Record<string, string> = {
     promote: `Hey, it's ${character.name}! Just wanted to share something exciting with you all. Stay tuned for more updates coming soon!`,

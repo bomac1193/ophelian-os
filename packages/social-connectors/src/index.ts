@@ -1,5 +1,5 @@
 import { Platform } from '@lcos/shared';
-import { XConnector, publishToX } from './connectors/x.js';
+import { XConnector } from './connectors/x.js';
 import type { SocialConnector, PublishResult, PublishOptions, SocialConnectorConfig } from './connectors/base.js';
 
 export { XConnector, publishToX } from './connectors/x.js';

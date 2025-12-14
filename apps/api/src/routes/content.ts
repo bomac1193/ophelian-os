@@ -151,7 +151,7 @@ export async function contentRoutes(fastify: FastifyInstance): Promise<void> {
       data: {
         status: 'PUBLISHED',
         publishedUrl: result.url,
-        meta: { ...contentItem.meta as object, publishMeta: result.meta },
+        meta: { ...contentItem.meta as any, publishMeta: result.meta } as any,
       },
     });
 

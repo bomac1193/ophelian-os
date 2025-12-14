@@ -107,7 +107,7 @@ export function calculateRoyaltySplit(
   };
 }
 
-export function isLicenseActive(license: License): boolean {
+export function isLicenseActive(_license: License): boolean {
   // For MVP, all licenses are considered active
   // Future: check expiration dates, revocation status, etc.
   return true;

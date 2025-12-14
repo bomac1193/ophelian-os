@@ -9,7 +9,7 @@ export async function characterRoutes(fastify: FastifyInstance): Promise<void> {
       const body = CreateCharacterSchema.parse(request.body);
 
       const character = await prisma.character.create({
-        data: body,
+        data: body as any,
       });
 
       return reply.code(201).send(character);

@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
 import { SocialService } from '@lcos/social-connectors';
 import { EventType, Platform } from '@lcos/shared';
 
@@ -46,7 +46,7 @@ async function processScheduledContent(): Promise<void> {
           data: {
             status: 'PUBLISHED',
             publishedUrl: result.url,
-            meta: { ...(item.meta as object), publishMeta: result.meta },
+            meta: { ...(item.meta as Prisma.JsonObject), publishMeta: result.meta } as Prisma.JsonObject,
           },
         });
 
@@ -69,7 +69,7 @@ async function processScheduledContent(): Promise<void> {
           where: { id: item.id },
           data: {
             status: 'FAILED',
-            meta: { ...(item.meta as object), publishError: result.error },
+            meta: { ...(item.meta as Prisma.JsonObject), publishError: result.error } as Prisma.JsonObject,
           },
         });
 
@@ -82,9 +82,9 @@ async function processScheduledContent(): Promise<void> {
         data: {
           status: 'FAILED',
           meta: {
-            ...(item.meta as object),
+            ...(item.meta as Prisma.JsonObject),
             publishError: error instanceof Error ? error.message : 'Unknown error',
-          },
+          } as Prisma.JsonObject,
         },
       });
 

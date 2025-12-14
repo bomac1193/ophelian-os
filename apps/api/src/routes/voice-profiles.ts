@@ -9,7 +9,7 @@ export async function voiceProfileRoutes(fastify: FastifyInstance): Promise<void
       const body = CreateVoiceProfileSchema.parse(request.body);
 
       const voiceProfile = await prisma.voiceProfile.create({
-        data: body,
+        data: body as any,
       });
 
       return reply.code(201).send(voiceProfile);
