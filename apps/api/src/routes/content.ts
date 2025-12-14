@@ -27,8 +27,8 @@ export async function contentRoutes(fastify: FastifyInstance): Promise<void> {
         return reply.code(404).send({ error: 'Character not found' });
       }
 
-      // Generate content
-      const generated = generatePost({
+      // Generate content (now async with personality system)
+      const generated = await generatePost({
         character: character as any, // Type coercion for Prisma -> shared types
         platform: body.platform as Platform,
         intent: body.intent,
@@ -42,7 +42,7 @@ export async function contentRoutes(fastify: FastifyInstance): Promise<void> {
           contentType: 'POST',
           text: generated.text,
           status: 'DRAFT',
-          meta: generated.meta,
+          meta: JSON.parse(JSON.stringify(generated.meta)), // Serialize for Prisma JSON field
         },
       });
 

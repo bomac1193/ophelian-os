@@ -1,10 +1,17 @@
 import type { Character, Platform } from '@lcos/shared';
 import { createCharacterState, buildContextPrompt } from '@lcos/canon';
+import {
+  generatePersonalityProfile,
+  buildPersonalityPrompt,
+  type PersonalityProfile,
+} from './personality.js';
 
 export interface GeneratePostOptions {
   character: Character;
   platform: Platform;
   intent: string;
+  /** Optional LLM provider function for real content generation */
+  llmProvider?: (prompt: string) => Promise<string>;
 }
 
 export interface GeneratedPost {
@@ -13,7 +20,9 @@ export interface GeneratedPost {
     platform: Platform;
     intent: string;
     characterContext: string;
+    personalityProfile: PersonalityProfile;
     generatedAt: Date;
+    generationMethod: 'stub' | 'llm';
   };
 }
 
@@ -23,60 +32,135 @@ const PLATFORM_LIMITS: Record<Platform, number> = {
   INSTAGRAM: 2200,
 };
 
-// Reserved for future LLM integration
+// Platform-specific style guidance
 export const PLATFORM_STYLES: Record<Platform, string> = {
-  X: 'concise and punchy',
-  TIKTOK: 'trendy and engaging with hashtags',
-  INSTAGRAM: 'visual and aesthetic with emojis',
+  X: 'concise and punchy, max 280 chars, no hashtags unless essential',
+  TIKTOK: 'trendy and engaging, use 3-5 relevant hashtags, conversational tone',
+  INSTAGRAM: 'visual and aesthetic, use emojis sparingly, can include longer captions',
 };
 
-export function generatePost(options: GeneratePostOptions): GeneratedPost {
-  const { character, platform, intent } = options;
+/**
+ * Generate content for a character on a specific platform
+ * Uses personality system adapted from Oripheon for character-authentic voice
+ */
+export async function generatePost(options: GeneratePostOptions): Promise<GeneratedPost> {
+  const { character, platform, intent, llmProvider } = options;
   const state = createCharacterState(character);
   const context = buildContextPrompt(state);
 
-  // Stub implementation - returns deterministic placeholder text
-  // In production, this would call an LLM with the context
-  const stub = generateStubContent(character, platform, intent);
+  // Generate personality profile from character
+  const personalityProfile = generatePersonalityProfile(character);
+
+  let text: string;
+  let generationMethod: 'stub' | 'llm' = 'stub';
+
+  if (llmProvider) {
+    // Build personality-aware prompt for LLM
+    const prompt = buildLLMPrompt(character, personalityProfile, platform, intent);
+    try {
+      text = await llmProvider(prompt);
+      generationMethod = 'llm';
+      // Ensure text fits platform limits
+      const limit = PLATFORM_LIMITS[platform];
+      if (text.length > limit) {
+        text = text.slice(0, limit - 3) + '...';
+      }
+    } catch (error) {
+      console.warn('LLM generation failed, falling back to stub:', error);
+      text = generatePersonalityAwareStub(character, personalityProfile, platform, intent);
+    }
+  } else {
+    // Use personality-aware stub generation
+    text = generatePersonalityAwareStub(character, personalityProfile, platform, intent);
+  }
 
   return {
-    text: stub,
+    text,
     meta: {
       platform,
       intent,
       characterContext: context,
+      personalityProfile,
       generatedAt: new Date(),
+      generationMethod,
     },
   };
 }
 
-function generateStubContent(
+/**
+ * Build LLM prompt with personality context
+ */
+function buildLLMPrompt(
   character: Character,
+  profile: PersonalityProfile,
+  platform: Platform,
+  intent: string
+): string {
+  const personalityPrompt = buildPersonalityPrompt(character, profile, intent);
+  const platformStyle = PLATFORM_STYLES[platform];
+  const limit = PLATFORM_LIMITS[platform];
+
+  return `${personalityPrompt}
+
+Platform: ${platform}
+Style guidance: ${platformStyle}
+Character limit: ${limit}
+
+${character.systemPrompt ? `Character system prompt: ${character.systemPrompt}\n` : ''}
+${character.toneAllowed?.length ? `Allowed tones: ${character.toneAllowed.join(', ')}\n` : ''}
+${character.toneForbidden?.length ? `Forbidden tones: ${character.toneForbidden.join(', ')}\n` : ''}
+
+Write a single post as ${character.name}. Stay in character. Output only the post text, nothing else.`;
+}
+
+/**
+ * Generate personality-aware stub content
+ * Uses personality profile to create more authentic placeholder content
+ */
+function generatePersonalityAwareStub(
+  character: Character,
+  profile: PersonalityProfile,
   platform: Platform,
   intent: string
 ): string {
   const limit = PLATFORM_LIMITS[platform];
 
-  const templates: Record<string, string> = {
-    promote: `Hey, it's ${character.name}! Just wanted to share something exciting with you all. Stay tuned for more updates coming soon!`,
-    engage: `${character.name} here. What's everyone up to today? Drop your thoughts below!`,
-    announce: `Big news from ${character.name}! Something special is in the works. Can't wait to show you what's coming next.`,
-    story: `Let me tell you a story... ${character.name} has been on quite a journey lately. Here's what happened...`,
-    default: `${character.name} is thinking about: ${intent}. What do you all think about this?`,
+  // Select opening based on personality archetype
+  const openings = profile.preferredOpenings;
+  const opening = openings[Math.floor(Math.random() * openings.length)] || '';
+
+  // Build content based on intent and personality
+  const intentTemplates: Record<string, (c: Character, p: PersonalityProfile) => string> = {
+    promote: (c, p) =>
+      `${opening} ${c.name} here with something ${p.primaryTone}. Stay tuned for what's coming.`,
+    engage: (c, p) =>
+      `${opening} ${c.name} wants to know: what ${p.contentThemes[0] || 'matters'} to you today?`,
+    announce: (c, p) =>
+      `${opening} Big news from ${c.name}. Something ${p.secondaryTone} is on the horizon.`,
+    story: (c, p) =>
+      `${opening} Let me share a ${p.styleModifier} tale about ${p.contentThemes[0] || 'the journey'}...`,
+    reflect: (c, p) =>
+      `${opening} ${c.name} reflects on ${p.contentThemes[0] || 'what matters'}. ${p.speechPatterns[0] || ''}`,
+    inspire: (c, p) =>
+      `${opening} ${p.speechPatterns[0] || ''} ${c.name} believes in ${p.contentThemes[0] || 'you'}.`,
   };
 
-  const intentKey = Object.keys(templates).find((key) =>
+  // Find matching intent or use default
+  const intentKey = Object.keys(intentTemplates).find((key) =>
     intent.toLowerCase().includes(key)
   );
-  let text = templates[intentKey || 'default'];
+
+  let text =
+    intentKey && intentTemplates[intentKey]
+      ? intentTemplates[intentKey](character, profile)
+      : `${opening} ${character.name} ponders: ${intent}. What are your thoughts?`;
 
   // Add platform-specific flavor
-  if (platform === 'X') {
-    text = text.slice(0, limit);
-  } else if (platform === 'TIKTOK') {
-    text += ' #fyp #viral #content';
+  if (platform === 'TIKTOK') {
+    const hashtag = profile.contentThemes[0]?.replace(/\s+/g, '') || 'content';
+    text += ` #${hashtag} #fyp`;
   } else if (platform === 'INSTAGRAM') {
-    text += ' ✨🙌';
+    text += ' ✨';
   }
 
   // Ensure we don't exceed platform limits
@@ -86,6 +170,14 @@ function generateStubContent(
 
   return text;
 }
+
+// Re-export personality module
+export {
+  generatePersonalityProfile,
+  buildPersonalityPrompt,
+  type PersonalityProfile,
+  type PersonalityAxes,
+} from './personality.js';
 
 export function validateContentForPlatform(
   text: string,
