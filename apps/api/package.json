@@ -15,9 +15,12 @@
   },
   "dependencies": {
     "@fastify/cors": "^9.0.1",
+    "@fastify/multipart": "8",
+    "@fastify/static": "7",
     "@lcos/canon": "workspace:*",
     "@lcos/content": "workspace:*",
     "@lcos/ledger": "workspace:*",
+    "@lcos/oripheon": "workspace:*",
     "@lcos/rights": "workspace:*",
     "@lcos/shared": "workspace:*",
     "@lcos/social-connectors": "workspace:*",

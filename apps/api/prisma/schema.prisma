@@ -8,11 +8,13 @@ datasource db {
 }
 
 model Character {
-  id            String   @id @default(cuid())
-  name          String
-  aliases       String[]
-  bio           String   @default("")
-  personaTags   String[]
+  id              String   @id @default(cuid())
+  name            String
+  aliases         String[]
+  bio             String   @default("")
+  avatarUrl       String?
+  avatarPosition  String   @default("50% 50%")
+  personaTags     String[]
   toneAllowed   String[]
   toneForbidden String[]
   systemPrompt  String   @default("")

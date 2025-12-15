@@ -62,8 +62,28 @@ export default function CharactersPage() {
               href={`/characters/${character.id}`}
               style={{ textDecoration: 'none', color: 'inherit' }}
             >
-              <div className="card" style={{ cursor: 'pointer' }}>
-                <h3 className="card-title">{character.name}</h3>
+              <div className="card character-card" style={{ cursor: 'pointer' }}>
+                <div className="character-card-header">
+                  <div className="character-avatar-circle">
+                    {character.avatarUrl ? (
+                      <img
+                        src={character.avatarUrl}
+                        alt={character.name}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'cover',
+                          objectPosition: character.avatarPosition || '50% 50%',
+                        }}
+                      />
+                    ) : (
+                      <span className="character-avatar-placeholder">
+                        {character.name.charAt(0).toUpperCase()}
+                      </span>
+                    )}
+                  </div>
+                  <h3 className="card-title">{character.name}</h3>
+                </div>
                 <p className="card-description">
                   {character.bio?.slice(0, 100) || 'No bio'}
                   {character.bio && character.bio.length > 100 ? '...' : ''}

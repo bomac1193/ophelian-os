@@ -1,12 +1,24 @@
 import 'dotenv/config';
 import Fastify from 'fastify';
 import cors from '@fastify/cors';
+import multipart from '@fastify/multipart';
+import fastifyStatic from '@fastify/static';
+import path from 'path';
+import { existsSync, mkdirSync } from 'fs';
 import { authMiddleware } from './middleware/auth.js';
 import { characterRoutes } from './routes/characters.js';
 import { voiceProfileRoutes } from './routes/voice-profiles.js';
 import { licenseRoutes } from './routes/licenses.js';
 import { contentRoutes } from './routes/content.js';
 import { ledgerRoutes } from './routes/ledger.js';
+import { uploadRoutes } from './routes/uploads.js';
+
+const UPLOAD_DIR = process.env.UPLOAD_DIR || './storage/uploads';
+
+// Ensure upload directory exists
+if (!existsSync(UPLOAD_DIR)) {
+  mkdirSync(UPLOAD_DIR, { recursive: true });
+}
 
 const fastify = Fastify({
   logger: {
@@ -32,13 +44,27 @@ async function start() {
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     });
 
+    // Register multipart for file uploads
+    await fastify.register(multipart, {
+      limits: {
+        fileSize: 5 * 1024 * 1024, // 5MB
+      },
+    });
+
+    // Serve uploaded files statically
+    await fastify.register(fastifyStatic, {
+      root: path.resolve(UPLOAD_DIR),
+      prefix: '/uploads/',
+      decorateReply: false,
+    });
+
     // Health check (no auth required)
     fastify.get('/health', async () => ({ status: 'ok', timestamp: new Date().toISOString() }));
 
     // Register auth middleware for all other routes
     fastify.addHook('onRequest', async (request, reply) => {
-      // Skip auth for health check
-      if (request.url === '/health') return;
+      // Skip auth for health check and static files
+      if (request.url === '/health' || request.url.startsWith('/uploads/')) return;
       await authMiddleware(request, reply);
     });
 
@@ -48,6 +74,7 @@ async function start() {
     await fastify.register(licenseRoutes);
     await fastify.register(contentRoutes);
     await fastify.register(ledgerRoutes);
+    await fastify.register(uploadRoutes);
 
     // Start server
     const port = parseInt(process.env.PORT || '3001', 10);

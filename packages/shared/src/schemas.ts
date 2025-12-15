@@ -14,6 +14,8 @@ export const CreateCharacterSchema = z.object({
   name: z.string().min(1).max(255),
   aliases: z.array(z.string()).default([]),
   bio: z.string().default(''),
+  avatarUrl: z.string().nullable().default(null),
+  avatarPosition: z.string().default('50% 50%'),
   personaTags: z.array(z.string()).default([]),
   toneAllowed: z.array(z.string()).default([]),
   toneForbidden: z.array(z.string()).default([]),

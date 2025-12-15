@@ -29,6 +29,8 @@ export interface Character {
   name: string;
   aliases: string[];
   bio: string;
+  avatarUrl: string | null;
+  avatarPosition: string;
   personaTags: string[];
   toneAllowed: string[];
   toneForbidden: string[];
@@ -51,6 +53,73 @@ export async function createCharacter(data: Partial<Character>): Promise<Charact
   return apiFetch<Character>('/characters', {
     method: 'POST',
     body: JSON.stringify(data),
+  });
+}
+
+export async function updateCharacter(id: string, data: Partial<Character>): Promise<Character> {
+  return apiFetch<Character>(`/characters/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function deleteCharacter(id: string): Promise<void> {
+  await fetch(`${API_URL}/characters/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'x-api-key': API_KEY,
+    },
+  }).then((res) => {
+    if (!res.ok) {
+      throw new Error('Failed to delete character');
+    }
+  });
+}
+
+// Generated character from Oripheon engine
+export interface GeneratedCharacter {
+  seed: number;
+  name: string;
+  gender: 'masculine' | 'feminine' | 'neutral';
+  heritage: string;
+  order: {
+    name: string;
+    ideology: string;
+  };
+  arcana: {
+    archetype: string;
+    shadowThemes: string[];
+    goldenGifts: string[];
+  };
+  appearance: {
+    build: string;
+    distinctiveTrait: string;
+    styleAesthetic: string;
+  };
+  personality: {
+    axes: {
+      orderChaos: number;
+      mercyRuthlessness: number;
+      introvertExtrovert: number;
+      faithDoubt: number;
+    };
+    coreDesire: string;
+    deepFear: string;
+    voiceTone: string;
+  };
+  backstory: string;
+}
+
+export interface GenerateCharacterOptions {
+  seed?: number;
+  heritage?: string;
+  gender?: string;
+}
+
+export async function generateRandomCharacter(options?: GenerateCharacterOptions): Promise<GeneratedCharacter> {
+  return apiFetch<GeneratedCharacter>('/characters/generate', {
+    method: 'POST',
+    body: JSON.stringify(options || {}),
   });
 }
 

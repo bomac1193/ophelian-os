@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
   getCharacter,
@@ -10,12 +10,17 @@ import {
   approveContent,
   publishContent,
   generateAudio,
+  updateCharacter,
+  deleteCharacter,
   type Character,
   type ContentItem,
 } from '@/lib/api';
+import { ImageUpload } from '@/components/ImageUpload';
+import { DraggableAvatar } from '@/components/DraggableAvatar';
 
 export default function CharacterDetailPage() {
   const params = useParams();
+  const router = useRouter();
   const characterId = params.id as string;
 
   const [character, setCharacter] = useState<Character | null>(null);
@@ -30,6 +35,8 @@ export default function CharacterDetailPage() {
 
   // Action states
   const [actionLoading, setActionLoading] = useState<Record<string, boolean>>({});
+  const [avatarUpdating, setAvatarUpdating] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   const loadData = async () => {
     try {
@@ -101,6 +108,49 @@ export default function CharacterDetailPage() {
     }
   };
 
+  const handleAvatarChange = async (url: string | null) => {
+    setAvatarUpdating(true);
+    try {
+      const updated = await updateCharacter(characterId, { avatarUrl: url });
+      setCharacter(updated);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to update avatar');
+    } finally {
+      setAvatarUpdating(false);
+    }
+  };
+
+  const handleAvatarPositionChange = async (position: string) => {
+    setAvatarUpdating(true);
+    try {
+      const updated = await updateCharacter(characterId, { avatarPosition: position });
+      setCharacter(updated);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to update avatar position');
+    } finally {
+      setAvatarUpdating(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!character) return;
+
+    const confirmed = window.confirm(
+      `Are you sure you want to delete "${character.name}"? This will also delete all associated content. This action cannot be undone.`
+    );
+
+    if (!confirmed) return;
+
+    setDeleting(true);
+    try {
+      await deleteCharacter(characterId);
+      router.push('/');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to delete character');
+      setDeleting(false);
+    }
+  };
+
   const getStatusBadgeClass = (status: string) => {
     switch (status) {
       case 'DRAFT':
@@ -153,6 +203,14 @@ export default function CharacterDetailPage() {
             {character.name}
           </h1>
         </div>
+        <button
+          className="btn btn-secondary"
+          onClick={handleDelete}
+          disabled={deleting}
+          style={{ color: 'var(--error)' }}
+        >
+          {deleting ? 'Deleting...' : 'Delete Character'}
+        </button>
       </div>
 
       <div className="grid grid-cols-3">
@@ -265,10 +323,53 @@ export default function CharacterDetailPage() {
         {/* Character Info Sidebar */}
         <div>
           <div className="card">
-            <h3 className="card-title">Character Info</h3>
-            <div className="mt-4">
-              <p className="card-description">{character.bio || 'No bio provided'}</p>
+            {/* Character Header: Name, Avatar, Description */}
+            <div className="character-info-header">
+              <h3 className="character-info-name">{character.name}</h3>
 
+              {/* Avatar Circle */}
+              <div className="character-info-avatar">
+                {character.avatarUrl ? (
+                  <img
+                    src={character.avatarUrl}
+                    alt={character.name}
+                    style={{ objectPosition: character.avatarPosition || '50% 50%' }}
+                  />
+                ) : (
+                  <span className="character-avatar-placeholder" style={{ fontSize: '3rem' }}>
+                    {character.name.charAt(0).toUpperCase()}
+                  </span>
+                )}
+              </div>
+
+              <p className="card-description" style={{ textAlign: 'center' }}>
+                {character.bio || 'No bio provided'}
+              </p>
+            </div>
+
+            {/* Avatar Management */}
+            <div className="mt-4">
+              <strong style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', display: 'block', marginBottom: '0.5rem' }}>
+                AVATAR
+              </strong>
+              {character.avatarUrl ? (
+                <DraggableAvatar
+                  src={character.avatarUrl}
+                  position={character.avatarPosition}
+                  onPositionChange={handleAvatarPositionChange}
+                  onRemove={() => handleAvatarChange(null)}
+                  disabled={avatarUpdating}
+                />
+              ) : (
+                <ImageUpload
+                  value={character.avatarUrl}
+                  onChange={handleAvatarChange}
+                  disabled={avatarUpdating}
+                />
+              )}
+            </div>
+
+            <div>
               {character.aliases.length > 0 && (
                 <div className="mt-4">
                   <strong style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)' }}>

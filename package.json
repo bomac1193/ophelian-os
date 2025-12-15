@@ -4,7 +4,7 @@
   "private": true,
   "packageManager": "pnpm@9.15.0",
   "scripts": {
-    "dev": "turbo run dev",
+    "dev": "mkdir -p .tmp && TMPDIR=$(pwd)/.tmp TMP=$(pwd)/.tmp TEMP=$(pwd)/.tmp turbo run dev --concurrency=20",
     "build": "turbo run build",
     "lint": "turbo run lint",
     "test": "turbo run test",
