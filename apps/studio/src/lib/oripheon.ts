@@ -48,11 +48,19 @@ export const ORIPHEON_NAME_MODES = [
 export type OripheonNameMode = (typeof ORIPHEON_NAME_MODES)[number];
 
 export const ORIPHEON_TITLES = [
+  // None/Abbrev
+  'St.',
   // Traditional
   'Lord',
   'Lady',
   'Sir',
   'Dame',
+  'Baron',
+  'Baroness',
+  'Count',
+  'Countess',
+  'Marquis',
+  'Marchioness',
   'Duke',
   'Duchess',
   'Prince',
@@ -62,34 +70,48 @@ export const ORIPHEON_TITLES = [
   // Academic/Professional
   'Dr.',
   'Professor',
+  'Magister',
   'Master',
   'Maestro',
   // Religious/Spiritual
   'Pope',
+  'Seraph',
   'Cardinal',
+  'Archbishop',
   'Bishop',
   'Father',
   'Mother',
+  'Patriarch',
+  'Matriarch',
   'Saint',
   'Reverend',
   'Prophet',
+  'Sage',
   'Oracle',
   'High Priest',
   'High Priestess',
   // Military/Noble
+  'Knight',
   'General',
   'Admiral',
   'Commander',
   'Captain',
+  'Colonel',
   'Marshal',
   'Warden',
   // Mystical/Fantasy
   'Archon',
+  'Arcanist',
+  'Chronomancer',
+  'Spellwright',
   'Sovereign',
   'Harbinger',
   'Phantom',
   'Shadow',
+  'Voidwalker',
   'Void',
+  'Starborn',
+  'Lightbringer',
   'Elder',
   'Ancient',
   'Eternal',
@@ -105,6 +127,21 @@ export const ORIPHEON_TITLES = [
   'The Radiant',
   'The Forsaken',
   'The Undying',
+  'The Starforged',
+  'The Stormborn',
+  'The Ashen',
+  'The Unbroken',
+  'The Dreamweaver',
+  'The Timeworn',
+  'The Nameless',
+  'The Wanderer',
+  'The Emberbound',
+  'The Moonlit',
+  'The Sun-Touched',
+  'The Midnight',
+  'The Hollow',
+  'The Architect',
+  'The Archivist',
 ] as const;
 export type OripheonTitle = (typeof ORIPHEON_TITLES)[number];
 
@@ -280,8 +317,11 @@ function formatList(values: string[]): string {
 }
 
 export function formatOripheonName(primaryName: OripheonPrimaryName): string {
-  const title = primaryName.title ? `${primaryName.title} ` : '';
-  if (primaryName.mononym) return `${title}${primaryName.mononym}`.trim();
+  if (primaryName.mononym) {
+    if (primaryName.nameMode === 'fused_mononym') return primaryName.mononym.trim();
+    const title = primaryName.title ? `${primaryName.title} ` : '';
+    return `${title}${primaryName.mononym}`.trim();
+  }
   return [
     primaryName.title,
     primaryName.first,

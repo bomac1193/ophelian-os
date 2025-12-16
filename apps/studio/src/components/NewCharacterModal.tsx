@@ -6,6 +6,7 @@ import {
   ORIPHEON_API_URL,
   ORIPHEON_GENDERS,
   ORIPHEON_ORDERS,
+  ORIPHEON_TITLES,
   formatOripheonName,
   generateOripheonAvatar,
   oripheonAvatarToCreateCharacterInput,
@@ -57,6 +58,7 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
   const [oripheonNameMode, setOripheonNameMode] = useState<OripheonNameMode | ''>('');
   const [oripheonIncludeTitle, setOripheonIncludeTitle] = useState(false);
   const [oripheonSelectedTitle, setOripheonSelectedTitle] = useState<string>('');
+  const [oripheonResolvedTitle, setOripheonResolvedTitle] = useState<string | null>(null);
   const [personaDescription, setPersonaDescription] = useState('');
   const [desiredTraits, setDesiredTraits] = useState('');
   const [desiredSkills, setDesiredSkills] = useState('');
@@ -118,6 +120,7 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
     setOripheonNameMode('');
     setOripheonIncludeTitle(false);
     setOripheonSelectedTitle('');
+    setOripheonResolvedTitle(null);
     setPersonaDescription('');
     setDesiredTraits('');
     setDesiredSkills('');
@@ -232,14 +235,36 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
     try {
       const seedNumber = Number(oripheonSeed);
 
+      const resolvedTitle: string | null =
+        !oripheonIncludeTitle
+          ? null
+          : oripheonSelectedTitle ||
+            ORIPHEON_TITLES[Math.floor(Math.random() * ORIPHEON_TITLES.length)] ||
+            null;
+      setOripheonResolvedTitle(resolvedTitle);
+
       // Build identity params
       const identityParams: OripheonAvatarGenerationParams['identity'] = {};
       if (oripheonGender) identityParams.gender = oripheonGender;
       if (oripheonLengthPreference) identityParams.lengthPreference = oripheonLengthPreference;
       if (oripheonNameMode) identityParams.nameMode = oripheonNameMode;
-      if (oripheonIncludeTitle && oripheonSelectedTitle) {
-        identityParams.title = oripheonSelectedTitle;
+
+      // Title handling:
+      // - `null` explicitly disables titles in Oripheon.
+      // - For fused mononyms, we keep the title client-side to avoid fusing it into the mononym.
+      if (!oripheonIncludeTitle) {
+        identityParams.title = null;
+      } else if (oripheonNameMode === 'fused_mononym') {
+        identityParams.title = null;
+      } else if (resolvedTitle) {
+        identityParams.title = resolvedTitle;
       }
+
+      const rawPreferredNames = preferredNames.trim() ? parseCsv(preferredNames) : [];
+      const preparedPreferredNames =
+        oripheonNameMode === 'fused_mononym' && rawPreferredNames.length >= 2
+          ? [`${rawPreferredNames[0]} ${rawPreferredNames[1]}`, ...rawPreferredNames.slice(2)]
+          : rawPreferredNames;
 
       const params: OripheonAvatarGenerationParams = {
         ...(Number.isFinite(seedNumber) && seedNumber > 0 ? { seed: seedNumber } : {}),
@@ -253,7 +278,7 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
           ...(personaDescription.trim() ? { personaDescription: personaDescription.trim() } : {}),
           ...(desiredTraits.trim() ? { desiredTraits: parseCsv(desiredTraits) } : {}),
           ...(desiredSkills.trim() ? { desiredSkills: parseCsv(desiredSkills) } : {}),
-          ...(preferredNames.trim() ? { preferredNames: parseCsv(preferredNames) } : {}),
+          ...(preparedPreferredNames.length > 0 ? { preferredNames: preparedPreferredNames } : {}),
           sigilBloom: { enabled: sigilBloomEnabled, intensity: sigilBloomIntensity },
         },
       };
@@ -279,6 +304,18 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
     }
   };
 
+  const getOripheonDisplayName = (avatar: OripheonAvatar): string => {
+    const base = formatOripheonName(avatar.identity.primaryName) || 'Unnamed';
+    if (
+      oripheonIncludeTitle &&
+      oripheonResolvedTitle &&
+      avatar.identity.primaryName.nameMode === 'fused_mononym'
+    ) {
+      return `${oripheonResolvedTitle} ${avatar.identity.primaryName.mononym || base}`.trim();
+    }
+    return base;
+  };
+
   const handleCreateFromOripheon = async () => {
     if (!generatedAvatar) return;
     setCreatingFromOripheon(true);
@@ -286,6 +323,15 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
 
     try {
       const characterData = oripheonAvatarToCreateCharacterInput(generatedAvatar);
+      const displayName = getOripheonDisplayName(generatedAvatar);
+      characterData.name = displayName;
+      if (characterData.systemPrompt) {
+        const lines = characterData.systemPrompt.split('\n');
+        if (lines.length > 0) {
+          lines[0] = `You are ${displayName}.`;
+          characterData.systemPrompt = lines.join('\n');
+        }
+      }
       // Add avatar URL if uploaded
       if (oripheonAvatarUrl) {
         (characterData as any).avatarUrl = oripheonAvatarUrl;
@@ -573,69 +619,11 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
                   disabled={!oripheonIncludeTitle}
                 >
                   <option value="">Random Title</option>
-                  <optgroup label="Traditional">
-                    <option value="Lord">Lord</option>
-                    <option value="Lady">Lady</option>
-                    <option value="Sir">Sir</option>
-                    <option value="Dame">Dame</option>
-                    <option value="Duke">Duke</option>
-                    <option value="Duchess">Duchess</option>
-                    <option value="Prince">Prince</option>
-                    <option value="Princess">Princess</option>
-                    <option value="King">King</option>
-                    <option value="Queen">Queen</option>
-                  </optgroup>
-                  <optgroup label="Academic/Professional">
-                    <option value="Dr.">Dr.</option>
-                    <option value="Professor">Professor</option>
-                    <option value="Master">Master</option>
-                    <option value="Maestro">Maestro</option>
-                  </optgroup>
-                  <optgroup label="Religious/Spiritual">
-                    <option value="Pope">Pope</option>
-                    <option value="Cardinal">Cardinal</option>
-                    <option value="Bishop">Bishop</option>
-                    <option value="Father">Father</option>
-                    <option value="Mother">Mother</option>
-                    <option value="Saint">Saint</option>
-                    <option value="Reverend">Reverend</option>
-                    <option value="Prophet">Prophet</option>
-                    <option value="Oracle">Oracle</option>
-                    <option value="High Priest">High Priest</option>
-                    <option value="High Priestess">High Priestess</option>
-                  </optgroup>
-                  <optgroup label="Military/Noble">
-                    <option value="General">General</option>
-                    <option value="Admiral">Admiral</option>
-                    <option value="Commander">Commander</option>
-                    <option value="Captain">Captain</option>
-                    <option value="Marshal">Marshal</option>
-                    <option value="Warden">Warden</option>
-                  </optgroup>
-                  <optgroup label="Mystical/Fantasy">
-                    <option value="Archon">Archon</option>
-                    <option value="Sovereign">Sovereign</option>
-                    <option value="Harbinger">Harbinger</option>
-                    <option value="Phantom">Phantom</option>
-                    <option value="Shadow">Shadow</option>
-                    <option value="Void">Void</option>
-                    <option value="Elder">Elder</option>
-                    <option value="Ancient">Ancient</option>
-                    <option value="Eternal">Eternal</option>
-                    <option value="Grand">Grand</option>
-                    <option value="Supreme">Supreme</option>
-                    <option value="Prime">Prime</option>
-                  </optgroup>
-                  <optgroup label="Epithets">
-                    <option value="The Magnificent">The Magnificent</option>
-                    <option value="The Terrible">The Terrible</option>
-                    <option value="The Wise">The Wise</option>
-                    <option value="The Bold">The Bold</option>
-                    <option value="The Silent">The Silent</option>
-                    <option value="The Radiant">The Radiant</option>
-                    <option value="The Forsaken">The Forsaken</option>
-                    <option value="The Undying">The Undying</option>
-                  </optgroup>
+                  {ORIPHEON_TITLES.map((title) => (
+                    <option key={title} value={title}>
+                      {title}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
@@ -702,7 +690,7 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
 
             {generatedAvatar && (
               <div className="card" style={{ marginBottom: '1rem' }}>
-                <h3 className="card-title">{formatOripheonName(generatedAvatar.identity.primaryName)}</h3>
+                <h3 className="card-title">{getOripheonDisplayName(generatedAvatar)}</h3>
                 <p className="card-description" style={{ whiteSpace: 'pre-wrap' }}>
                   {generatedAvatar.mythos.shortTitle}
                 </p>
