@@ -15,6 +15,7 @@ import {
   type OripheonAvatarGenerationParams,
   type OripheonGender,
   type OripheonOrderType,
+  type OripheonNameMode,
   type LCOSGeneratedCharacter,
 } from '@/lib/oripheon';
 import { ImageUpload } from './ImageUpload';
@@ -53,6 +54,9 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
   const [oripheonLengthPreference, setOripheonLengthPreference] = useState<'' | 'short' | 'long'>(
     ''
   );
+  const [oripheonNameMode, setOripheonNameMode] = useState<OripheonNameMode | ''>('');
+  const [oripheonIncludeTitle, setOripheonIncludeTitle] = useState(false);
+  const [oripheonSelectedTitle, setOripheonSelectedTitle] = useState<string>('');
   const [personaDescription, setPersonaDescription] = useState('');
   const [desiredTraits, setDesiredTraits] = useState('');
   const [desiredSkills, setDesiredSkills] = useState('');
@@ -111,6 +115,9 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
     setOripheonOrder('');
     setOripheonGender('');
     setOripheonLengthPreference('');
+    setOripheonNameMode('');
+    setOripheonIncludeTitle(false);
+    setOripheonSelectedTitle('');
     setPersonaDescription('');
     setDesiredTraits('');
     setDesiredSkills('');
@@ -224,6 +231,16 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
 
     try {
       const seedNumber = Number(oripheonSeed);
+
+      // Build identity params
+      const identityParams: OripheonAvatarGenerationParams['identity'] = {};
+      if (oripheonGender) identityParams.gender = oripheonGender;
+      if (oripheonLengthPreference) identityParams.lengthPreference = oripheonLengthPreference;
+      if (oripheonNameMode) identityParams.nameMode = oripheonNameMode;
+      if (oripheonIncludeTitle && oripheonSelectedTitle) {
+        identityParams.title = oripheonSelectedTitle;
+      }
+
       const params: OripheonAvatarGenerationParams = {
         ...(Number.isFinite(seedNumber) && seedNumber > 0 ? { seed: seedNumber } : {}),
         ...(oripheonOrder
@@ -231,14 +248,7 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
               being: { order: oripheonOrder },
             }
           : {}),
-        ...(oripheonGender || oripheonLengthPreference
-          ? {
-              identity: {
-                ...(oripheonGender ? { gender: oripheonGender } : {}),
-                ...(oripheonLengthPreference ? { lengthPreference: oripheonLengthPreference } : {}),
-              },
-            }
-          : {}),
+        ...(Object.keys(identityParams).length > 0 ? { identity: identityParams } : {}),
         prompt: {
           ...(personaDescription.trim() ? { personaDescription: personaDescription.trim() } : {}),
           ...(desiredTraits.trim() ? { desiredTraits: parseCsv(desiredTraits) } : {}),
@@ -517,6 +527,23 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
               </div>
 
               <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="label">Name Style</label>
+                <select
+                  className="input"
+                  value={oripheonNameMode}
+                  onChange={(e) => setOripheonNameMode(e.target.value as OripheonNameMode | '')}
+                >
+                  <option value="">Any</option>
+                  <option value="mononym">Mononym (single name)</option>
+                  <option value="first_last">First + Last</option>
+                  <option value="first_middle_last">First + Middle + Last</option>
+                  <option value="fused_mononym">Fused (blend two names)</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="form-group" style={{ marginBottom: 0 }}>
                 <label className="label">Seed (optional)</label>
                 <input
                   type="number"
@@ -525,6 +552,91 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
                   onChange={(e) => setOripheonSeed(e.target.value)}
                   placeholder="e.g., 42"
                 />
+              </div>
+
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <div className="flex gap-2" style={{ alignItems: 'center', marginBottom: '0.25rem' }}>
+                  <input
+                    id="oripheonIncludeTitle"
+                    type="checkbox"
+                    checked={oripheonIncludeTitle}
+                    onChange={(e) => setOripheonIncludeTitle(e.target.checked)}
+                  />
+                  <label className="label" htmlFor="oripheonIncludeTitle" style={{ marginBottom: 0 }}>
+                    Include Title
+                  </label>
+                </div>
+                <select
+                  className="input"
+                  value={oripheonSelectedTitle}
+                  onChange={(e) => setOripheonSelectedTitle(e.target.value)}
+                  disabled={!oripheonIncludeTitle}
+                >
+                  <option value="">Random Title</option>
+                  <optgroup label="Traditional">
+                    <option value="Lord">Lord</option>
+                    <option value="Lady">Lady</option>
+                    <option value="Sir">Sir</option>
+                    <option value="Dame">Dame</option>
+                    <option value="Duke">Duke</option>
+                    <option value="Duchess">Duchess</option>
+                    <option value="Prince">Prince</option>
+                    <option value="Princess">Princess</option>
+                    <option value="King">King</option>
+                    <option value="Queen">Queen</option>
+                  </optgroup>
+                  <optgroup label="Academic/Professional">
+                    <option value="Dr.">Dr.</option>
+                    <option value="Professor">Professor</option>
+                    <option value="Master">Master</option>
+                    <option value="Maestro">Maestro</option>
+                  </optgroup>
+                  <optgroup label="Religious/Spiritual">
+                    <option value="Pope">Pope</option>
+                    <option value="Cardinal">Cardinal</option>
+                    <option value="Bishop">Bishop</option>
+                    <option value="Father">Father</option>
+                    <option value="Mother">Mother</option>
+                    <option value="Saint">Saint</option>
+                    <option value="Reverend">Reverend</option>
+                    <option value="Prophet">Prophet</option>
+                    <option value="Oracle">Oracle</option>
+                    <option value="High Priest">High Priest</option>
+                    <option value="High Priestess">High Priestess</option>
+                  </optgroup>
+                  <optgroup label="Military/Noble">
+                    <option value="General">General</option>
+                    <option value="Admiral">Admiral</option>
+                    <option value="Commander">Commander</option>
+                    <option value="Captain">Captain</option>
+                    <option value="Marshal">Marshal</option>
+                    <option value="Warden">Warden</option>
+                  </optgroup>
+                  <optgroup label="Mystical/Fantasy">
+                    <option value="Archon">Archon</option>
+                    <option value="Sovereign">Sovereign</option>
+                    <option value="Harbinger">Harbinger</option>
+                    <option value="Phantom">Phantom</option>
+                    <option value="Shadow">Shadow</option>
+                    <option value="Void">Void</option>
+                    <option value="Elder">Elder</option>
+                    <option value="Ancient">Ancient</option>
+                    <option value="Eternal">Eternal</option>
+                    <option value="Grand">Grand</option>
+                    <option value="Supreme">Supreme</option>
+                    <option value="Prime">Prime</option>
+                  </optgroup>
+                  <optgroup label="Epithets">
+                    <option value="The Magnificent">The Magnificent</option>
+                    <option value="The Terrible">The Terrible</option>
+                    <option value="The Wise">The Wise</option>
+                    <option value="The Bold">The Bold</option>
+                    <option value="The Silent">The Silent</option>
+                    <option value="The Radiant">The Radiant</option>
+                    <option value="The Forsaken">The Forsaken</option>
+                    <option value="The Undying">The Undying</option>
+                  </optgroup>
+                </select>
               </div>
             </div>
 

@@ -47,6 +47,67 @@ export const ORIPHEON_NAME_MODES = [
 ] as const;
 export type OripheonNameMode = (typeof ORIPHEON_NAME_MODES)[number];
 
+export const ORIPHEON_TITLES = [
+  // Traditional
+  'Lord',
+  'Lady',
+  'Sir',
+  'Dame',
+  'Duke',
+  'Duchess',
+  'Prince',
+  'Princess',
+  'King',
+  'Queen',
+  // Academic/Professional
+  'Dr.',
+  'Professor',
+  'Master',
+  'Maestro',
+  // Religious/Spiritual
+  'Pope',
+  'Cardinal',
+  'Bishop',
+  'Father',
+  'Mother',
+  'Saint',
+  'Reverend',
+  'Prophet',
+  'Oracle',
+  'High Priest',
+  'High Priestess',
+  // Military/Noble
+  'General',
+  'Admiral',
+  'Commander',
+  'Captain',
+  'Marshal',
+  'Warden',
+  // Mystical/Fantasy
+  'Archon',
+  'Sovereign',
+  'Harbinger',
+  'Phantom',
+  'Shadow',
+  'Void',
+  'Elder',
+  'Ancient',
+  'Eternal',
+  'Grand',
+  'Supreme',
+  'Prime',
+  // Creative/Unique
+  'The Magnificent',
+  'The Terrible',
+  'The Wise',
+  'The Bold',
+  'The Silent',
+  'The Radiant',
+  'The Forsaken',
+  'The Undying',
+] as const;
+export type OripheonTitle = (typeof ORIPHEON_TITLES)[number];
+
 export type OripheonHeritageCulture =
   | 'african_yoruba'
   | 'african_igbo'
