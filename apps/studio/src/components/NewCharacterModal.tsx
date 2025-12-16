@@ -17,9 +17,154 @@ import {
   type OripheonGender,
   type OripheonOrderType,
   type OripheonNameMode,
+  type OripheonTarotArchetype,
   type LCOSGeneratedCharacter,
 } from '@/lib/oripheon';
 import { ImageUpload } from './ImageUpload';
+
+type PromptSuggestions = { traits: string[]; skills: string[] };
+
+const BASE_PROMPT_SUGGESTIONS: PromptSuggestions = {
+  traits: [
+    'Stoic',
+    'Cunning',
+    'Visionary',
+    'Merciful',
+    'Ruthless',
+    'Devout',
+    'Rebellious',
+    'Curious',
+    'Elegant',
+    'Haunted',
+    'Radiant',
+    'Playful',
+  ],
+  skills: [
+    'Storm weaving',
+    'Oath keeping',
+    'Ciphercraft',
+    'Ritual healing',
+    'Blade work',
+    'Archive diving',
+    'Bounty hunting',
+    'Forge craft',
+    'Dream reading',
+    'Negotiation',
+    'Songbinding',
+    'Cartography',
+  ],
+};
+
+const ORDER_PROMPT_SUGGESTIONS: Partial<Record<OripheonOrderType, PromptSuggestions>> = {
+  angel: {
+    traits: ['Oathbound', 'Vigilant', 'Radiant', 'Compassionate'],
+    skills: ['Sanctuary rites', 'Hymncraft', 'Judgement', 'Shield-bearing'],
+  },
+  demon: {
+    traits: ['Ambitious', 'Clever', 'Unforgiving', 'Tempting'],
+    skills: ['Pactwriting', 'Shadow bargaining', 'Bloodforging', 'Fearcraft'],
+  },
+  jinn: {
+    traits: ['Restless', 'Wry', 'Elusive', 'Proud'],
+    skills: ['Mirage craft', 'Windbinding', 'Ember couriering', 'Secret trading'],
+  },
+  human: {
+    traits: ['Stubborn', 'Pragmatic', 'Brave', 'Inventive'],
+    skills: ['Wayfinding', 'Tinkering', 'Field medicine', 'Diplomacy'],
+  },
+  titan: {
+    traits: ['Immovable', 'Ancient', 'Protective', 'Severe'],
+    skills: ['World-shaping', 'Oathstone carving', 'Mountainkeeping', 'Siege lore'],
+  },
+  fae: {
+    traits: ['Capricious', 'Graceful', 'Secretive', 'Charming'],
+    skills: ['Glamour', 'Moonweaving', 'Bargaining', 'Wild hunt riding'],
+  },
+  yokai: {
+    traits: ['Tricksy', 'Observant', 'Feral', 'Honorable'],
+    skills: ['Shapeshifting', 'Boundary warding', 'Spirit bargaining', 'Storm calling'],
+  },
+  elemental: {
+    traits: ['Unyielding', 'Volatile', 'Serene', 'Wild'],
+    skills: ['Flame warding', 'Tide calling', 'Wind whispering', 'Stone singing'],
+  },
+  nephilim: {
+    traits: ['Fierce', 'Burdened', 'Resolute', 'Protective'],
+    skills: ['Sky dueling', 'Giant-lore', 'Oath bearing', 'Mercy trials'],
+  },
+  archon: {
+    traits: ['Austere', 'Precise', 'Principled', 'Cold'],
+    skills: ['Lawweaving', 'Reality auditing', 'Sigil adjudication', 'Cosmic calculus'],
+  },
+  dragonkin: {
+    traits: ['Proud', 'Patient', 'Dominant', 'Wise'],
+    skills: ['Skyfire tactics', 'Hoard divination', 'Oathfire', 'Scale rites'],
+  },
+  construct: {
+    traits: ['Methodical', 'Loyal', 'Quiet', 'Unblinking'],
+    skills: ['Circuit hymn', 'Gearcraft', 'Memory warding', 'Axiom engraving'],
+  },
+  eldritch: {
+    traits: ['Uncanny', 'Detached', 'Intense', 'Prophetic'],
+    skills: ['Void listening', 'Dream walking', 'Horizon scrying', 'Sigil fracture'],
+  },
+  trickster: {
+    traits: ['Playful', 'Chaotic', 'Ironic', 'Unpredictable'],
+    skills: ['Prankcraft', 'Satire', 'Misdirection', 'Chaos rites'],
+  },
+};
+
+const PATH_PROMPT_SUGGESTIONS: Partial<Record<OripheonTarotArchetype, PromptSuggestions>> = {
+  magician: {
+    traits: ['Inventive', 'Precise', 'Bold'],
+    skills: ['Sigil calculus', 'Illusion weaving', 'Ritual engineering'],
+  },
+  high_priestess: {
+    traits: ['Oracular', 'Serene', 'Veil-touched'],
+    skills: ['Prophecy', 'Dream reading', 'Silent rites'],
+  },
+  hermit: {
+    traits: ['Patient', 'Quiet', 'Observant'],
+    skills: ['Pilgrimage', 'Hidden lore', 'Lantern rites'],
+  },
+  chariot: {
+    traits: ['Driven', 'Disciplined', 'Brave'],
+    skills: ['Command', 'Escort tactics', 'Ward riding'],
+  },
+  star: {
+    traits: ['Hopeful', 'Gentle', 'Bright'],
+    skills: ['Healing', 'Guidance', 'Omen reading'],
+  },
+  devil: {
+    traits: ['Tempting', 'Ambitious', 'Unflinching'],
+    skills: ['Pactbinding', 'Desirecraft', 'Chain lore'],
+  },
+};
+
+const ORIPHEON_PATH_OPTIONS: Array<{ id: OripheonTarotArchetype; label: string }> = [
+  { id: 'magician', label: 'Magician' },
+  { id: 'high_priestess', label: 'High Priestess' },
+  { id: 'empress', label: 'Empress' },
+  { id: 'emperor', label: 'Emperor' },
+  { id: 'hierophant', label: 'Hierophant' },
+  { id: 'lovers', label: 'Lovers' },
+  { id: 'chariot', label: 'Chariot' },
+  { id: 'strength', label: 'Strength' },
+  { id: 'hermit', label: 'Hermit' },
+  { id: 'wheel_of_fortune', label: 'Wheel of Fortune' },
+  { id: 'justice', label: 'Justice' },
+  { id: 'hanged_man', label: 'Hanged Man' },
+  { id: 'death', label: 'Death' },
+  { id: 'temperance', label: 'Temperance' },
+  { id: 'devil', label: 'Devil' },
+  { id: 'tower', label: 'Tower' },
+  { id: 'star', label: 'Star' },
+  { id: 'moon', label: 'Moon' },
+  { id: 'sun', label: 'Sun' },
+  { id: 'judgement', label: 'Judgement' },
+  { id: 'world', label: 'World' },
+  { id: 'fool', label: 'Fool' },
+];
 
 interface NewCharacterModalProps {
   isOpen: boolean;
@@ -52,6 +197,7 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
   const [oripheonSeed, setOripheonSeed] = useState<string>('');
   const [oripheonOrder, setOripheonOrder] = useState<OripheonOrderType | ''>('');
   const [oripheonGender, setOripheonGender] = useState<OripheonGender | ''>('');
+  const [oripheonPath, setOripheonPath] = useState<OripheonTarotArchetype | ''>('');
   const [oripheonLengthPreference, setOripheonLengthPreference] = useState<'' | 'short' | 'long'>(
     ''
   );
@@ -116,6 +262,7 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
     setOripheonSeed('');
     setOripheonOrder('');
     setOripheonGender('');
+    setOripheonPath('');
     setOripheonLengthPreference('');
     setOripheonNameMode('');
     setOripheonIncludeTitle(false);
@@ -196,6 +343,57 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
       .map((t) => t.trim())
       .filter(Boolean);
 
+  const normalizeCsvValue = (value: string): string => value.trim().toLowerCase();
+
+  const appendCsvValue = (current: string, value: string): string => {
+    const cleaned = value.trim();
+    if (!cleaned) return current;
+    const existing = parseCsv(current);
+    const targetKey = normalizeCsvValue(cleaned);
+    if (existing.some((v) => normalizeCsvValue(v) === targetKey)) return current;
+    return [...existing, cleaned].join(', ');
+  };
+
+  const dedupeSuggestions = (values: string[]): string[] => {
+    const seen = new Set<string>();
+    const result: string[] = [];
+    for (const value of values) {
+      const key = normalizeCsvValue(value);
+      if (!key || seen.has(key)) continue;
+      seen.add(key);
+      result.push(value);
+    }
+    return result;
+  };
+
+  const getSuggestedPromptValues = (): PromptSuggestions => {
+    const orderSuggestions = oripheonOrder ? ORDER_PROMPT_SUGGESTIONS[oripheonOrder] : undefined;
+    const pathSuggestions = oripheonPath ? PATH_PROMPT_SUGGESTIONS[oripheonPath] : undefined;
+
+    return {
+      traits: dedupeSuggestions([
+        ...(pathSuggestions?.traits ?? []),
+        ...(orderSuggestions?.traits ?? []),
+        ...BASE_PROMPT_SUGGESTIONS.traits,
+      ]),
+      skills: dedupeSuggestions([
+        ...(pathSuggestions?.skills ?? []),
+        ...(orderSuggestions?.skills ?? []),
+        ...BASE_PROMPT_SUGGESTIONS.skills,
+      ]),
+    };
+  };
+
+  const suggestedPromptValues = getSuggestedPromptValues();
+  const selectedTraitKeys = new Set(parseCsv(desiredTraits).map(normalizeCsvValue));
+  const selectedSkillKeys = new Set(parseCsv(desiredSkills).map(normalizeCsvValue));
+  const traitSuggestions = suggestedPromptValues.traits
+    .filter((value) => !selectedTraitKeys.has(normalizeCsvValue(value)))
+    .slice(0, 12);
+  const skillSuggestions = suggestedPromptValues.skills
+    .filter((value) => !selectedSkillKeys.has(normalizeCsvValue(value)))
+    .slice(0, 12);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -268,9 +466,12 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
 
       const params: OripheonAvatarGenerationParams = {
         ...(Number.isFinite(seedNumber) && seedNumber > 0 ? { seed: seedNumber } : {}),
-        ...(oripheonOrder
+        ...(oripheonOrder || oripheonPath
           ? {
-              being: { order: oripheonOrder },
+              being: {
+                ...(oripheonOrder ? { order: oripheonOrder } : {}),
+                ...(oripheonPath ? { tarotArchetype: oripheonPath } : {}),
+              },
             }
           : {}),
         ...(Object.keys(identityParams).length > 0 ? { identity: identityParams } : {}),
@@ -522,39 +723,55 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="form-group" style={{ marginBottom: 0 }}>
-                <label className="label">Order</label>
-                <select
-                  className="input"
-                  value={oripheonOrder}
-                  onChange={(e) => setOripheonOrder(e.target.value as OripheonOrderType | '')}
-                >
-                  <option value="">Any</option>
-                  {ORIPHEON_ORDERS.map((order) => (
-                    <option key={order} value={order}>
-                      {order}
-                    </option>
-                  ))}
-                </select>
-              </div>
+	            <div className="grid grid-cols-2 gap-4">
+	              <div className="form-group" style={{ marginBottom: 0 }}>
+	                <label className="label">Order</label>
+	                <select
+	                  className="input"
+	                  value={oripheonOrder}
+	                  onChange={(e) => setOripheonOrder(e.target.value as OripheonOrderType | '')}
+	                >
+	                  <option value="">Any</option>
+	                  {ORIPHEON_ORDERS.map((order) => (
+	                    <option key={order} value={order}>
+	                      {order}
+	                    </option>
+	                  ))}
+	                </select>
+	              </div>
 
-              <div className="form-group" style={{ marginBottom: 0 }}>
-                <label className="label">Gender</label>
-                <select
-                  className="input"
-                  value={oripheonGender}
-                  onChange={(e) => setOripheonGender(e.target.value as OripheonGender | '')}
-                >
-                  <option value="">Any</option>
-                  {ORIPHEON_GENDERS.map((gender) => (
-                    <option key={gender} value={gender}>
-                      {gender}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
+	              <div className="form-group" style={{ marginBottom: 0 }}>
+	                <label className="label">Gender</label>
+	                <select
+	                  className="input"
+	                  value={oripheonGender}
+	                  onChange={(e) => setOripheonGender(e.target.value as OripheonGender | '')}
+	                >
+	                  <option value="">Any</option>
+	                  {ORIPHEON_GENDERS.map((gender) => (
+	                    <option key={gender} value={gender}>
+	                      {gender}
+	                    </option>
+	                  ))}
+	                </select>
+	              </div>
+	            </div>
+
+	            <div className="form-group">
+	              <label className="label">Path</label>
+	              <select
+	                className="input"
+	                value={oripheonPath}
+	                onChange={(e) => setOripheonPath(e.target.value as OripheonTarotArchetype | '')}
+	              >
+	                <option value="">Any</option>
+	                {ORIPHEON_PATH_OPTIONS.map((option) => (
+	                  <option key={option.id} value={option.id}>
+	                    {option.label}
+	                  </option>
+	                ))}
+	              </select>
+	            </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="form-group" style={{ marginBottom: 0 }}>
@@ -628,27 +845,55 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
               </div>
             </div>
 
-            <div className="form-group">
-              <label className="label">Desired Traits (comma-separated)</label>
-              <input
-                type="text"
-                className="input"
-                value={desiredTraits}
-                onChange={(e) => setDesiredTraits(e.target.value)}
-                placeholder="e.g., Stoic, Strategic"
-              />
-            </div>
+	            <div className="form-group">
+	              <label className="label">Desired Traits (comma-separated)</label>
+	              <input
+	                type="text"
+	                className="input"
+	                value={desiredTraits}
+	                onChange={(e) => setDesiredTraits(e.target.value)}
+	                placeholder="e.g., Stoic, Strategic"
+	              />
+	              {traitSuggestions.length > 0 && (
+	                <div className="mt-4 flex gap-2" style={{ flexWrap: 'wrap', marginTop: '0.5rem' }}>
+	                  {traitSuggestions.map((value) => (
+	                    <button
+	                      key={value}
+	                      type="button"
+	                      className="btn btn-secondary btn-sm"
+	                      onClick={() => setDesiredTraits((current) => appendCsvValue(current, value))}
+	                    >
+	                      {value}
+	                    </button>
+	                  ))}
+	                </div>
+	              )}
+	            </div>
 
-            <div className="form-group">
-              <label className="label">Desired Skills (comma-separated)</label>
-              <input
-                type="text"
-                className="input"
-                value={desiredSkills}
-                onChange={(e) => setDesiredSkills(e.target.value)}
-                placeholder="e.g., Storm weaving, Battlefield medicine"
-              />
-            </div>
+	            <div className="form-group">
+	              <label className="label">Desired Skills (comma-separated)</label>
+	              <input
+	                type="text"
+	                className="input"
+	                value={desiredSkills}
+	                onChange={(e) => setDesiredSkills(e.target.value)}
+	                placeholder="e.g., Storm weaving, Battlefield medicine"
+	              />
+	              {skillSuggestions.length > 0 && (
+	                <div className="mt-4 flex gap-2" style={{ flexWrap: 'wrap', marginTop: '0.5rem' }}>
+	                  {skillSuggestions.map((value) => (
+	                    <button
+	                      key={value}
+	                      type="button"
+	                      className="btn btn-secondary btn-sm"
+	                      onClick={() => setDesiredSkills((current) => appendCsvValue(current, value))}
+	                    >
+	                      {value}
+	                    </button>
+	                  ))}
+	                </div>
+	              )}
+	            </div>
 
             <div className="form-group">
               <label className="label">Preferred Names (comma-separated)</label>

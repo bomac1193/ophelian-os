@@ -62,6 +62,23 @@ This starts:
 - **API Server**: http://localhost:3001
 - **Publisher Worker**: Background process
 
+### Optional: Advanced (External) Character Creator
+
+The Studio "Advanced (External)" character creator uses the separate **Oripheon** server (default `http://localhost:3333`).
+
+1. Start Oripheon (in your `oripheon/` folder):
+
+```bash
+npm install
+npm run dev
+```
+
+2. In Studio (`http://localhost:3000`): click `New Character` → `Advanced (External)`:
+   - `Order` + `Path` dropdowns
+   - Clickable suggested chips for `Desired Traits` and `Desired Skills`
+
+If `http://localhost:3000` is blank, restart `pnpm dev` (and avoid running `next build` at the same time as `next dev`).
+
 ## Environment Variables
 
 | Variable | Description | Default |
