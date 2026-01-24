@@ -6,7 +6,6 @@ import path from 'path';
 
 const UPLOAD_DIR = process.env.UPLOAD_DIR || './storage/uploads';
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
 // Ensure upload directory exists
 if (!existsSync(UPLOAD_DIR)) {
@@ -39,13 +38,6 @@ export async function uploadRoutes(fastify: FastifyInstance): Promise<void> {
       // Save file
       await pipeline(data.file, createWriteStream(filepath));
 
-      // Check if file was truncated (exceeded size limit)
-      if (data.file.truncated) {
-        return reply.code(400).send({
-          error: 'File too large',
-          message: `Maximum file size is ${MAX_FILE_SIZE / 1024 / 1024}MB`,
-        });
-      }
 
       // Return the URL path
       const url = `/uploads/${filename}`;

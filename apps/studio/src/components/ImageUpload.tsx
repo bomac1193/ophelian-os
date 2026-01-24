@@ -28,11 +28,6 @@ export function ImageUpload({ value, onChange, disabled }: ImageUploadProps) {
         return;
       }
 
-      // Validate file size (5MB max)
-      if (file.size > 5 * 1024 * 1024) {
-        setError('Image must be less than 5MB');
-        return;
-      }
 
       setIsUploading(true);
       setError(null);
@@ -212,7 +207,7 @@ export function ImageUpload({ value, onChange, disabled }: ImageUploadProps) {
               Drag & drop an image here, or click to select
             </p>
             <p style={{ color: 'var(--muted-foreground)', margin: '0.25rem 0 0', fontSize: '0.75rem' }}>
-              JPEG, PNG, GIF, or WebP (max 5MB)
+              JPEG, PNG, GIF, or WebP
             </p>
           </>
         )}

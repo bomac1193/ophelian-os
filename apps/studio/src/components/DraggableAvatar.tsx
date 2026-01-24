@@ -1,258 +1,165 @@
 'use client';
 
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useState, useRef, useCallback } from 'react';
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+const API_KEY = process.env.NEXT_PUBLIC_API_KEY || 'default-dev-key';
 
 interface DraggableAvatarProps {
   src: string;
   position: string;
   onPositionChange: (position: string) => void;
   onRemove: () => void;
+  onReplace?: (url: string) => void;
   disabled?: boolean;
 }
 
 export function DraggableAvatar({
   src,
-  position,
-  onPositionChange,
   onRemove,
+  onReplace,
   disabled = false,
 }: DraggableAvatarProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [localPosition, setLocalPosition] = useState(position);
-  const [hasChanges, setHasChanges] = useState(false);
-  const dragStartRef = useRef<{ x: number; y: number; posX: number; posY: number } | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isUploading, setIsUploading] = useState(false);
 
-  // Parse position string like "50% 50%" into x, y numbers
-  const parsePosition = (pos: string): { x: number; y: number } => {
-    const parts = pos.split(' ').map((p) => parseFloat(p.replace('%', '')));
-    return { x: parts[0] ?? 50, y: parts[1] ?? 50 };
-  };
+  const handleUpload = useCallback(
+    async (file: File) => {
+      if (disabled || !onReplace) return;
 
-  // Convert x, y numbers to position string
-  const formatPosition = (x: number, y: number): string => {
-    return `${Math.round(x)}% ${Math.round(y)}%`;
-  };
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+      if (!allowedTypes.includes(file.type)) {
+        alert('Please upload a JPEG, PNG, GIF, or WebP image');
+        return;
+      }
 
-  const handleMouseDown = useCallback(
-    (e: React.MouseEvent) => {
-      if (disabled) return;
-      e.preventDefault();
-      const { x, y } = parsePosition(localPosition);
-      dragStartRef.current = {
-        x: e.clientX,
-        y: e.clientY,
-        posX: x,
-        posY: y,
-      };
-      setIsDragging(true);
+      setIsUploading(true);
+
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const response = await fetch(`${API_URL}/uploads`, {
+          method: 'POST',
+          headers: {
+            'x-api-key': API_KEY,
+          },
+          body: formData,
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.error || 'Upload failed');
+        }
+
+        const result = await response.json();
+        onReplace(`${API_URL}${result.url}`);
+      } catch (err) {
+        alert(err instanceof Error ? err.message : 'Upload failed');
+      } finally {
+        setIsUploading(false);
+      }
     },
-    [localPosition, disabled]
+    [disabled, onReplace]
   );
 
-  const handleMouseMove = useCallback(
-    (e: MouseEvent) => {
-      if (!isDragging || !dragStartRef.current || !containerRef.current) return;
-
-      const container = containerRef.current;
-      const rect = container.getBoundingClientRect();
-
-      // Calculate delta as percentage of container size
-      const deltaX = ((e.clientX - dragStartRef.current.x) / rect.width) * 100;
-      const deltaY = ((e.clientY - dragStartRef.current.y) / rect.height) * 100;
-
-      // Invert the delta because we're moving the image, not the viewport
-      const newX = Math.max(0, Math.min(100, dragStartRef.current.posX - deltaX));
-      const newY = Math.max(0, Math.min(100, dragStartRef.current.posY - deltaY));
-
-      const newPosition = formatPosition(newX, newY);
-      setLocalPosition(newPosition);
-      setHasChanges(newPosition !== position);
+  const handleFileChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (file) {
+        handleUpload(file);
+      }
+      e.target.value = '';
     },
-    [isDragging, position]
+    [handleUpload]
   );
 
-  const handleMouseUp = useCallback(() => {
-    setIsDragging(false);
-    dragStartRef.current = null;
-  }, []);
-
-  // Touch event handlers
-  const handleTouchStart = useCallback(
-    (e: React.TouchEvent) => {
-      if (disabled) return;
-      const touch = e.touches[0];
-      if (!touch) return;
-      const { x, y } = parsePosition(localPosition);
-      dragStartRef.current = {
-        x: touch.clientX,
-        y: touch.clientY,
-        posX: x,
-        posY: y,
-      };
-      setIsDragging(true);
-    },
-    [localPosition, disabled]
-  );
-
-  const handleTouchMove = useCallback(
-    (e: TouchEvent) => {
-      if (!isDragging || !dragStartRef.current || !containerRef.current) return;
-      e.preventDefault();
-
-      const touch = e.touches[0];
-      if (!touch) return;
-
-      const container = containerRef.current;
-      const rect = container.getBoundingClientRect();
-
-      const deltaX = ((touch.clientX - dragStartRef.current.x) / rect.width) * 100;
-      const deltaY = ((touch.clientY - dragStartRef.current.y) / rect.height) * 100;
-
-      const newX = Math.max(0, Math.min(100, dragStartRef.current.posX - deltaX));
-      const newY = Math.max(0, Math.min(100, dragStartRef.current.posY - deltaY));
-
-      const newPosition = formatPosition(newX, newY);
-      setLocalPosition(newPosition);
-      setHasChanges(newPosition !== position);
-    },
-    [isDragging, position]
-  );
-
-  const handleTouchEnd = useCallback(() => {
-    setIsDragging(false);
-    dragStartRef.current = null;
-  }, []);
-
-  // Add/remove global event listeners
-  useEffect(() => {
-    if (isDragging) {
-      window.addEventListener('mousemove', handleMouseMove);
-      window.addEventListener('mouseup', handleMouseUp);
-      window.addEventListener('touchmove', handleTouchMove, { passive: false });
-      window.addEventListener('touchend', handleTouchEnd);
+  const handleChangePhotoClick = useCallback(() => {
+    if (!disabled && fileInputRef.current) {
+      fileInputRef.current.click();
     }
-
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseup', handleMouseUp);
-      window.removeEventListener('touchmove', handleTouchMove);
-      window.removeEventListener('touchend', handleTouchEnd);
-    };
-  }, [isDragging, handleMouseMove, handleMouseUp, handleTouchMove, handleTouchEnd]);
-
-  // Sync local position when prop changes
-  useEffect(() => {
-    setLocalPosition(position);
-    setHasChanges(false);
-  }, [position]);
-
-  const handleSave = () => {
-    onPositionChange(localPosition);
-    setHasChanges(false);
-  };
-
-  const handleReset = () => {
-    setLocalPosition(position);
-    setHasChanges(false);
-  };
+  }, [disabled]);
 
   return (
     <div style={{ marginBottom: '1rem' }}>
-      <div
-        ref={containerRef}
-        onMouseDown={handleMouseDown}
-        onTouchStart={handleTouchStart}
-        style={{
-          position: 'relative',
-          width: '100%',
-          height: '200px',
-          borderRadius: '8px',
-          overflow: 'hidden',
-          cursor: disabled ? 'default' : isDragging ? 'grabbing' : 'grab',
-          border: hasChanges ? '2px solid var(--primary)' : '2px solid transparent',
-          boxSizing: 'border-box',
-        }}
-      >
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/jpeg,image/png,image/gif,image/webp"
+        onChange={handleFileChange}
+        style={{ display: 'none' }}
+        disabled={disabled || isUploading}
+      />
+
+      {/* Full image display */}
+      <div style={{
+        position: 'relative',
+        backgroundColor: 'var(--muted)',
+        borderRadius: '8px',
+        overflow: 'visible',
+      }}>
         <img
           src={src}
           alt="Avatar"
-          draggable={false}
           style={{
+            display: 'block',
             width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            objectPosition: localPosition,
-            userSelect: 'none',
-            pointerEvents: 'none',
+            height: 'auto',
+            borderRadius: '8px',
           }}
         />
-        {!disabled && (
-          <div
+
+        {/* Buttons overlay */}
+        <div style={{
+          position: 'absolute',
+          top: '8px',
+          left: '8px',
+          right: '8px',
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}>
+          {onReplace && (
+            <button
+              type="button"
+              onClick={handleChangePhotoClick}
+              disabled={disabled || isUploading}
+              style={{
+                padding: '6px 12px',
+                borderRadius: '4px',
+                border: 'none',
+                backgroundColor: 'rgba(0,0,0,0.7)',
+                color: 'white',
+                cursor: disabled || isUploading ? 'not-allowed' : 'pointer',
+                fontSize: '12px',
+                fontWeight: 500,
+              }}
+            >
+              {isUploading ? 'Uploading...' : 'Change Photo'}
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={onRemove}
+            disabled={disabled}
             style={{
-              position: 'absolute',
-              bottom: '8px',
-              left: '8px',
-              backgroundColor: 'rgba(0,0,0,0.6)',
+              width: '28px',
+              height: '28px',
+              borderRadius: '50%',
+              border: 'none',
+              backgroundColor: 'rgba(0,0,0,0.7)',
               color: 'white',
-              padding: '4px 8px',
-              borderRadius: '4px',
-              fontSize: '12px',
-              pointerEvents: 'none',
+              cursor: disabled ? 'not-allowed' : 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '14px',
+              marginLeft: 'auto',
             }}
           >
-            {isDragging ? 'Dragging...' : 'Drag to reposition'}
-          </div>
-        )}
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            onRemove();
-          }}
-          disabled={disabled}
-          style={{
-            position: 'absolute',
-            top: '8px',
-            right: '8px',
-            width: '28px',
-            height: '28px',
-            borderRadius: '50%',
-            border: 'none',
-            backgroundColor: 'rgba(0,0,0,0.6)',
-            color: 'white',
-            cursor: disabled ? 'not-allowed' : 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '14px',
-          }}
-        >
-          x
-        </button>
-      </div>
-
-      {hasChanges && (
-        <div className="flex gap-2" style={{ marginTop: '0.5rem' }}>
-          <button
-            type="button"
-            className="btn btn-primary btn-sm"
-            onClick={handleSave}
-            disabled={disabled}
-            style={{ flex: 1 }}
-          >
-            Save Position
-          </button>
-          <button
-            type="button"
-            className="btn btn-secondary btn-sm"
-            onClick={handleReset}
-            disabled={disabled}
-          >
-            Reset
+            ×
           </button>
         </div>
-      )}
+      </div>
     </div>
   );
 }

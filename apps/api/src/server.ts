@@ -44,10 +44,10 @@ async function start() {
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     });
 
-    // Register multipart for file uploads
+    // Register multipart for file uploads (500MB limit)
     await fastify.register(multipart, {
       limits: {
-        fileSize: 5 * 1024 * 1024, // 5MB
+        fileSize: 500 * 1024 * 1024, // 500MB
       },
     });
 

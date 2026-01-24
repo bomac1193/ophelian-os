@@ -17,6 +17,7 @@ import {
 } from '@/lib/api';
 import { ImageUpload } from '@/components/ImageUpload';
 import { DraggableAvatar } from '@/components/DraggableAvatar';
+import { RepositionableCircleAvatar } from '@/components/RepositionableCircleAvatar';
 
 export default function CharacterDetailPage() {
   const params = useParams();
@@ -328,19 +329,21 @@ export default function CharacterDetailPage() {
               <h3 className="character-info-name">{character.name}</h3>
 
               {/* Avatar Circle */}
-              <div className="character-info-avatar">
-                {character.avatarUrl ? (
-                  <img
-                    src={character.avatarUrl}
-                    alt={character.name}
-                    style={{ objectPosition: character.avatarPosition || '50% 50%' }}
-                  />
-                ) : (
+              {character.avatarUrl ? (
+                <RepositionableCircleAvatar
+                  src={character.avatarUrl}
+                  position={character.avatarPosition || '50% 50%'}
+                  onPositionChange={handleAvatarPositionChange}
+                  size={120}
+                  disabled={avatarUpdating}
+                />
+              ) : (
+                <div className="character-info-avatar">
                   <span className="character-avatar-placeholder" style={{ fontSize: '3rem' }}>
                     {character.name.charAt(0).toUpperCase()}
                   </span>
-                )}
-              </div>
+                </div>
+              )}
 
               <p className="card-description" style={{ textAlign: 'center' }}>
                 {character.bio || 'No bio provided'}
@@ -358,6 +361,7 @@ export default function CharacterDetailPage() {
                   position={character.avatarPosition}
                   onPositionChange={handleAvatarPositionChange}
                   onRemove={() => handleAvatarChange(null)}
+                  onReplace={handleAvatarChange}
                   disabled={avatarUpdating}
                 />
               ) : (
