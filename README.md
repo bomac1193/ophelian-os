@@ -1,11 +1,66 @@
-# Living Character OS
+# Ophelian OS
 
-A production-quality Turborepo monorepo for managing AI characters with canon, rights, voice, and publishing capabilities.
+**Creator-first infrastructure for AI character rights, voice synthesis, and revenue.**
+
+---
+
+## The Problem
+
+The AI character and virtual influencer market is projected to reach $35B by 2028, yet the infrastructure protecting creators remains fragmented and opaque:
+
+- **Voice actors lose $300M+ annually** to unauthorized AI voice clones with no consent trail or compensation
+- **Character creators have no unified ledger** tracking how their IP is used across platforms, making royalty enforcement impossible
+- **Rights fragmentation**: consent for voice synthesis, AI training, and commercial use are conflated or ignored entirely
+- **Revenue leakage**: multi-party royalty splits (voice actor, character creator, platform) are calculated manually, leading to disputes and delayed payments
+
+Studios, agencies, and independent creators need a single source of truth that validates consent *before* any AI action occurs and settles revenue *automatically* when usage happens.
+
+---
+
+## What Ophelian OS Does
+
+Ophelian OS is an **off-chain rights and publishing infrastructure** for AI characters. It provides:
+
+1. **Consent-gated actions** — Every voice synthesis, content generation, and publish action is validated against explicit licenses before execution
+2. **Usage ledger** — Immutable event log of every AI action with timestamps, platforms, and revenue attribution
+3. **Automated settlement** — Monthly royalty calculation with configurable splits between voice actors, creators, and platforms
+4. **Multi-platform publishing** — Scheduled content delivery to X/Twitter, TikTok, and Instagram with status tracking
+
+---
+
+## Guiding Policy
+
+> **Validate consent first. Record everything. Settle fairly.**
+
+Every feature in Ophelian OS flows from this principle. We reject the industry pattern of "use first, negotiate later" that has eroded creator trust. Instead:
+
+- No voice synthesis without an active license with `synthesis: true`
+- No AI training without explicit `training: true` consent
+- No commercial publishing without `commercialUse: true` permission
+- Every action writes to the ledger before returning success
+
+---
+
+## Strategic Objectives
+
+### 1. Eliminate unauthorized AI voice usage
+
+**Target**: 100% of voice synthesis requests validated against license consent flags before audio generation.
+
+**How**: The `@lcos/rights` engine sits between every synthesis request and the voice provider. Requests without valid licenses fail immediately. Usage events are logged for audit and settlement.
+
+### 2. Reduce royalty settlement time from weeks to seconds
+
+**Target**: Automated monthly settlement reports with per-party breakdowns, replacing manual spreadsheet reconciliation.
+
+**How**: The `@lcos/ledger` package records revenue-bearing events in real-time. `computeMonthlySettlement()` aggregates by character, voice profile, and license to produce instant, auditable reports with royalty splits already calculated.
+
+---
 
 ## Architecture
 
 ```
-living-character-os/
+ophelian-os/
 ├── apps/
 │   ├── api/              # Fastify API server with Prisma ORM
 │   ├── studio/           # Next.js 14 App Router UI
