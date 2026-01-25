@@ -19,6 +19,9 @@ export default function RootLayout({
           <Link href="/" className="nav-link">
             Characters
           </Link>
+          <Link href="/world" className="nav-link">
+            World
+          </Link>
           <Link href="/ledger" className="nav-link">
             Ledger
           </Link>

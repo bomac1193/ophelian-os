@@ -39,6 +39,11 @@ export default function CharacterDetailPage() {
   const [avatarUpdating, setAvatarUpdating] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
+  // Editable name state
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [editedName, setEditedName] = useState('');
+  const [savingName, setSavingName] = useState(false);
+
   const loadData = async () => {
     try {
       setLoading(true);
@@ -133,6 +138,36 @@ export default function CharacterDetailPage() {
     }
   };
 
+  const handleNameEdit = () => {
+    if (character) {
+      setEditedName(character.name);
+      setIsEditingName(true);
+    }
+  };
+
+  const handleNameSave = async () => {
+    if (!editedName.trim() || editedName === character?.name) {
+      setIsEditingName(false);
+      return;
+    }
+
+    setSavingName(true);
+    try {
+      const updated = await updateCharacter(characterId, { name: editedName.trim() });
+      setCharacter(updated);
+      setIsEditingName(false);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to update name');
+    } finally {
+      setSavingName(false);
+    }
+  };
+
+  const handleNameCancel = () => {
+    setIsEditingName(false);
+    setEditedName('');
+  };
+
   const handleDelete = async () => {
     if (!character) return;
 
@@ -200,9 +235,45 @@ export default function CharacterDetailPage() {
           <Link href="/" style={{ color: 'var(--muted-foreground)', fontSize: '0.875rem' }}>
             &larr; Back to Characters
           </Link>
-          <h1 className="page-title" style={{ marginTop: '0.5rem' }}>
-            {character.name}
-          </h1>
+          {isEditingName ? (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.5rem' }}>
+              <input
+                type="text"
+                className="input"
+                value={editedName}
+                onChange={(e) => setEditedName(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') handleNameSave();
+                  if (e.key === 'Escape') handleNameCancel();
+                }}
+                autoFocus
+                style={{ fontSize: '1.5rem', fontWeight: 'bold', padding: '0.25rem 0.5rem' }}
+              />
+              <button
+                className="btn btn-primary btn-sm"
+                onClick={handleNameSave}
+                disabled={savingName}
+                style={{ background: 'var(--success)', borderColor: 'var(--success)' }}
+              >
+                {savingName ? '...' : 'Save'}
+              </button>
+              <button className="btn btn-secondary btn-sm" onClick={handleNameCancel}>
+                Cancel
+              </button>
+            </div>
+          ) : (
+            <h1
+              className="page-title"
+              style={{ marginTop: '0.5rem', cursor: 'pointer' }}
+              onClick={handleNameEdit}
+              title="Click to edit name"
+            >
+              {character.name}
+              <span style={{ marginLeft: '0.5rem', fontSize: '0.875rem', color: 'var(--muted-foreground)' }}>
+                (edit)
+              </span>
+            </h1>
+          )}
         </div>
         <button
           className="btn btn-secondary"
@@ -326,7 +397,33 @@ export default function CharacterDetailPage() {
           <div className="card">
             {/* Character Header: Name, Avatar, Description */}
             <div className="character-info-header">
-              <h3 className="character-info-name">{character.name}</h3>
+              {isEditingName ? (
+                <input
+                  type="text"
+                  className="input"
+                  value={editedName}
+                  onChange={(e) => setEditedName(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') handleNameSave();
+                    if (e.key === 'Escape') handleNameCancel();
+                  }}
+                  style={{
+                    fontSize: '1.125rem',
+                    fontWeight: '600',
+                    textAlign: 'center',
+                    marginBottom: '0.5rem',
+                  }}
+                />
+              ) : (
+                <h3
+                  className="character-info-name"
+                  style={{ cursor: 'pointer' }}
+                  onClick={handleNameEdit}
+                  title="Click to edit"
+                >
+                  {character.name}
+                </h3>
+              )}
 
               {/* Avatar Circle */}
               {character.avatarUrl ? (
