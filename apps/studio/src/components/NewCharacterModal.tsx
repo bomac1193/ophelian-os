@@ -810,6 +810,28 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
                     ))}
                   </div>
                 )}
+                {lcosGenerated.samplePost && lcosRelic && lcosRelicEra === 'modern' && (
+                  <div className="mt-4" style={{ fontSize: '0.875rem' }}>
+                    <strong>Sample Post:</strong>
+                    <div style={{
+                      marginTop: '0.5rem',
+                      padding: '0.75rem',
+                      backgroundColor: 'var(--card)',
+                      borderRadius: '0.5rem',
+                      borderLeft: '3px solid var(--primary)',
+                      fontStyle: 'italic',
+                      fontSize: '0.8rem',
+                      color: 'var(--muted-foreground)'
+                    }}>
+                      "{lcosGenerated.samplePost}"
+                    </div>
+                  </div>
+                )}
+                {lcosGenerated.sacredNumber !== undefined && lcosRelic && (
+                  <div className="mt-2" style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)' }}>
+                    <strong>Sacred Number:</strong> {lcosGenerated.sacredNumber}
+                  </div>
+                )}
                 <p className="mt-4 text-sm" style={{ color: 'var(--muted-foreground)' }}>
                   Seed: {lcosGenerated.seed}
                 </p>

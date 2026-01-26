@@ -211,6 +211,8 @@ export interface LCOSGeneratedCharacter {
   backstory: string;
   relics?: Relic[];  // Strange objects bound to the character (relic mode)
   pseudonym?: string;  // Short evocative name for relic objects
+  samplePost?: string;  // Sample social media post (modern relics only)
+  sacredNumber?: number;  // Archetype-specific symbolic number
 }
 
 export interface GenerationParams {
@@ -994,6 +996,153 @@ const RELIC_ACTIONS = [
   'forgotten by',
 ];
 
+// Archetype sacred numbers - each archetype has symbolic numerical associations
+const ARCHETYPE_NUMBERS: Record<string, number[]> = {
+  // Tarot - based on card numbers
+  fool: [0, 22], magician: [1, 11], high_priestess: [2, 13], empress: [3, 12],
+  emperor: [4, 40], hierophant: [5, 14], lovers: [6, 15], chariot: [7, 77],
+  strength: [8, 11], hermit: [9, 99], wheel_of_fortune: [10, 1000], justice: [11, 8],
+  hanged_man: [12, 3], death: [13, 4], temperance: [14, 7], devil: [15, 6],
+  tower: [16, 1], star: [17, 8], moon: [18, 9], sun: [19, 1], judgement: [20, 7], world: [21, 4],
+  // Jung
+  innocent: [1, 7], sage: [3, 9], explorer: [5, 12], outlaw: [6, 13],
+  hero: [1, 8], lover: [2, 6], jester: [0, 3], everyman: [4, 10],
+  caregiver: [2, 9], ruler: [1, 4], creator: [3, 7],
+  // Kabbalah - sephirot positions
+  kether: [1, 620], chokmah: [2, 73], binah: [3, 67], chesed: [4, 72],
+  geburah: [5, 216], tiphareth: [6, 1081], netzach: [7, 148], hod: [8, 15],
+  yesod: [9, 80], malkuth: [10, 496], thaumiel: [11, 2], ghagiel: [12, 3],
+  satariel: [13, 60], gamchicoth: [14, 4], golachab: [15, 5], thagirion: [16, 6],
+  harab_serapel: [17, 7], samael: [18, 8], gamaliel: [19, 9], lilith: [20, 480],
+  // Orisha - sacred numbers
+  obatala: [8, 16], ogun: [3, 7], shango: [6, 12], yemoja: [7, 21],
+  oshun: [5, 25], eshu: [3, 21], oya: [9, 99], orunmila: [16, 4],
+  osanyin: [1, 7], babalu_aye: [17, 13], olokun: [7, 9], aganju: [6, 9],
+  // Norse - associated numbers
+  odin: [9, 3], thor: [3, 8], freya: [13, 7], loki: [0, 3],
+  tyr: [1, 11], heimdall: [9, 27], baldur: [12, 1], hel: [9, 13],
+  frigg: [12, 7], njord: [9, 11], skadi: [3, 9], idun: [11, 7],
+};
+
+// Modern symbolism - mixing high culture, low culture, and street culture
+const MODERN_SYMBOLISM = {
+  brands_sacred: [
+    'Hermès aura', 'Cartier halo', 'Chanel frequency', 'Dior wavelength',
+    'Tiffany resonance', 'Rolex alignment', 'Louis Vuitton coordinates',
+    'Gucci vibration', 'Prada dimension', 'Balenciaga axis',
+  ],
+  brands_mundane: [
+    'Asda receipt', 'Tesco meal deal', 'Lidl middle aisle', 'Aldi special buy',
+    'Primark tag', 'Poundland prophecy', 'Greggs wrapper', 'Sports Direct mug',
+    'Iceland frozen moment', 'B&M bargain', 'Home Bargains blessing',
+  ],
+  brands_universal: [
+    'McDonald\'s golden arc', 'Starbucks siren call', 'KFC secret scripture',
+    'Subway footlong path', 'Domino\'s chain reaction', 'Uber surge',
+    'Amazon Prime timeline', 'Netflix queue', 'Spotify algorithm',
+    'TikTok loop', 'Instagram filter', 'WhatsApp blue tick',
+  ],
+  street_culture: [
+    'bando frequencies', 'trap house coordinates', 'block cipher',
+    'ends theorem', 'mandem energy', 'roadman resonance', 'yard blessing',
+    'corner shop oracle', 'chicken shop chronicles', 'off-license liturgy',
+    'estate psalm', 'postcode prophecy', 'link up ritual', 'peng alignment',
+  ],
+  sacred_mundane_mix: [
+    'Starbucks communion', 'IKEA pilgrimage', 'Amazon prayer',
+    'Deliveroo deliverance', 'Uber rapture', 'Netflix nirvana',
+    'Tesco enlightenment', 'Lidl transcendence', 'Aldi awakening',
+    'McDonald\'s sacrament', 'Greggs gospel', 'Primark parable',
+  ],
+};
+
+// Sample tweets/posts for modern relics - how the relic would sound on social media
+const MODERN_RELIC_TWEETS = {
+  cryptic: [
+    'they not ready for what I know about the self-checkout at 3am',
+    'can\'t explain it but the parking meter understood me',
+    'some of y\'all never been followed home by a plastic bag and it shows',
+    'the receipt said thank you but it meant something else',
+    'that IKEA lamp saw what you did in 2019',
+    'you think the QR code scans you? lol',
+    'why did the vape smoke spell my government name',
+    'the Roomba knows. the Roomba always knew.',
+    'told my alexa my plans and now the algorithm is different',
+  ],
+  unhinged_wisdom: [
+    'normalize leaving your body at the Tesco self checkout',
+    'the McDonald\'s ice cream machine works in dimensions you can\'t perceive',
+    'that USB stick has your search history from a different timeline',
+    'Greggs sausage roll is just a vessel. you know this.',
+    'the corner shop ting knows your destiny fr',
+    'why is no one talking about what happens in the Lidl middle aisle at exactly 3:33am',
+    'the Uber driver ain\'t human and we all know it',
+  ],
+  profound_mundane: [
+    'we live in a society where the charger that fits nothing is the most honest object in your house',
+    'your password manager contains prayers you forgot you wrote',
+    'that "seen" message at 2am altered the timeline',
+    'every sports direct mug holds exactly one universe',
+    'the voicemail you never played is louder than the one you did',
+    'poundland prophecy: everything has a price but nothing has value',
+    'the bando isn\'t a place it\'s a state of being and your ring doorbell agrees',
+  ],
+  chaotic_energy: [
+    'bestie the yoga mat unrolls both ways and only one leads back',
+    'no thoughts just the parking meter frozen at 0:00',
+    'me: normal day. the cracked phone screen: not quite luv',
+    'they put a spirit halloween in the void???? oh this is sick actually',
+    'the lanyard says 2019 but the conference hasn\'t happened yet?',
+    'POV: the fidget spinner gets heavier every full moon',
+    'it\'s giving haunted airpod playing frequencies only dogs hear',
+  ],
+  street_mystic: [
+    'fam the chicken shop lights different at certain hours trust me',
+    'man said the corner shop uncle is a prophet and I\'m starting to believe it',
+    'the offy knows things about the ends that google maps don\'t',
+    'certain blocks got different physics and that\'s just facts',
+    'the mandem don\'t talk about what happened at that bus stop',
+    'your postcode is a spell whether you know it or not',
+    'trap house mathematics: the bag never weighs what it should',
+  ],
+};
+
+function getArchetypeNumber(archetype: string, rng: RNG): number {
+  const normalized = archetype.toLowerCase().replace(/ /g, '_');
+  const numbers = ARCHETYPE_NUMBERS[normalized] || [rng() * 10, rng() * 100];
+  return randomChoice(rng, numbers);
+}
+
+function generateModernSymbolism(rng: RNG, arcana: ArchetypeInfo): string {
+  const category = randomChoice(rng, [
+    'brands_sacred', 'brands_mundane', 'brands_universal',
+    'street_culture', 'sacred_mundane_mix',
+  ] as const);
+
+  const symbol = randomChoice(rng, MODERN_SYMBOLISM[category]);
+  const number = getArchetypeNumber(arcana.archetype, rng);
+
+  const formats = [
+    `${number} ${symbol}`,
+    `${symbol} (${number})`,
+    `${symbol} x ${number}`,
+    `${symbol} at ${number}`,
+    `${symbol} // ${number}`,
+    `${symbol} [${number}]`,
+  ];
+
+  return randomChoice(rng, formats);
+}
+
+function generateSampleTweet(rng: RNG): string {
+  const category = randomChoice(rng, [
+    'cryptic', 'unhinged_wisdom', 'profound_mundane',
+    'chaotic_energy', 'street_mystic',
+  ] as const);
+
+  return randomChoice(rng, MODERN_RELIC_TWEETS[category]);
+}
+
 // Short unique pseudonyms for Relic objects - a distinct species naming convention
 const RELIC_PSEUDONYMS = [
   // Single syllable - primal
@@ -1065,7 +1214,18 @@ function generateRelicBackstory(rng: RNG, relic: Relic, arcana: ArchetypeInfo, o
   // Build a poetic object-focused backstory
   const objectDesc = relic.object.charAt(0).toUpperCase() + relic.object.slice(1);
 
-  const natureDescriptors = [
+  // Get archetype-specific number
+  const sacredNumber = getArchetypeNumber(arcana.archetype, rng);
+  const altNumber = getArchetypeNumber(arcana.archetype, rng);
+
+  const natureDescriptors = era === 'modern' ? [
+    `It carries the ${generateModernSymbolism(rng, arcana)}`,
+    `It embodies ${sacredNumber} frequencies of ${arcana.coreDesire.toLowerCase()}`,
+    `It whispers of ${arcana.shadowThemes[0] || 'forgotten things'} - ${generateModernSymbolism(rng, arcana)}`,
+    `It dreams in ${generateModernSymbolism(rng, arcana)}`,
+    `It vibrates at ${sacredNumber} - the ${arcana.meaning.toLowerCase()} frequency`,
+    `Its energy reads ${altNumber} on the ${randomChoice(rng, ['Asda', 'Lidl', 'Tesco', 'bando', 'ends', 'block'])} scale`,
+  ] : [
     `It carries the weight of ${arcana.meaning.toLowerCase()}`,
     `It embodies ${arcana.coreDesire.toLowerCase()}`,
     `It whispers of ${arcana.shadowThemes[0] || 'forgotten things'}`,
@@ -1074,12 +1234,18 @@ function generateRelicBackstory(rng: RNG, relic: Relic, arcana: ArchetypeInfo, o
   const nature = randomChoice(rng, natureDescriptors);
 
   const purposes = era === 'modern' ? [
-    'It has 4.5 stars but no reviews',
-    'Its warranty expired before time began',
-    'It was recalled but never returned',
-    'It shows up in everyone\'s algorithm',
-    'It auto-updates at inconvenient moments',
-    'It\'s always in stock but never ships',
+    `It has ${sacredNumber} stars but no reviews`,
+    `Its warranty expired ${sacredNumber} dimensions ago`,
+    `It was recalled but never returned - ${generateModernSymbolism(rng, arcana)}`,
+    `It shows up in everyone\'s algorithm at exactly ${sacredNumber}`,
+    `It auto-updates at ${sacredNumber} o\'clock in timezones that don\'t exist`,
+    `It\'s always in stock at ${randomChoice(rng, ['Asda', 'Tesco', 'the bando', 'that corner shop', 'Lidl middle aisle'])} but never ships`,
+    `${generateModernSymbolism(rng, arcana)} - it knows your order before you do`,
+    `Starbucks named a drink after it but only staff can see the menu`,
+    `McDonald\'s ice cream machine works when it\'s nearby - ${sacredNumber}% of the time`,
+    `The Deliveroo rider who carries it has been on shift since ${altNumber}`,
+    `It has ${sacredNumber} unread notifications from the void`,
+    `It got banned from ${randomChoice(rng, ['TikTok', 'Instagram', 'Twitter', 'the group chat', 'the bando'])} for speaking truth`,
   ] : [
     'Those who possess it find their path altered',
     'It chooses its keeper, not the other way around',
@@ -1548,6 +1714,8 @@ export function generateLCOSCharacter(params: LCOSGenerationParams = {}): LCOSGe
   let backstory: string;
   let relics: Relic[] | undefined;
   let pseudonym: string | undefined;
+  let samplePost: string | undefined;
+  let sacredNumber: number | undefined;
 
   if (useRelic) {
     // In Relic mode, the character IS the object
@@ -1565,6 +1733,14 @@ export function generateLCOSCharacter(params: LCOSGenerationParams = {}): LCOSGe
 
     // Generate object-focused backstory
     backstory = generateRelicBackstory(rng, relic, arcana, order, era);
+
+    // Get archetype sacred number
+    sacredNumber = getArchetypeNumber(arcana.archetype, rng);
+
+    // For modern relics, generate a sample social media post
+    if (era === 'modern') {
+      samplePost = generateSampleTweet(rng);
+    }
   } else {
     finalName = fullName;
     backstory = `${fullName} is a ${heritageLabel} ${order} serving as ${office}. ` +
@@ -1588,5 +1764,7 @@ export function generateLCOSCharacter(params: LCOSGenerationParams = {}): LCOSGe
     backstory,
     ...(relics ? { relics } : {}),
     ...(pseudonym ? { pseudonym } : {}),
+    ...(samplePost ? { samplePost } : {}),
+    ...(sacredNumber !== undefined ? { sacredNumber } : {}),
   };
 }

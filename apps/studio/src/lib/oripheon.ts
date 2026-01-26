@@ -449,6 +449,8 @@ export interface LCOSGeneratedCharacter {
   backstory: string;
   relics?: Relic[];  // Strange objects bound to the character (relic mode)
   pseudonym?: string;  // Short evocative name for relic objects
+  samplePost?: string;  // Sample social media post (modern relics only)
+  sacredNumber?: number;  // Archetype-specific symbolic number
 }
 
 export interface Relic {
