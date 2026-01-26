@@ -1,7 +1,7 @@
 import type { FastifyInstance } from 'fastify';
 import { prisma } from '../db.js';
 import { CreateCharacterSchema } from '@lcos/shared';
-import { generateCharacter, generateCharacterWithSeed, rerollCharacter } from '@lcos/oripheon';
+import { generateCharacter, generateCharacterWithSeed, rerollCharacter, generateLCOSCharacter } from '@lcos/oripheon';
 
 export async function characterRoutes(fastify: FastifyInstance): Promise<void> {
   // POST /characters - Create a new character
@@ -103,14 +103,29 @@ export async function characterRoutes(fastify: FastifyInstance): Promise<void> {
     return reply.code(204).send();
   });
 
-  // POST /characters/generate - Generate a random character using Oripheon
+  // POST /characters/generate - Generate a random character using LCOS Oripheon
   fastify.post('/characters/generate', async (request, reply) => {
-    const body = request.body as { seed?: number; heritage?: string; gender?: string } | undefined;
+    const body = request.body as {
+      seed?: number;
+      heritage?: string;
+      gender?: string;
+      blendHeritage?: boolean;
+      mononym?: boolean;
+      relic?: boolean;
+      relicEra?: 'archaic' | 'modern';
+      lockedRelic?: { object: string; category: string; origin: string };
+    } | undefined;
 
-    const generated = generateCharacter({
+    // Use the extended LCOS generator with multiple archetype systems
+    const generated = generateLCOSCharacter({
       seed: body?.seed,
-      heritage: body?.heritage as any,
-      gender: body?.gender as any,
+      heritage: body?.heritage,
+      gender: body?.gender,
+      blendHeritage: body?.blendHeritage,
+      mononym: body?.mononym,
+      relic: body?.relic,
+      relicEra: body?.relicEra,
+      lockedRelic: body?.lockedRelic as any,
     });
 
     return reply.send(generated);
