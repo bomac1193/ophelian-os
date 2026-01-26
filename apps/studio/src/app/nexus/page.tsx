@@ -121,6 +121,9 @@ export default function WorldBuilderPage() {
   const [showWorldModal, setShowWorldModal] = useState(false);
   const [pendingConnection, setPendingConnection] = useState<{ source: string; target: string } | null>(null);
 
+  // Shift+click connection state
+  const [shiftConnectSource, setShiftConnectSource] = useState<string | null>(null);
+
   // Node types
   const nodeTypes: NodeTypes = useMemo(() => ({
     character: CharacterNode,
@@ -193,16 +196,18 @@ export default function WorldBuilderPage() {
 
     if (showCharacters) {
       characters.forEach((char, index) => {
+        const nodeId = `character:${char.id}`;
         const position = char.position
           ? { x: char.position.x, y: char.position.y }
           : { x: 100 + (index % 5) * 180, y: 100 + Math.floor(index / 5) * 180 };
 
         newNodes.push({
-          id: `character:${char.id}`,
+          id: nodeId,
           type: 'character',
           position,
           data: {
             character: char,
+            isConnectSource: shiftConnectSource === nodeId,
             onClick: () => {
               setSelectedRelationship(null);
               setSelectedConnection(null);
@@ -215,16 +220,18 @@ export default function WorldBuilderPage() {
 
     if (showScenes) {
       scenes.forEach((scene, index) => {
+        const nodeId = `scene:${scene.id}`;
         const position = scene.position
           ? { x: scene.position.x, y: scene.position.y }
           : { x: 500 + (index % 5) * 180, y: 100 + Math.floor(index / 5) * 180 };
 
         newNodes.push({
-          id: `scene:${scene.id}`,
+          id: nodeId,
           type: 'scene',
           position,
           data: {
             scene,
+            isConnectSource: shiftConnectSource === nodeId,
             onClick: () => {
               setSelectedRelationship(null);
               setSelectedConnection(null);
@@ -237,16 +244,18 @@ export default function WorldBuilderPage() {
 
     if (showWorlds) {
       worlds.forEach((world, index) => {
+        const nodeId = `world:${world.id}`;
         const position = world.position
           ? { x: world.position.x, y: world.position.y }
           : { x: 300 + (index % 3) * 220, y: 400 + Math.floor(index / 3) * 220 };
 
         newNodes.push({
-          id: `world:${world.id}`,
+          id: nodeId,
           type: 'world',
           position,
           data: {
             world,
+            isConnectSource: shiftConnectSource === nodeId,
             onClick: () => {
               setSelectedRelationship(null);
               setSelectedConnection(null);
@@ -258,7 +267,7 @@ export default function WorldBuilderPage() {
     }
 
     setNodes(newNodes);
-  }, [characters, scenes, worlds, showCharacters, showScenes, showWorlds, setNodes]);
+  }, [characters, scenes, worlds, showCharacters, showScenes, showWorlds, shiftConnectSource, setNodes]);
 
   // Build edges from relationships and connections
   useEffect(() => {
@@ -347,6 +356,41 @@ export default function WorldBuilderPage() {
       console.error('Failed to save position:', error);
     }
   }, []);
+
+  // Handle shift+click to connect nodes
+  const onNodeClick = useCallback((event: React.MouseEvent, node: Node) => {
+    // If shift is held, start/complete a connection
+    if (event.shiftKey) {
+      event.stopPropagation();
+
+      if (!shiftConnectSource) {
+        // First click - set source
+        setShiftConnectSource(node.id);
+        // Clear any selection
+        setSelectedEntity(null);
+        setSelectedRelationship(null);
+        setSelectedConnection(null);
+      } else if (shiftConnectSource !== node.id) {
+        // Second click on different node - create connection
+        const [sourceType] = shiftConnectSource.split(':');
+        const [targetType] = node.id.split(':');
+
+        setPendingConnection({ source: shiftConnectSource, target: node.id });
+
+        // Both characters = relationship, otherwise = connection
+        if (sourceType === 'character' && targetType === 'character') {
+          setShowRelationshipModal(true);
+        } else {
+          setShowConnectionModal(true);
+        }
+
+        setShiftConnectSource(null);
+      }
+    } else {
+      // Regular click - clear shift connect mode
+      setShiftConnectSource(null);
+    }
+  }, [shiftConnectSource]);
 
   // Handle creating relationship
   const handleCreateRelationship = async (data: CreateRelationshipInput) => {
@@ -721,6 +765,7 @@ export default function WorldBuilderPage() {
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
           onNodeDragStop={onNodeDragStop}
+          onNodeClick={onNodeClick}
           nodeTypes={nodeTypes}
           edgeTypes={edgeTypes}
           snapToGrid={snapToGrid}

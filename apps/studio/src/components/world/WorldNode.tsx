@@ -6,11 +6,12 @@ import type { World } from '@/lib/api';
 
 export interface WorldNodeData {
   world: World;
+  isConnectSource?: boolean;
   onClick: (world: World) => void;
 }
 
 function WorldNodeComponent({ data }: NodeProps<WorldNodeData>) {
-  const { world, onClick } = data;
+  const { world, isConnectSource, onClick } = data;
 
   const getTypeIcon = (type: string) => {
     return type === 'story' ? '\u2756' : '\u2B22'; // diamond or hexagon
@@ -19,7 +20,10 @@ function WorldNodeComponent({ data }: NodeProps<WorldNodeData>) {
   return (
     <>
       <Handle type="target" position={Position.Top} className="world-node-handle" />
-      <div className="world-node" onClick={() => onClick(world)}>
+      <div
+        className={`world-node ${isConnectSource ? 'world-node-connecting' : ''}`}
+        onClick={() => onClick(world)}
+      >
         <div className="world-node-icon">
           {world.imageUrl ? (
             <img src={world.imageUrl} alt={world.name} />

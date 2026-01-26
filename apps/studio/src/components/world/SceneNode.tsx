@@ -6,11 +6,12 @@ import type { Scene } from '@/lib/api';
 
 export interface SceneNodeData {
   scene: Scene;
+  isConnectSource?: boolean;
   onClick: (scene: Scene) => void;
 }
 
 function SceneNodeComponent({ data }: NodeProps<SceneNodeData>) {
-  const { scene, onClick } = data;
+  const { scene, isConnectSource, onClick } = data;
 
   const getTypeIcon = (type: string) => {
     return type === 'event' ? '\u2605' : '\u25A0'; // star or square
@@ -19,7 +20,10 @@ function SceneNodeComponent({ data }: NodeProps<SceneNodeData>) {
   return (
     <>
       <Handle type="target" position={Position.Top} className="scene-node-handle" />
-      <div className="scene-node" onClick={() => onClick(scene)}>
+      <div
+        className={`scene-node ${isConnectSource ? 'scene-node-connecting' : ''}`}
+        onClick={() => onClick(scene)}
+      >
         <div className="scene-node-icon">
           {scene.imageUrl ? (
             <img src={scene.imageUrl} alt={scene.name} />

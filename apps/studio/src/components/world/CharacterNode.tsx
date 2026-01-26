@@ -6,11 +6,12 @@ import type { Character } from '@/lib/api';
 
 export interface CharacterNodeData {
   character: Character;
+  isConnectSource?: boolean;
   onClick: (character: Character) => void;
 }
 
 function CharacterNodeComponent({ data }: NodeProps<CharacterNodeData>) {
-  const { character, onClick } = data;
+  const { character, isConnectSource, onClick } = data;
 
   const getInitials = (name: string) => {
     return name
@@ -24,7 +25,10 @@ function CharacterNodeComponent({ data }: NodeProps<CharacterNodeData>) {
   return (
     <>
       <Handle type="target" position={Position.Top} className="character-node-handle" />
-      <div className="character-node" onClick={() => onClick(character)}>
+      <div
+        className={`character-node ${isConnectSource ? 'character-node-connecting' : ''}`}
+        onClick={() => onClick(character)}
+      >
         <div className="character-node-avatar">
           {character.avatarUrl ? (
             <img
