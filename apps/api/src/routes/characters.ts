@@ -111,7 +111,7 @@ export async function characterRoutes(fastify: FastifyInstance): Promise<void> {
       gender?: string;
       blendHeritage?: boolean;
       mononym?: boolean;
-      mononymType?: 'mythic' | 'simple';
+      mononymType?: 'squishe' | 'simple' | 'aminal-blend' | 'aminal-clear';
       relic?: boolean;
       relicEra?: 'archaic' | 'modern';
       lockedRelic?: { object: string; category: string; origin: string };

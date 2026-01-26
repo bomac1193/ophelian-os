@@ -194,7 +194,7 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
   const [lcosAvatarUrl, setLcosAvatarUrl] = useState<string | null>(null);
   const [creatingFromLcos, setCreatingFromLcos] = useState(false);
   const [lcosBlendHeritage, setLcosBlendHeritage] = useState(false);
-  const [lcosMononym, setLcosMononym] = useState<'' | 'mythic' | 'simple'>('');
+  const [lcosMononym, setLcosMononym] = useState<'' | 'squishe' | 'simple' | 'aminal-blend' | 'aminal-clear'>('');
   const [lcosRelic, setLcosRelic] = useState(false);
   const [lcosRelicEra, setLcosRelicEra] = useState<'archaic' | 'modern' | ''>('');
   const [lcosLockedRelic, setLcosLockedRelic] = useState<Relic | null>(null);
@@ -623,7 +623,7 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
                   Blend
                 </button>
               </div>
-              <div className="flex gap-2">
+              <div className="flex gap-2" style={{ flexWrap: 'wrap' }}>
                 <button
                   type="button"
                   className={lcosMononym === '' ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
@@ -634,11 +634,11 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
                 </button>
                 <button
                   type="button"
-                  className={lcosMononym === 'mythic' ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
-                  onClick={() => setLcosMononym('mythic')}
-                  title="Mythic mononym - blend of first and last names"
+                  className={lcosMononym === 'squishe' ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
+                  onClick={() => setLcosMononym('squishe')}
+                  title="Squishe - blend of first and last names into one"
                 >
-                  Mythic
+                  Squishe
                 </button>
                 <button
                   type="button"
@@ -647,6 +647,22 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
                   title="Simple mononym - first name only"
                 >
                   Simple
+                </button>
+                <button
+                  type="button"
+                  className={lcosMononym === 'aminal-blend' ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
+                  onClick={() => setLcosMononym('aminal-blend')}
+                  title="Aminal Blend - mythical beast name mashed with character name"
+                >
+                  Aminal (Blend)
+                </button>
+                <button
+                  type="button"
+                  className={lcosMononym === 'aminal-clear' ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
+                  onClick={() => setLcosMononym('aminal-clear')}
+                  title="Aminal Clear - animal name clearly visible in the name"
+                >
+                  Aminal (Clear)
                 </button>
               </div>
               <div className="flex gap-2">

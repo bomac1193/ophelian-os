@@ -618,6 +618,44 @@ const BLENDED_HERITAGE_LABELS = [
   'Veilcrossed',
 ];
 
+// Animals and mythical beasts for Aminal mode
+const MYTHICAL_BEASTS = [
+  // Classic mythical
+  'Griffin', 'Phoenix', 'Dragon', 'Sphinx', 'Chimera', 'Manticore', 'Basilisk',
+  'Hydra', 'Pegasus', 'Unicorn', 'Cerberus', 'Minotaur', 'Centaur', 'Kraken',
+  'Leviathan', 'Behemoth', 'Thunderbird', 'Roc', 'Wyvern', 'Cockatrice',
+  // Cultural mythical
+  'Kitsune', 'Tengu', 'Yokai', 'Tanuki', 'Qilin', 'Fenghuang', 'Naga',
+  'Garuda', 'Simurgh', 'Lamassu', 'Ammit', 'Anubis', 'Sobek', 'Quetzal',
+  // Fae and spirits
+  'Selkie', 'Kelpie', 'Banshee', 'Dryad', 'Nymph', 'Sylph', 'Salamander',
+  'Ifrit', 'Djinn', 'Golem', 'Wraith', 'Shade', 'Specter', 'Revenant',
+  // Modern/fantasy
+  'Direwolf', 'Shadowcat', 'Stormhawk', 'Voidwalker', 'Starweaver', 'Moonbeast',
+  'Sunbird', 'Nightcrawler', 'Frostfang', 'Emberwing', 'Thornback', 'Ironhide',
+];
+
+const REAL_ANIMALS = [
+  // Predators
+  'Wolf', 'Lion', 'Tiger', 'Panther', 'Leopard', 'Jaguar', 'Lynx', 'Fox',
+  'Bear', 'Hawk', 'Eagle', 'Falcon', 'Owl', 'Raven', 'Crow', 'Vulture',
+  'Shark', 'Viper', 'Cobra', 'Python', 'Scorpion', 'Spider', 'Mantis',
+  // Majestic
+  'Stag', 'Elk', 'Moose', 'Horse', 'Stallion', 'Mare', 'Ram', 'Bull',
+  'Elephant', 'Rhino', 'Gorilla', 'Whale', 'Dolphin', 'Orca', 'Seal',
+  // Birds
+  'Swan', 'Crane', 'Heron', 'Peacock', 'Kingfisher', 'Jay', 'Magpie',
+  'Sparrow', 'Finch', 'Robin', 'Wren', 'Lark', 'Nightingale', 'Dove',
+  // Reptiles & others
+  'Salamander', 'Newt', 'Frog', 'Toad', 'Turtle', 'Tortoise', 'Gecko',
+  'Chameleon', 'Iguana', 'Monitor', 'Crocodile', 'Alligator',
+  // Insects & small
+  'Moth', 'Butterfly', 'Beetle', 'Ant', 'Bee', 'Wasp', 'Dragonfly',
+  'Cricket', 'Cicada', 'Firefly', 'Ladybug', 'Scarab',
+];
+
+const ALL_ANIMALS = [...MYTHICAL_BEASTS, ...REAL_ANIMALS];
+
 // Relic object pools for "Chimera" mode - strange objects bound to the character
 const RELIC_OBJECTS = {
   natural: [
@@ -1361,6 +1399,81 @@ function generateBlendedMononym(rng: RNG, gender: 'masculine' | 'feminine' | 'ne
 }
 
 // ============================================================================
+// AMINAL NAME GENERATION
+// ============================================================================
+
+function generateAminalNameBlended(rng: RNG, baseName: string): string {
+  // Pick a random animal/beast
+  const animal = randomChoice(rng, ALL_ANIMALS);
+
+  // Different blending strategies
+  const strategy = Math.floor(rng() * 5);
+
+  switch (strategy) {
+    case 0: {
+      // Take first part of name + last part of animal
+      const nameSplit = Math.floor(baseName.length * (0.4 + rng() * 0.3));
+      const animalSplit = Math.floor(animal.length * (0.3 + rng() * 0.4));
+      return baseName.slice(0, nameSplit) + animal.slice(animalSplit).toLowerCase();
+    }
+    case 1: {
+      // Take first part of animal + last part of name
+      const animalSplit = Math.floor(animal.length * (0.4 + rng() * 0.3));
+      const nameSplit = Math.floor(baseName.length * (0.3 + rng() * 0.4));
+      return animal.slice(0, animalSplit) + baseName.slice(nameSplit).toLowerCase();
+    }
+    case 2: {
+      // Interleave: animal consonants + name vowels (simplified)
+      const combined = animal.slice(0, 3) + baseName.slice(1, 4) + animal.slice(-2);
+      return combined.charAt(0).toUpperCase() + combined.slice(1).toLowerCase();
+    }
+    case 3: {
+      // Prefix style: Ani- or beast syllable + name fragment
+      const animalPrefix = animal.slice(0, Math.min(3, animal.length));
+      const nameFragment = baseName.slice(Math.floor(baseName.length * 0.3));
+      return animalPrefix + nameFragment.toLowerCase();
+    }
+    case 4:
+    default: {
+      // Suffix style: name fragment + -ox, -ix, -ax from animal
+      const namePrefix = baseName.slice(0, Math.floor(baseName.length * 0.6));
+      const animalSuffix = animal.slice(-Math.min(3, animal.length));
+      return namePrefix + animalSuffix.toLowerCase();
+    }
+  }
+}
+
+function generateAminalNameClear(rng: RNG, baseName: string, gender: 'masculine' | 'feminine' | 'neutral'): string {
+  // Pick a random animal/beast
+  const animal = randomChoice(rng, ALL_ANIMALS);
+
+  // Different clear naming patterns
+  const pattern = Math.floor(rng() * 6);
+
+  switch (pattern) {
+    case 0:
+      // [Name] the [Animal]
+      return `${baseName} the ${animal}`;
+    case 1:
+      // [Animal] [Name]
+      return `${animal} ${baseName}`;
+    case 2:
+      // [Name] [Animal]
+      return `${baseName} ${animal}`;
+    case 3:
+      // [Name] of the [Animal]
+      return `${baseName} of the ${animal}`;
+    case 4:
+      // The [Animal] [Name]
+      return `The ${animal} ${baseName}`;
+    case 5:
+    default:
+      // [Name]-[Animal] (hyphenated)
+      return `${baseName}-${animal}`;
+  }
+}
+
+// ============================================================================
 // ARCHETYPE SELECTION
 // ============================================================================
 
@@ -1601,7 +1714,7 @@ export interface LCOSGenerationParams {
   gender?: string;
   blendHeritage?: boolean;  // When true, blends multiple heritages without showing explicit heritage label
   mononym?: boolean;        // When true, generates only a single name
-  mononymType?: 'mythic' | 'simple';  // 'mythic' = blended mishmash name, 'simple' = first name only
+  mononymType?: 'squishe' | 'simple' | 'aminal-blend' | 'aminal-clear';  // squishe = blended mishmash, simple = first name, aminal = with animal/beast
   relic?: boolean;          // When true, generates strange relic objects bound to the character
   relicEra?: RelicEra;      // 'archaic' for ancient objects, 'modern' for contemporary
   lockedRelic?: Relic;      // When provided, keeps this relic but regenerates the pseudonym
@@ -1636,7 +1749,7 @@ export function generateLCOSCharacter(params: LCOSGenerationParams = {}): LCOSGe
 
   const blendHeritage = params.blendHeritage ?? false;
   const useMononym = params.mononym ?? false;
-  const mononymType = params.mononymType ?? 'mythic';  // Default to mythic if not specified
+  const mononymType = params.mononymType ?? 'squishe';  // Default to squishe if not specified
 
   // Determine heritage (internal use) and heritage label (display)
   let heritage: HeritageCulture;
@@ -1661,14 +1774,23 @@ export function generateLCOSCharacter(params: LCOSGenerationParams = {}): LCOSGe
   // Generate name based on blend and mononym settings
   let fullName: string;
 
-  if (useMononym && mononymType === 'mythic') {
-    // Mythic mononym: blended mishmash of first and last name syllables
+  // First, get a base name for aminal modes
+  const cultureNames = CULTURE_NAMES[heritage];
+  const namePool = rawGender === 'feminine' ? cultureNames.female : cultureNames.male;
+  const baseName = randomChoice(rng, namePool);
+
+  if (useMononym && mononymType === 'squishe') {
+    // Squishe mononym: blended mishmash of first and last name syllables
     fullName = generateBlendedMononym(rng, rawGender);
   } else if (useMononym && mononymType === 'simple') {
     // Simple mononym: just a first name from culture
-    const cultureNames = CULTURE_NAMES[heritage];
-    const namePool = rawGender === 'feminine' ? cultureNames.female : cultureNames.male;
-    fullName = randomChoice(rng, namePool);
+    fullName = baseName;
+  } else if (useMononym && mononymType === 'aminal-blend') {
+    // Aminal Blend: mythical beast name mashed with character name
+    fullName = generateAminalNameBlended(rng, baseName);
+  } else if (useMononym && mononymType === 'aminal-clear') {
+    // Aminal Clear: animal name clearly visible in the name
+    fullName = generateAminalNameClear(rng, baseName, rawGender);
   } else if (blendHeritage && !useMononym) {
     // Blended full name: invented first and last names
     const firstName = generateBlendedName(rng, rawGender);
@@ -1676,9 +1798,7 @@ export function generateLCOSCharacter(params: LCOSGenerationParams = {}): LCOSGe
     fullName = `${firstName} ${lastName}`;
   } else {
     // Standard: cultural first + last name
-    const cultureNames = CULTURE_NAMES[heritage];
-    const namePool = rawGender === 'feminine' ? cultureNames.female : cultureNames.male;
-    const firstName = randomChoice(rng, namePool);
+    const firstName = baseName;
     const lastName = randomChoice(rng, cultureNames.surnames);
     fullName = `${firstName} ${lastName}`;
   }
