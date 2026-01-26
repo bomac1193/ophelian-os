@@ -19,6 +19,7 @@ import {
   type OripheonNameMode,
   type OripheonTarotArchetype,
   type LCOSGeneratedCharacter,
+  type Relic,
 } from '@/lib/oripheon';
 import { ImageUpload } from './ImageUpload';
 
@@ -192,6 +193,11 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
   const [lcosSeed, setLcosSeed] = useState<string>('');
   const [lcosAvatarUrl, setLcosAvatarUrl] = useState<string | null>(null);
   const [creatingFromLcos, setCreatingFromLcos] = useState(false);
+  const [lcosBlendHeritage, setLcosBlendHeritage] = useState(false);
+  const [lcosMononym, setLcosMononym] = useState(false);
+  const [lcosRelic, setLcosRelic] = useState(false);
+  const [lcosRelicEra, setLcosRelicEra] = useState<'archaic' | 'modern' | ''>('');
+  const [lcosLockedRelic, setLcosLockedRelic] = useState<Relic | null>(null);
 
   // Advanced Oripheon mode (external API)
   const [oripheonSeed, setOripheonSeed] = useState<string>('');
@@ -257,6 +263,11 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
     setLcosSeed('');
     setLcosAvatarUrl(null);
     setCreatingFromLcos(false);
+    setLcosBlendHeritage(false);
+    setLcosMononym(false);
+    setLcosRelic(false);
+    setLcosRelicEra('');
+    setLcosLockedRelic(null);
 
     // Advanced Oripheon state
     setOripheonSeed('');
@@ -297,8 +308,13 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
       const generated = await generateLCOSCharacter(
         {
           seed: Number.isFinite(seedNumber) && seedNumber > 0 ? seedNumber : undefined,
-          heritage: lcosHeritage || undefined,
+          heritage: lcosBlendHeritage ? undefined : (lcosHeritage || undefined),
           gender: lcosGender || undefined,
+          blendHeritage: lcosBlendHeritage,
+          mononym: lcosMononym,
+          relic: lcosRelic,
+          relicEra: lcosRelicEra || undefined,
+          lockedRelic: lcosLockedRelic || undefined,
         },
         { signal: controller.signal }
       );
@@ -587,6 +603,86 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
               Instantly generate a unique character using the built-in Oripheon engine.
             </p>
 
+            <div className="flex gap-4" style={{ marginBottom: '1rem', flexWrap: 'wrap' }}>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  className={!lcosBlendHeritage ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
+                  onClick={() => setLcosBlendHeritage(false)}
+                  title="Use names from specific cultural heritages"
+                >
+                  Cultural
+                </button>
+                <button
+                  type="button"
+                  className={lcosBlendHeritage ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
+                  onClick={() => setLcosBlendHeritage(true)}
+                  title="Blend names across cultures to create something new"
+                >
+                  Blend
+                </button>
+              </div>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  className={!lcosMononym ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
+                  onClick={() => setLcosMononym(false)}
+                  title="Full name (first + last)"
+                >
+                  Full Name
+                </button>
+                <button
+                  type="button"
+                  className={lcosMononym ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
+                  onClick={() => setLcosMononym(true)}
+                  title="Single name only"
+                >
+                  Mononym
+                </button>
+              </div>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  className={lcosRelic ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
+                  onClick={() => {
+                    setLcosRelic(!lcosRelic);
+                    if (!lcosRelic) {
+                      setLcosLockedRelic(null);
+                    }
+                  }}
+                  title="Generate strange objects as the character"
+                >
+                  Relic
+                </button>
+                {lcosRelic && (
+                  <>
+                    <button
+                      type="button"
+                      className={lcosRelicEra === 'archaic' ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
+                      onClick={() => {
+                        setLcosRelicEra(lcosRelicEra === 'archaic' ? '' : 'archaic');
+                        setLcosLockedRelic(null);
+                      }}
+                      title="Ancient/mythic objects"
+                    >
+                      Archaic
+                    </button>
+                    <button
+                      type="button"
+                      className={lcosRelicEra === 'modern' ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
+                      onClick={() => {
+                        setLcosRelicEra(lcosRelicEra === 'modern' ? '' : 'modern');
+                        setLcosLockedRelic(null);
+                      }}
+                      title="Contemporary/mundane objects"
+                    >
+                      Modern
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
+
             <div className="grid grid-cols-3 gap-4">
               <div className="form-group" style={{ marginBottom: 0 }}>
                 <label className="label">Heritage</label>
@@ -594,6 +690,8 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
                   className="input"
                   value={lcosHeritage}
                   onChange={(e) => setLcosHeritage(e.target.value)}
+                  disabled={lcosBlendHeritage}
+                  style={lcosBlendHeritage ? { opacity: 0.5 } : undefined}
                 >
                   <option value="">Any</option>
                   <option value="yoruba">Yoruba</option>
@@ -633,14 +731,23 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
 
             {lcosGenerated && (
               <div className="card" style={{ marginTop: '1rem', marginBottom: '1rem' }}>
-                <h3 className="card-title">{lcosGenerated.name}</h3>
+                <div className="flex gap-2" style={{ alignItems: 'center', marginBottom: '0.5rem' }}>
+                  <h3 className="card-title" style={{ marginBottom: 0 }}>{lcosGenerated.name}</h3>
+                  {lcosGenerated.pseudonym && (
+                    <span className="badge badge-approved" style={{ fontSize: '0.875rem' }}>
+                      "{lcosGenerated.pseudonym}"
+                    </span>
+                  )}
+                </div>
                 <p className="card-description" style={{ whiteSpace: 'pre-wrap' }}>
                   {lcosGenerated.backstory}
                 </p>
                 <div className="mt-4 flex gap-2" style={{ flexWrap: 'wrap' }}>
                   <span className="badge badge-draft">{lcosGenerated.heritage}</span>
                   <span className="badge badge-draft">{lcosGenerated.order?.name}</span>
-                  <span className="badge badge-draft">{lcosGenerated.arcana?.archetype}</span>
+                  <span className="badge badge-approved" title={lcosGenerated.arcana?.meaning}>
+                    {lcosGenerated.arcana?.system?.toUpperCase()}: {lcosGenerated.arcana?.archetype}
+                  </span>
                   <span className="badge badge-draft">{lcosGenerated.gender}</span>
                 </div>
                 <div className="mt-4 grid grid-cols-2 gap-4" style={{ fontSize: '0.875rem' }}>
@@ -657,6 +764,52 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
                     <strong>Core Desire:</strong> {lcosGenerated.personality?.coreDesire}
                   </div>
                 </div>
+                {lcosGenerated.arcana && (
+                  <div className="mt-4" style={{ fontSize: '0.875rem' }}>
+                    <div style={{ marginBottom: '0.5rem' }}>
+                      <strong>Archetype:</strong> {lcosGenerated.arcana.archetype} — {lcosGenerated.arcana.meaning}
+                    </div>
+                    <div className="flex gap-2" style={{ flexWrap: 'wrap' }}>
+                      {lcosGenerated.arcana.goldenGifts?.map((gift) => (
+                        <span key={gift} className="badge badge-approved" style={{ fontSize: '0.75rem' }}>
+                          {gift}
+                        </span>
+                      ))}
+                      {lcosGenerated.arcana.shadowThemes?.map((shadow) => (
+                        <span key={shadow} className="badge badge-failed" style={{ fontSize: '0.75rem' }}>
+                          {shadow}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {lcosGenerated.relics && lcosGenerated.relics.length > 0 && lcosRelic && (
+                  <div className="mt-4" style={{ fontSize: '0.875rem' }}>
+                    <div className="flex gap-2" style={{ alignItems: 'center', marginBottom: '0.5rem' }}>
+                      <strong>Object:</strong>
+                      <button
+                        type="button"
+                        className={lcosLockedRelic ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
+                        onClick={() => {
+                          if (lcosLockedRelic) {
+                            setLcosLockedRelic(null);
+                          } else if (lcosGenerated.relics?.[0]) {
+                            setLcosLockedRelic(lcosGenerated.relics[0]);
+                          }
+                        }}
+                        title={lcosLockedRelic ? 'Unlock object to generate new ones' : 'Lock this object and only reroll the pseudonym'}
+                        style={{ padding: '0.25rem 0.5rem', fontSize: '0.75rem' }}
+                      >
+                        {lcosLockedRelic ? 'Locked' : 'Lock'}
+                      </button>
+                    </div>
+                    {lcosGenerated.relics.map((relic, idx) => (
+                      <div key={idx} style={{ marginBottom: '0.5rem', paddingLeft: '0.5rem', borderLeft: `2px solid ${lcosLockedRelic ? 'var(--primary)' : 'var(--border)'}` }}>
+                        <div style={{ fontStyle: 'italic' }}>{relic.object}</div>
+                      </div>
+                    ))}
+                  </div>
+                )}
                 <p className="mt-4 text-sm" style={{ color: 'var(--muted-foreground)' }}>
                   Seed: {lcosGenerated.seed}
                 </p>

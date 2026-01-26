@@ -409,6 +409,17 @@ export function oripheonAvatarToCreateCharacterInput(
 // Internal LCOS Oripheon Generator (built-in, always available)
 // ============================================================================
 
+export type ArchetypeSystem = 'tarot' | 'jung' | 'kabbalah' | 'orisha' | 'norse';
+
+export interface ArchetypeInfo {
+  system: ArchetypeSystem;
+  archetype: string;
+  meaning: string;
+  coreDesire: string;
+  shadowThemes: string[];
+  goldenGifts: string[];
+}
+
 export interface LCOSGeneratedCharacter {
   seed: number;
   name: string;
@@ -418,11 +429,7 @@ export interface LCOSGeneratedCharacter {
     name: string;
     ideology: string;
   };
-  arcana: {
-    archetype: string;
-    shadowThemes: string[];
-    goldenGifts: string[];
-  };
+  arcana: ArchetypeInfo;
   appearance: {
     build: string;
     distinctiveTrait: string;
@@ -440,12 +447,27 @@ export interface LCOSGeneratedCharacter {
     voiceTone: string;
   };
   backstory: string;
+  relics?: Relic[];  // Strange objects bound to the character (relic mode)
+  pseudonym?: string;  // Short evocative name for relic objects
 }
+
+export interface Relic {
+  object: string;
+  category: 'natural' | 'furniture' | 'fashion' | 'strange' | 'mundane_twisted' | 'symbolic' | 'stolen_from_beings' | 'tools' | 'vessels';
+  origin: string;
+}
+
+export type RelicEra = 'archaic' | 'modern';
 
 export interface LCOSGenerateOptions {
   seed?: number;
   heritage?: string;
   gender?: string;
+  blendHeritage?: boolean;  // When true, blends multiple heritages without showing explicit heritage label
+  mononym?: boolean;        // When true, generates only a single name (first name or blended name)
+  relic?: boolean;          // When true, generates strange relic objects bound to the character
+  relicEra?: RelicEra;      // 'archaic' for ancient objects, 'modern' for contemporary
+  lockedRelic?: Relic;      // When provided, keeps this relic but regenerates the pseudonym
 }
 
 export async function generateLCOSCharacter(
@@ -458,7 +480,16 @@ export async function generateLCOSCharacter(
       'Content-Type': 'application/json',
       'x-api-key': LCOS_API_KEY,
     },
-    body: JSON.stringify(options || {}),
+    body: JSON.stringify({
+      seed: options?.seed,
+      heritage: options?.heritage,
+      gender: options?.gender,
+      blendHeritage: options?.blendHeritage,
+      mononym: options?.mononym,
+      relic: options?.relic,
+      relicEra: options?.relicEra,
+      lockedRelic: options?.lockedRelic,
+    }),
     signal: fetchOptions?.signal,
   });
 }
