@@ -1,48 +1,42 @@
 'use client';
 
-import { useState, useMemo } from 'react';
-import type { EntityType, CreateConnectionInput } from '@/lib/api';
-
-interface Entity {
-  type: EntityType;
-  id: string;
-  name: string;
-}
+import { useState, useMemo, useEffect } from 'react';
 
 interface NewConnectionModalProps {
   isOpen: boolean;
-  source: Entity;
-  target: Entity;
+  sourceType?: string;
+  targetType?: string;
   onClose: () => void;
-  onCreate: (data: CreateConnectionInput) => Promise<void>;
+  onCreate: (connectionType: string, lore: string) => Promise<void>;
 }
 
 // Connection types based on entity type combinations
 const CONNECTION_TYPES: Record<string, string[]> = {
-  'CHARACTER-CHARACTER': ['ally', 'enemy', 'mentor', 'family', 'rival', 'friend', 'lover'],
-  'CHARACTER-SCENE': ['appears_in', 'owns', 'haunts', 'born_at', 'died_at'],
-  'SCENE-CHARACTER': ['appears_in', 'owns', 'haunts', 'born_at', 'died_at'],
-  'SCENE-WORLD': ['located_in', 'gateway_to', 'hidden_within'],
-  'WORLD-SCENE': ['located_in', 'gateway_to', 'hidden_within'],
-  'CHARACTER-WORLD': ['rules', 'exiled_from', 'created', 'protects'],
-  'WORLD-CHARACTER': ['rules', 'exiled_from', 'created', 'protects'],
-  'SCENE-SCENE': ['connected_to', 'part_of', 'leads_to'],
-  'WORLD-WORLD': ['connected_to', 'part_of', 'contains'],
+  'character-character': ['ally', 'enemy', 'mentor', 'family', 'rival', 'friend', 'lover'],
+  'character-scene': ['appears_in', 'owns', 'haunts', 'born_at', 'died_at'],
+  'scene-character': ['appears_in', 'owns', 'haunts', 'born_at', 'died_at'],
+  'scene-world': ['located_in', 'gateway_to', 'hidden_within'],
+  'world-scene': ['located_in', 'gateway_to', 'hidden_within'],
+  'character-world': ['rules', 'exiled_from', 'created', 'protects'],
+  'world-character': ['rules', 'exiled_from', 'created', 'protects'],
+  'scene-scene': ['connected_to', 'part_of', 'leads_to'],
+  'world-world': ['connected_to', 'part_of', 'contains'],
 };
 
-export function NewConnectionModal({ isOpen, source, target, onClose, onCreate }: NewConnectionModalProps) {
+export function NewConnectionModal({ isOpen, sourceType, targetType, onClose, onCreate }: NewConnectionModalProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [connectionType, setConnectionType] = useState('');
   const [lore, setLore] = useState('');
 
   const availableTypes = useMemo(() => {
-    const key = `${source.type}-${target.type}`;
+    if (!sourceType || !targetType) return ['connected_to'];
+    const key = `${sourceType}-${targetType}`;
     return CONNECTION_TYPES[key] || ['connected_to'];
-  }, [source.type, target.type]);
+  }, [sourceType, targetType]);
 
   // Set default connection type when types change
-  useMemo(() => {
+  useEffect(() => {
     if (availableTypes.length > 0 && !availableTypes.includes(connectionType)) {
       setConnectionType(availableTypes[0]);
     }
@@ -61,14 +55,7 @@ export function NewConnectionModal({ isOpen, source, target, onClose, onCreate }
     setError(null);
 
     try {
-      await onCreate({
-        sourceType: source.type,
-        sourceId: source.id,
-        targetType: target.type,
-        targetId: target.id,
-        connectionType,
-        lore: lore.trim() || undefined,
-      });
+      await onCreate(connectionType, lore.trim());
       // Reset form
       setConnectionType(availableTypes[0] || '');
       setLore('');
@@ -86,13 +73,11 @@ export function NewConnectionModal({ isOpen, source, target, onClose, onCreate }
     }
   };
 
-  const getEntityTypeLabel = (type: EntityType) => {
-    return type.charAt(0) + type.slice(1).toLowerCase();
-  };
+  const capitalize = (s: string) => s ? s.charAt(0).toUpperCase() + s.slice(1) : '';
 
   return (
     <div className="modal-overlay" onClick={handleOverlayClick}>
-      <div className="modal">
+      <div className="modal modal-sm">
         <div className="modal-header">
           <h2 className="modal-title">Create Connection</h2>
           <button className="modal-close" onClick={onClose}>
@@ -103,17 +88,9 @@ export function NewConnectionModal({ isOpen, source, target, onClose, onCreate }
         {error && <div className="error-message">{error}</div>}
 
         <div className="connection-preview">
-          <div className="connection-entity">
-            <span className="connection-entity-type">{getEntityTypeLabel(source.type)}</span>
-            <span className="connection-entity-name">{source.name}</span>
-          </div>
-          <div className="connection-arrow">
-            <span className="connection-arrow-icon">&harr;</span>
-          </div>
-          <div className="connection-entity">
-            <span className="connection-entity-type">{getEntityTypeLabel(target.type)}</span>
-            <span className="connection-entity-name">{target.name}</span>
-          </div>
+          <span className="connection-entity-type">{capitalize(sourceType || '')}</span>
+          <span className="connection-arrow-icon">&harr;</span>
+          <span className="connection-entity-type">{capitalize(targetType || '')}</span>
         </div>
 
         <form onSubmit={handleSubmit}>
