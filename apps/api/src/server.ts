@@ -17,6 +17,7 @@ import { positionRoutes } from './routes/positions.js';
 import { sceneRoutes } from './routes/scenes.js';
 import { worldRoutes } from './routes/worlds.js';
 import { connectionRoutes } from './routes/connections.js';
+import { snapshotRoutes } from './routes/snapshots.js';
 
 const UPLOAD_DIR = process.env.UPLOAD_DIR || './storage/uploads';
 
@@ -85,6 +86,7 @@ async function start() {
     await fastify.register(sceneRoutes);
     await fastify.register(worldRoutes);
     await fastify.register(connectionRoutes);
+    await fastify.register(snapshotRoutes);
 
     // Start server
     const port = parseInt(process.env.PORT || '3001', 10);

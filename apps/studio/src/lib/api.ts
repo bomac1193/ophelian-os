@@ -24,6 +24,12 @@ async function apiFetch<T>(endpoint: string, options: FetchOptions = {}): Promis
 }
 
 // Character APIs
+export interface CharacterPosition {
+  characterId: string;
+  x: number;
+  y: number;
+}
+
 export interface Character {
   id: string;
   name: string;
@@ -39,6 +45,7 @@ export interface Character {
   timelineState: Record<string, unknown>;
   createdAt: string;
   updatedAt: string;
+  position?: CharacterPosition | null;
 }
 
 export async function getCharacters(): Promise<Character[]> {
@@ -557,6 +564,61 @@ export async function deleteConnection(id: string): Promise<void> {
   }).then((res) => {
     if (!res.ok) {
       throw new Error('Failed to delete connection');
+    }
+  });
+}
+
+// Nexus Snapshots
+export interface NexusSnapshot {
+  id: string;
+  name: string;
+  description: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateSnapshotInput {
+  name: string;
+  description?: string;
+}
+
+export async function getSnapshots(): Promise<NexusSnapshot[]> {
+  return apiFetch<NexusSnapshot[]>('/snapshots');
+}
+
+export async function getSnapshot(id: string): Promise<NexusSnapshot> {
+  return apiFetch<NexusSnapshot>(`/snapshots/${id}`);
+}
+
+export async function createSnapshot(data: CreateSnapshotInput): Promise<NexusSnapshot> {
+  return apiFetch<NexusSnapshot>('/snapshots', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function restoreSnapshot(id: string): Promise<void> {
+  await apiFetch(`/snapshots/${id}/restore`, {
+    method: 'POST',
+  });
+}
+
+export async function updateSnapshot(id: string, data: Partial<CreateSnapshotInput>): Promise<NexusSnapshot> {
+  return apiFetch<NexusSnapshot>(`/snapshots/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function deleteSnapshot(id: string): Promise<void> {
+  await fetch(`${API_URL}/snapshots/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'x-api-key': API_KEY,
+    },
+  }).then((res) => {
+    if (!res.ok) {
+      throw new Error('Failed to delete snapshot');
     }
   });
 }

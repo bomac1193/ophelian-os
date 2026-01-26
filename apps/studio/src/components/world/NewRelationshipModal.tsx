@@ -6,8 +6,8 @@ import { generateRelationshipLore } from '@/lib/api';
 
 interface NewRelationshipModalProps {
   isOpen: boolean;
-  sourceCharacter: Character;
-  targetCharacter: Character;
+  sourceCharacter?: Character;
+  targetCharacter?: Character;
   onClose: () => void;
   onCreate: (data: CreateRelationshipInput) => Promise<void>;
 }
@@ -40,7 +40,7 @@ export function NewRelationshipModal({
   const [targetRole, setTargetRole] = useState('');
   const [lore, setLore] = useState('');
 
-  if (!isOpen) return null;
+  if (!isOpen || !sourceCharacter || !targetCharacter) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

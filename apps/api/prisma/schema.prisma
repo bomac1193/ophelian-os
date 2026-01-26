@@ -224,3 +224,13 @@ model WorldConnection {
   @@index([sourceType, sourceId])
   @@index([targetType, targetId])
 }
+
+// Nexus Snapshots for version control
+model NexusSnapshot {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  data        Json     // Stores positions, relationships, connections as JSON
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

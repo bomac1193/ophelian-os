@@ -5,7 +5,6 @@ import ReactFlow, {
   Node,
   Edge,
   Connection,
-  addEdge,
   useNodesState,
   useEdgesState,
   Controls,
@@ -24,7 +23,7 @@ import {
   getConnections,
   createRelationship,
   createConnection,
-  updateCharacterPosition,
+  updatePosition,
   updateScenePosition,
   updateWorldPosition,
   deleteRelationship,
@@ -35,15 +34,21 @@ import {
   updateWorld,
   deleteScene,
   deleteWorld,
+  getSnapshots,
+  createSnapshot,
+  restoreSnapshot,
+  deleteSnapshot,
   type Character,
   type Scene,
   type World,
   type CharacterRelationship,
   type WorldConnection,
+  type CreateRelationshipInput,
   type CreateSceneInput,
   type CreateWorldInput,
   type UpdateSceneInput,
   type UpdateWorldInput,
+  type NexusSnapshot,
 } from '@/lib/api';
 
 import { CharacterNode } from '@/components/world/CharacterNode';
@@ -84,7 +89,14 @@ export default function WorldBuilderPage() {
   const [worlds, setWorlds] = useState<World[]>([]);
   const [relationships, setRelationships] = useState<CharacterRelationship[]>([]);
   const [connections, setConnections] = useState<WorldConnection[]>([]);
+  const [snapshots, setSnapshots] = useState<NexusSnapshot[]>([]);
   const [loading, setLoading] = useState(true);
+
+  // Snapshot UI state
+  const [showSnapshots, setShowSnapshots] = useState(false);
+  const [snapshotName, setSnapshotName] = useState('');
+  const [savingSnapshot, setSavingSnapshot] = useState(false);
+  const [restoringSnapshot, setRestoringSnapshot] = useState<string | null>(null);
 
   // React Flow state
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
@@ -126,18 +138,20 @@ export default function WorldBuilderPage() {
   const loadData = useCallback(async () => {
     setLoading(true);
     try {
-      const [chars, scns, wrlds, rels, conns] = await Promise.all([
+      const [chars, scns, wrlds, rels, conns, snaps] = await Promise.all([
         getCharacters(),
         getScenes(),
         getWorlds(),
         getRelationships(),
         getConnections(),
+        getSnapshots(),
       ]);
       setCharacters(chars);
       setScenes(scns);
       setWorlds(wrlds);
       setRelationships(rels);
       setConnections(conns);
+      setSnapshots(snaps);
     } catch (error) {
       console.error('Failed to load data:', error);
     } finally {
@@ -317,7 +331,7 @@ export default function WorldBuilderPage() {
 
     try {
       if (type === 'character') {
-        await updateCharacterPosition(id, x, y);
+        await updatePosition(id, x, y);
       } else if (type === 'scene') {
         await updateScenePosition(id, x, y);
       } else if (type === 'world') {
@@ -329,19 +343,8 @@ export default function WorldBuilderPage() {
   }, []);
 
   // Handle creating relationship
-  const handleCreateRelationship = async (type: string, lore: string) => {
-    if (!pendingConnection) return;
-
-    const sourceId = pendingConnection.source.split(':')[1];
-    const targetId = pendingConnection.target.split(':')[1];
-
-    await createRelationship({
-      sourceCharacterId: sourceId,
-      targetCharacterId: targetId,
-      relationshipType: type,
-      lore,
-    });
-
+  const handleCreateRelationship = async (data: CreateRelationshipInput) => {
+    await createRelationship(data);
     await loadData();
     setShowRelationshipModal(false);
     setPendingConnection(null);
@@ -416,10 +419,52 @@ export default function WorldBuilderPage() {
   };
 
   // Handle deleting connection
-  const handleDeleteConnection = async (id: string) => {
+  const _handleDeleteConnection = async (id: string) => {
     await deleteConnection(id);
     await loadData();
     setSelectedConnection(null);
+  };
+
+  // Handle saving snapshot
+  const handleSaveSnapshot = async () => {
+    if (!snapshotName.trim()) return;
+    setSavingSnapshot(true);
+    try {
+      await createSnapshot({ name: snapshotName.trim() });
+      setSnapshotName('');
+      const snaps = await getSnapshots();
+      setSnapshots(snaps);
+    } catch (error) {
+      console.error('Failed to save snapshot:', error);
+    } finally {
+      setSavingSnapshot(false);
+    }
+  };
+
+  // Handle restoring snapshot
+  const handleRestoreSnapshot = async (id: string) => {
+    if (!confirm('Restore this snapshot? This will replace current positions, relationships, and connections.')) return;
+    setRestoringSnapshot(id);
+    try {
+      await restoreSnapshot(id);
+      await loadData();
+    } catch (error) {
+      console.error('Failed to restore snapshot:', error);
+    } finally {
+      setRestoringSnapshot(null);
+    }
+  };
+
+  // Handle deleting snapshot
+  const handleDeleteSnapshot = async (id: string) => {
+    if (!confirm('Delete this snapshot?')) return;
+    try {
+      await deleteSnapshot(id);
+      const snaps = await getSnapshots();
+      setSnapshots(snaps);
+    } catch (error) {
+      console.error('Failed to delete snapshot:', error);
+    }
   };
 
   // Get selected entity data
@@ -530,6 +575,70 @@ export default function WorldBuilderPage() {
               + Globe
             </button>
           </div>
+        </div>
+
+        {/* Snapshots Section */}
+        <div className="sidebar-section">
+          <h3
+            className="section-title section-title-clickable"
+            onClick={() => setShowSnapshots(!showSnapshots)}
+          >
+            Snapshots {showSnapshots ? '▼' : '▶'} <span className="snapshot-count">({snapshots.length})</span>
+          </h3>
+          {showSnapshots && (
+            <div className="snapshots-panel">
+              <div className="snapshot-create">
+                <input
+                  type="text"
+                  className="snapshot-input"
+                  placeholder="Snapshot name..."
+                  value={snapshotName}
+                  onChange={(e) => setSnapshotName(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleSaveSnapshot()}
+                />
+                <button
+                  className="btn btn-sm btn-save-snapshot"
+                  onClick={handleSaveSnapshot}
+                  disabled={!snapshotName.trim() || savingSnapshot}
+                >
+                  {savingSnapshot ? '...' : 'Save'}
+                </button>
+              </div>
+              {snapshots.length > 0 ? (
+                <ul className="snapshot-list">
+                  {snapshots.map((snap) => (
+                    <li key={snap.id} className="snapshot-item">
+                      <div className="snapshot-info">
+                        <span className="snapshot-name">{snap.name}</span>
+                        <span className="snapshot-date">
+                          {new Date(snap.createdAt).toLocaleDateString()}
+                        </span>
+                      </div>
+                      <div className="snapshot-actions">
+                        <button
+                          className="btn-icon btn-restore"
+                          onClick={() => handleRestoreSnapshot(snap.id)}
+                          disabled={restoringSnapshot === snap.id}
+                          title="Restore"
+                        >
+                          {restoringSnapshot === snap.id ? '...' : '↺'}
+                        </button>
+                        <button
+                          className="btn-icon btn-delete"
+                          onClick={() => handleDeleteSnapshot(snap.id)}
+                          title="Delete"
+                        >
+                          ×
+                        </button>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="snapshot-empty">No snapshots yet</p>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Entity Lists */}

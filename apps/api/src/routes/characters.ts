@@ -26,6 +26,7 @@ export async function characterRoutes(fastify: FastifyInstance): Promise<void> {
   fastify.get('/characters', async (_request, reply) => {
     const characters = await prisma.character.findMany({
       orderBy: { createdAt: 'desc' },
+      include: { position: true },
     });
 
     return reply.send(characters);
@@ -37,6 +38,7 @@ export async function characterRoutes(fastify: FastifyInstance): Promise<void> {
 
     const character = await prisma.character.findUnique({
       where: { id },
+      include: { position: true },
     });
 
     if (!character) {
