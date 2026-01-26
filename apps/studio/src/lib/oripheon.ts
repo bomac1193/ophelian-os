@@ -467,6 +467,7 @@ export interface LCOSGenerateOptions {
   gender?: string;
   blendHeritage?: boolean;  // When true, blends multiple heritages without showing explicit heritage label
   mononym?: boolean;        // When true, generates only a single name (first name or blended name)
+  mononymType?: 'mythic' | 'simple';  // 'mythic' = blended name, 'simple' = first name only
   relic?: boolean;          // When true, generates strange relic objects bound to the character
   relicEra?: RelicEra;      // 'archaic' for ancient objects, 'modern' for contemporary
   lockedRelic?: Relic;      // When provided, keeps this relic but regenerates the pseudonym
@@ -488,6 +489,7 @@ export async function generateLCOSCharacter(
       gender: options?.gender,
       blendHeritage: options?.blendHeritage,
       mononym: options?.mononym,
+      mononymType: options?.mononymType,
       relic: options?.relic,
       relicEra: options?.relicEra,
       lockedRelic: options?.lockedRelic,

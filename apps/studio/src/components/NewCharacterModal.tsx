@@ -194,7 +194,7 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
   const [lcosAvatarUrl, setLcosAvatarUrl] = useState<string | null>(null);
   const [creatingFromLcos, setCreatingFromLcos] = useState(false);
   const [lcosBlendHeritage, setLcosBlendHeritage] = useState(false);
-  const [lcosMononym, setLcosMononym] = useState(false);
+  const [lcosMononym, setLcosMononym] = useState<'' | 'mythic' | 'simple'>('');
   const [lcosRelic, setLcosRelic] = useState(false);
   const [lcosRelicEra, setLcosRelicEra] = useState<'archaic' | 'modern' | ''>('');
   const [lcosLockedRelic, setLcosLockedRelic] = useState<Relic | null>(null);
@@ -264,7 +264,7 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
     setLcosAvatarUrl(null);
     setCreatingFromLcos(false);
     setLcosBlendHeritage(false);
-    setLcosMononym(false);
+    setLcosMononym('');
     setLcosRelic(false);
     setLcosRelicEra('');
     setLcosLockedRelic(null);
@@ -311,7 +311,8 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
           heritage: lcosBlendHeritage ? undefined : (lcosHeritage || undefined),
           gender: lcosGender || undefined,
           blendHeritage: lcosBlendHeritage,
-          mononym: lcosMononym,
+          mononym: lcosMononym !== '',
+          mononymType: lcosMononym || undefined,
           relic: lcosRelic,
           relicEra: lcosRelicEra || undefined,
           lockedRelic: lcosLockedRelic || undefined,
@@ -625,19 +626,27 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
               <div className="flex gap-2">
                 <button
                   type="button"
-                  className={!lcosMononym ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
-                  onClick={() => setLcosMononym(false)}
+                  className={lcosMononym === '' ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
+                  onClick={() => setLcosMononym('')}
                   title="Full name (first + last)"
                 >
                   Full Name
                 </button>
                 <button
                   type="button"
-                  className={lcosMononym ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
-                  onClick={() => setLcosMononym(true)}
-                  title="Single name only"
+                  className={lcosMononym === 'mythic' ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
+                  onClick={() => setLcosMononym('mythic')}
+                  title="Mythic mononym - blend of first and last names"
                 >
-                  Mononym
+                  Mythic
+                </button>
+                <button
+                  type="button"
+                  className={lcosMononym === 'simple' ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
+                  onClick={() => setLcosMononym('simple')}
+                  title="Simple mononym - first name only"
+                >
+                  Simple
                 </button>
               </div>
               <div className="flex gap-2">
@@ -739,6 +748,51 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
                     </span>
                   )}
                 </div>
+                {lcosGenerated.samplePost && lcosRelic && lcosRelicEra === 'modern' && (
+                  <div style={{
+                    margin: '1rem 0',
+                    padding: '1.25rem',
+                    background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
+                    borderRadius: '0.75rem',
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    position: 'relative',
+                    overflow: 'hidden',
+                  }}>
+                    <div style={{
+                      position: 'absolute',
+                      top: '0.5rem',
+                      right: '0.75rem',
+                      fontSize: '0.65rem',
+                      color: 'rgba(255,255,255,0.4)',
+                      fontFamily: 'Futura, "Century Gothic", "Trebuchet MS", sans-serif',
+                      letterSpacing: '0.1em',
+                      textTransform: 'uppercase',
+                    }}>
+                      VOICE
+                    </div>
+                    <div style={{
+                      fontFamily: 'Futura, "Century Gothic", "Trebuchet MS", sans-serif',
+                      fontSize: '1.1rem',
+                      lineHeight: '1.5',
+                      color: '#fff',
+                      fontWeight: 500,
+                      letterSpacing: '0.02em',
+                    }}>
+                      "{lcosGenerated.samplePost}"
+                    </div>
+                    {lcosGenerated.sacredNumber !== undefined && (
+                      <div style={{
+                        marginTop: '0.75rem',
+                        fontSize: '0.7rem',
+                        color: 'rgba(255,255,255,0.5)',
+                        fontFamily: 'Futura, "Century Gothic", "Trebuchet MS", sans-serif',
+                        letterSpacing: '0.15em',
+                      }}>
+                        #{lcosGenerated.sacredNumber}
+                      </div>
+                    )}
+                  </div>
+                )}
                 <p className="card-description" style={{ whiteSpace: 'pre-wrap' }}>
                   {lcosGenerated.backstory}
                 </p>
@@ -808,28 +862,6 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
                         <div style={{ fontStyle: 'italic' }}>{relic.object}</div>
                       </div>
                     ))}
-                  </div>
-                )}
-                {lcosGenerated.samplePost && lcosRelic && lcosRelicEra === 'modern' && (
-                  <div className="mt-4" style={{ fontSize: '0.875rem' }}>
-                    <strong>Sample Post:</strong>
-                    <div style={{
-                      marginTop: '0.5rem',
-                      padding: '0.75rem',
-                      backgroundColor: 'var(--card)',
-                      borderRadius: '0.5rem',
-                      borderLeft: '3px solid var(--primary)',
-                      fontStyle: 'italic',
-                      fontSize: '0.8rem',
-                      color: 'var(--muted-foreground)'
-                    }}>
-                      "{lcosGenerated.samplePost}"
-                    </div>
-                  </div>
-                )}
-                {lcosGenerated.sacredNumber !== undefined && lcosRelic && (
-                  <div className="mt-2" style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)' }}>
-                    <strong>Sacred Number:</strong> {lcosGenerated.sacredNumber}
                   </div>
                 )}
                 <p className="mt-4 text-sm" style={{ color: 'var(--muted-foreground)' }}>

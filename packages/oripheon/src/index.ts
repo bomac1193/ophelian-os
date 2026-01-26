@@ -1600,7 +1600,8 @@ export interface LCOSGenerationParams {
   heritage?: string;
   gender?: string;
   blendHeritage?: boolean;  // When true, blends multiple heritages without showing explicit heritage label
-  mononym?: boolean;        // When true, generates only a single name (first name or blended name)
+  mononym?: boolean;        // When true, generates only a single name
+  mononymType?: 'mythic' | 'simple';  // 'mythic' = blended mishmash name, 'simple' = first name only
   relic?: boolean;          // When true, generates strange relic objects bound to the character
   relicEra?: RelicEra;      // 'archaic' for ancient objects, 'modern' for contemporary
   lockedRelic?: Relic;      // When provided, keeps this relic but regenerates the pseudonym
@@ -1635,6 +1636,7 @@ export function generateLCOSCharacter(params: LCOSGenerationParams = {}): LCOSGe
 
   const blendHeritage = params.blendHeritage ?? false;
   const useMononym = params.mononym ?? false;
+  const mononymType = params.mononymType ?? 'mythic';  // Default to mythic if not specified
 
   // Determine heritage (internal use) and heritage label (display)
   let heritage: HeritageCulture;
@@ -1659,19 +1661,19 @@ export function generateLCOSCharacter(params: LCOSGenerationParams = {}): LCOSGe
   // Generate name based on blend and mononym settings
   let fullName: string;
 
-  if (blendHeritage && useMononym) {
-    // Blended mononym: single invented name
+  if (useMononym && mononymType === 'mythic') {
+    // Mythic mononym: blended mishmash of first and last name syllables
     fullName = generateBlendedMononym(rng, rawGender);
+  } else if (useMononym && mononymType === 'simple') {
+    // Simple mononym: just a first name from culture
+    const cultureNames = CULTURE_NAMES[heritage];
+    const namePool = rawGender === 'feminine' ? cultureNames.female : cultureNames.male;
+    fullName = randomChoice(rng, namePool);
   } else if (blendHeritage && !useMononym) {
     // Blended full name: invented first and last names
     const firstName = generateBlendedName(rng, rawGender);
     const lastName = generateBlendedName(rng, 'neutral');
     fullName = `${firstName} ${lastName}`;
-  } else if (!blendHeritage && useMononym) {
-    // Cultural mononym: single name from culture
-    const cultureNames = CULTURE_NAMES[heritage];
-    const namePool = rawGender === 'feminine' ? cultureNames.female : cultureNames.male;
-    fullName = randomChoice(rng, namePool);
   } else {
     // Standard: cultural first + last name
     const cultureNames = CULTURE_NAMES[heritage];
