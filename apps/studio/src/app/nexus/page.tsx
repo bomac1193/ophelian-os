@@ -138,20 +138,26 @@ export default function WorldBuilderPage() {
   const loadData = useCallback(async () => {
     setLoading(true);
     try {
-      const [chars, scns, wrlds, rels, conns, snaps] = await Promise.all([
+      const [chars, scns, wrlds, rels, conns] = await Promise.all([
         getCharacters(),
         getScenes(),
         getWorlds(),
         getRelationships(),
         getConnections(),
-        getSnapshots(),
       ]);
       setCharacters(chars);
       setScenes(scns);
       setWorlds(wrlds);
       setRelationships(rels);
       setConnections(conns);
-      setSnapshots(snaps);
+
+      // Load snapshots separately so it doesn't block main data
+      try {
+        const snaps = await getSnapshots();
+        setSnapshots(snaps);
+      } catch (snapError) {
+        console.error('Failed to load snapshots:', snapError);
+      }
     } catch (error) {
       console.error('Failed to load data:', error);
     } finally {
