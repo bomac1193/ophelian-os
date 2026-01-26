@@ -12,6 +12,11 @@ import { licenseRoutes } from './routes/licenses.js';
 import { contentRoutes } from './routes/content.js';
 import { ledgerRoutes } from './routes/ledger.js';
 import { uploadRoutes } from './routes/uploads.js';
+import { relationshipRoutes } from './routes/relationships.js';
+import { positionRoutes } from './routes/positions.js';
+import { sceneRoutes } from './routes/scenes.js';
+import { worldRoutes } from './routes/worlds.js';
+import { connectionRoutes } from './routes/connections.js';
 
 const UPLOAD_DIR = process.env.UPLOAD_DIR || './storage/uploads';
 
@@ -75,6 +80,11 @@ async function start() {
     await fastify.register(contentRoutes);
     await fastify.register(ledgerRoutes);
     await fastify.register(uploadRoutes);
+    await fastify.register(relationshipRoutes);
+    await fastify.register(positionRoutes);
+    await fastify.register(sceneRoutes);
+    await fastify.register(worldRoutes);
+    await fastify.register(connectionRoutes);
 
     // Start server
     const port = parseInt(process.env.PORT || '3001', 10);

@@ -210,3 +210,353 @@ export interface MonthlySettlement {
 export async function getSettlement(month: string): Promise<MonthlySettlement> {
   return apiFetch<MonthlySettlement>(`/ledger/settlement?month=${month}`);
 }
+
+// Relationship APIs
+export type RelationshipType = 'ALLY' | 'ENEMY' | 'MENTOR' | 'FAMILY' | 'RIVAL' | 'FRIEND' | 'LOVER' | 'CUSTOM';
+
+export interface CharacterRelationship {
+  id: string;
+  sourceCharacterId: string;
+  targetCharacterId: string;
+  relationshipType: RelationshipType;
+  customTypeName: string | null;
+  sourceRole: string | null;
+  targetRole: string | null;
+  lore: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateRelationshipInput {
+  sourceCharacterId: string;
+  targetCharacterId: string;
+  relationshipType?: RelationshipType;
+  customTypeName?: string | null;
+  sourceRole?: string | null;
+  targetRole?: string | null;
+  lore?: string;
+}
+
+export interface UpdateRelationshipInput {
+  relationshipType?: RelationshipType;
+  customTypeName?: string | null;
+  sourceRole?: string | null;
+  targetRole?: string | null;
+  lore?: string;
+}
+
+export async function getRelationships(characterId?: string): Promise<CharacterRelationship[]> {
+  const query = characterId ? `?characterId=${characterId}` : '';
+  return apiFetch<CharacterRelationship[]>(`/relationships${query}`);
+}
+
+export async function getRelationship(id: string): Promise<CharacterRelationship> {
+  return apiFetch<CharacterRelationship>(`/relationships/${id}`);
+}
+
+export async function createRelationship(data: CreateRelationshipInput): Promise<CharacterRelationship> {
+  return apiFetch<CharacterRelationship>('/relationships', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function updateRelationship(id: string, data: UpdateRelationshipInput): Promise<CharacterRelationship> {
+  return apiFetch<CharacterRelationship>(`/relationships/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function deleteRelationship(id: string): Promise<void> {
+  await fetch(`${API_URL}/relationships/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'x-api-key': API_KEY,
+    },
+  }).then((res) => {
+    if (!res.ok) {
+      throw new Error('Failed to delete relationship');
+    }
+  });
+}
+
+export interface GenerateLoreInput {
+  sourceCharacterId: string;
+  targetCharacterId: string;
+  relationshipType?: RelationshipType;
+  randomizeType?: boolean;
+}
+
+export interface GeneratedLore {
+  relationshipType: RelationshipType;
+  lore: string;
+  sourceRole: string | null;
+  targetRole: string | null;
+}
+
+export async function generateRelationshipLore(data: GenerateLoreInput): Promise<GeneratedLore> {
+  return apiFetch<GeneratedLore>('/relationships/generate-lore', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+// Position APIs
+export interface CharacterPosition {
+  id: string;
+  characterId: string;
+  x: number;
+  y: number;
+}
+
+export async function getPositions(): Promise<CharacterPosition[]> {
+  return apiFetch<CharacterPosition[]>('/positions');
+}
+
+export async function getPosition(characterId: string): Promise<CharacterPosition> {
+  return apiFetch<CharacterPosition>(`/positions/${characterId}`);
+}
+
+export async function updatePosition(characterId: string, x: number, y: number): Promise<CharacterPosition> {
+  return apiFetch<CharacterPosition>(`/positions/${characterId}`, {
+    method: 'PUT',
+    body: JSON.stringify({ x, y }),
+  });
+}
+
+export async function updatePositionsBatch(
+  positions: Array<{ characterId: string; x: number; y: number }>
+): Promise<CharacterPosition[]> {
+  return apiFetch<CharacterPosition[]>('/positions/batch', {
+    method: 'PUT',
+    body: JSON.stringify(positions),
+  });
+}
+
+// Scene APIs
+export interface Scene {
+  id: string;
+  name: string;
+  description: string | null;
+  type: 'location' | 'event';
+  imageUrl: string | null;
+  tags: string[];
+  metadata: Record<string, unknown> | null;
+  createdAt: string;
+  updatedAt: string;
+  position?: ScenePosition | null;
+}
+
+export interface ScenePosition {
+  id: string;
+  sceneId: string;
+  x: number;
+  y: number;
+}
+
+export interface CreateSceneInput {
+  name: string;
+  description?: string;
+  type?: 'location' | 'event';
+  imageUrl?: string;
+  tags?: string[];
+  metadata?: Record<string, unknown>;
+}
+
+export interface UpdateSceneInput {
+  name?: string;
+  description?: string | null;
+  type?: 'location' | 'event';
+  imageUrl?: string | null;
+  tags?: string[];
+  metadata?: Record<string, unknown> | null;
+}
+
+export async function getScenes(): Promise<Scene[]> {
+  return apiFetch<Scene[]>('/scenes');
+}
+
+export async function getScene(id: string): Promise<Scene> {
+  return apiFetch<Scene>(`/scenes/${id}`);
+}
+
+export async function createScene(data: CreateSceneInput): Promise<Scene> {
+  return apiFetch<Scene>('/scenes', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function updateScene(id: string, data: UpdateSceneInput): Promise<Scene> {
+  return apiFetch<Scene>(`/scenes/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function deleteScene(id: string): Promise<void> {
+  await fetch(`${API_URL}/scenes/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'x-api-key': API_KEY,
+    },
+  }).then((res) => {
+    if (!res.ok) {
+      throw new Error('Failed to delete scene');
+    }
+  });
+}
+
+export async function updateScenePosition(sceneId: string, x: number, y: number): Promise<ScenePosition> {
+  return apiFetch<ScenePosition>(`/scenes/${sceneId}/position`, {
+    method: 'PUT',
+    body: JSON.stringify({ x, y }),
+  });
+}
+
+// World APIs
+export interface World {
+  id: string;
+  name: string;
+  description: string | null;
+  type: 'setting' | 'story';
+  imageUrl: string | null;
+  tags: string[];
+  metadata: Record<string, unknown> | null;
+  createdAt: string;
+  updatedAt: string;
+  position?: WorldPosition | null;
+}
+
+export interface WorldPosition {
+  id: string;
+  worldId: string;
+  x: number;
+  y: number;
+}
+
+export interface CreateWorldInput {
+  name: string;
+  description?: string;
+  type?: 'setting' | 'story';
+  imageUrl?: string;
+  tags?: string[];
+  metadata?: Record<string, unknown>;
+}
+
+export interface UpdateWorldInput {
+  name?: string;
+  description?: string | null;
+  type?: 'setting' | 'story';
+  imageUrl?: string | null;
+  tags?: string[];
+  metadata?: Record<string, unknown> | null;
+}
+
+export async function getWorlds(): Promise<World[]> {
+  return apiFetch<World[]>('/worlds');
+}
+
+export async function getWorld(id: string): Promise<World> {
+  return apiFetch<World>(`/worlds/${id}`);
+}
+
+export async function createWorld(data: CreateWorldInput): Promise<World> {
+  return apiFetch<World>('/worlds', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function updateWorld(id: string, data: UpdateWorldInput): Promise<World> {
+  return apiFetch<World>(`/worlds/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function deleteWorld(id: string): Promise<void> {
+  await fetch(`${API_URL}/worlds/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'x-api-key': API_KEY,
+    },
+  }).then((res) => {
+    if (!res.ok) {
+      throw new Error('Failed to delete world');
+    }
+  });
+}
+
+export async function updateWorldPosition(worldId: string, x: number, y: number): Promise<WorldPosition> {
+  return apiFetch<WorldPosition>(`/worlds/${worldId}/position`, {
+    method: 'PUT',
+    body: JSON.stringify({ x, y }),
+  });
+}
+
+// World Connection APIs
+export type EntityType = 'CHARACTER' | 'SCENE' | 'WORLD';
+
+export interface WorldConnection {
+  id: string;
+  sourceType: EntityType;
+  sourceId: string;
+  targetType: EntityType;
+  targetId: string;
+  connectionType: string;
+  lore: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateConnectionInput {
+  sourceType: EntityType;
+  sourceId: string;
+  targetType: EntityType;
+  targetId: string;
+  connectionType: string;
+  lore?: string;
+}
+
+export interface UpdateConnectionInput {
+  connectionType?: string;
+  lore?: string;
+}
+
+export async function getConnections(entityType?: EntityType, entityId?: string): Promise<WorldConnection[]> {
+  const query = entityType && entityId ? `?entityType=${entityType}&entityId=${entityId}` : '';
+  return apiFetch<WorldConnection[]>(`/connections${query}`);
+}
+
+export async function getConnection(id: string): Promise<WorldConnection> {
+  return apiFetch<WorldConnection>(`/connections/${id}`);
+}
+
+export async function createConnection(data: CreateConnectionInput): Promise<WorldConnection> {
+  return apiFetch<WorldConnection>('/connections', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function updateConnection(id: string, data: UpdateConnectionInput): Promise<WorldConnection> {
+  return apiFetch<WorldConnection>(`/connections/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function deleteConnection(id: string): Promise<void> {
+  await fetch(`${API_URL}/connections/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'x-api-key': API_KEY,
+    },
+  }).then((res) => {
+    if (!res.ok) {
+      throw new Error('Failed to delete connection');
+    }
+  });
+}

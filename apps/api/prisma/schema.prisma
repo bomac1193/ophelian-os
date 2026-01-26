@@ -22,6 +22,41 @@ model Character {
   timelineState Json     @default("{}")
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+  position      CharacterPosition?
+}
+
+enum RelationshipTypeEnum {
+  ALLY
+  ENEMY
+  MENTOR
+  FAMILY
+  RIVAL
+  FRIEND
+  LOVER
+  CUSTOM
+}
+
+model CharacterPosition {
+  id          String    @id @default(cuid())
+  characterId String    @unique
+  character   Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
+  x           Float     @default(0)
+  y           Float     @default(0)
+}
+
+model CharacterRelationship {
+  id                String               @id @default(cuid())
+  sourceCharacterId String
+  targetCharacterId String
+  relationshipType  RelationshipTypeEnum @default(CUSTOM)
+  customTypeName    String?
+  sourceRole        String?
+  targetRole        String?
+  lore              String               @default("")
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
+
+  @@unique([sourceCharacterId, targetCharacterId])
 }
 
 enum VoiceProviderEnum {
@@ -124,4 +159,68 @@ model UsageEvent {
   @@index([characterId])
   @@index([voiceProfileId])
   @@index([createdAt])
+}
+
+model Scene {
+  id          String         @id @default(cuid())
+  name        String
+  description String?
+  type        String         @default("location") // "location" | "event"
+  imageUrl    String?
+  tags        String[]       @default([])
+  metadata    Json?
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  position    ScenePosition?
+}
+
+model ScenePosition {
+  id      String @id @default(cuid())
+  sceneId String @unique
+  scene   Scene  @relation(fields: [sceneId], references: [id], onDelete: Cascade)
+  x       Float  @default(0)
+  y       Float  @default(0)
+}
+
+model World {
+  id          String         @id @default(cuid())
+  name        String
+  description String?
+  type        String         @default("setting") // "setting" | "story"
+  imageUrl    String?
+  tags        String[]       @default([])
+  metadata    Json?
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  position    WorldPosition?
+}
+
+model WorldPosition {
+  id      String @id @default(cuid())
+  worldId String @unique
+  world   World  @relation(fields: [worldId], references: [id], onDelete: Cascade)
+  x       Float  @default(0)
+  y       Float  @default(0)
+}
+
+enum EntityTypeEnum {
+  CHARACTER
+  SCENE
+  WORLD
+}
+
+model WorldConnection {
+  id              String         @id @default(cuid())
+  sourceType      EntityTypeEnum
+  sourceId        String
+  targetType      EntityTypeEnum
+  targetId        String
+  connectionType  String         // e.g., "appears_in", "located_in", "rules"
+  lore            String         @default("")
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  @@unique([sourceType, sourceId, targetType, targetId])
+  @@index([sourceType, sourceId])
+  @@index([targetType, targetId])
 }
