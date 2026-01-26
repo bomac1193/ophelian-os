@@ -50,8 +50,8 @@ export function ImageUpload({ value, onChange, disabled }: ImageUploadProps) {
         }
 
         const result = await response.json();
-        // Return full URL for the uploaded image
-        onChange(`${API_URL}${result.url}`);
+        // Cloudinary returns full URL, use it directly
+        onChange(result.url);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Upload failed');
       } finally {
