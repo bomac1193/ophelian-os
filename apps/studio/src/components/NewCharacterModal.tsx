@@ -623,7 +623,7 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
                   Blend
                 </button>
               </div>
-              <div className="flex gap-2" style={{ flexWrap: 'wrap' }}>
+              <div className="flex gap-2" style={{ flexWrap: 'wrap', alignItems: 'center' }}>
                 <button
                   type="button"
                   className={lcosMononym === '' ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
@@ -650,20 +650,41 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
                 </button>
                 <button
                   type="button"
-                  className={lcosMononym === 'aminal-blend' ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
-                  onClick={() => setLcosMononym('aminal-blend')}
-                  title="Aminal Blend - mythical beast name mashed with character name"
+                  className={(lcosMononym === 'aminal-blend' || lcosMononym === 'aminal-clear') ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
+                  onClick={() => setLcosMononym(lcosMononym === 'aminal-blend' || lcosMononym === 'aminal-clear' ? '' : 'aminal-blend')}
+                  title="Aminal - include mythical beast or animal in name"
                 >
-                  Aminal (Blend)
+                  Aminal
                 </button>
-                <button
-                  type="button"
-                  className={lcosMononym === 'aminal-clear' ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
-                  onClick={() => setLcosMononym('aminal-clear')}
-                  title="Aminal Clear - animal name clearly visible in the name"
-                >
-                  Aminal (Clear)
-                </button>
+                {(lcosMononym === 'aminal-blend' || lcosMononym === 'aminal-clear') && (
+                  <div style={{
+                    display: 'flex',
+                    gap: '0.25rem',
+                    padding: '0.25rem',
+                    backgroundColor: 'var(--card)',
+                    borderRadius: '0.375rem',
+                    border: '1px solid var(--border)'
+                  }}>
+                    <button
+                      type="button"
+                      className={lcosMononym === 'aminal-blend' ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
+                      onClick={() => setLcosMononym('aminal-blend')}
+                      title="Blend - mash beast name with character name"
+                      style={{ padding: '0.2rem 0.5rem', fontSize: '0.7rem' }}
+                    >
+                      Blend
+                    </button>
+                    <button
+                      type="button"
+                      className={lcosMononym === 'aminal-clear' ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
+                      onClick={() => setLcosMononym('aminal-clear')}
+                      title="Clear - animal name clearly visible"
+                      style={{ padding: '0.2rem 0.5rem', fontSize: '0.7rem' }}
+                    >
+                      Clear
+                    </button>
+                  </div>
+                )}
               </div>
               <div className="flex gap-2">
                 <button
