@@ -173,12 +173,12 @@ export function NewRelationshipModal({
           </div>
 
           <div className="form-group">
-            <label className="label">Lore / History (optional)</label>
+            <label className="label">Mythos (optional)</label>
             <textarea
               className="input textarea"
               value={lore}
               onChange={(e) => setLore(e.target.value)}
-              placeholder="Describe the history and nature of this relationship..."
+              placeholder="The mythic story of this relationship..."
               rows={4}
             />
             <div className="generate-buttons">
@@ -188,7 +188,7 @@ export function NewRelationshipModal({
                 onClick={() => handleGenerateLore(false)}
                 disabled={generating}
               >
-                {generating ? 'Generating...' : 'Generate Lore'}
+                {generating ? 'Generating...' : 'Generate Mythos'}
               </button>
               <button
                 type="button"
@@ -200,7 +200,7 @@ export function NewRelationshipModal({
               </button>
             </div>
             <p className="generate-hint">
-              "Generate Lore" creates history based on selected type. "Randomize All" picks a random type and generates matching lore.
+              "Generate Mythos" weaves a unique story based on selected type. "Randomize All" picks a random type and creates matching mythos.
             </p>
           </div>
 
