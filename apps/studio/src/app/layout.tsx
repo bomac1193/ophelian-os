@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import './globals.css';
+import { Navigation } from '@/components/Navigation';
 
 export const metadata: Metadata = {
   title: 'Living Character OS - Studio',
@@ -15,17 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <nav className="nav">
-          <Link href="/" className="nav-link">
-            Characters
-          </Link>
-          <Link href="/world" className="nav-link">
-            World
-          </Link>
-          <Link href="/ledger" className="nav-link">
-            Ledger
-          </Link>
-        </nav>
+        <Navigation />
         <main className="container">{children}</main>
       </body>
     </html>

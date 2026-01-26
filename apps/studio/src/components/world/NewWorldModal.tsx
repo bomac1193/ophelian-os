@@ -41,7 +41,7 @@ export function NewWorldModal({ isOpen, onClose, onCreate }: NewWorldModalProps)
       setDescription('');
       onClose();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to create world');
+      setError(err instanceof Error ? err.message : 'Failed to create globe');
     } finally {
       setLoading(false);
     }
@@ -57,7 +57,7 @@ export function NewWorldModal({ isOpen, onClose, onCreate }: NewWorldModalProps)
     <div className="modal-overlay" onClick={handleOverlayClick}>
       <div className="modal modal-sm">
         <div className="modal-header">
-          <h2 className="modal-title">Create World</h2>
+          <h2 className="modal-title">Create Globe</h2>
           <button className="modal-close" onClick={onClose}>
             &times;
           </button>
@@ -97,7 +97,7 @@ export function NewWorldModal({ isOpen, onClose, onCreate }: NewWorldModalProps)
               className="input textarea"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Describe this world..."
+              placeholder="Describe this globe..."
               rows={3}
             />
           </div>
@@ -107,7 +107,7 @@ export function NewWorldModal({ isOpen, onClose, onCreate }: NewWorldModalProps)
               Cancel
             </button>
             <button type="submit" className="btn btn-primary" disabled={loading}>
-              {loading ? 'Creating...' : 'Create World'}
+              {loading ? 'Creating...' : 'Create Globe'}
             </button>
           </div>
         </form>

@@ -463,7 +463,7 @@ export default function WorldBuilderPage() {
     <div className="world-page">
       {/* Left Sidebar */}
       <div className="world-sidebar">
-        <h1 className="sidebar-title">World Builder</h1>
+        <h1 className="sidebar-title">Nexus</h1>
 
         {/* Visibility Toggles */}
         <div className="sidebar-section">
@@ -491,7 +491,7 @@ export default function WorldBuilderPage() {
                 checked={showWorlds}
                 onChange={(e) => setShowWorlds(e.target.checked)}
               />
-              <span>Worlds ({worlds.length})</span>
+              <span>Globes ({worlds.length})</span>
             </label>
           </div>
         </div>
@@ -527,7 +527,7 @@ export default function WorldBuilderPage() {
               + Scene
             </button>
             <button className="btn btn-sm btn-world" onClick={() => setShowWorldModal(true)}>
-              + World
+              + Globe
             </button>
           </div>
         </div>
@@ -577,7 +577,7 @@ export default function WorldBuilderPage() {
 
         {showWorlds && worlds.length > 0 && (
           <div className="sidebar-section">
-            <h3 className="section-title">Worlds</h3>
+            <h3 className="section-title">Globes</h3>
             <ul className="entity-list">
               {worlds.map((world) => (
                 <li
@@ -654,7 +654,7 @@ export default function WorldBuilderPage() {
         )}
         {!hasSelection && (
           <div className="default-panel">
-            <h2 className="panel-title">World Overview</h2>
+            <h2 className="panel-title">Nexus Overview</h2>
             <div className="default-panel-content">
               <div className="stat-item">
                 <span className="stat-label">Characters</span>
@@ -665,7 +665,7 @@ export default function WorldBuilderPage() {
                 <span className="stat-value">{scenes.length}</span>
               </div>
               <div className="stat-item">
-                <span className="stat-label">Worlds</span>
+                <span className="stat-label">Globes</span>
                 <span className="stat-value">{worlds.length}</span>
               </div>
               <div className="stat-item">

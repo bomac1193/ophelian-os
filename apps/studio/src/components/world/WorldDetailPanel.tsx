@@ -32,7 +32,7 @@ export function WorldDetailPanel({ world, onClose, onUpdate, onDelete }: WorldDe
   };
 
   const handleDelete = async () => {
-    if (!confirm('Are you sure you want to delete this world?')) return;
+    if (!confirm('Are you sure you want to delete this globe?')) return;
     setLoading(true);
     try {
       await onDelete(world.id);
@@ -48,7 +48,7 @@ export function WorldDetailPanel({ world, onClose, onUpdate, onDelete }: WorldDe
   return (
     <div className="detail-panel">
       <div className="detail-panel-header">
-        <h2 className="detail-panel-title">World Details</h2>
+        <h2 className="detail-panel-title">Globe Details</h2>
         <button className="modal-close" onClick={onClose}>
           &times;
         </button>
