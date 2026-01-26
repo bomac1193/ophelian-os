@@ -1,4 +1,5 @@
 import type { FastifyInstance } from 'fastify';
+import { Prisma } from '@prisma/client';
 import { prisma } from '../db.js';
 
 interface CreateSceneBody {
@@ -7,7 +8,7 @@ interface CreateSceneBody {
   type?: 'location' | 'event';
   imageUrl?: string;
   tags?: string[];
-  metadata?: Record<string, unknown>;
+  metadata?: Prisma.InputJsonValue;
 }
 
 interface UpdateSceneBody {
@@ -16,7 +17,7 @@ interface UpdateSceneBody {
   type?: 'location' | 'event';
   imageUrl?: string | null;
   tags?: string[];
-  metadata?: Record<string, unknown> | null;
+  metadata?: Prisma.InputJsonValue | null;
 }
 
 export async function sceneRoutes(fastify: FastifyInstance): Promise<void> {
@@ -83,7 +84,14 @@ export async function sceneRoutes(fastify: FastifyInstance): Promise<void> {
 
     const updated = await prisma.scene.update({
       where: { id },
-      data: body,
+      data: {
+        name: body.name,
+        description: body.description,
+        type: body.type,
+        imageUrl: body.imageUrl,
+        tags: body.tags,
+        metadata: body.metadata === null ? Prisma.DbNull : body.metadata,
+      },
       include: { position: true },
     });
 

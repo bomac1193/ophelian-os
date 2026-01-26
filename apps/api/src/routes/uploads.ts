@@ -1,19 +1,40 @@
 import type { FastifyInstance } from 'fastify';
-import { createWriteStream, existsSync, mkdirSync } from 'fs';
-import { pipeline } from 'stream/promises';
-import { randomUUID } from 'crypto';
-import path from 'path';
+import { v2 as cloudinary } from 'cloudinary';
+import { Readable } from 'stream';
 
-const UPLOAD_DIR = process.env.UPLOAD_DIR || './storage/uploads';
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 
-// Ensure upload directory exists
-if (!existsSync(UPLOAD_DIR)) {
-  mkdirSync(UPLOAD_DIR, { recursive: true });
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+// Helper to upload stream to Cloudinary
+function uploadToCloudinary(stream: Readable, folder: string): Promise<{ url: string; public_id: string }> {
+  return new Promise((resolve, reject) => {
+    const uploadStream = cloudinary.uploader.upload_stream(
+      {
+        folder,
+        resource_type: 'image',
+      },
+      (error, result) => {
+        if (error) {
+          reject(error);
+        } else if (result) {
+          resolve({ url: result.secure_url, public_id: result.public_id });
+        } else {
+          reject(new Error('No result from Cloudinary'));
+        }
+      }
+    );
+    stream.pipe(uploadStream);
+  });
 }
 
 export async function uploadRoutes(fastify: FastifyInstance): Promise<void> {
-  // POST /uploads - Upload a file
+  // POST /uploads - Upload a file to Cloudinary
   fastify.post('/uploads', async (request, reply) => {
     try {
       const data = await request.file();
@@ -30,23 +51,21 @@ export async function uploadRoutes(fastify: FastifyInstance): Promise<void> {
         });
       }
 
-      // Generate unique filename
-      const ext = path.extname(data.filename) || '.jpg';
-      const filename = `${randomUUID()}${ext}`;
-      const filepath = path.join(UPLOAD_DIR, filename);
+      // Check if Cloudinary is configured
+      if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
+        return reply.code(500).send({
+          error: 'Cloudinary not configured',
+          message: 'Please set CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET environment variables'
+        });
+      }
 
-      // Save file
-      await pipeline(data.file, createWriteStream(filepath));
-
-
-      // Return the URL path
-      const url = `/uploads/${filename}`;
+      // Upload to Cloudinary
+      const result = await uploadToCloudinary(data.file, 'lcos-avatars');
 
       return reply.code(201).send({
-        url,
-        filename,
+        url: result.url,
+        public_id: result.public_id,
         mimetype: data.mimetype,
-        size: data.file.bytesRead,
       });
     } catch (error) {
       console.error('Upload error:', error);

@@ -1,4 +1,5 @@
 import type { FastifyInstance } from 'fastify';
+import { Prisma } from '@prisma/client';
 import { prisma } from '../db.js';
 
 interface CreateWorldBody {
@@ -7,7 +8,7 @@ interface CreateWorldBody {
   type?: 'setting' | 'story';
   imageUrl?: string;
   tags?: string[];
-  metadata?: Record<string, unknown>;
+  metadata?: Prisma.InputJsonValue;
 }
 
 interface UpdateWorldBody {
@@ -16,7 +17,7 @@ interface UpdateWorldBody {
   type?: 'setting' | 'story';
   imageUrl?: string | null;
   tags?: string[];
-  metadata?: Record<string, unknown> | null;
+  metadata?: Prisma.InputJsonValue | null;
 }
 
 export async function worldRoutes(fastify: FastifyInstance): Promise<void> {
@@ -83,7 +84,14 @@ export async function worldRoutes(fastify: FastifyInstance): Promise<void> {
 
     const updated = await prisma.world.update({
       where: { id },
-      data: body,
+      data: {
+        name: body.name,
+        description: body.description,
+        type: body.type,
+        imageUrl: body.imageUrl,
+        tags: body.tags,
+        metadata: body.metadata === null ? Prisma.DbNull : body.metadata,
+      },
       include: { position: true },
     });
 
