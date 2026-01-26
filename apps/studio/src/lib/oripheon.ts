@@ -471,6 +471,7 @@ export interface LCOSGenerateOptions {
   relic?: boolean;          // When true, generates strange relic objects bound to the character
   relicEra?: RelicEra;      // 'archaic' for ancient objects, 'modern' for contemporary
   lockedRelic?: Relic;      // When provided, keeps this relic but regenerates the pseudonym
+  core?: 'vaporwave' | 'witchy' | 'scene' | 'cybergoth' | 'fairycore' | 'weirdcore';  // Aesthetic symbol adornments
 }
 
 export async function generateLCOSCharacter(
@@ -493,6 +494,7 @@ export async function generateLCOSCharacter(
       relic: options?.relic,
       relicEra: options?.relicEra,
       lockedRelic: options?.lockedRelic,
+      core: options?.core,
     }),
     signal: fetchOptions?.signal,
   });

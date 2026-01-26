@@ -656,6 +656,67 @@ const REAL_ANIMALS = [
 
 const ALL_ANIMALS = [...MYTHICAL_BEASTS, ...REAL_ANIMALS];
 
+// Core aesthetic symbol adornments
+const CORE_SYMBOLS: Record<string, { prefix: string[]; suffix: string[]; wrap: [string, string][] }> = {
+  vaporwave: {
+    prefix: ['永', '夢', '新', '愛', '空', '星', '月', '光', '幻', '神'],
+    suffix: ['永', '夢', '新', '愛', '空', '星', '月', '光', '幻', '神'],
+    wrap: [['永 ', ' 夢'], ['｢', '｣'], ['【', '】'], ['「', '」'], ['『', '』'], ['〖', '〗']],
+  },
+  witchy: {
+    prefix: ['☽', '✧', '☆', '⁂', '✦', '◈', '❋', '✵', '❂', '☾'],
+    suffix: ['☾', '✧', '☆', '⁂', '✦', '◈', '❋', '✵', '❂', '☽'],
+    wrap: [['☽ ', ' ☾'], ['✧ ', ' ✧'], ['⁂ ', ' ⁂'], ['✦ ', ' ✦'], ['☆ ', ' ☆']],
+  },
+  scene: {
+    prefix: ['xX', '~', '★', '♥', '✖', '☆', '♪', '⚡', '✿', '❤'],
+    suffix: ['Xx', '~', '★', '♥', '✖', '☆', '♪', '⚡', '✿', '❤'],
+    wrap: [['xX', 'Xx'], ['~', '~'], ['★', '★'], ['xX★', '★Xx'], ['♥', '♥'], ['x', 'x']],
+  },
+  cybergoth: {
+    prefix: ['†', '‡', '∆', 'Ω', 'Ξ', '◊', '▼', '■', '●', '◆'],
+    suffix: ['†', '‡', '∆', 'Ω', 'Ξ', '◊', '▲', '■', '●', '◆'],
+    wrap: [['†', '†'], ['∆', '∆'], ['▼', '▲'], ['◊', '◊'], ['‡', '‡'], ['Ω', 'Ω']],
+  },
+  fairycore: {
+    prefix: ['✿', '❀', '☘', '⚘', '❁', '✾', '❃', '✤', '✥', '❋'],
+    suffix: ['✿', '❀', '☘', '⚘', '❁', '✾', '❃', '✤', '✥', '❋'],
+    wrap: [['✿ ', ' ✿'], ['❀ ', ' ❀'], ['☘ ', ' ☘'], ['⚘ ', ' ⚘'], ['✾ ', ' ✾']],
+  },
+  weirdcore: {
+    prefix: ['▲', '◯', '◇', '⌂', '░', '▓', '◉', '◎', '☐', '⊕'],
+    suffix: ['▲', '◯', '◇', '⌂', '░', '▓', '◉', '◎', '☐', '⊕'],
+    wrap: [['▲▲ ', ' ▲▲'], ['◇ ', ' ◇'], ['░░ ', ' ░░'], ['⌂ ', ' ⌂'], ['◯ ', ' ◯']],
+  },
+};
+
+function applyCoreStyle(rng: RNG, name: string, core: string): string {
+  const symbols = CORE_SYMBOLS[core];
+  if (!symbols) return name;
+
+  const style = Math.floor(rng() * 3);
+
+  switch (style) {
+    case 0: {
+      // Wrap style: [symbol] Name [symbol]
+      const [left, right] = randomChoice(rng, symbols.wrap);
+      return `${left}${name}${right}`;
+    }
+    case 1: {
+      // Prefix only
+      const prefix = randomChoice(rng, symbols.prefix);
+      return `${prefix} ${name}`;
+    }
+    case 2:
+    default: {
+      // Prefix and suffix
+      const prefix = randomChoice(rng, symbols.prefix);
+      const suffix = randomChoice(rng, symbols.suffix);
+      return `${prefix}${name}${suffix}`;
+    }
+  }
+}
+
 // Relic object pools for "Chimera" mode - strange objects bound to the character
 const RELIC_OBJECTS = {
   natural: [
@@ -1708,6 +1769,8 @@ export interface Relic {
 
 export type RelicEra = 'archaic' | 'modern';
 
+export type CoreStyle = 'vaporwave' | 'witchy' | 'scene' | 'cybergoth' | 'fairycore' | 'weirdcore';
+
 export interface LCOSGenerationParams {
   seed?: number;
   heritage?: string;
@@ -1718,6 +1781,7 @@ export interface LCOSGenerationParams {
   relic?: boolean;          // When true, generates strange relic objects bound to the character
   relicEra?: RelicEra;      // 'archaic' for ancient objects, 'modern' for contemporary
   lockedRelic?: Relic;      // When provided, keeps this relic but regenerates the pseudonym
+  core?: CoreStyle;         // Aesthetic symbol adornments for name
 }
 
 export function generateLCOSCharacter(params: LCOSGenerationParams = {}): LCOSGeneratedCharacter {
@@ -1869,6 +1933,11 @@ export function generateLCOSCharacter(params: LCOSGenerationParams = {}): LCOSGe
       `Embodying the ${arcana.system.charAt(0).toUpperCase() + arcana.system.slice(1)} archetype of ${arcana.archetype} (${arcana.meaning}), ` +
       `they are ${disposition}. Their existence is woven with ${orderTheme}. ` +
       `Their deepest drive: ${arcana.coreDesire.toLowerCase()}.`;
+  }
+
+  // Apply core aesthetic style if specified
+  if (params.core) {
+    finalName = applyCoreStyle(rng, finalName, params.core);
   }
 
   return {

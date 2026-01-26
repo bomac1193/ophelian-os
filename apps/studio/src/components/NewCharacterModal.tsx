@@ -198,6 +198,7 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
   const [lcosRelic, setLcosRelic] = useState(false);
   const [lcosRelicEra, setLcosRelicEra] = useState<'archaic' | 'modern' | ''>('');
   const [lcosLockedRelic, setLcosLockedRelic] = useState<Relic | null>(null);
+  const [lcosCore, setLcosCore] = useState<'' | 'vaporwave' | 'witchy' | 'scene' | 'cybergoth' | 'fairycore' | 'weirdcore'>('');
 
   // Advanced Oripheon mode (external API)
   const [oripheonSeed, setOripheonSeed] = useState<string>('');
@@ -268,6 +269,7 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
     setLcosRelic(false);
     setLcosRelicEra('');
     setLcosLockedRelic(null);
+    setLcosCore('');
 
     // Advanced Oripheon state
     setOripheonSeed('');
@@ -316,6 +318,7 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
           relic: lcosRelic,
           relicEra: lcosRelicEra || undefined,
           lockedRelic: lcosLockedRelic || undefined,
+          core: lcosCore || undefined,
         },
         { signal: controller.signal }
       );
@@ -773,6 +776,23 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
                   placeholder="Random"
                 />
               </div>
+            </div>
+
+            <div className="form-group" style={{ marginTop: '0.75rem', marginBottom: 0 }}>
+              <label className="label">Core</label>
+              <select
+                className="input"
+                value={lcosCore}
+                onChange={(e) => setLcosCore(e.target.value as typeof lcosCore)}
+              >
+                <option value="">None</option>
+                <option value="vaporwave">Vaporwave (永夢)</option>
+                <option value="witchy">Witchy (☽☾)</option>
+                <option value="scene">Scene (xX★Xx)</option>
+                <option value="cybergoth">Cybergoth (†∆)</option>
+                <option value="fairycore">Fairycore (✿❀)</option>
+                <option value="weirdcore">Weirdcore (▲◇)</option>
+              </select>
             </div>
 
             {lcosGenerated && (
