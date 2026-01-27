@@ -22,6 +22,11 @@ import {
   type Relic,
 } from '@/lib/oripheon';
 import { ImageUpload } from './ImageUpload';
+import {
+  generateCharenomePreview,
+  generateSampleTweet,
+  type CharenomePreview,
+} from '@/lib/charenome';
 
 type PromptSuggestions = { traits: string[]; skills: string[] };
 
@@ -188,6 +193,8 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
   // Quick mode (built-in LCOS generator)
   const [lcosGenerated, setLcosGenerated] = useState<LCOSGeneratedCharacter | null>(null);
   const [lcosGenerating, setLcosGenerating] = useState(false);
+  const [charenomePreview, setCharenomePreview] = useState<CharenomePreview | null>(null);
+  const [creatingCharenome, setCreatingCharenome] = useState(false);
   const [lcosHeritage, setLcosHeritage] = useState<string>('');
   const [lcosGender, setLcosGender] = useState<string>('');
   const [lcosSeed, setLcosSeed] = useState<string>('');
@@ -259,6 +266,8 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
     // Quick mode state
     setLcosGenerated(null);
     setLcosGenerating(false);
+    setCharenomePreview(null);
+    setCreatingCharenome(false);
     setLcosHeritage('');
     setLcosGender('');
     setLcosSeed('');
@@ -323,6 +332,9 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
         { signal: controller.signal }
       );
       setLcosGenerated(generated);
+      // Generate charenome preview
+      const preview = generateCharenomePreview(generated);
+      setCharenomePreview(preview);
     } catch (err) {
       if (err instanceof Error && err.name === 'AbortError') {
         return;
@@ -356,6 +368,93 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
       setCreatingFromLcos(false);
     }
   };
+
+  // Create Charenome - synced character + genome
+  const handleCreateCharenome = async () => {
+    if (!lcosGenerated || !charenomePreview) return;
+    setCreatingCharenome(true);
+    setError(null);
+
+    try {
+      // First create the character
+      const characterData = lcosGeneratedToCreateCharacterInput(lcosGenerated);
+      if (lcosAvatarUrl) {
+        (characterData as any).avatarUrl = lcosAvatarUrl;
+      }
+      // Add voice type to persona tags
+      characterData.personaTags = [
+        ...(characterData.personaTags || []),
+        charenomePreview.voice.type,
+        charenomePreview.orisha.toLowerCase().replace(/[^a-z]/g, ''),
+      ];
+      const character = await createCharacter(characterData);
+
+      // Then create the genome and link it
+      const genomeData = {
+        name: `${lcosGenerated.name} Genome`,
+        characterId: character.id,
+        orishaConfiguration: {
+          headOrisha: charenomePreview.orisha,
+          camino: charenomePreview.camino,
+          secondaryInfluences: charenomePreview.secondaryInfluences,
+        },
+        kabbalisticPosition: {
+          primarySephira: charenomePreview.sephira,
+          pillar: getPillarFromSephira(charenomePreview.sephira),
+          daathRelationship: charenomePreview.sephira === 'Daath' ? 'touched' : 'seeking',
+        },
+        psychologicalState: {
+          hotCoolAxis: charenomePreview.hotCoolAxis,
+          trajectory: charenomePreview.trajectory,
+          individuationLevel: 30 + Math.floor(Math.random() * 40),
+          shadowIntegration: 20 + Math.floor(Math.random() * 30),
+          activeArchetypes: [lcosGenerated.arcana?.archetype || 'seeker'],
+        },
+        multiModalSignature: {
+          voice: {
+            type: charenomePreview.voice.type,
+            quality: charenomePreview.voice.quality,
+            pattern: charenomePreview.voice.pattern,
+          },
+        },
+        narrativeIdentity: {
+          coreValues: [lcosGenerated.personality?.coreDesire || 'self-discovery'],
+          centralConflicts: lcosGenerated.arcana?.shadowThemes || ['inner conflict'],
+          narrativeThemes: [lcosGenerated.order?.name || 'human', charenomePreview.trajectory],
+          telos: lcosGenerated.personality?.coreDesire || 'to discover true self',
+        },
+      };
+
+      // Create genome via API
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+      const API_KEY = process.env.NEXT_PUBLIC_API_KEY || 'default-dev-key';
+
+      await fetch(`${API_URL}/genomes`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': API_KEY,
+        },
+        body: JSON.stringify(genomeData),
+      });
+
+      onCreated();
+      handleClose();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to create charenome');
+    } finally {
+      setCreatingCharenome(false);
+    }
+  };
+
+  function getPillarFromSephira(sephira: string): 'mercy' | 'severity' | 'balance' {
+    const pillarMap: Record<string, 'mercy' | 'severity' | 'balance'> = {
+      'Chokmah': 'mercy', 'Chesed': 'mercy', 'Netzach': 'mercy',
+      'Binah': 'severity', 'Geburah': 'severity', 'Hod': 'severity',
+      'Kether': 'balance', 'Tiphareth': 'balance', 'Yesod': 'balance', 'Malkuth': 'balance', 'Daath': 'balance',
+    };
+    return pillarMap[sephira] || 'balance';
+  }
 
   const parseCsv = (value: string): string[] =>
     value
@@ -927,6 +1026,166 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
               </div>
             )}
 
+            {/* Charenome Preview - Genome Sync */}
+            {lcosGenerated && charenomePreview && (
+              <div className="card" style={{
+                marginTop: '1rem',
+                marginBottom: '1rem',
+                background: 'linear-gradient(135deg, #1a1a2e 0%, #0f0f1a 100%)',
+                border: '1px solid rgba(139, 92, 246, 0.3)',
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
+                  <h4 style={{ margin: 0, fontSize: '0.9rem', color: '#a78bfa' }}>Genome Preview</h4>
+                  <span style={{
+                    padding: '0.15rem 0.5rem',
+                    borderRadius: '4px',
+                    backgroundColor: 'rgba(139, 92, 246, 0.2)',
+                    fontSize: '0.7rem',
+                    color: '#c4b5fd',
+                  }}>
+                    synced
+                  </span>
+                </div>
+
+                {/* Orisha & Sephira */}
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '1rem' }}>
+                  <div style={{
+                    padding: '0.75rem',
+                    backgroundColor: 'rgba(255,255,255,0.05)',
+                    borderRadius: '8px',
+                    borderLeft: '3px solid #f59e0b',
+                  }}>
+                    <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.5)', marginBottom: '0.25rem' }}>HEAD ORISHA</div>
+                    <div style={{ fontWeight: 600, color: '#fbbf24' }}>{charenomePreview.orisha}</div>
+                    {charenomePreview.camino && (
+                      <div style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.6)', marginTop: '0.25rem' }}>
+                        {charenomePreview.camino}
+                      </div>
+                    )}
+                  </div>
+                  <div style={{
+                    padding: '0.75rem',
+                    backgroundColor: 'rgba(255,255,255,0.05)',
+                    borderRadius: '8px',
+                    borderLeft: '3px solid #8b5cf6',
+                  }}>
+                    <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.5)', marginBottom: '0.25rem' }}>SEPHIRA</div>
+                    <div style={{ fontWeight: 600, color: '#a78bfa' }}>{charenomePreview.sephira}</div>
+                    <div style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.6)', marginTop: '0.25rem' }}>
+                      {charenomePreview.trajectory}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Secondary Influences */}
+                {charenomePreview.secondaryInfluences.length > 0 && (
+                  <div style={{ marginBottom: '1rem' }}>
+                    <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.5)', marginBottom: '0.5rem' }}>SECONDARY INFLUENCES</div>
+                    <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                      {charenomePreview.secondaryInfluences.map((inf, idx) => (
+                        <span key={idx} style={{
+                          padding: '0.25rem 0.5rem',
+                          borderRadius: '4px',
+                          backgroundColor: 'rgba(255,255,255,0.1)',
+                          fontSize: '0.75rem',
+                          color: 'rgba(255,255,255,0.8)',
+                        }}>
+                          {inf.orisha} ({Math.round(inf.strength * 100)}%)
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Voice Profile */}
+                <div style={{
+                  padding: '0.75rem',
+                  backgroundColor: 'rgba(255,255,255,0.05)',
+                  borderRadius: '8px',
+                  marginBottom: '1rem',
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                    <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.5)' }}>VOICE</div>
+                    <span style={{
+                      padding: '0.15rem 0.4rem',
+                      borderRadius: '4px',
+                      backgroundColor: charenomePreview.hotCoolAxis > 0 ? 'rgba(239, 68, 68, 0.2)' : 'rgba(59, 130, 246, 0.2)',
+                      fontSize: '0.65rem',
+                      color: charenomePreview.hotCoolAxis > 0 ? '#fca5a5' : '#93c5fd',
+                      textTransform: 'uppercase',
+                    }}>
+                      {charenomePreview.voice.type}
+                    </span>
+                    <span style={{
+                      padding: '0.15rem 0.4rem',
+                      borderRadius: '4px',
+                      backgroundColor: charenomePreview.hotCoolAxis > 0 ? 'rgba(239, 68, 68, 0.15)' : 'rgba(59, 130, 246, 0.15)',
+                      fontSize: '0.65rem',
+                      color: charenomePreview.hotCoolAxis > 0 ? '#fca5a5' : '#93c5fd',
+                    }}>
+                      {charenomePreview.hotCoolAxis > 0 ? 'hot' : charenomePreview.hotCoolAxis < 0 ? 'cool' : 'crossroads'}
+                    </span>
+                  </div>
+                  <div style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.7)' }}>
+                    {charenomePreview.voice.quality}
+                  </div>
+                </div>
+
+                {/* Sample Tweet */}
+                <div style={{
+                  padding: '1rem',
+                  background: 'linear-gradient(135deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.5) 100%)',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(255,255,255,0.1)',
+                }}>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    marginBottom: '0.5rem',
+                  }}>
+                    <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)', letterSpacing: '0.05em' }}>
+                      SAMPLE VOICE
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (charenomePreview) {
+                          const newTweet = generateSampleTweet(charenomePreview.orisha);
+                          setCharenomePreview({ ...charenomePreview, sampleTweet: newTweet });
+                        }
+                      }}
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        color: 'rgba(255,255,255,0.4)',
+                        cursor: 'pointer',
+                        fontSize: '0.7rem',
+                        padding: '0.25rem 0.5rem',
+                      }}
+                    >
+                      refresh
+                    </button>
+                  </div>
+                  <div style={{
+                    fontSize: '0.95rem',
+                    lineHeight: 1.5,
+                    color: '#fff',
+                    fontStyle: 'italic',
+                  }}>
+                    "{charenomePreview.sampleTweet}"
+                  </div>
+                  <div style={{
+                    marginTop: '0.5rem',
+                    fontSize: '0.7rem',
+                    color: 'rgba(255,255,255,0.4)',
+                  }}>
+                    — {lcosGenerated.pseudonym || lcosGenerated.name}
+                  </div>
+                </div>
+              </div>
+            )}
+
             {lcosGenerated && (
               <ImageUpload
                 value={lcosAvatarUrl}
@@ -947,7 +1206,7 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
               </div>
             )}
 
-            <div className="flex gap-2" style={{ justifyContent: 'flex-end', marginTop: '1rem' }}>
+            <div className="flex gap-2" style={{ justifyContent: 'flex-end', marginTop: '1rem', flexWrap: 'wrap' }}>
               <button type="button" className="btn btn-secondary" onClick={handleClose}>
                 Cancel
               </button>
@@ -955,29 +1214,31 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
                 type="button"
                 className="btn btn-secondary"
                 onClick={handleGenerateLCOS}
-                disabled={lcosGenerating || creatingFromLcos}
+                disabled={lcosGenerating || creatingFromLcos || creatingCharenome}
               >
                 {lcosGenerating ? 'Generating...' : lcosGenerated ? 'Reroll' : 'Generate'}
               </button>
               <button
                 type="button"
-                className="btn btn-primary"
+                className="btn btn-secondary"
                 onClick={handleCreateFromLCOS}
-                disabled={!lcosGenerated || lcosGenerating || creatingFromLcos}
+                disabled={!lcosGenerated || lcosGenerating || creatingFromLcos || creatingCharenome}
               >
-                {creatingFromLcos ? 'Creating...' : 'Create Character'}
+                {creatingFromLcos ? 'Creating...' : 'Character Only'}
               </button>
-              {lcosGenerated && (
+              {lcosGenerated && charenomePreview && (
                 <button
                   type="button"
-                  className="btn btn-secondary"
-                  onClick={() => {
-                    window.location.href = `/genome/create?name=${encodeURIComponent(lcosGenerated.name)}`;
+                  className="btn btn-primary"
+                  onClick={handleCreateCharenome}
+                  disabled={lcosGenerating || creatingFromLcos || creatingCharenome}
+                  title="Create synced character + genome together"
+                  style={{
+                    background: 'linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%)',
+                    border: 'none',
                   }}
-                  disabled={lcosGenerating || creatingFromLcos}
-                  title="Create a full character genome with Orisha and Kabbalistic configuration"
                 >
-                  Create Full Genome
+                  {creatingCharenome ? 'Creating...' : 'Create Charenome'}
                 </button>
               )}
             </div>

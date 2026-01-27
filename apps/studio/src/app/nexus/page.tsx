@@ -51,6 +51,9 @@ import {
   type NexusSnapshot,
 } from '@/lib/api';
 
+import { storyTemplates, StoryTemplate, temperatureColors } from '@/lib/story-templates';
+import { StoryTemplateDetail } from '@/components/nexus/StoryTemplateDetail';
+
 import { CharacterNode } from '@/components/world/CharacterNode';
 import { SceneNode } from '@/components/world/SceneNode';
 import { WorldNode } from '@/components/world/WorldNode';
@@ -97,6 +100,10 @@ export default function WorldBuilderPage() {
   const [snapshotName, setSnapshotName] = useState('');
   const [savingSnapshot, setSavingSnapshot] = useState(false);
   const [restoringSnapshot, setRestoringSnapshot] = useState<string | null>(null);
+
+  // Story Templates state
+  const [showStoryTemplates, setShowStoryTemplates] = useState(false);
+  const [selectedStoryTemplate, setSelectedStoryTemplate] = useState<StoryTemplate | null>(null);
 
   // React Flow state
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
@@ -179,6 +186,7 @@ export default function WorldBuilderPage() {
     if (source && target) {
       setSelectedEntity(null);
       setSelectedConnection(null);
+      setSelectedStoryTemplate(null);
       setSelectedRelationship({ relationship, sourceCharacter: source, targetCharacter: target });
     }
   }, [characters]);
@@ -187,6 +195,7 @@ export default function WorldBuilderPage() {
   const handleConnectionClick = useCallback((connection: WorldConnection) => {
     setSelectedEntity(null);
     setSelectedRelationship(null);
+    setSelectedStoryTemplate(null);
     setSelectedConnection({ connection });
   }, []);
 
@@ -211,6 +220,7 @@ export default function WorldBuilderPage() {
             onClick: () => {
               setSelectedRelationship(null);
               setSelectedConnection(null);
+              setSelectedStoryTemplate(null);
               setSelectedEntity({ type: 'character', id: char.id });
             },
           },
@@ -235,6 +245,7 @@ export default function WorldBuilderPage() {
             onClick: () => {
               setSelectedRelationship(null);
               setSelectedConnection(null);
+              setSelectedStoryTemplate(null);
               setSelectedEntity({ type: 'scene', id: scene.id });
             },
           },
@@ -259,6 +270,7 @@ export default function WorldBuilderPage() {
             onClick: () => {
               setSelectedRelationship(null);
               setSelectedConnection(null);
+              setSelectedStoryTemplate(null);
               setSelectedEntity({ type: 'world', id: world.id });
             },
           },
@@ -544,7 +556,7 @@ export default function WorldBuilderPage() {
   const selectedWorld = getSelectedWorld();
 
   // Determine if anything is selected for the right panel
-  const hasSelection = selectedCharacter || selectedScene || selectedWorld || selectedRelationship || selectedConnection;
+  const hasSelection = selectedCharacter || selectedScene || selectedWorld || selectedRelationship || selectedConnection || selectedStoryTemplate;
 
   if (loading) {
     return (
@@ -691,6 +703,63 @@ export default function WorldBuilderPage() {
           )}
         </div>
 
+        {/* Story Templates Section */}
+        <div className="sidebar-section">
+          <h3
+            className="section-title section-title-clickable"
+            onClick={() => setShowStoryTemplates(!showStoryTemplates)}
+          >
+            Story Templates {showStoryTemplates ? '▼' : '▶'} <span className="snapshot-count">({storyTemplates.length})</span>
+          </h3>
+          {showStoryTemplates && (
+            <div className="story-templates-panel">
+              <p style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginBottom: '0.75rem' }}>
+                Universal narrative arcs for your worlds and chapters.
+              </p>
+              <ul className="entity-list">
+                {storyTemplates.map((template) => {
+                  const tempColor = temperatureColors[template.temperature];
+                  return (
+                    <li
+                      key={template.id}
+                      className={`entity-item ${selectedStoryTemplate?.id === template.id ? 'selected' : ''}`}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        cursor: 'pointer',
+                      }}
+                      onClick={() => {
+                        setSelectedEntity(null);
+                        setSelectedRelationship(null);
+                        setSelectedConnection(null);
+                        setSelectedStoryTemplate(template);
+                      }}
+                    >
+                      <span
+                        style={{
+                          width: '8px',
+                          height: '8px',
+                          borderRadius: '50%',
+                          backgroundColor: tempColor.bg,
+                          flexShrink: 0,
+                        }}
+                      />
+                      <span style={{ flex: 1 }}>{template.name}</span>
+                      <span style={{ fontSize: '0.7rem', opacity: 0.6 }}>
+                        {template.primaryEnergy === 'ascending' ? '↑' :
+                         template.primaryEnergy === 'descending' ? '↓' :
+                         template.primaryEnergy === 'cyclical' ? '↻' :
+                         template.primaryEnergy === 'lateral' ? '↔' : '◉'}
+                      </span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          )}
+        </div>
+
         {/* Entity Lists */}
         {showCharacters && characters.length > 0 && (
           <div className="sidebar-section">
@@ -703,6 +772,7 @@ export default function WorldBuilderPage() {
                   onClick={() => {
                     setSelectedRelationship(null);
                     setSelectedConnection(null);
+                    setSelectedStoryTemplate(null);
                     setSelectedEntity({ type: 'character', id: char.id });
                   }}
                 >
@@ -724,6 +794,7 @@ export default function WorldBuilderPage() {
                   onClick={() => {
                     setSelectedRelationship(null);
                     setSelectedConnection(null);
+                    setSelectedStoryTemplate(null);
                     setSelectedEntity({ type: 'scene', id: scene.id });
                   }}
                 >
@@ -745,6 +816,7 @@ export default function WorldBuilderPage() {
                   onClick={() => {
                     setSelectedRelationship(null);
                     setSelectedConnection(null);
+                    setSelectedStoryTemplate(null);
                     setSelectedEntity({ type: 'world', id: world.id });
                   }}
                 >
@@ -811,6 +883,18 @@ export default function WorldBuilderPage() {
             onClose={() => setSelectedRelationship(null)}
             onDelete={handleDeleteRelationship}
           />
+        )}
+        {selectedStoryTemplate && !selectedCharacter && !selectedScene && !selectedWorld && !selectedRelationship && (
+          <div className="detail-panel" style={{ padding: '1rem', overflow: 'auto' }}>
+            <StoryTemplateDetail
+              template={selectedStoryTemplate}
+              onClose={() => setSelectedStoryTemplate(null)}
+              onTemplateClick={(templateId) => {
+                const template = storyTemplates.find(t => t.id === templateId);
+                if (template) setSelectedStoryTemplate(template);
+              }}
+            />
+          </div>
         )}
         {!hasSelection && (
           <div className="default-panel">

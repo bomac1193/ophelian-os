@@ -2,6 +2,14 @@
 
 import type { World, UpdateWorldInput } from '@/lib/api';
 import { useState } from 'react';
+import { storyTemplates, temperatureColors, energySymbols } from '@/lib/story-templates';
+
+interface StoryArcConfig {
+  primaryTemplateId: string;
+  secondaryTemplateId?: string;
+  currentPhase: number;
+  appliedAt: string;
+}
 
 interface WorldDetailPanelProps {
   world: World;
@@ -116,6 +124,77 @@ export function WorldDetailPanel({ world, onClose, onUpdate, onDelete }: WorldDe
           </div>
         </div>
       )}
+
+      {/* Story Arc Section */}
+      {(() => {
+        const storyArc = world.metadata?.storyArc as StoryArcConfig | undefined;
+        if (!storyArc) return null;
+
+        const template = storyTemplates.find(t => t.id === storyArc.primaryTemplateId);
+        if (!template) return null;
+
+        const tempColor = temperatureColors[template.temperature];
+        const currentPhase = template.phases.find(p => p.order === storyArc.currentPhase);
+
+        return (
+          <div className="detail-section">
+            <label className="label">Story Arc</label>
+            <div
+              style={{
+                padding: '1rem',
+                backgroundColor: 'var(--muted)',
+                borderRadius: '8px',
+                borderLeft: `4px solid ${tempColor.bg}`,
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                <span
+                  style={{
+                    width: '10px',
+                    height: '10px',
+                    borderRadius: '50%',
+                    backgroundColor: tempColor.bg,
+                  }}
+                />
+                <span style={{ fontWeight: 600 }}>{template.name}</span>
+                <span style={{ fontSize: '0.8rem', color: 'var(--muted-foreground)' }}>
+                  {energySymbols[template.primaryEnergy]}
+                </span>
+              </div>
+              <p style={{ fontSize: '0.85rem', fontStyle: 'italic', color: 'var(--muted-foreground)', margin: '0 0 0.75rem' }}>
+                &quot;{template.question}&quot;
+              </p>
+
+              {/* Phase Progress */}
+              <div style={{ marginBottom: '0.5rem' }}>
+                <div style={{ display: 'flex', gap: '0.25rem', marginBottom: '0.5rem' }}>
+                  {template.phases.map((phase) => (
+                    <div
+                      key={phase.order}
+                      style={{
+                        flex: 1,
+                        height: '6px',
+                        borderRadius: '3px',
+                        backgroundColor: phase.order <= storyArc.currentPhase ? tempColor.bg : 'var(--border)',
+                        opacity: phase.order === storyArc.currentPhase ? 1 : 0.5,
+                      }}
+                      title={phase.name}
+                    />
+                  ))}
+                </div>
+                {currentPhase && (
+                  <div style={{ fontSize: '0.8rem' }}>
+                    <strong>Phase {currentPhase.order}:</strong> {currentPhase.name}
+                    <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginTop: '0.25rem' }}>
+                      {currentPhase.description}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        );
+      })()}
 
       <div className="detail-actions">
         {editing ? (

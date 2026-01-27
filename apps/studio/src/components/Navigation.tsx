@@ -9,6 +9,7 @@ const navLinks = [
   { href: '/scenes', label: 'Scenes' },
   { href: '/globes', label: 'Globes' },
   { href: '/nexus', label: 'Nexus' },
+  { href: '/story-templates', label: 'Story Arcs' },
   { href: '/ledger', label: 'Ledger' },
 ];
 
@@ -17,7 +18,7 @@ export function Navigation() {
 
   return (
     <nav className="nav">
-      <span className="nav-brand">Ophelian</span>
+      <span className="nav-brand">Bóveda</span>
       <div className="nav-links">
         {navLinks.map((link) => (
           <Link
