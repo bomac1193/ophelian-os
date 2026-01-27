@@ -1034,18 +1034,67 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
                 background: 'linear-gradient(135deg, #1a1a2e 0%, #0f0f1a 100%)',
                 border: '1px solid rgba(139, 92, 246, 0.3)',
               }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
-                  <h4 style={{ margin: 0, fontSize: '0.9rem', color: '#a78bfa' }}>Genome Preview</h4>
-                  <span style={{
-                    padding: '0.15rem 0.5rem',
-                    borderRadius: '4px',
-                    backgroundColor: 'rgba(139, 92, 246, 0.2)',
-                    fontSize: '0.7rem',
-                    color: '#c4b5fd',
-                  }}>
-                    synced
-                  </span>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <h4 style={{ margin: 0, fontSize: '0.9rem', color: '#a78bfa' }}>Genome Preview</h4>
+                    <span style={{
+                      padding: '0.15rem 0.5rem',
+                      borderRadius: '4px',
+                      backgroundColor: 'rgba(139, 92, 246, 0.2)',
+                      fontSize: '0.7rem',
+                      color: '#c4b5fd',
+                    }}>
+                      aligned
+                    </span>
+                  </div>
                 </div>
+
+                {/* Alignment Sources */}
+                {charenomePreview.alignment && (
+                  <div style={{
+                    display: 'flex',
+                    gap: '0.5rem',
+                    flexWrap: 'wrap',
+                    marginBottom: '1rem',
+                    padding: '0.5rem',
+                    backgroundColor: 'rgba(255,255,255,0.03)',
+                    borderRadius: '6px',
+                  }}>
+                    <span style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.4)' }}>ALIGNED FROM:</span>
+                    <span style={{
+                      padding: '0.15rem 0.4rem',
+                      borderRadius: '4px',
+                      backgroundColor: 'rgba(34, 197, 94, 0.2)',
+                      fontSize: '0.7rem',
+                      color: '#86efac',
+                      textTransform: 'capitalize',
+                    }}>
+                      {charenomePreview.alignment.heritage}
+                    </span>
+                    <span style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.3)' }}>+</span>
+                    <span style={{
+                      padding: '0.15rem 0.4rem',
+                      borderRadius: '4px',
+                      backgroundColor: 'rgba(239, 68, 68, 0.2)',
+                      fontSize: '0.7rem',
+                      color: '#fca5a5',
+                      textTransform: 'capitalize',
+                    }}>
+                      {charenomePreview.alignment.order}
+                    </span>
+                    <span style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.3)' }}>+</span>
+                    <span style={{
+                      padding: '0.15rem 0.4rem',
+                      borderRadius: '4px',
+                      backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                      fontSize: '0.7rem',
+                      color: '#93c5fd',
+                      textTransform: 'capitalize',
+                    }}>
+                      {charenomePreview.alignment.archetype?.replace(/_/g, ' ')}
+                    </span>
+                  </div>
+                )}
 
                 {/* Orisha & Sephira */}
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '1rem' }}>
