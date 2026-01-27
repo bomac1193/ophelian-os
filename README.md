@@ -1,112 +1,111 @@
-# Ophelian OS
+# Living Character OS (Bóveda)
 
-**Creator-first infrastructure for AI character rights, voice synthesis, and revenue.**
-
----
-
-## The Problem
-
-The AI character and virtual influencer market is projected to reach $35B by 2028, yet the infrastructure protecting creators remains fragmented and opaque:
-
-- **Voice actors lose $300M+ annually** to unauthorized AI voice clones with no consent trail or compensation
-- **Character creators have no unified ledger** tracking how their IP is used across platforms, making royalty enforcement impossible
-- **Rights fragmentation**: consent for voice synthesis, AI training, and commercial use are conflated or ignored entirely
-- **Revenue leakage**: multi-party royalty splits (voice actor, character creator, platform) are calculated manually, leading to disputes and delayed payments
-
-Studios, agencies, and independent creators need a single source of truth that validates consent *before* any AI action occurs and settles revenue *automatically* when usage happens.
+**Creator-first infrastructure for AI characters: genome generation, relationship mapping, rights management, and multi-platform publishing.**
 
 ---
 
-## What Ophelian OS Does
+## Current Status
 
-Ophelian OS is an **off-chain rights and publishing infrastructure** for AI characters. It provides:
+### What's Working Now
 
-1. **Consent-gated actions** — Every voice synthesis, content generation, and publish action is validated against explicit licenses before execution
-2. **Usage ledger** — Immutable event log of every AI action with timestamps, platforms, and revenue attribution
-3. **Automated settlement** — Monthly royalty calculation with configurable splits between voice actors, creators, and platforms
-4. **Multi-platform publishing** — Scheduled content delivery to X/Twitter, TikTok, and Instagram with status tracking
+| Feature | Status | Location |
+|---------|--------|----------|
+| **Character Generator** | ✅ Complete | `/` (Characters page) |
+| **Character Genome System** | ✅ Complete | `/genome` |
+| **Nexus (Relationship Map)** | ✅ Complete | `/nexus` |
+| **Scenes** | ✅ Complete | `/scenes` |
+| **Globes (Worlds)** | ✅ Complete | `/globes` |
+| **Usage Ledger** | ✅ Complete | `/ledger` |
+| **Rights/Licensing** | 🔶 API Only | No UI yet |
+| **Voice Synthesis** | 🔶 Stub | ElevenLabs integration ready |
+| **Social Publishing** | 🔶 Stub | X/TikTok/Instagram stubs |
 
----
+### Recent Additions
 
-## Guiding Policy
+**Character Genome System** (January 2025)
+- Orisha-based spiritual archetypes with caminos (paths)
+- Kabbalah Tree of Life positioning with Sephiroth selection
+- Kenneth Grant's Vodun-Kabbalah correspondences
+- Hot/Cool psychological axis (Rada/Petwo)
+- Multi-modal signatures (visual, voice, music, movement)
+- AI system prompt generation from genome
+- Export to JSON, Markdown, or system prompt format
 
-> **Validate consent first. Record everything. Settle fairly.**
+**Nexus Visualization**
+- Interactive node-based relationship mapping
+- Drag-and-drop character/scene/world positioning
+- Shift+click to create connections
+- Snapshot save/restore for version control
+- Generate Mythos (lore generation) for relationships
 
-Every feature in Ophelian OS flows from this principle. We reject the industry pattern of "use first, negotiate later" that has eroded creator trust. Instead:
-
-- No voice synthesis without an active license with `synthesis: true`
-- No AI training without explicit `training: true` consent
-- No commercial publishing without `commercialUse: true` permission
-- Every action writes to the ledger before returning success
-
----
-
-## Strategic Objectives
-
-### 1. Eliminate unauthorized AI voice usage
-
-**Target**: 100% of voice synthesis requests validated against license consent flags before audio generation.
-
-**How**: The `@lcos/rights` engine sits between every synthesis request and the voice provider. Requests without valid licenses fail immediately. Usage events are logged for audit and settlement.
-
-### 2. Reduce royalty settlement time from weeks to seconds
-
-**Target**: Automated monthly settlement reports with per-party breakdowns, replacing manual spreadsheet reconciliation.
-
-**How**: The `@lcos/ledger` package records revenue-bearing events in real-time. `computeMonthlySettlement()` aggregates by character, voice profile, and license to produce instant, auditable reports with royalty splits already calculated.
+**Name Generation Enhancements**
+- Aminal mode (animal-inspired names)
+- Squishe mode (playful/cute names)
+- Core dropdown for aesthetic symbol adornments
+- Blend heritage option
+- Mononym support
+- Relic (sacred object) generation with modern symbolism
+- Sample tweet generation
 
 ---
 
 ## Architecture
 
 ```
-ophelian-os/
+living-character-os/
 ├── apps/
-│   ├── api/              # Fastify API server with Prisma ORM
-│   ├── studio/           # Next.js 14 App Router UI
-│   └── publisher-worker/ # Background worker for scheduled publishing
+│   ├── api/                 # Fastify API server with Prisma ORM
+│   ├── studio/              # Next.js 14 App Router UI
+│   └── publisher-worker/    # Background worker for scheduled publishing
 ├── packages/
-│   ├── canon/            # Character types & memory/timeline helpers
-│   ├── rights/           # License validation for actions
-│   ├── content/          # Content generation (stub for MVP)
-│   ├── voice/            # Audio generation (stub + ElevenLabs provider)
-│   ├── ledger/           # Usage tracking & settlement reporting
-│   ├── social-connectors/# Social platform publishing (X stub)
-│   └── shared/           # Zod schemas & shared enums
+│   ├── oripheon/            # Character & genome generation engine
+│   │   ├── src/
+│   │   │   ├── index.ts     # Main character generator
+│   │   │   ├── types/       # Genome type definitions
+│   │   │   ├── data/        # Orisha, Sephiroth, Paths reference data
+│   │   │   └── lib/         # Genome generation & export
+│   ├── canon/               # Character types & memory/timeline helpers
+│   ├── rights/              # License validation for actions
+│   ├── content/             # Content generation (stub for MVP)
+│   ├── voice/               # Audio generation (stub + ElevenLabs)
+│   ├── ledger/              # Usage tracking & settlement reporting
+│   ├── social-connectors/   # Social platform publishing (stubs)
+│   └── shared/              # Zod schemas & shared enums
 └── tooling configs...
 ```
 
-## Prerequisites
+---
+
+## Quick Start
+
+### Prerequisites
 
 - Node.js 18+
 - pnpm 9+
 - PostgreSQL 14+
 
-## Quick Start
-
-1. **Clone and install dependencies**
+### Installation
 
 ```bash
 cd living-character-os
 pnpm install
 ```
 
-2. **Configure environment**
+### Configure Environment
 
 ```bash
 cp .env.example .env
 # Edit .env with your database connection and API key
 ```
 
-3. **Set up database**
+### Set Up Database
 
 ```bash
-# Make sure PostgreSQL is running
-pnpm db:migrate
-pnpm db:seed
+pnpm db:push      # Sync schema to database
+pnpm db:seed      # Optional: seed demo data
 ```
 
-4. **Start development servers**
+### Start Development
 
 ```bash
 pnpm dev
@@ -115,24 +114,106 @@ pnpm dev
 This starts:
 - **Studio UI**: http://localhost:3000
 - **API Server**: http://localhost:3001
-- **Publisher Worker**: Background process
 
-### Optional: Advanced (External) Character Creator
+---
 
-The Studio "Advanced (External)" character creator uses the separate **Oripheon** server (default `http://localhost:3333`).
+## Studio Pages
 
-1. Start Oripheon (in your `oripheon/` folder):
+| Route | Purpose |
+|-------|---------|
+| `/` | Character library with Quick Generate modal |
+| `/genome` | Character genome library |
+| `/genome/create` | Multi-step genome creator |
+| `/genome/[id]` | Genome detail view with system prompt export |
+| `/scenes` | Scene/location management |
+| `/globes` | World/setting management |
+| `/nexus` | Visual relationship mapper |
+| `/ledger` | Usage events and settlement reports |
+| `/characters/[id]` | Character detail and content generation |
 
-```bash
-npm install
-npm run dev
-```
+---
 
-2. In Studio (`http://localhost:3000`): click `New Character` → `Advanced (External)`:
-   - `Order` + `Path` dropdowns
-   - Clickable suggested chips for `Desired Traits` and `Desired Skills`
+## Character Genome System
 
-If `http://localhost:3000` is blank, restart `pnpm dev` (and avoid running `next build` at the same time as `next dev`).
+The genome system creates rich, consistent AI character definitions based on:
+
+### Orisha Configuration
+- **Head Orisha**: Primary spiritual archetype (Èṣù, Ògún, Ọ̀ṣun, Yemọja, Ṣàngó, Ọya, Obàtálá, Ọ̀rúnmìlà, Ọ̀ṣọ́ọ̀sì, Ọ̀sanyìn)
+- **Camino**: Specific road/path of the Orisha
+- **Secondary Influences**: Up to 3 additional Orisha with strength values
+
+### Kabbalistic Position
+- **Primary Sephira**: Position on Tree of Life (auto-suggested from Orisha via Kenneth Grant mappings)
+- **Pillar**: Mercy, Severity, or Balance
+- **Qliphothic Shadow**: The dark mirror aspect
+- **Daath Relationship**: seeking, touched, integrated, or avoiding
+
+### Psychological State
+- **Hot/Cool Axis**: -1 (Rada/cool) to +1 (Petwo/hot)
+- **Trajectory**: emergence, ascent, crisis, descent, integration, transcendence
+- **Individuation Level**: 0-100%
+- **Shadow Integration**: 0-100%
+- **Active Archetypes**: Currently dominant psychological patterns
+
+### Multi-Modal Signature
+Automatically derived from Orisha + psychological state:
+- **Visual**: Colors, patterns, textures, light quality, aesthetic style
+- **Voice**: Pitch range, timbre, speech patterns, emotional resonance
+- **Music**: Key signature, mode, tempo, instruments, rhythmic patterns
+- **Movement**: Quality of motion, spatial orientation, gesture vocabulary
+
+### API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/genomes` | Create and save genome |
+| GET | `/genomes` | List genomes (filterable) |
+| GET | `/genomes/:id` | Get genome by ID |
+| PATCH | `/genomes/:id` | Update genome |
+| DELETE | `/genomes/:id` | Delete genome |
+| POST | `/genomes/generate` | Generate without saving |
+| POST | `/genomes/generate/orisha/:orisha` | Generate for specific Orisha |
+| POST | `/genomes/generate/sephira/:sephira` | Generate for specific Sephira |
+| POST | `/genomes/:id/generate-prompt` | Generate AI system prompt |
+| POST | `/genomes/:id/export` | Export as JSON/markdown/prompt |
+| POST | `/genomes/:id/link/:characterId` | Link genome to character |
+
+---
+
+## Next Steps
+
+### Phase 1: Integration & Polish (Current)
+- [ ] Link genomes to characters in the UI (button on character detail page)
+- [ ] Display linked genome info on character cards
+- [ ] Add genome-based system prompt to character's AI configuration
+- [ ] Improve Tree of Life visualization with path highlighting
+- [ ] Add genome comparison view
+
+### Phase 2: AI Integration
+- [ ] Connect genome multi-modal signatures to actual AI generation
+- [ ] Use voice signature for ElevenLabs voice selection/cloning parameters
+- [ ] Use visual signature for image generation prompts (Midjourney/DALL-E)
+- [ ] Use music signature for audio generation (Suno/Udio)
+
+### Phase 3: Content & Publishing
+- [ ] Build out content generation with LLM integration (Claude/GPT)
+- [ ] Implement real social connectors (X API, TikTok, Instagram)
+- [ ] Add content scheduling UI
+- [ ] Implement content approval workflow
+
+### Phase 4: Rights & Revenue
+- [ ] Build license management UI
+- [ ] Implement consent validation before AI actions
+- [ ] Add royalty split configuration UI
+- [ ] Build settlement dashboard with export
+
+### Phase 5: Advanced Features
+- [ ] Character evolution over time (genome drift within permitted bounds)
+- [ ] Multi-character scene generation
+- [ ] Relationship-driven content (using Nexus connections)
+- [ ] Voice cloning consent flow
+
+---
 
 ## Environment Variables
 
@@ -140,131 +221,16 @@ If `http://localhost:3000` is blank, restart `pnpm dev` (and avoid running `next
 |----------|-------------|---------|
 | `DATABASE_URL` | PostgreSQL connection string | Required |
 | `API_KEY` | API authentication key | `default-dev-key` |
-| `API_URL` | API base URL (for studio) | `http://localhost:3001` |
-| `ELEVENLABS_API_KEY` | ElevenLabs API key (optional) | - |
-| `AUDIO_STORAGE_PATH` | Local path for audio files | `./storage/audio` |
+| `NEXT_PUBLIC_API_URL` | API URL for Studio | `http://localhost:3001` |
+| `NEXT_PUBLIC_API_KEY` | API key for Studio | `default-dev-key` |
+| `ELEVENLABS_API_KEY` | ElevenLabs API key | - |
+| `CLOUDINARY_CLOUD_NAME` | Cloudinary cloud name | - |
+| `CLOUDINARY_API_KEY` | Cloudinary API key | - |
+| `CLOUDINARY_API_SECRET` | Cloudinary API secret | - |
 
-## API Endpoints
+---
 
-All endpoints require `x-api-key` header (except `/health`).
-
-### Characters
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/characters` | Create character |
-| GET | `/characters` | List characters |
-| GET | `/characters/:id` | Get character |
-
-### Voice Profiles
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/voice-profiles` | Create voice profile |
-| GET | `/voice-profiles` | List voice profiles |
-| GET | `/voice-profiles/:id` | Get voice profile |
-
-### Licenses
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/licenses` | Create license |
-| GET | `/licenses` | List licenses |
-| GET | `/licenses/:id` | Get license |
-
-### Content
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/content/generate` | Generate content draft |
-| GET | `/content` | List content items |
-| GET | `/content/:id` | Get content item |
-| POST | `/content/:id/approve` | Approve for publishing |
-| POST | `/content/:id/publish` | Publish immediately |
-| POST | `/content/:id/audio` | Generate audio |
-
-### Ledger
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/ledger/settlement?month=YYYY-MM` | Get monthly settlement |
-| GET | `/ledger/events` | List usage events |
-
-## Domain Models
-
-### Character
-- Stores persona definition with name, bio, aliases
-- Tone controls (allowed/forbidden tones)
-- System prompt for AI generation
-- Timeline state for memory/arc tracking
-
-### VoiceProfile
-- Provider integration (ELEVENLABS or NONE stub)
-- Label and metadata for voice settings
-
-### License (Off-chain Rights)
-- Owner ID (wallet/org as string)
-- Subject type (VOICE or CHARACTER)
-- Consent flags for synthesis, training, commercial use
-- License type (EXCLUSIVE, NON_EXCLUSIVE, REVSHARE)
-- Royalty splits JSON
-
-### ContentItem
-- Platform targeting (X, TikTok, Instagram)
-- Status workflow (DRAFT → APPROVED → PUBLISHED/FAILED)
-- Scheduling support
-
-### UsageEvent
-- Event tracking for VOICE_SYNTHESIS and PUBLISH
-- Revenue in cents for settlement calculations
-
-## Package Responsibilities
-
-### @lcos/canon
-Character types and memory/timeline helpers for maintaining character state.
-
-### @lcos/rights
-License validation with `validateLicenseForAction(action, license)`:
-- `SYNTHESIZE_VOICE` - Requires voice license with synthesis consent
-- `TRAIN_VOICE` - Requires voice license with training consent
-- `PUBLISH_CONTENT` - Requires commercial use permission
-
-### @lcos/content
-Content generation stub that returns deterministic placeholder text.
-Platform-aware with character limits and styling.
-
-### @lcos/voice
-Audio generation with provider abstraction:
-- **StubProvider**: Writes text placeholder, estimates duration
-- **ElevenLabsProvider**: Real TTS integration (requires API key)
-
-### @lcos/ledger
-Usage tracking and settlement:
-- `recordUsageEvent(data)` - Log usage
-- `computeMonthlySettlement(month)` - Calculate royalty splits
-
-### @lcos/social-connectors
-Social platform publishing:
-- **XConnector**: Stub returning fake URLs
-
-## Publisher Worker
-
-Background worker that:
-1. Polls every 30 seconds
-2. Finds APPROVED content with `scheduledFor <= now`
-3. Publishes via social connectors
-4. Logs usage events
-5. Updates status (PUBLISHED or FAILED)
-
-## Studio UI
-
-Minimal Notion-like interface with:
-- Characters list with create modal
-- Character detail page with content generation
-- Drafts table with approve/publish/audio actions
-- Ledger settlement viewer
-
-## Development
+## Development Commands
 
 ```bash
 # Run all apps in dev mode
@@ -273,37 +239,83 @@ pnpm dev
 # Build all packages
 pnpm build
 
-# Lint all packages
-pnpm lint
-
-# Format code
-pnpm format
+# Build specific package
+cd packages/oripheon && pnpm build
 
 # Database commands
-pnpm db:migrate    # Run migrations
+pnpm db:push       # Sync schema (dev)
+pnpm db:migrate    # Run migrations (prod)
 pnpm db:seed       # Seed demo data
 pnpm db:generate   # Regenerate Prisma client
+
+# Lint and format
+pnpm lint
+pnpm format
 ```
 
-## Extending
+---
 
-### Adding a new social connector
+## Key Files
 
-1. Create connector in `packages/social-connectors/src/connectors/`
-2. Extend `SocialConnector` base class
-3. Register in `SocialService` constructor
+### Genome System
+- `packages/oripheon/src/types/genome.types.ts` - TypeScript interfaces
+- `packages/oripheon/src/data/orisha-data.ts` - Orisha reference data
+- `packages/oripheon/src/data/sephiroth-data.ts` - Sephiroth reference data
+- `packages/oripheon/src/lib/genome-generator.ts` - Generation algorithm
+- `packages/oripheon/src/lib/system-prompt-generator.ts` - AI prompt generation
+- `apps/api/src/routes/genomes.ts` - API endpoints
+- `apps/studio/src/components/genome/` - UI components
 
-### Adding real LLM content generation
+### Character Generator
+- `packages/oripheon/src/index.ts` - Main generator (1900+ lines)
 
-1. Update `packages/content/src/index.ts`
-2. Replace stub with OpenAI/Anthropic/etc call
-3. Use `buildContextPrompt()` from `@lcos/canon`
+### Nexus
+- `apps/studio/src/app/nexus/page.tsx` - Relationship visualization
+- `apps/api/src/routes/relationships.ts` - Relationship API
+- `apps/api/src/routes/snapshots.ts` - Snapshot save/restore
 
-### Adding real voice synthesis
+---
 
-1. Configure `ELEVENLABS_API_KEY` in `.env`
-2. Create voice profile with `providerVoiceId`
-3. Audio generation will use ElevenLabs API
+## Domain Models
+
+### CharacterGenome (New)
+- Orisha configuration (head, camino, secondary influences)
+- Kabbalistic position (sephira, pillar, qliphoth, daath relationship)
+- Psychological state (hot/cool, trajectory, individuation, shadow)
+- Multi-modal signature (visual, voice, music, movement)
+- Narrative identity (values, conflicts, themes, telos)
+- Invariant markers (identity anchors, taboos, sacred values)
+- Evolution rules (permitted changes, protected core, velocity)
+- Optional link to Character
+
+### Character
+- Persona definition (name, bio, aliases, avatar)
+- Tone controls (allowed/forbidden)
+- System prompt for AI generation
+- Timeline state for memory/arc tracking
+- Optional link to CharacterGenome
+
+### CharacterRelationship
+- Source and target characters
+- Relationship type (ally, enemy, mentor, family, rival, friend, lover, custom)
+- Roles and lore text
+
+### Scene / World
+- Name, description, type
+- Image URL
+- Position on Nexus canvas
+- Connections to characters and other entities
+
+### License
+- Owner, subject type/ID
+- Consent flags (synthesis, training, commercial)
+- License type and royalty splits
+
+### UsageEvent
+- Event type (voice synthesis, publish)
+- Revenue tracking for settlement
+
+---
 
 ## License
 

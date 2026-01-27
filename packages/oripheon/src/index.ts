@@ -1959,3 +1959,16 @@ export function generateLCOSCharacter(params: LCOSGenerationParams = {}): LCOSGe
     ...(sacredNumber !== undefined ? { sacredNumber } : {}),
   };
 }
+
+// ============================================================================
+// CHARACTER GENOME SYSTEM EXPORTS
+// ============================================================================
+
+export * from './types/genome.types.js';
+export * from './data/orisha-data.js';
+export * from './data/sephiroth-data.js';
+export * from './data/paths-data.js';
+export * from './lib/genome-generator.js';
+export * from './lib/multimodal-derivation.js';
+export * from './lib/system-prompt-generator.js';
+export * from './lib/genome-export.js';

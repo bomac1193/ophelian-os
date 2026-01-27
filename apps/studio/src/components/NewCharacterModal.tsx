@@ -967,6 +967,19 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
               >
                 {creatingFromLcos ? 'Creating...' : 'Create Character'}
               </button>
+              {lcosGenerated && (
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => {
+                    window.location.href = `/genome/create?name=${encodeURIComponent(lcosGenerated.name)}`;
+                  }}
+                  disabled={lcosGenerating || creatingFromLcos}
+                  title="Create a full character genome with Orisha and Kabbalistic configuration"
+                >
+                  Create Full Genome
+                </button>
+              )}
             </div>
           </div>
         )}
