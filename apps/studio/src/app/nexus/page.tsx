@@ -5,6 +5,7 @@ import ReactFlow, {
   Node,
   Edge,
   Connection,
+  ConnectionMode,
   useNodesState,
   useEdgesState,
   Controls,
@@ -60,6 +61,7 @@ import { WorldNode } from '@/components/world/WorldNode';
 import { RelationshipEdge } from '@/components/world/RelationshipEdge';
 import { ConnectionEdge } from '@/components/world/ConnectionEdge';
 import { CharacterDetailPanel } from '@/components/world/CharacterDetailPanel';
+import { SuggestedRelationshipsPanel } from '@/components/world/SuggestedRelationshipsPanel';
 import { SceneDetailPanel } from '@/components/world/SceneDetailPanel';
 import { WorldDetailPanel } from '@/components/world/WorldDetailPanel';
 import { RelationshipDetailPanel } from '@/components/world/RelationshipDetailPanel';
@@ -130,6 +132,20 @@ export default function WorldBuilderPage() {
 
   // Shift+click connection state
   const [shiftConnectSource, setShiftConnectSource] = useState<string | null>(null);
+
+  // Shift-held state for full-surface drag connect
+  const [shiftHeld, setShiftHeld] = useState(false);
+
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => { if (e.key === 'Shift') setShiftHeld(true); };
+    const onKeyUp = (e: KeyboardEvent) => { if (e.key === 'Shift') setShiftHeld(false); };
+    window.addEventListener('keydown', onKeyDown);
+    window.addEventListener('keyup', onKeyUp);
+    return () => {
+      window.removeEventListener('keydown', onKeyDown);
+      window.removeEventListener('keyup', onKeyUp);
+    };
+  }, []);
 
   // Node types
   const nodeTypes: NodeTypes = useMemo(() => ({
@@ -214,9 +230,11 @@ export default function WorldBuilderPage() {
           id: nodeId,
           type: 'character',
           position,
+          draggable: !shiftHeld,
           data: {
             character: char,
             isConnectSource: shiftConnectSource === nodeId,
+            shiftHeld,
             onClick: () => {
               setSelectedRelationship(null);
               setSelectedConnection(null);
@@ -239,9 +257,11 @@ export default function WorldBuilderPage() {
           id: nodeId,
           type: 'scene',
           position,
+          draggable: !shiftHeld,
           data: {
             scene,
             isConnectSource: shiftConnectSource === nodeId,
+            shiftHeld,
             onClick: () => {
               setSelectedRelationship(null);
               setSelectedConnection(null);
@@ -264,9 +284,11 @@ export default function WorldBuilderPage() {
           id: nodeId,
           type: 'world',
           position,
+          draggable: !shiftHeld,
           data: {
             world,
             isConnectSource: shiftConnectSource === nodeId,
+            shiftHeld,
             onClick: () => {
               setSelectedRelationship(null);
               setSelectedConnection(null);
@@ -279,7 +301,7 @@ export default function WorldBuilderPage() {
     }
 
     setNodes(newNodes);
-  }, [characters, scenes, worlds, showCharacters, showScenes, showWorlds, shiftConnectSource, setNodes]);
+  }, [characters, scenes, worlds, showCharacters, showScenes, showWorlds, shiftConnectSource, shiftHeld, setNodes]);
 
   // Build edges from relationships and connections
   useEffect(() => {
@@ -840,6 +862,7 @@ export default function WorldBuilderPage() {
           onNodeClick={onNodeClick}
           nodeTypes={nodeTypes}
           edgeTypes={edgeTypes}
+          connectionMode={shiftHeld ? ConnectionMode.Loose : ConnectionMode.Strict}
           snapToGrid={snapToGrid}
           snapGrid={[20, 20]}
           fitView
@@ -854,10 +877,17 @@ export default function WorldBuilderPage() {
       {/* Right Panel */}
       <div className="right-panel-container">
         {selectedCharacter && (
-          <CharacterDetailPanel
-            character={selectedCharacter}
-            onClose={() => setSelectedEntity(null)}
-          />
+          <>
+            <CharacterDetailPanel
+              character={selectedCharacter}
+              onClose={() => setSelectedEntity(null)}
+            />
+            <SuggestedRelationshipsPanel
+              selectedCharacter={selectedCharacter}
+              allCharacters={characters}
+              onCreateRelationship={handleCreateRelationship}
+            />
+          </>
         )}
         {selectedScene && (
           <SceneDetailPanel

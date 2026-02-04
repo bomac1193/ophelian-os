@@ -712,6 +712,13 @@ body {
   border: 2px solid var(--background) !important;
 }
 
+/* Shift-held node visual indicator */
+.character-node-shift,
+.scene-node-shift,
+.world-node-shift {
+  cursor: crosshair !important;
+}
+
 /* Shift+Click Connection Source State */
 .character-node-connecting {
   border-color: #f59e0b !important;
@@ -1709,4 +1716,322 @@ body {
   color: var(--muted-foreground);
   text-align: center;
   padding: 0.75rem;
+}
+
+/* ============================================
+   Suggested Relationships Panel
+   ============================================ */
+
+.suggested-panel {
+  border-top: 1px solid var(--border);
+  background: var(--background);
+  padding: 0.75rem 1rem;
+}
+
+.suggested-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  padding: 0.25rem 0;
+}
+
+.suggested-panel-title {
+  font-family: 'Futura', 'Futura PT', 'Century Gothic', monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted-foreground);
+}
+
+.suggested-panel-toggle {
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+  font-weight: 600;
+  width: 20px;
+  text-align: center;
+}
+
+.suggested-tabs {
+  display: flex;
+  gap: 0;
+  margin: 0.5rem 0;
+  border: 1px solid var(--border);
+  border-radius: 0.25rem;
+  overflow: hidden;
+}
+
+.suggested-tab {
+  flex: 1;
+  padding: 0.3rem 0;
+  font-family: monospace;
+  font-size: 0.65rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  background: var(--muted);
+  color: var(--muted-foreground);
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.suggested-tab:not(:last-child) {
+  border-right: 1px solid var(--border);
+}
+
+.suggested-tab:hover {
+  color: var(--foreground);
+  background: var(--accent);
+}
+
+.suggested-tab-active {
+  background: var(--background);
+  color: var(--foreground);
+  font-weight: 600;
+}
+
+.suggested-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.suggested-card {
+  background: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 0.375rem;
+  padding: 0.5rem 0.625rem;
+  font-family: monospace;
+}
+
+.suggested-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+
+.suggested-card-name {
+  font-size: 0.8rem;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 160px;
+}
+
+.suggested-card-pct {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--muted-foreground);
+}
+
+.suggested-bar-track {
+  width: 100%;
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  margin-bottom: 0.375rem;
+  overflow: hidden;
+}
+
+.suggested-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #14b8a6, #8b5cf6);
+  transition: width 0.3s ease;
+}
+
+.suggested-card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.375rem;
+}
+
+.suggested-wu-xing {
+  font-size: 0.7rem;
+  color: var(--muted-foreground);
+}
+
+.suggested-types {
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--muted-foreground);
+}
+
+.suggested-create-btn {
+  width: 100%;
+  background: var(--accent);
+  color: var(--foreground);
+  border: 1px solid var(--border);
+  font-family: monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 0.3rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.suggested-create-btn:hover {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  border-color: var(--primary);
+}
+
+.suggested-create-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.suggested-mentor-note {
+  font-size: 0.625rem;
+  color: #8b5cf6;
+  font-family: monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: 0.25rem;
+}
+
+/* ============================================
+   Suggestion Banner (in NewRelationshipModal)
+   ============================================ */
+
+.suggestion-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 1rem;
+  background: var(--muted);
+  border: 1px solid var(--border);
+  border-left: 3px solid #14b8a6;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+  font-family: monospace;
+}
+
+.suggestion-banner:hover {
+  border-left-color: #8b5cf6;
+}
+
+.suggestion-banner-text {
+  font-size: 0.75rem;
+  color: var(--foreground);
+  line-height: 1.4;
+}
+
+.suggestion-banner-action {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #14b8a6;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.suggestion-banner:hover .suggestion-banner-action {
+  color: #8b5cf6;
+}
+
+/* ============================================
+   Subtaste Reference Table (CharacterDetailPanel)
+   ============================================ */
+
+.subtaste-ref-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  padding: 0.25rem 0;
+}
+
+.subtaste-ref-toggle {
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+  font-weight: 600;
+  width: 20px;
+  text-align: center;
+}
+
+.subtaste-ref-designation {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.375rem;
+  margin-bottom: 0.375rem;
+}
+
+.subtaste-ref-tag {
+  font-family: monospace;
+  font-size: 0.7rem;
+  font-weight: 600;
+  background: var(--accent);
+  color: var(--foreground);
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.25rem;
+  border: 1px solid var(--border);
+}
+
+.subtaste-ref-label {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  font-style: italic;
+}
+
+.subtaste-ref-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  background: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 0.375rem;
+  overflow: hidden;
+  font-family: monospace;
+}
+
+.subtaste-ref-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.375rem 0.625rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.subtaste-ref-row:last-child {
+  border-bottom: none;
+}
+
+.subtaste-ref-key {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--muted-foreground);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.subtaste-ref-val {
+  font-size: 0.7rem;
+  color: var(--foreground);
+  text-align: right;
+}
+
+.subtaste-ref-dim {
+  color: var(--muted-foreground);
+  font-size: 0.65rem;
+}
+
+.subtaste-ref-stress {
+  color: #ef4444;
 }

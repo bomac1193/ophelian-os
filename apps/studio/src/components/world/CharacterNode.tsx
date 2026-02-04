@@ -7,11 +7,28 @@ import type { Character } from '@/lib/api';
 export interface CharacterNodeData {
   character: Character;
   isConnectSource?: boolean;
+  shiftHeld?: boolean;
   onClick: (character: Character) => void;
 }
 
+const FULLSURFACE_HANDLE_STYLE: React.CSSProperties = {
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  width: '100%',
+  height: '100%',
+  transform: 'none',
+  borderRadius: 8,
+  background: 'transparent',
+  border: '2px dashed rgba(245, 158, 11, 0.6)',
+  opacity: 1,
+  zIndex: 10,
+  cursor: 'crosshair',
+  pointerEvents: 'all',
+};
+
 function CharacterNodeComponent({ data }: NodeProps<CharacterNodeData>) {
-  const { character, isConnectSource, onClick } = data;
+  const { character, isConnectSource, shiftHeld, onClick } = data;
 
   const getInitials = (name: string) => {
     return name
@@ -24,9 +41,16 @@ function CharacterNodeComponent({ data }: NodeProps<CharacterNodeData>) {
 
   return (
     <>
-      <Handle type="target" position={Position.Top} className="character-node-handle" />
+      {/* Normal small handles for non-shift connections */}
+      {!shiftHeld && (
+        <>
+          <Handle type="target" position={Position.Top} className="character-node-handle" />
+          <Handle type="source" position={Position.Bottom} className="character-node-handle" />
+        </>
+      )}
+
       <div
-        className={`character-node ${isConnectSource ? 'character-node-connecting' : ''}`}
+        className={`character-node ${isConnectSource ? 'character-node-connecting' : ''} ${shiftHeld ? 'character-node-shift' : ''}`}
         onClick={() => onClick(character)}
       >
         <div className="character-node-avatar">
@@ -42,7 +66,24 @@ function CharacterNodeComponent({ data }: NodeProps<CharacterNodeData>) {
         </div>
         <div className="character-node-name">{character.name}</div>
       </div>
-      <Handle type="source" position={Position.Bottom} className="character-node-handle" />
+
+      {/* Full-surface handles when shift held — source to drag from, target to drop onto */}
+      {shiftHeld && (
+        <>
+          <Handle
+            type="source"
+            position={Position.Top}
+            id="shift-source"
+            style={FULLSURFACE_HANDLE_STYLE}
+          />
+          <Handle
+            type="target"
+            position={Position.Bottom}
+            id="shift-target"
+            style={FULLSURFACE_HANDLE_STYLE}
+          />
+        </>
+      )}
     </>
   );
 }

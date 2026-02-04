@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import type { Character, RelationshipType, CreateRelationshipInput } from '@/lib/api';
 import { generateRelationshipLore } from '@/lib/api';
+import { computeSuggestionForPair } from '@/components/world/SuggestedRelationshipsPanel';
 
 interface NewRelationshipModalProps {
   isOpen: boolean;
@@ -39,8 +40,60 @@ export function NewRelationshipModal({
   const [sourceRole, setSourceRole] = useState('');
   const [targetRole, setTargetRole] = useState('');
   const [lore, setLore] = useState('');
+  const [suggestionApplied, setSuggestionApplied] = useState(false);
+
+  // Compute suggestion when characters are available
+  const suggestion = useMemo(() => {
+    if (!sourceCharacter || !targetCharacter) return null;
+    return computeSuggestionForPair(sourceCharacter, targetCharacter);
+  }, [sourceCharacter?.id, targetCharacter?.id]);
+
+  // Auto-apply suggestion on first open (pre-select the suggested type)
+  useEffect(() => {
+    if (isOpen && suggestion && !suggestionApplied) {
+      const sugType = suggestion.suggestedType as RelationshipType;
+      if (RELATIONSHIP_TYPES.includes(sugType)) {
+        setRelationshipType(sugType);
+      }
+      // Pre-fill mentor roles if applicable
+      if (suggestion.mentorDirection && sourceCharacter && targetCharacter) {
+        if (suggestion.mentorDirection.mentorIsA) {
+          setSourceRole('Mentor');
+          setTargetRole('Student');
+        } else {
+          setSourceRole('Student');
+          setTargetRole('Mentor');
+        }
+      }
+      setSuggestionApplied(true);
+    }
+  }, [isOpen, suggestion, suggestionApplied, sourceCharacter, targetCharacter]);
+
+  // Reset applied flag when modal closes
+  useEffect(() => {
+    if (!isOpen) {
+      setSuggestionApplied(false);
+    }
+  }, [isOpen]);
 
   if (!isOpen || !sourceCharacter || !targetCharacter) return null;
+
+  const handleApplySuggestion = () => {
+    if (!suggestion) return;
+    const sugType = suggestion.suggestedType as RelationshipType;
+    if (RELATIONSHIP_TYPES.includes(sugType)) {
+      setRelationshipType(sugType);
+    }
+    if (suggestion.mentorDirection) {
+      if (suggestion.mentorDirection.mentorIsA) {
+        setSourceRole('Mentor');
+        setTargetRole('Student');
+      } else {
+        setSourceRole('Student');
+        setTargetRole('Mentor');
+      }
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -120,6 +173,14 @@ export function NewRelationshipModal({
           </div>
         </div>
 
+        {/* Suggestion Banner */}
+        {suggestion && (
+          <div className="suggestion-banner" onClick={handleApplySuggestion}>
+            <span className="suggestion-banner-text">{suggestion.narrative}</span>
+            <span className="suggestion-banner-action">Apply</span>
+          </div>
+        )}
+
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label className="label">Relationship Type</label>
@@ -131,6 +192,7 @@ export function NewRelationshipModal({
               {RELATIONSHIP_TYPES.map((type) => (
                 <option key={type} value={type}>
                   {type.toLowerCase().replace('_', ' ')}
+                  {suggestion && type === suggestion.suggestedType ? ' (suggested)' : ''}
                 </option>
               ))}
             </select>
@@ -151,7 +213,7 @@ export function NewRelationshipModal({
           )}
 
           <div className="form-group">
-            <label className="label">{sourceCharacter.name}'s Role (optional)</label>
+            <label className="label">{sourceCharacter.name}&apos;s Role (optional)</label>
             <input
               type="text"
               className="input"
@@ -162,7 +224,7 @@ export function NewRelationshipModal({
           </div>
 
           <div className="form-group">
-            <label className="label">{targetCharacter.name}'s Role (optional)</label>
+            <label className="label">{targetCharacter.name}&apos;s Role (optional)</label>
             <input
               type="text"
               className="input"
@@ -200,7 +262,7 @@ export function NewRelationshipModal({
               </button>
             </div>
             <p className="generate-hint">
-              "Generate Mythos" weaves a unique story based on selected type. "Randomize All" picks a random type and creates matching mythos.
+              &ldquo;Generate Mythos&rdquo; weaves a unique story based on selected type. &ldquo;Randomize All&rdquo; picks a random type and creates matching mythos.
             </p>
           </div>
 

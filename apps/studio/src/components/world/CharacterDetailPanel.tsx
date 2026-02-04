@@ -1,7 +1,17 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import type { Character } from '@/lib/api';
+import { getSubtasteInfo } from '@/components/world/SuggestedRelationshipsPanel';
+
+const WU_XING_SYMBOLS: Record<string, string> = {
+  wood: '\u6728 Wood',
+  fire: '\u706b Fire',
+  earth: '\u571f Earth',
+  metal: '\u91d1 Metal',
+  water: '\u6c34 Water',
+};
 
 interface CharacterDetailPanelProps {
   character: Character;
@@ -9,6 +19,8 @@ interface CharacterDetailPanelProps {
 }
 
 export function CharacterDetailPanel({ character, onClose }: CharacterDetailPanelProps) {
+  const [showSubtaste, setShowSubtaste] = useState(false);
+
   const getInitials = (name: string) => {
     return name
       .split(' ')
@@ -17,6 +29,8 @@ export function CharacterDetailPanel({ character, onClose }: CharacterDetailPane
       .toUpperCase()
       .slice(0, 2);
   };
+
+  const subtasteInfo = getSubtasteInfo(character);
 
   return (
     <div className="detail-panel">
@@ -79,6 +93,76 @@ export function CharacterDetailPanel({ character, onClose }: CharacterDetailPane
         <div className="detail-section">
           <label className="label">Current Arc</label>
           <p className="detail-text">{character.currentArc}</p>
+        </div>
+      )}
+
+      {/* Subtaste Compatibility Reference */}
+      {subtasteInfo && (
+        <div className="detail-section">
+          <div
+            className="subtaste-ref-header"
+            onClick={() => setShowSubtaste(!showSubtaste)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => { if (e.key === 'Enter') setShowSubtaste(!showSubtaste); }}
+          >
+            <label className="label" style={{ cursor: 'pointer', margin: 0 }}>
+              Subtaste Profile
+            </label>
+            <span className="subtaste-ref-toggle">{showSubtaste ? '\u2212' : '+'}</span>
+          </div>
+
+          {/* Always show the designation tag */}
+          <div className="subtaste-ref-designation">
+            <span className="subtaste-ref-tag">{subtasteInfo.subtaste}</span>
+            <span className="subtaste-ref-label">{subtasteInfo.label}</span>
+          </div>
+
+          {showSubtaste && (
+            <div className="subtaste-ref-body">
+              {/* Wu Xing Element */}
+              <div className="subtaste-ref-row">
+                <span className="subtaste-ref-key">Wu Xing</span>
+                <span className="subtaste-ref-val">
+                  {WU_XING_SYMBOLS[subtasteInfo.wuXingElement] || subtasteInfo.wuXingElement}
+                  <span className="subtaste-ref-dim"> ({subtasteInfo.phase} phase)</span>
+                </span>
+              </div>
+
+              {/* Growth Arrow */}
+              <div className="subtaste-ref-row">
+                <span className="subtaste-ref-key">Growth &rarr;</span>
+                <span className="subtaste-ref-val">
+                  {subtasteInfo.growth}
+                  <span className="subtaste-ref-dim"> ({subtasteInfo.growthLabel})</span>
+                </span>
+              </div>
+
+              {/* Stress Arrow */}
+              <div className="subtaste-ref-row">
+                <span className="subtaste-ref-key">Stress &rarr;</span>
+                <span className="subtaste-ref-val subtaste-ref-stress">
+                  {subtasteInfo.stress}
+                  <span className="subtaste-ref-dim"> ({subtasteInfo.stressLabel})</span>
+                </span>
+              </div>
+
+              {/* Element Relationships */}
+              <div className="subtaste-ref-row">
+                <span className="subtaste-ref-key">Generates</span>
+                <span className="subtaste-ref-val">
+                  {WU_XING_SYMBOLS[subtasteInfo.generates] || subtasteInfo.generates} types
+                </span>
+              </div>
+
+              <div className="subtaste-ref-row">
+                <span className="subtaste-ref-key">Overcome by</span>
+                <span className="subtaste-ref-val subtaste-ref-stress">
+                  {WU_XING_SYMBOLS[subtasteInfo.overcomeBy] || subtasteInfo.overcomeBy} types
+                </span>
+              </div>
+            </div>
+          )}
         </div>
       )}
 

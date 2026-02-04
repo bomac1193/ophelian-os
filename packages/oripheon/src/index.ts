@@ -4,6 +4,8 @@
  * Generates mythic AI character profiles with rich names, personalities, and backstories
  */
 
+import { deriveHexagramReading, type HexagramReading } from './data/iching-data.js';
+
 // ============================================================================
 // TYPES
 // ============================================================================
@@ -213,6 +215,7 @@ export interface LCOSGeneratedCharacter {
   pseudonym?: string;  // Short evocative name for relic objects
   samplePost?: string;  // Sample social media post (modern relics only)
   sacredNumber?: number;  // Archetype-specific symbolic number
+  hexagram?: HexagramReading;  // I Ching hexagram derived from personality axes
   subtaste?: { code: string; glyph: string; label: string; description: string; phase: string };  // Subtaste classification
   subdominantArcana?: Array<{
     arcana: ArchetypeInfo;
@@ -1164,6 +1167,97 @@ const RELIC_ERA_TIMELESS = {
     'a £1 fish from the fishmonger who sold Jonah\'s whale',
   ],
   givers: [
+    'a Deliveroo rider on Sleipnir',
+    'a market trader selling relics out of a chariot',
+    'a shaman who also does Avon',
+    'an oracle moonlighting as a TikTok psychic',
+    'a grime MC channeling dead poets',
+    'a bouncer at the gates of Valhalla',
+    'a nail tech who paints sigils',
+    'a barber who cuts fate\'s threads',
+    'a corner-shop owner descended from pharaohs',
+    'a fishmonger whose ancestors fished the Styx',
+    'a kebab shop mystic, third eye and chilli sauce',
+    'a bookies cashier who reads the bones',
+    'a market-stall prophet with a megaphone',
+    'a nan who remembers before the world started',
+    'a bus driver on the night route through limbo',
+    'a postman delivering letters between epochs',
+    'a charity shop volunteer sorting through centuries',
+    'a park warden guarding sacred groves in Zone 4',
+    'a lollipop lady at the crossroads of destiny',
+    'a chip shop philosopher with oil-burn stigmata',
+  ],
+  contexts: [
+    'at a car boot sale in a ley-line car park',
+    'in the Primark changing rooms during a blood moon',
+    'at a council estate bonfire summoning old gods',
+    'during a rave in a deconsecrated cathedral',
+    'at a Wetherspoons pub quiz on sacred geometry',
+    'in a Turkish barbershop between worlds',
+    'during a hen do that accidentally became a ritual',
+    'at a Lidl middle aisle sale where time folded',
+    'in a nail salon where the UV lamps open portals',
+    'during a wake that turned into an exorcism',
+    'at a jumble sale in a mosque built over a henge',
+    'in the queue at Greggs when the veil thinned',
+    'at a youth club on the ruins of a Roman bath',
+    'during a block party on consecrated ground',
+    'in a laundrette whose spin cycle bends spacetime',
+    'at a bingo hall built over a plague pit',
+    'during Sports Day at an academy on a burial mound',
+    'at a chip shop at the edge of a fairy ring',
+    'in a betting shop where all the odds are prophecy',
+    'during a freestyle cypher in a stone circle',
+  ],
+};
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const _RELIC_ERA_TIMELESS_DEDUP = {
+  objects: [
+    // High-low culture collision
+    'one-legged Primark mannequin wearing a Byzantine halo',
+    'Hermès birkin made of council estate radiator covers',
+    'Fabergé egg containing a Greggs steak bake, still warm',
+    'Versace durag stitched from the Shroud of Turin',
+    'Louis Vuitton carrier bag from Argos, receipt from Babylon',
+    'Nike Air Max 95s resoled with marble from the Parthenon',
+    'Gucci belt with a buckle forged at Vulcan\'s anvil',
+    'Supreme hoodie embroidered by Cistercian monks',
+    'Balenciaga crocs blessed by a Vodou priestess',
+    'Cartier sovereign ring with a stone from the Kaaba',
+    // Sacred mundane horror
+    'Starbucks loyalty card, infinite stars, accepted in purgatory',
+    'Tesco Clubcard with points accrued across seven incarnations',
+    'Deliveroo bag that delivers offerings to dead ancestors',
+    'JD Sports receipt signed by Hermes (the god, not the courier)',
+    'B&M Bargains candle that burns with foxfire since the Crusades',
+    'Aldi middle aisle find: one (1) Holy Grail, slightly chipped',
+    'Sports Direct mug containing the wine-dark sea',
+    'a Wetherspoons menu written in Enochian',
+    // Objects between eras
+    'obsidian iPhone case that answers prayers on silent mode',
+    'cathedral window made of vape juice and stained glass',
+    'medieval tapestry depicting a McDonald\'s drive-through at 3am',
+    'clay tablet with cuneiform TikTok comments',
+    'pharaoh\'s sceptre doubling as a Dyson Airwrap',
+    'Viking longship steering oar repurposed as an e-scooter handlebar',
+    'Roman mosaic of someone\'s Uber rating: 1 star',
+    'bando smoke alarm that detects spiritual presence',
+    // Quantum trickster objects
+    'betting slip from Paddy Power, odds on the apocalypse',
+    'Oyster card valid in the underworld (Zone 6+)',
+    'NHS prescription for immortality, out of stock',
+    'council tax bill for a dimension that doesn\'t exist yet',
+    'Sainsbury\'s Taste the Difference ambrosia, nectar of the gods (reduced)',
+    'parking ticket issued by an archangel, unpaid',
+    'an ASOS return label for your mortal body',
+    'a Shein haul from the court of Versailles',
+    'Poundland tiara that crowns actual monarchs',
+    'a £1 fish from the fishmonger who sold Jonah\'s whale',
+  ],
+  givers: [
+    // Trickster figures at the intersection
     'a Deliveroo rider on Sleipnir',
     'a market trader selling relics out of a chariot',
     'a shaman who also does Avon',
@@ -2586,6 +2680,7 @@ export function generateLCOSCharacter(params: LCOSGenerationParams = {}): LCOSGe
     ...(pseudonym ? { pseudonym } : {}),
     ...(samplePost ? { samplePost } : {}),
     ...(sacredNumber !== undefined ? { sacredNumber } : {}),
+    hexagram: deriveHexagramReading(personality.axes),
     subtaste: subtasteDesignation,
     subdominantArcana,
     approximateMBTI: deriveApproximateMBTI(personality.axes),
@@ -2614,18 +2709,28 @@ export { generatePseudonym as generateRelicPseudonymNew } from './lib/relic-gene
 export {
   type SubtasteDesignation,
   type CreativePhase,
+  type PipelinePhase,
   type PipelineCoverage,
   type EntityProfileInput,
   type PolarityReading,
   type ProfileAnalysis,
   type ProfileComparison,
+  type WuXingElement,
+  type RelationalCycle,
+  type SubtasteArrow,
   SUBTASTE_DESIGNATIONS,
   ARCHETYPE_TO_SUBTASTE,
   PHASE_LABELS,
   PIPELINE_ORDER,
+  WU_XING_ELEMENTS,
+  WU_XING_DATA,
+  SUBTASTE_ARROWS,
   getSubtasteDesignation,
+  getWuXingRelation,
   analyzePipelineCoverage,
   deriveApproximateMBTI,
   analyzeEntityProfile,
   compareProfiles,
 } from './data/subtaste-data.js';
+export * from './data/iching-data.js';
+export * from './data/compatibility-data.js';

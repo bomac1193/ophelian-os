@@ -250,6 +250,65 @@ export const PHASE_LABELS: Record<CreativePhase, { label: string; description: s
 /** All five phases in pipeline order. */
 export const PIPELINE_ORDER: CreativePhase[] = ['genesis', 'vision', 'refinement', 'manifestation', 'flow'];
 
+/** Alias for compatibility-data module imports. */
+export type PipelinePhase = CreativePhase;
+
+// ============================================================================
+// WU XING (FIVE ELEMENTS)
+// ============================================================================
+
+export type WuXingElement = 'wood' | 'fire' | 'earth' | 'metal' | 'water';
+
+/** Map each creative phase to its Wu Xing element. */
+export const WU_XING_ELEMENTS: Record<CreativePhase, WuXingElement> = {
+  genesis: 'fire',
+  vision: 'wood',
+  refinement: 'metal',
+  manifestation: 'earth',
+  flow: 'water',
+};
+
+/** Generating (shēng) and overcoming (kè) cycles. */
+export const WU_XING_DATA: Record<WuXingElement, { generating: WuXingElement; overcoming: WuXingElement }> = {
+  wood: { generating: 'fire', overcoming: 'earth' },
+  fire: { generating: 'earth', overcoming: 'metal' },
+  earth: { generating: 'metal', overcoming: 'water' },
+  metal: { generating: 'water', overcoming: 'wood' },
+  water: { generating: 'wood', overcoming: 'fire' },
+};
+
+export type RelationalCycle = 'generating' | 'overcoming' | 'neutral';
+
+export function getWuXingRelation(a: WuXingElement, b: WuXingElement): RelationalCycle {
+  if (WU_XING_DATA[a].generating === b || WU_XING_DATA[b].generating === a) return 'generating';
+  if (WU_XING_DATA[a].overcoming === b || WU_XING_DATA[b].overcoming === a) return 'overcoming';
+  return 'neutral';
+}
+
+// ============================================================================
+// SUBTASTE GROWTH / STRESS ARROWS
+// ============================================================================
+
+export interface SubtasteArrow {
+  growth: string;
+  stress: string;
+}
+
+export const SUBTASTE_ARROWS: Record<string, SubtasteArrow> = {
+  'S-0':  { growth: 'D-8',  stress: 'R-10' },
+  'T-1':  { growth: 'N-5',  stress: 'P-7' },
+  'V-2':  { growth: 'L-3',  stress: 'C-4' },
+  'L-3':  { growth: 'S-0',  stress: 'D-8' },
+  'C-4':  { growth: 'H-6',  stress: 'R-10' },
+  'N-5':  { growth: 'V-2',  stress: 'NULL' },
+  'H-6':  { growth: 'T-1',  stress: 'F-9' },
+  'P-7':  { growth: 'C-4',  stress: 'L-3' },
+  'D-8':  { growth: 'F-9',  stress: 'N-5' },
+  'F-9':  { growth: 'N-5',  stress: 'C-4' },
+  'R-10': { growth: 'H-6',  stress: 'S-0' },
+  'NULL': { growth: 'R-10', stress: 'T-1' },
+};
+
 /**
  * Pipeline coverage report for a group of Subtaste designations.
  * Useful for team composition analysis — identifies which creative phases
@@ -404,6 +463,15 @@ export interface ProfileAnalysis {
   dominantEnergy: 'hot' | 'cool' | 'crossroads';
   coherenceScore: number;
   summary: string;
+  /** Wu Xing element derived from pipeline phase */
+  wuXingElement: WuXingElement;
+  /** Raw numeric axis values (0-1) for compatibility computations */
+  axes: {
+    orderChaos: number;
+    mercyRuthlessness: number;
+    introvertExtrovert: number;
+    faithDoubt: number;
+  };
 }
 
 function interpretAxis(value: number, lowLabel: string, highLabel: string): PolarityReading {
@@ -504,6 +572,8 @@ export function analyzeEntityProfile(entity: EntityProfileInput): ProfileAnalysi
     dominantEnergy,
     coherenceScore,
     summary,
+    wuXingElement: WU_XING_ELEMENTS[subtaste.phase],
+    axes: entity.axes,
   };
 }
 
@@ -522,6 +592,14 @@ export interface ProfileComparison {
   };
   dynamicType: 'mirror' | 'complement' | 'friction' | 'parallel';
   summary: string;
+  /** Alias for dynamicType — used by compatibility matrix */
+  pattern: 'mirror' | 'complement' | 'friction' | 'parallel';
+  /** Wu Xing relational cycle between the two profiles */
+  relationalCycle: RelationalCycle;
+  /** Average axis distance (0-1) */
+  overallDistance: number;
+  /** Human-readable relationship narrative */
+  narrative: string;
 }
 
 /**
@@ -610,11 +688,26 @@ export function compareProfiles(profileA: ProfileAnalysis, profileB: ProfileAnal
 
   const summary = `${(compatibility * 100).toFixed(0)}% compatible · ${dynamicType} — ${dynamicLabels[dynamicType]}`;
 
+  // Wu Xing relational cycle
+  const relationalCycle = getWuXingRelation(profileA.wuXingElement, profileB.wuXingElement);
+
+  // Narrative
+  let narrative = summary;
+  if (relationalCycle === 'generating') {
+    narrative += '. A generative Wu Xing cycle connects them — creative potential flows naturally.';
+  } else if (relationalCycle === 'overcoming') {
+    narrative += '. An overcoming Wu Xing cycle creates tension — one element challenges the other.';
+  }
+
   return {
     compatibility,
     complementaryPhases,
     axisDeltas,
     dynamicType,
     summary,
+    pattern: dynamicType,
+    relationalCycle,
+    overallDistance: avgDelta,
+    narrative,
   };
 }
