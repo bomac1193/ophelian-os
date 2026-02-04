@@ -1,0 +1,620 @@
+/**
+ * Subtaste Classification Module
+ * 12 Subtaste designations, archetype-to-subtaste mapping, and creative pipeline phases.
+ *
+ * Pipeline phases encode *when* in a creative process each glyph is most potent,
+ * inspired by Team Dimensions Profile but expressed in native Bóveda vocabulary.
+ * See docs/analysis-external-profiling-frameworks.md for the full rationale.
+ *
+ * Ported from Slayt characterGenerator.js
+ */
+
+// ============================================================================
+// SUBTASTE DESIGNATION TYPE
+// ============================================================================
+
+/**
+ * Creative pipeline phase — when in a creative process this glyph is most potent.
+ *
+ * genesis       — ideation, destruction of old forms, raw creation
+ * vision        — scouting, direction-setting, early pattern recognition
+ * refinement    — structural analysis, editing, quality control
+ * manifestation — patient execution, relentless driving
+ * flow          — channeling, bridging, preserving, holding space
+ */
+export type CreativePhase = 'genesis' | 'vision' | 'refinement' | 'manifestation' | 'flow';
+
+export interface SubtasteDesignation {
+  code: string;
+  glyph: string;
+  label: string;
+  description: string;
+  phase: CreativePhase;
+}
+
+// ============================================================================
+// 12 SUBTASTE DESIGNATIONS
+// ============================================================================
+
+export const SUBTASTE_DESIGNATIONS: Record<string, SubtasteDesignation> = {
+  'S-0': {
+    code: 'S-0',
+    glyph: 'KETH',
+    label: 'Standard-Bearer',
+    description: 'Sets the tone others follow. Defines the center through presence alone.',
+    phase: 'vision',
+  },
+  'T-1': {
+    code: 'T-1',
+    glyph: 'STRATA',
+    label: 'System-Seer',
+    description: 'Reads the layers beneath the surface. Understands structure as language.',
+    phase: 'refinement',
+  },
+  'V-2': {
+    code: 'V-2',
+    glyph: 'OMEN',
+    label: 'Early Witness',
+    description: 'Sees what approaches before others sense it. The first to know.',
+    phase: 'vision',
+  },
+  'L-3': {
+    code: 'L-3',
+    glyph: 'SILT',
+    label: 'Patient Cultivator',
+    description: 'Grows things slowly. Trusts the accumulation of small, quiet acts.',
+    phase: 'manifestation',
+  },
+  'C-4': {
+    code: 'C-4',
+    glyph: 'CULL',
+    label: 'Essential Editor',
+    description: 'Removes what is unnecessary. Finds power in reduction.',
+    phase: 'refinement',
+  },
+  'N-5': {
+    code: 'N-5',
+    glyph: 'LIMN',
+    label: 'Border Illuminator',
+    description: 'Traces the edges of things. Gives shape to what has none.',
+    phase: 'flow',
+  },
+  'H-6': {
+    code: 'H-6',
+    glyph: 'TOLL',
+    label: 'Relentless Advocate',
+    description: 'Pays the cost. Champions at personal expense.',
+    phase: 'manifestation',
+  },
+  'P-7': {
+    code: 'P-7',
+    glyph: 'VAULT',
+    label: 'Living Archive',
+    description: 'Preserves what others discard. Memory made flesh.',
+    phase: 'flow',
+  },
+  'D-8': {
+    code: 'D-8',
+    glyph: 'WICK',
+    label: 'Hollow Channel',
+    description: 'Empties the self to receive. Conducts what passes through.',
+    phase: 'flow',
+  },
+  'F-9': {
+    code: 'F-9',
+    glyph: 'ANVIL',
+    label: 'Manifestor',
+    description: 'Hammers will into shape. Creates through force and intention.',
+    phase: 'genesis',
+  },
+  'R-10': {
+    code: 'R-10',
+    glyph: 'SCHISM',
+    label: 'Productive Fracture',
+    description: 'Breaks things so they can grow. Finds creation in destruction.',
+    phase: 'genesis',
+  },
+  'NULL': {
+    code: 'NULL',
+    glyph: 'VOID',
+    label: 'Receptive Presence',
+    description: 'Holds space. Neither pushes nor pulls. The still point.',
+    phase: 'flow',
+  },
+};
+
+// ============================================================================
+// ARCHETYPE TO SUBTASTE MAPPING
+// ============================================================================
+
+export const ARCHETYPE_TO_SUBTASTE: Record<string, string> = {
+  // === TAROT (22 archetypes) ===
+  fool: 'V-2',           // wanderer sees what's coming
+  magician: 'F-9',       // manifests will into reality
+  high_priestess: 'D-8', // receives hidden knowledge
+  empress: 'L-3',        // nurtures, patient growth
+  emperor: 'S-0',        // sets the standard
+  hierophant: 'P-7',     // preserves tradition
+  lovers: 'N-5',         // illuminates the border between self and other
+  chariot: 'H-6',        // pays the cost, drives forward
+  strength: 'S-0',       // embodies standard through gentle force
+  hermit: 'T-1',         // sees the systems beneath
+  wheel_of_fortune: 'V-2', // witnesses the turning
+  justice: 'C-4',        // cuts what is unjust
+  hanged_man: 'D-8',     // empties self, suspends
+  death: 'R-10',         // productive destruction
+  temperance: 'N-5',     // traces the balance point
+  devil: 'H-6',          // relentless about shadow truth
+  tower: 'R-10',         // breaks so things can grow
+  star: 'L-3',           // patient cultivation of hope
+  moon: 'D-8',           // channels the unconscious
+  sun: 'F-9',            // manifests joy and vitality
+  judgement: 'C-4',      // essential editing, the call
+  world: 'S-0',          // the completed standard
+
+  // === JUNG (12 archetypes) ===
+  innocent: 'L-3',       // patient trust
+  sage: 'T-1',           // system seer
+  explorer: 'V-2',       // early witness of new territory
+  outlaw: 'R-10',        // productive fracture
+  // magician already mapped above (tarot takes priority)
+  hero: 'H-6',           // relentless advocate
+  lover: 'N-5',          // border illuminator
+  jester: 'V-2',         // sees truth early through humor
+  everyman: 'P-7',       // living archive of the common
+  caregiver: 'L-3',      // patient cultivation
+  ruler: 'S-0',          // standard bearer
+  creator: 'F-9',        // manifestor
+
+  // === KABBALAH (20 archetypes) ===
+  kether: 'S-0',         // divine standard
+  chokmah: 'F-9',        // creative force manifests
+  binah: 'T-1',          // understanding as system seeing
+  chesed: 'L-3',         // abundant patience
+  geburah: 'C-4',        // severity as essential editing
+  tiphareth: 'N-5',      // beauty traces borders
+  netzach: 'H-6',        // victory through advocacy
+  hod: 'T-1',            // intellect reads systems
+  yesod: 'D-8',          // foundation channels dreams
+  malkuth: 'P-7',        // kingdom preserves manifestation
+  // Qliphoth
+  thaumiel: 'R-10',      // duality fractures
+  ghagiel: 'R-10',       // chaos as productive break
+  satariel: 'D-8',       // concealment channels
+  gamchicoth: 'C-4',     // devouring as editing
+  golachab: 'H-6',       // wrath as advocacy
+  thagirion: 'V-2',      // disputer sees early
+  harab_serapel: 'D-8',  // death ravens channel
+  samael: 'C-4',         // poison edits
+  gamaliel: 'D-8',       // unconscious channel
+  lilith: 'R-10',        // autonomy through fracture
+
+  // === ORISHA (12 archetypes) ===
+  obatala: 'S-0',        // sky father sets standard
+  ogun: 'F-9',           // iron forge manifests
+  shango: 'H-6',         // thunder advocates justice
+  yemoja: 'L-3',         // ocean mother cultivates
+  oshun: 'N-5',          // river illuminates borders
+  eshu: 'V-2',           // crossroads sees first
+  oya: 'R-10',           // storm fractures productively
+  orunmila: 'T-1',       // divination reads systems
+  osanyin: 'P-7',        // herbs preserved as archive
+  babalu_aye: 'H-6',     // healing through toll
+  olokun: 'D-8',         // deep ocean channels
+  aganju: 'F-9',         // volcano manifests raw power
+
+  // === NORSE (12 archetypes) ===
+  odin: 'T-1',           // allfather reads systems (runes)
+  thor: 'H-6',           // thunder advocates protection
+  freya: 'N-5',          // love illuminates borders
+  loki: 'R-10',          // trickster fractures productively
+  tyr: 'C-4',            // sacrifice as essential editing
+  heimdall: 'V-2',       // guardian witnesses early
+  baldur: 'L-3',         // light cultivates patiently
+  hel: 'D-8',            // death channels the threshold
+  frigg: 'P-7',          // foresight as living archive
+  njord: 'L-3',          // sea prosperity cultivates
+  skadi: 'C-4',          // winter hunts, edits essentials
+  idun: 'P-7',           // youth preserved as archive
+};
+
+// ============================================================================
+// LOOKUP FUNCTION
+// ============================================================================
+
+/**
+ * Get the Subtaste designation for a given archetype system and archetype name.
+ * Returns NULL/VOID if no mapping is found.
+ */
+export function getSubtasteDesignation(system: string, archetype: string): SubtasteDesignation {
+  const normalized = archetype.toLowerCase().replace(/ /g, '_');
+  const code = ARCHETYPE_TO_SUBTASTE[normalized] || 'NULL';
+  return SUBTASTE_DESIGNATIONS[code] || SUBTASTE_DESIGNATIONS['NULL']!;
+}
+
+// ============================================================================
+// CREATIVE PIPELINE ANALYSIS
+// ============================================================================
+
+/**
+ * Phase labels for display — native Bóveda vocabulary for Team Dimensions concepts.
+ */
+export const PHASE_LABELS: Record<CreativePhase, { label: string; description: string }> = {
+  genesis: { label: 'Genesis', description: 'Breaks old forms and forges new ones' },
+  vision: { label: 'Vision', description: 'Scouts ahead and sets direction' },
+  refinement: { label: 'Refinement', description: 'Analyzes structure and edits excess' },
+  manifestation: { label: 'Manifestation', description: 'Drives patiently toward completion' },
+  flow: { label: 'Flow', description: 'Channels, bridges, preserves, and holds space' },
+};
+
+/** All five phases in pipeline order. */
+export const PIPELINE_ORDER: CreativePhase[] = ['genesis', 'vision', 'refinement', 'manifestation', 'flow'];
+
+/**
+ * Pipeline coverage report for a group of Subtaste designations.
+ * Useful for team composition analysis — identifies which creative phases
+ * are covered and which are gaps.
+ */
+export interface PipelineCoverage {
+  /** Count of members in each phase */
+  counts: Record<CreativePhase, number>;
+  /** Phases with at least one member */
+  covered: CreativePhase[];
+  /** Phases with zero members — the gaps */
+  gaps: CreativePhase[];
+  /** 0-1 ratio of phases covered */
+  coverageRatio: number;
+}
+
+/**
+ * Analyze creative pipeline coverage for a group of Subtaste designations.
+ *
+ * @param subtastes - Array of SubtasteDesignation objects (e.g., from a team of characters)
+ * @returns Pipeline coverage report with counts, covered phases, gaps, and ratio
+ *
+ * @example
+ * ```ts
+ * const team = [getSubtasteDesignation('tarot', 'magician'), getSubtasteDesignation('tarot', 'hermit')];
+ * const coverage = analyzePipelineCoverage(team);
+ * // coverage.gaps → ['vision', 'manifestation', 'flow'] — these phases need more members
+ * ```
+ */
+export function analyzePipelineCoverage(subtastes: SubtasteDesignation[]): PipelineCoverage {
+  const counts: Record<CreativePhase, number> = {
+    genesis: 0,
+    vision: 0,
+    refinement: 0,
+    manifestation: 0,
+    flow: 0,
+  };
+
+  for (const s of subtastes) {
+    if (s.phase && counts[s.phase] !== undefined) {
+      counts[s.phase]++;
+    }
+  }
+
+  const covered = PIPELINE_ORDER.filter(p => counts[p] > 0);
+  const gaps = PIPELINE_ORDER.filter(p => counts[p] === 0);
+
+  return {
+    counts,
+    covered,
+    gaps,
+    coverageRatio: covered.length / PIPELINE_ORDER.length,
+  };
+}
+
+// ============================================================================
+// MBTI DERIVATION (display-only convenience)
+// ============================================================================
+
+/**
+ * Derive an approximate MBTI type from Bóveda's 4 personality axes.
+ * This is a lossy projection — MBTI collapses continuous axes into binary switches.
+ * Intended for display/legibility only; the native axes are always more precise.
+ *
+ * Mapping:
+ *   introvertExtrovert (0-1) → I/E  (< 0.5 = Introvert)
+ *   faithDoubt (0-1)         → S/N  (≥ 0.5 = Sensing, < 0.5 = iNtuition)
+ *   mercyRuthlessness (0-1)  → F/T  (≥ 0.5 = Feeling, < 0.5 = Thinking)
+ *   orderChaos (0-1)         → J/P  (≥ 0.5 = Judging, < 0.5 = Perceiving)
+ */
+export function deriveApproximateMBTI(axes: {
+  orderChaos: number;
+  mercyRuthlessness: number;
+  introvertExtrovert: number;
+  faithDoubt: number;
+}): string {
+  const ie = axes.introvertExtrovert >= 0.5 ? 'E' : 'I';
+  const sn = axes.faithDoubt >= 0.5 ? 'S' : 'N';
+  const ft = axes.mercyRuthlessness >= 0.5 ? 'F' : 'T';
+  const jp = axes.orderChaos >= 0.5 ? 'J' : 'P';
+  return `${ie}${sn}${ft}${jp}`;
+}
+
+// ============================================================================
+// ENTITY PROFILE ANALYSIS
+// ============================================================================
+
+/**
+ * Orisha energy classification — hot, cool, or crossroads.
+ * Based on traditional Yoruba spiritual taxonomy.
+ */
+const ORISHA_ENERGY: Record<string, 'hot' | 'cool' | 'crossroads'> = {
+  obatala: 'cool',
+  ogun: 'hot',
+  shango: 'hot',
+  yemoja: 'cool',
+  oshun: 'cool',
+  eshu: 'crossroads',
+  oya: 'hot',
+  orunmila: 'cool',
+  osanyin: 'cool',
+  babalu_aye: 'cool',
+  olokun: 'cool',
+  aganju: 'hot',
+};
+
+/**
+ * Sephira energy classification based on pillar alignment.
+ */
+const SEPHIRA_ENERGY: Record<string, 'hot' | 'cool' | 'crossroads'> = {
+  kether: 'crossroads',
+  chokmah: 'hot',
+  binah: 'cool',
+  chesed: 'cool',
+  geburah: 'hot',
+  tiphareth: 'crossroads',
+  netzach: 'hot',
+  hod: 'cool',
+  yesod: 'crossroads',
+  malkuth: 'crossroads',
+  daath: 'crossroads',
+};
+
+export interface EntityProfileInput {
+  archetype: string;
+  system?: string;
+  axes: {
+    orderChaos: number;
+    mercyRuthlessness: number;
+    introvertExtrovert: number;
+    faithDoubt: number;
+  };
+  orisha?: string;
+  sephira?: string;
+}
+
+export interface PolarityReading {
+  label: string;
+  lean: string;
+  intensity: number;
+}
+
+export interface ProfileAnalysis {
+  subtaste: SubtasteDesignation;
+  phase: CreativePhase;
+  polarities: {
+    orderChaos: PolarityReading;
+    mercyRuthlessness: PolarityReading;
+    introvertExtrovert: PolarityReading;
+    faithDoubt: PolarityReading;
+  };
+  dominantEnergy: 'hot' | 'cool' | 'crossroads';
+  coherenceScore: number;
+  summary: string;
+}
+
+function interpretAxis(value: number, lowLabel: string, highLabel: string): PolarityReading {
+  const intensity = Math.abs(value - 0.5) * 2; // 0 at center, 1 at extremes
+  const lean = value < 0.4 ? lowLabel : value > 0.6 ? highLabel : 'balanced';
+  const label = intensity < 0.2 ? 'balanced' : intensity < 0.5 ? 'mild' : intensity < 0.8 ? 'strong' : 'extreme';
+  return { label, lean, intensity };
+}
+
+/**
+ * Analyze an entity's symbolic profile from archetype, axes, and optional Orisha/Sephira data.
+ * Produces a unified profile with subtaste classification, phase, polarity readings,
+ * dominant energy, and coherence score.
+ */
+export function analyzeEntityProfile(entity: EntityProfileInput): ProfileAnalysis {
+  const system = entity.system || 'tarot';
+  const subtaste = getSubtasteDesignation(system, entity.archetype);
+
+  const polarities = {
+    orderChaos: interpretAxis(entity.axes.orderChaos, 'order', 'chaos'),
+    mercyRuthlessness: interpretAxis(entity.axes.mercyRuthlessness, 'mercy', 'ruthlessness'),
+    introvertExtrovert: interpretAxis(entity.axes.introvertExtrovert, 'introvert', 'extrovert'),
+    faithDoubt: interpretAxis(entity.axes.faithDoubt, 'faith', 'doubt'),
+  };
+
+  // Determine dominant energy from multiple signals
+  const energySignals: Array<'hot' | 'cool' | 'crossroads'> = [];
+
+  // Axis-derived energy: high chaos + high ruthlessness + high extrovert → hot
+  const axisHeat =
+    (entity.axes.orderChaos + entity.axes.mercyRuthlessness + entity.axes.introvertExtrovert) / 3;
+  if (axisHeat > 0.6) energySignals.push('hot');
+  else if (axisHeat < 0.4) energySignals.push('cool');
+  else energySignals.push('crossroads');
+
+  // Orisha energy
+  if (entity.orisha) {
+    const normalized = entity.orisha.toLowerCase().replace(/[^a-z_]/g, '');
+    const orishaEnergy = ORISHA_ENERGY[normalized];
+    if (orishaEnergy) energySignals.push(orishaEnergy);
+  }
+
+  // Sephira energy
+  if (entity.sephira) {
+    const normalized = entity.sephira.toLowerCase().replace(/[^a-z_]/g, '');
+    const sephiraEnergy = SEPHIRA_ENERGY[normalized];
+    if (sephiraEnergy) energySignals.push(sephiraEnergy);
+  }
+
+  // Tally energy signals
+  const hotCount = energySignals.filter((e) => e === 'hot').length;
+  const coolCount = energySignals.filter((e) => e === 'cool').length;
+  const dominantEnergy: 'hot' | 'cool' | 'crossroads' =
+    hotCount > coolCount ? 'hot' : coolCount > hotCount ? 'cool' : 'crossroads';
+
+  // Coherence score — how well archetype/orisha/sephira align
+  let coherenceScore = 0.5; // base
+  if (entity.orisha && entity.sephira) {
+    // If both present, check if their energies match
+    const oNorm = entity.orisha.toLowerCase().replace(/[^a-z_]/g, '');
+    const sNorm = entity.sephira.toLowerCase().replace(/[^a-z_]/g, '');
+    const oE = ORISHA_ENERGY[oNorm];
+    const sE = SEPHIRA_ENERGY[sNorm];
+    if (oE && sE) {
+      if (oE === sE) coherenceScore += 0.25;
+      else if (oE === 'crossroads' || sE === 'crossroads') coherenceScore += 0.1;
+      // else opposing — no bonus
+    }
+  }
+
+  // Archetype energy alignment with dominant energy
+  const archetypeEnergy = subtaste.phase === 'genesis' || subtaste.phase === 'manifestation' ? 'hot' :
+    subtaste.phase === 'flow' ? 'cool' : 'crossroads';
+  if (archetypeEnergy === dominantEnergy) coherenceScore += 0.15;
+  else if (archetypeEnergy === 'crossroads' || dominantEnergy === 'crossroads') coherenceScore += 0.05;
+
+  // Axis coherence — low variance across axes → higher coherence
+  const axisValues = [
+    entity.axes.orderChaos,
+    entity.axes.mercyRuthlessness,
+    entity.axes.introvertExtrovert,
+    entity.axes.faithDoubt,
+  ];
+  const axisMean = axisValues.reduce((a, b) => a + b, 0) / axisValues.length;
+  const axisVariance = axisValues.reduce((sum, v) => sum + (v - axisMean) ** 2, 0) / axisValues.length;
+  // Low variance (< 0.04) adds up to 0.1
+  coherenceScore += Math.max(0, 0.1 - axisVariance * 2.5);
+
+  coherenceScore = Math.min(1, Math.max(0, coherenceScore));
+
+  const coherenceLabel = coherenceScore >= 0.75 ? 'high' : coherenceScore >= 0.5 ? 'moderate' : 'low';
+  const summary = `${subtaste.code} ${subtaste.glyph} · ${subtaste.phase} · ${dominantEnergy} · ${coherenceLabel} coherence`;
+
+  return {
+    subtaste,
+    phase: subtaste.phase,
+    polarities,
+    dominantEnergy,
+    coherenceScore,
+    summary,
+  };
+}
+
+// ============================================================================
+// PROFILE COMPARISON
+// ============================================================================
+
+export interface ProfileComparison {
+  compatibility: number;
+  complementaryPhases: boolean;
+  axisDeltas: {
+    orderChaos: number;
+    mercyRuthlessness: number;
+    introvertExtrovert: number;
+    faithDoubt: number;
+  };
+  dynamicType: 'mirror' | 'complement' | 'friction' | 'parallel';
+  summary: string;
+}
+
+/**
+ * Compare two ProfileAnalysis objects and return compatibility, axis deltas,
+ * dynamic type (mirror/complement/friction/parallel), and a summary.
+ */
+export function compareProfiles(profileA: ProfileAnalysis, profileB: ProfileAnalysis): ProfileComparison {
+  // Axis deltas (0-1 range, absolute difference)
+  const axisDeltas = {
+    orderChaos: Math.abs(
+      (profileA.polarities.orderChaos.intensity * (profileA.polarities.orderChaos.lean === 'chaos' ? 1 : -1)) -
+      (profileB.polarities.orderChaos.intensity * (profileB.polarities.orderChaos.lean === 'chaos' ? 1 : -1))
+    ),
+    mercyRuthlessness: Math.abs(
+      (profileA.polarities.mercyRuthlessness.intensity * (profileA.polarities.mercyRuthlessness.lean === 'ruthlessness' ? 1 : -1)) -
+      (profileB.polarities.mercyRuthlessness.intensity * (profileB.polarities.mercyRuthlessness.lean === 'ruthlessness' ? 1 : -1))
+    ),
+    introvertExtrovert: Math.abs(
+      (profileA.polarities.introvertExtrovert.intensity * (profileA.polarities.introvertExtrovert.lean === 'extrovert' ? 1 : -1)) -
+      (profileB.polarities.introvertExtrovert.intensity * (profileB.polarities.introvertExtrovert.lean === 'extrovert' ? 1 : -1))
+    ),
+    faithDoubt: Math.abs(
+      (profileA.polarities.faithDoubt.intensity * (profileA.polarities.faithDoubt.lean === 'doubt' ? 1 : -1)) -
+      (profileB.polarities.faithDoubt.intensity * (profileB.polarities.faithDoubt.lean === 'doubt' ? 1 : -1))
+    ),
+  };
+
+  const avgDelta =
+    (axisDeltas.orderChaos + axisDeltas.mercyRuthlessness + axisDeltas.introvertExtrovert + axisDeltas.faithDoubt) / 4;
+
+  // Phase comparison
+  const samePhase = profileA.phase === profileB.phase;
+  const phasePairCovers = new Set([profileA.phase, profileB.phase]);
+  const complementaryPhases = !samePhase && phasePairCovers.size === 2;
+
+  // Same subtaste?
+  const sameSubtaste = profileA.subtaste.code === profileB.subtaste.code;
+
+  // Energy alignment
+  const sameEnergy = profileA.dominantEnergy === profileB.dominantEnergy;
+
+  // Determine dynamic type
+  let dynamicType: 'mirror' | 'complement' | 'friction' | 'parallel';
+
+  if (sameSubtaste && avgDelta < 0.3) {
+    dynamicType = 'mirror';
+  } else if (complementaryPhases && avgDelta < 0.5) {
+    dynamicType = 'complement';
+  } else if (!samePhase && avgDelta > 0.6) {
+    dynamicType = 'friction';
+  } else {
+    dynamicType = 'parallel';
+  }
+
+  // Compatibility score
+  let compatibility = 0.5;
+
+  // Phase complementarity boosts compatibility
+  if (complementaryPhases) compatibility += 0.2;
+  else if (samePhase) compatibility += 0.05;
+
+  // Energy alignment
+  if (sameEnergy) compatibility += 0.1;
+  else if (profileA.dominantEnergy === 'crossroads' || profileB.dominantEnergy === 'crossroads') {
+    compatibility += 0.05;
+  }
+
+  // Moderate axis differences are ideal (not too same, not too far)
+  if (avgDelta >= 0.2 && avgDelta <= 0.5) compatibility += 0.15;
+  else if (avgDelta < 0.2) compatibility += 0.1; // very similar is OK
+  // extreme difference reduces
+  else if (avgDelta > 0.7) compatibility -= 0.1;
+
+  // Coherence bonus — both profiles being internally coherent helps
+  const avgCoherence = (profileA.coherenceScore + profileB.coherenceScore) / 2;
+  compatibility += avgCoherence * 0.1;
+
+  compatibility = Math.min(1, Math.max(0, compatibility));
+
+  const dynamicLabels: Record<string, string> = {
+    mirror: 'they reflect each other',
+    complement: 'they complete each other',
+    friction: 'creative tension',
+    parallel: 'side-by-side energy',
+  };
+
+  const summary = `${(compatibility * 100).toFixed(0)}% compatible · ${dynamicType} — ${dynamicLabels[dynamicType]}`;
+
+  return {
+    compatibility,
+    complementaryPhases,
+    axisDeltas,
+    dynamicType,
+    summary,
+  };
+}

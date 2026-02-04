@@ -213,6 +213,12 @@ export interface LCOSGeneratedCharacter {
   pseudonym?: string;  // Short evocative name for relic objects
   samplePost?: string;  // Sample social media post (modern relics only)
   sacredNumber?: number;  // Archetype-specific symbolic number
+  subtaste?: { code: string; glyph: string; label: string; description: string; phase: string };  // Subtaste classification
+  subdominantArcana?: Array<{
+    arcana: ArchetypeInfo;
+    subtaste: { code: string; glyph: string; label: string; description: string; phase: string };
+  }>;
+  approximateMBTI?: string;  // Display-only MBTI derivation from personality axes
 }
 
 export interface GenerationParams {
@@ -688,6 +694,47 @@ const CORE_SYMBOLS: Record<string, { prefix: string[]; suffix: string[]; wrap: [
     suffix: ['▲', '◯', '◇', '⌂', '░', '▓', '◉', '◎', '☐', '⊕'],
     wrap: [['▲▲ ', ' ▲▲'], ['◇ ', ' ◇'], ['░░ ', ' ░░'], ['⌂ ', ' ⌂'], ['◯ ', ' ◯']],
   },
+  // New canonical names (aliases of above + 2 new systems)
+  drowned_mall: {
+    prefix: ['永', '夢', '新', '愛', '空', '星', '月', '光', '幻', '神'],
+    suffix: ['永', '夢', '新', '愛', '空', '星', '月', '光', '幻', '神'],
+    wrap: [['永 ', ' 夢'], ['｢', '｣'], ['【', '】'], ['「', '」'], ['『', '』'], ['〖', '〗']],
+  },
+  hex_garden: {
+    prefix: ['☽', '✧', '☆', '⁂', '✦', '◈', '❋', '✵', '❂', '☾'],
+    suffix: ['☾', '✧', '☆', '⁂', '✦', '◈', '❋', '✵', '❂', '☽'],
+    wrap: [['☽ ', ' ☾'], ['✧ ', ' ✧'], ['⁂ ', ' ⁂'], ['✦ ', ' ✦'], ['☆ ', ' ☆']],
+  },
+  sugar_rot: {
+    prefix: ['xX', '~', '★', '♥', '✖', '☆', '♪', '⚡', '✿', '❤'],
+    suffix: ['Xx', '~', '★', '♥', '✖', '☆', '♪', '⚡', '✿', '❤'],
+    wrap: [['xX', 'Xx'], ['~', '~'], ['★', '★'], ['xX★', '★Xx'], ['♥', '♥'], ['x', 'x']],
+  },
+  dead_channel: {
+    prefix: ['†', '‡', '∆', 'Ω', 'Ξ', '◊', '▼', '■', '●', '◆'],
+    suffix: ['†', '‡', '∆', 'Ω', 'Ξ', '◊', '▲', '■', '●', '◆'],
+    wrap: [['†', '†'], ['∆', '∆'], ['▼', '▲'], ['◊', '◊'], ['‡', '‡'], ['Ω', 'Ω']],
+  },
+  spore_drift: {
+    prefix: ['✿', '❀', '☘', '⚘', '❁', '✾', '❃', '✤', '✥', '❋'],
+    suffix: ['✿', '❀', '☘', '⚘', '❁', '✾', '❃', '✤', '✥', '❋'],
+    wrap: [['✿ ', ' ✿'], ['❀ ', ' ❀'], ['☘ ', ' ☘'], ['⚘ ', ' ⚘'], ['✾ ', ' ✾']],
+  },
+  wrong_room: {
+    prefix: ['▲', '◯', '◇', '⌂', '░', '▓', '◉', '◎', '☐', '⊕'],
+    suffix: ['▲', '◯', '◇', '⌂', '░', '▓', '◉', '◎', '☐', '⊕'],
+    wrap: [['▲▲ ', ' ▲▲'], ['◇ ', ' ◇'], ['░░ ', ' ░░'], ['⌂ ', ' ⌂'], ['◯ ', ' ◯']],
+  },
+  bone_clean: {
+    prefix: ['—', '·', '|', '/', '\\'],
+    suffix: ['—', '·', '|', '/', '\\'],
+    wrap: [['— ', ' —'], ['· ', ' ·'], ['| ', ' |'], ['/ ', ' /'], ['. ', ' .']],
+  },
+  lambda: {
+    prefix: ['Σ', 'Λ', 'Δ', 'Π', 'Ψ', 'Φ', 'Θ', 'Ω', 'ℵ', '∂'],
+    suffix: ['Σ', 'Λ', 'Δ', 'Π', 'Ψ', 'Φ', 'Θ', 'Ω', 'ℵ', '∂'],
+    wrap: [['λ(', ')'], ['Σ{', '}'], ['∀ ', ' ∃'], ['⟨', '⟩'], ['∫ ', ' dx'], ['Λ.', '.Ω']],
+  },
 };
 
 function applyCoreStyle(rng: RNG, name: string, core: string): string {
@@ -1077,6 +1124,91 @@ const RELIC_ERA_MODERN = {
   ],
 };
 
+const RELIC_ERA_TIMELESS = {
+  objects: [
+    'one-legged Primark mannequin wearing a Byzantine halo',
+    'Hermès birkin made of council estate radiator covers',
+    'Fabergé egg containing a Greggs steak bake, still warm',
+    'Versace durag stitched from the Shroud of Turin',
+    'Louis Vuitton carrier bag from Argos, receipt from Babylon',
+    'Nike Air Max 95s resoled with marble from the Parthenon',
+    'Gucci belt with a buckle forged at Vulcan\'s anvil',
+    'Supreme hoodie embroidered by Cistercian monks',
+    'Balenciaga crocs blessed by a Vodou priestess',
+    'Cartier sovereign ring with a stone from the Kaaba',
+    'Starbucks loyalty card, infinite stars, accepted in purgatory',
+    'Tesco Clubcard with points accrued across seven incarnations',
+    'Deliveroo bag that delivers offerings to dead ancestors',
+    'JD Sports receipt signed by Hermes (the god, not the courier)',
+    'B&M Bargains candle that burns with foxfire since the Crusades',
+    'Aldi middle aisle find: one (1) Holy Grail, slightly chipped',
+    'Sports Direct mug containing the wine-dark sea',
+    'a Wetherspoons menu written in Enochian',
+    'obsidian iPhone case that answers prayers on silent mode',
+    'cathedral window made of vape juice and stained glass',
+    'medieval tapestry depicting a McDonald\'s drive-through at 3am',
+    'clay tablet with cuneiform TikTok comments',
+    'pharaoh\'s sceptre doubling as a Dyson Airwrap',
+    'Viking longship steering oar repurposed as an e-scooter handlebar',
+    'Roman mosaic of someone\'s Uber rating: 1 star',
+    'bando smoke alarm that detects spiritual presence',
+    'betting slip from Paddy Power, odds on the apocalypse',
+    'Oyster card valid in the underworld (Zone 6+)',
+    'NHS prescription for immortality, out of stock',
+    'council tax bill for a dimension that doesn\'t exist yet',
+    'Sainsbury\'s Taste the Difference ambrosia, nectar of the gods (reduced)',
+    'parking ticket issued by an archangel, unpaid',
+    'an ASOS return label for your mortal body',
+    'a Shein haul from the court of Versailles',
+    'Poundland tiara that crowns actual monarchs',
+    'a £1 fish from the fishmonger who sold Jonah\'s whale',
+  ],
+  givers: [
+    'a Deliveroo rider on Sleipnir',
+    'a market trader selling relics out of a chariot',
+    'a shaman who also does Avon',
+    'an oracle moonlighting as a TikTok psychic',
+    'a grime MC channeling dead poets',
+    'a bouncer at the gates of Valhalla',
+    'a nail tech who paints sigils',
+    'a barber who cuts fate\'s threads',
+    'a corner-shop owner descended from pharaohs',
+    'a fishmonger whose ancestors fished the Styx',
+    'a kebab shop mystic, third eye and chilli sauce',
+    'a bookies cashier who reads the bones',
+    'a market-stall prophet with a megaphone',
+    'a nan who remembers before the world started',
+    'a bus driver on the night route through limbo',
+    'a postman delivering letters between epochs',
+    'a charity shop volunteer sorting through centuries',
+    'a park warden guarding sacred groves in Zone 4',
+    'a lollipop lady at the crossroads of destiny',
+    'a chip shop philosopher with oil-burn stigmata',
+  ],
+  contexts: [
+    'at a car boot sale in a ley-line car park',
+    'in the Primark changing rooms during a blood moon',
+    'at a council estate bonfire summoning old gods',
+    'during a rave in a deconsecrated cathedral',
+    'at a Wetherspoons pub quiz on sacred geometry',
+    'in a Turkish barbershop between worlds',
+    'during a hen do that accidentally became a ritual',
+    'at a Lidl middle aisle sale where time folded',
+    'in a nail salon where the UV lamps open portals',
+    'during a wake that turned into an exorcism',
+    'at a jumble sale in a mosque built over a henge',
+    'in the queue at Greggs when the veil thinned',
+    'at a youth club on the ruins of a Roman bath',
+    'during a block party on consecrated ground',
+    'in a laundrette whose spin cycle bends spacetime',
+    'at a bingo hall built over a plague pit',
+    'during Sports Day at an academy on a burial mound',
+    'at a chip shop at the edge of a fairy ring',
+    'in a betting shop where all the odds are prophecy',
+    'during a freestyle cypher in a stone circle',
+  ],
+};
+
 const RELIC_ACTIONS = [
   'gifted by',
   'stolen from',
@@ -1292,19 +1424,25 @@ function generateRelicName(rng: RNG, relic: Relic): string {
   return titleCase;
 }
 
+function getEraData(era: RelicEra) {
+  if (era === 'modern') return RELIC_ERA_MODERN;
+  if (era === 'timeless') return RELIC_ERA_TIMELESS;
+  return RELIC_ERA_ARCHAIC;
+}
+
 function generateRelicObject(rng: RNG, era: RelicEra): Relic {
-  const eraData = era === 'modern' ? RELIC_ERA_MODERN : RELIC_ERA_ARCHAIC;
+  const eraData = getEraData(era);
   const object = randomChoice(rng, eraData.objects);
 
   return {
     object,
-    category: era === 'modern' ? 'mundane_twisted' : 'symbolic',
+    category: era === 'archaic' ? 'symbolic' : era === 'timeless' ? 'strange' : 'mundane_twisted',
     origin: '', // Will be filled by backstory
   };
 }
 
 function generateRelicBackstory(rng: RNG, relic: Relic, arcana: ArchetypeInfo, order: OrderType, era: RelicEra): string {
-  const eraData = era === 'modern' ? RELIC_ERA_MODERN : RELIC_ERA_ARCHAIC;
+  const eraData = getEraData(era);
 
   const context = randomChoice(rng, eraData.contexts);
   const giver = randomChoice(rng, eraData.givers);
@@ -1317,7 +1455,16 @@ function generateRelicBackstory(rng: RNG, relic: Relic, arcana: ArchetypeInfo, o
   const sacredNumber = getArchetypeNumber(arcana.archetype, rng);
   const altNumber = getArchetypeNumber(arcana.archetype, rng);
 
-  const natureDescriptors = era === 'modern' ? [
+  const natureDescriptors = era === 'timeless' ? [
+    `It radiates ${sacredNumber} frequencies of ${arcana.coreDesire.toLowerCase()}, half council flat, half cathedral`,
+    `It carries the ${generateModernSymbolism(rng, arcana)} but in cuneiform`,
+    `It whispers of ${arcana.shadowThemes[0] || 'forgotten things'} in patois and Old English simultaneously`,
+    `It dreams in ${generateModernSymbolism(rng, arcana)} while chanting vespers`,
+    `It vibrates between ${randomChoice(rng, ['Harrods', 'the V&A', 'Christie\'s', 'the Louvre'])} and ${randomChoice(rng, ['Poundland', 'the bando', 'a car boot', 'Primark'])} at ${sacredNumber} Hz`,
+    `Its energy reads ${altNumber} on scales that predate language but postdate Uber Eats`,
+    `It is simultaneously on display at the British Museum and on sale at ${randomChoice(rng, ['TK Maxx', 'Cash Converters', 'the market', 'a man\'s boot'])}`,
+    `It embodies ${arcana.meaning.toLowerCase()} the way a kebab embodies the divine`,
+  ] : era === 'modern' ? [
     `It carries the ${generateModernSymbolism(rng, arcana)}`,
     `It embodies ${sacredNumber} frequencies of ${arcana.coreDesire.toLowerCase()}`,
     `It whispers of ${arcana.shadowThemes[0] || 'forgotten things'} - ${generateModernSymbolism(rng, arcana)}`,
@@ -1332,7 +1479,20 @@ function generateRelicBackstory(rng: RNG, relic: Relic, arcana: ArchetypeInfo, o
   ];
   const nature = randomChoice(rng, natureDescriptors);
 
-  const purposes = era === 'modern' ? [
+  const purposes = era === 'timeless' ? [
+    `It has ${sacredNumber} stars on Trustpilot and ${altNumber} prayers answered`,
+    `Its warranty is written on vellum but expires when the 5G drops`,
+    `It was listed on Vinted by a medieval saint and bought by a roadman in Zone 3`,
+    `Sotheby\'s won\'t touch it. Your nan keeps it on the mantelpiece next to the urn`,
+    `The British Museum wants it back but it\'s already been through ${sacredNumber} car boots`,
+    `It\'s got ${sacredNumber} followers in this realm and ${altNumber} worshippers in the next`,
+    `It shows up in your Shein basket and your ancestor\'s burial goods at the same time`,
+    `No one knows if it\'s couture or contraband - ${generateModernSymbolism(rng, arcana)}`,
+    `It\'s been through the wash ${sacredNumber} times across ${altNumber} centuries and still slaps`,
+    `The imam, the priest, and the chicken-shop owner all claim it belongs to them`,
+    `It appreciates in value every solstice and depreciates every Primark sale`,
+    `It exists in ${sacredNumber} dimensions but only fits in a JD Sports bag`,
+  ] : era === 'modern' ? [
     `It has ${sacredNumber} stars but no reviews`,
     `Its warranty expired ${sacredNumber} dimensions ago`,
     `It was recalled but never returned - ${generateModernSymbolism(rng, arcana)}`,
@@ -1767,9 +1927,11 @@ export interface Relic {
   origin: string;
 }
 
-export type RelicEra = 'archaic' | 'modern';
+export type RelicEra = 'archaic' | 'modern' | 'timeless';
 
-export type CoreStyle = 'vaporwave' | 'witchy' | 'scene' | 'cybergoth' | 'fairycore' | 'weirdcore';
+export type CoreStyle =
+  | 'vaporwave' | 'witchy' | 'scene' | 'cybergoth' | 'fairycore' | 'weirdcore'
+  | 'drowned_mall' | 'hex_garden' | 'sugar_rot' | 'dead_channel' | 'spore_drift' | 'wrong_room' | 'bone_clean' | 'lambda';
 
 export interface LCOSGenerationParams {
   seed?: number;
@@ -1782,7 +1944,33 @@ export interface LCOSGenerationParams {
   relicEra?: RelicEra;      // 'archaic' for ancient objects, 'modern' for contemporary
   lockedRelic?: Relic;      // When provided, keeps this relic but regenerates the pseudonym
   core?: CoreStyle;         // Aesthetic symbol adornments for name
+  variance?: number;        // 0-100 glitch distortion percentage
 }
+
+// Legacy core name mapping (old names → new canonical names for CORE_SYMBOLS lookup)
+const LEGACY_CORE_NAME_MAP: Record<string, string> = {
+  vaporwave: 'vaporwave',
+  witchy: 'witchy',
+  scene: 'scene',
+  cybergoth: 'cybergoth',
+  fairycore: 'fairycore',
+  weirdcore: 'weirdcore',
+  // New canonical names map to themselves
+  drowned_mall: 'drowned_mall',
+  hex_garden: 'hex_garden',
+  sugar_rot: 'sugar_rot',
+  dead_channel: 'dead_channel',
+  spore_drift: 'spore_drift',
+  wrong_room: 'wrong_room',
+  bone_clean: 'bone_clean',
+  lambda: 'lambda',
+};
+
+// Variance: Import from name-generator for applying glitch distortion
+import { applyVariance as applyNameVariance } from './lib/name-generator.js';
+
+// Subtaste: Import for classification + MBTI derivation
+import { getSubtasteDesignation as computeSubtaste, deriveApproximateMBTI } from './data/subtaste-data.js';
 
 export function generateLCOSCharacter(params: LCOSGenerationParams = {}): LCOSGeneratedCharacter {
   // Always generate a new random seed if not provided
@@ -1905,7 +2093,8 @@ export function generateLCOSCharacter(params: LCOSGenerationParams = {}): LCOSGe
 
   if (useRelic) {
     // In Relic mode, the character IS the object
-    const era: RelicEra = params.relicEra || (rng() > 0.5 ? 'modern' : 'archaic');
+    const eraRoll = rng();
+    const era: RelicEra = params.relicEra || (eraRoll < 0.33 ? 'archaic' : eraRoll < 0.66 ? 'modern' : 'timeless');
 
     // Use locked relic if provided, otherwise generate a new one based on era
     const relic = params.lockedRelic || generateRelicObject(rng, era);
@@ -1923,8 +2112,8 @@ export function generateLCOSCharacter(params: LCOSGenerationParams = {}): LCOSGe
     // Get archetype sacred number
     sacredNumber = getArchetypeNumber(arcana.archetype, rng);
 
-    // For modern relics, generate a sample social media post
-    if (era === 'modern') {
+    // For modern and timeless relics, generate a sample social media post
+    if (era === 'modern' || era === 'timeless') {
       samplePost = generateSampleTweet(rng);
     }
   } else {
@@ -1935,10 +2124,73 @@ export function generateLCOSCharacter(params: LCOSGenerationParams = {}): LCOSGe
       `Their deepest drive: ${arcana.coreDesire.toLowerCase()}.`;
   }
 
-  // Apply core aesthetic style if specified
-  if (params.core) {
-    finalName = applyCoreStyle(rng, finalName, params.core);
+  // Apply variance distortion if specified
+  if (params.variance && params.variance > 0) {
+    finalName = applyNameVariance(finalName, params.variance, rng);
   }
+
+  // Apply core aesthetic style if specified (supports both legacy and new names)
+  if (params.core) {
+    const resolvedCore = LEGACY_CORE_NAME_MAP[params.core] || params.core;
+    finalName = applyCoreStyle(rng, finalName, resolvedCore);
+  }
+
+  // Compute subtaste classification
+  const subtasteDesignation = computeSubtaste(arcana.system, arcana.archetype);
+
+  // Generate subdominant archetypes from other systems
+  const otherSystems = ARCHETYPE_SYSTEMS.filter(s => s !== arcana.system);
+  // Pick 2 subdominant systems
+  const sub1System = randomChoice(rng, otherSystems);
+  const remainingSystems = otherSystems.filter(s => s !== sub1System);
+  const sub2System = randomChoice(rng, remainingSystems);
+
+  function selectArchetypeFromSystem(system: ArchetypeSystem): ArchetypeInfo {
+    let archKey: string;
+    let archData: { meaning: string; coreDesire: string; shadow: string[]; gifts: string[] };
+    switch (system) {
+      case 'tarot': {
+        const k = randomChoice(rng, TAROT_ARCHETYPES);
+        archKey = k; archData = TAROT_ARCHETYPES_DATA[k]; break;
+      }
+      case 'jung': {
+        const keys = Object.keys(JUNG_ARCHETYPES) as JungArchetype[];
+        const k = randomChoice(rng, keys);
+        archKey = k; archData = JUNG_ARCHETYPES[k]; break;
+      }
+      case 'kabbalah': {
+        const keys = Object.keys(KABBALAH_ARCHETYPES) as KabbalahArchetype[];
+        const k = randomChoice(rng, keys);
+        archKey = k; archData = KABBALAH_ARCHETYPES[k]; break;
+      }
+      case 'orisha': {
+        const keys = Object.keys(ORISHA_ARCHETYPES) as OrishaArchetype[];
+        const k = randomChoice(rng, keys);
+        archKey = k; archData = ORISHA_ARCHETYPES[k]; break;
+      }
+      case 'norse': {
+        const keys = Object.keys(NORSE_ARCHETYPES) as NorseArchetype[];
+        const k = randomChoice(rng, keys);
+        archKey = k; archData = NORSE_ARCHETYPES[k]; break;
+      }
+      default: throw new Error(`Unknown system: ${system}`);
+    }
+    return {
+      system,
+      archetype: archKey.replace(/_/g, ' '),
+      meaning: archData.meaning,
+      coreDesire: archData.coreDesire,
+      shadowThemes: archData.shadow,
+      goldenGifts: archData.gifts,
+    };
+  }
+
+  const subArcana1 = selectArchetypeFromSystem(sub1System);
+  const subArcana2 = selectArchetypeFromSystem(sub2System);
+  const subdominantArcana = [
+    { arcana: subArcana1, subtaste: computeSubtaste(subArcana1.system, subArcana1.archetype) },
+    { arcana: subArcana2, subtaste: computeSubtaste(subArcana2.system, subArcana2.archetype) },
+  ];
 
   return {
     seed,
@@ -1957,6 +2209,9 @@ export function generateLCOSCharacter(params: LCOSGenerationParams = {}): LCOSGe
     ...(pseudonym ? { pseudonym } : {}),
     ...(samplePost ? { samplePost } : {}),
     ...(sacredNumber !== undefined ? { sacredNumber } : {}),
+    subtaste: subtasteDesignation,
+    subdominantArcana,
+    approximateMBTI: deriveApproximateMBTI(personality.axes),
   };
 }
 
@@ -1972,3 +2227,28 @@ export * from './lib/genome-generator.js';
 export * from './lib/multimodal-derivation.js';
 export * from './lib/system-prompt-generator.js';
 export * from './lib/genome-export.js';
+
+// New Boveda 2.0 modules
+export { type AestheticCore, AESTHETIC_CORES, AESTHETIC_CORE_LABELS, LEGACY_CORE_MAP } from './data/name-data.js';
+export { type NameMode, type NameGenerationOptions, applyVariance, applyAesthetic, generateCharacterName } from './lib/name-generator.js';
+export { type RelicGenerationOptions, type RelicGenerationResult } from './lib/relic-generator.js';
+export { generateRelic as generateFullRelic } from './lib/relic-generator.js';
+export { generatePseudonym as generateRelicPseudonymNew } from './lib/relic-generator.js';
+export {
+  type SubtasteDesignation,
+  type CreativePhase,
+  type PipelineCoverage,
+  type EntityProfileInput,
+  type PolarityReading,
+  type ProfileAnalysis,
+  type ProfileComparison,
+  SUBTASTE_DESIGNATIONS,
+  ARCHETYPE_TO_SUBTASTE,
+  PHASE_LABELS,
+  PIPELINE_ORDER,
+  getSubtasteDesignation,
+  analyzePipelineCoverage,
+  deriveApproximateMBTI,
+  analyzeEntityProfile,
+  compareProfiles,
+} from './data/subtaste-data.js';

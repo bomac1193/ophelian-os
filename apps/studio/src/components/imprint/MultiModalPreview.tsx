@@ -6,7 +6,7 @@ import type {
   MusicSignature,
   MovementSignature,
   MultiModalSignature,
-} from '../../lib/genome-api';
+} from '../../lib/imprint-api';
 
 interface MultiModalPreviewProps {
   signature?: MultiModalSignature | null;

@@ -2,10 +2,10 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
-import { GenomeCreator } from '../../../components/genome';
-import type { CharacterGenome } from '../../../lib/genome-api';
+import { ImprintCreator } from '../../../components/imprint';
+import type { CharacterImprint } from '../../../lib/imprint-api';
 
-function GenomeCreateContent() {
+function ImprintCreateContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -13,19 +13,19 @@ function GenomeCreateContent() {
   const seedParam = searchParams.get('seed');
   const initialSeed = seedParam ? parseInt(seedParam, 10) : undefined;
 
-  const handleSave = (genome: CharacterGenome) => {
-    router.push(`/genome/${genome.id}`);
+  const handleSave = (imprint: CharacterImprint) => {
+    router.push(`/imprint/${imprint.id}`);
   };
 
   const handleCancel = () => {
-    router.push('/genome');
+    router.push('/imprint');
   };
 
   return (
     <div className="container" style={{ padding: '2rem', maxWidth: '1000px', margin: '0 auto' }}>
       {/* Header */}
       <div style={{ marginBottom: '2rem' }}>
-        <h1 style={{ margin: '0 0 0.5rem', fontSize: '1.75rem' }}>Create Character Genome</h1>
+        <h1 style={{ margin: '0 0 0.5rem', fontSize: '1.75rem' }}>Create Character Imprint</h1>
         <p style={{ margin: 0, color: 'var(--muted-foreground)' }}>
           Configure the spiritual, psychological, and multi-modal attributes of your character.
         </p>
@@ -40,7 +40,7 @@ function GenomeCreateContent() {
           border: '1px solid var(--border)',
         }}
       >
-        <GenomeCreator
+        <ImprintCreator
           initialName={initialName}
           initialSeed={initialSeed}
           onSave={handleSave}
@@ -51,7 +51,7 @@ function GenomeCreateContent() {
   );
 }
 
-export default function GenomeCreatePage() {
+export default function ImprintCreatePage() {
   return (
     <Suspense
       fallback={
@@ -60,7 +60,7 @@ export default function GenomeCreatePage() {
         </div>
       }
     >
-      <GenomeCreateContent />
+      <ImprintCreateContent />
     </Suspense>
   );
 }

@@ -451,6 +451,22 @@ export interface LCOSGeneratedCharacter {
   pseudonym?: string;  // Short evocative name for relic objects
   samplePost?: string;  // Sample social media post (modern relics only)
   sacredNumber?: number;  // Archetype-specific symbolic number
+  subtaste?: SubtasteDesignation;  // Subtaste classification
+  subdominantArcana?: Array<{
+    arcana: ArchetypeInfo;
+    subtaste: SubtasteDesignation;
+  }>;
+  approximateMBTI?: string;  // Display-only MBTI derivation from personality axes
+}
+
+export type CreativePhase = 'genesis' | 'vision' | 'refinement' | 'manifestation' | 'flow';
+
+export interface SubtasteDesignation {
+  code: string;
+  glyph: string;
+  label: string;
+  description: string;
+  phase: CreativePhase;
 }
 
 export interface Relic {
@@ -459,7 +475,7 @@ export interface Relic {
   origin: string;
 }
 
-export type RelicEra = 'archaic' | 'modern';
+export type RelicEra = 'archaic' | 'modern' | 'timeless';
 
 export interface LCOSGenerateOptions {
   seed?: number;
@@ -471,7 +487,8 @@ export interface LCOSGenerateOptions {
   relic?: boolean;          // When true, generates strange relic objects bound to the character
   relicEra?: RelicEra;      // 'archaic' for ancient objects, 'modern' for contemporary
   lockedRelic?: Relic;      // When provided, keeps this relic but regenerates the pseudonym
-  core?: 'vaporwave' | 'witchy' | 'scene' | 'cybergoth' | 'fairycore' | 'weirdcore';  // Aesthetic symbol adornments
+  core?: string;  // Aesthetic symbol adornments (drowned_mall, hex_garden, sugar_rot, dead_channel, spore_drift, wrong_room, bone_clean, lambda, or legacy names)
+  variance?: number;  // 0-100 glitch distortion percentage
 }
 
 export async function generateLCOSCharacter(
@@ -495,6 +512,7 @@ export async function generateLCOSCharacter(
       relicEra: options?.relicEra,
       lockedRelic: options?.lockedRelic,
       core: options?.core,
+      variance: options?.variance,
     }),
     signal: fetchOptions?.signal,
   });
@@ -549,6 +567,7 @@ export function lcosGeneratedToCreateCharacterInput(
       oripheon: {
         seed: generated.seed,
         generated,
+        ...(generated.subtaste ? { subtaste: generated.subtaste } : {}),
       },
     },
   };

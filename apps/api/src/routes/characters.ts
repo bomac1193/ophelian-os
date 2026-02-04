@@ -117,7 +117,8 @@ export async function characterRoutes(fastify: FastifyInstance): Promise<void> {
       relic?: boolean;
       relicEra?: 'archaic' | 'modern';
       lockedRelic?: { object: string; category: string; origin: string };
-      core?: 'vaporwave' | 'witchy' | 'scene' | 'cybergoth' | 'fairycore' | 'weirdcore';
+      core?: string;
+      variance?: number;
     } | undefined;
 
     // Use the extended LCOS generator with multiple archetype systems
@@ -131,7 +132,8 @@ export async function characterRoutes(fastify: FastifyInstance): Promise<void> {
       relic: body?.relic,
       relicEra: body?.relicEra,
       lockedRelic: body?.lockedRelic as any,
-      core: body?.core,
+      core: body?.core as any,
+      variance: body?.variance,
     });
 
     return reply.send(generated);

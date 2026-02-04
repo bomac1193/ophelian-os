@@ -28,6 +28,230 @@ import {
   type CharenomePreview,
 } from '@/lib/charenome';
 
+// ============================================================================
+// OPTION CONSTANTS (matching Slayt's GeneratorPanel format)
+// ============================================================================
+
+const HERITAGE_OPTIONS = [
+  { value: '', label: 'Any' },
+  { value: 'yoruba', label: 'Yoruba' },
+  { value: 'igbo', label: 'Igbo' },
+  { value: 'arabic', label: 'Arabic' },
+  { value: 'european', label: 'European' },
+  { value: 'celtic', label: 'Celtic' },
+  { value: 'norse', label: 'Norse' },
+  { value: 'blend', label: 'Blend' },
+];
+
+const GENDER_OPTIONS = [
+  { value: '', label: 'Any' },
+  { value: 'masculine', label: 'Masculine' },
+  { value: 'feminine', label: 'Feminine' },
+  { value: 'neutral', label: 'Neutral' },
+];
+
+const NAME_MODES = [
+  { value: 'standard', label: 'Standard' },
+  { value: 'mononym-squishe', label: 'Squishe' },
+  { value: 'mononym-simple', label: 'Simple' },
+  { value: 'aminal-blend', label: 'Aminal Blend' },
+  { value: 'aminal-clear', label: 'Aminal Clear' },
+];
+
+const CORE_STYLES = [
+  { value: '', label: 'None' },
+  { value: 'drowned_mall', label: 'Drowned Mall' },
+  { value: 'hex_garden', label: 'Hex Garden' },
+  { value: 'sugar_rot', label: 'Sugar Rot' },
+  { value: 'dead_channel', label: 'Dead Channel' },
+  { value: 'spore_drift', label: 'Spore Drift' },
+  { value: 'wrong_room', label: 'Wrong Room' },
+  { value: 'bone_clean', label: 'Bone Clean' },
+  { value: 'lambda', label: 'Lambda' },
+];
+
+// ============================================================================
+// SUB-COMPONENTS (ported from Slayt's GeneratorPanel)
+// ============================================================================
+
+function PillSelector({ label, options, value, onChange }: {
+  label: string;
+  options: { value: string; label: string }[];
+  value: string;
+  onChange: (v: string) => void;
+}) {
+  return (
+    <div>
+      <label style={{
+        display: 'block',
+        fontSize: '0.7rem',
+        color: 'var(--muted-foreground)',
+        marginBottom: '0.375rem',
+        textTransform: 'uppercase',
+        letterSpacing: '0.1em',
+        fontWeight: 500,
+      }}>{label}</label>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.375rem' }}>
+        {options.map((opt) => (
+          <button
+            key={opt.value}
+            type="button"
+            onClick={() => onChange(opt.value)}
+            style={{
+              padding: '0.25rem 0.75rem',
+              borderRadius: '9999px',
+              fontSize: '0.75rem',
+              fontWeight: 500,
+              transition: 'all 0.15s ease',
+              cursor: 'pointer',
+              ...(value === opt.value
+                ? {
+                    background: 'rgba(255,255,255,0.08)',
+                    color: 'var(--foreground)',
+                    border: '1px solid rgba(255,255,255,0.25)',
+                  }
+                : {
+                    background: 'var(--muted)',
+                    color: 'var(--muted-foreground)',
+                    border: '1px solid transparent',
+                  }),
+            }}
+          >
+            {opt.label}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function GenBadge({ children, variant = 'default' }: {
+  children: React.ReactNode;
+  variant?: 'default' | 'purple' | 'blue' | 'amber';
+}) {
+  const variants: Record<string, React.CSSProperties> = {
+    default: { background: 'var(--muted)', color: 'var(--muted-foreground)' },
+    purple: {
+      background: 'rgba(168, 85, 247, 0.1)',
+      color: '#c4b5fd',
+      border: '1px solid rgba(168, 85, 247, 0.2)',
+    },
+    blue: {
+      background: 'rgba(99, 102, 241, 0.08)',
+      color: 'var(--muted-foreground)',
+      border: '1px solid rgba(99, 102, 241, 0.2)',
+    },
+    amber: {
+      background: 'rgba(139, 92, 246, 0.08)',
+      color: '#c4b5fd',
+      border: '1px solid rgba(139, 92, 246, 0.15)',
+    },
+  };
+  return (
+    <span style={{
+      display: 'inline-block',
+      padding: '0.125rem 0.5rem',
+      borderRadius: '0.25rem',
+      fontSize: '0.75rem',
+      fontWeight: 500,
+      ...variants[variant],
+    }}>
+      {children}
+    </span>
+  );
+}
+
+function AxisBar({ value, leftLabel, rightLabel }: {
+  label?: string;
+  value: number;
+  leftLabel: string;
+  rightLabel: string;
+}) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.75rem' }}>
+      <span style={{ color: 'var(--muted-foreground)', width: '4rem', textAlign: 'right', flexShrink: 0 }}>{leftLabel}</span>
+      <div style={{
+        flex: 1,
+        height: '0.375rem',
+        background: 'var(--muted)',
+        borderRadius: '9999px',
+        overflow: 'hidden',
+      }}>
+        <div style={{
+          height: '100%',
+          width: `${value * 100}%`,
+          background: 'rgba(255,255,255,0.35)',
+          borderRadius: '9999px',
+          transition: 'width 0.3s ease',
+        }} />
+      </div>
+      <span style={{ color: 'var(--muted-foreground)', width: '4rem', flexShrink: 0 }}>{rightLabel}</span>
+    </div>
+  );
+}
+
+function CollapsibleSection({ title, expanded, onToggle, summary, children, borderColor }: {
+  title: string;
+  expanded: boolean;
+  onToggle: () => void;
+  summary?: React.ReactNode;
+  children: React.ReactNode;
+  borderColor?: string;
+}) {
+  return (
+    <div style={{
+      background: 'var(--muted)',
+      borderRadius: '0.375rem',
+      border: `1px solid ${borderColor || 'var(--border)'}`,
+      marginBottom: '0.5rem',
+      overflow: 'hidden',
+    }}>
+      <button
+        type="button"
+        onClick={onToggle}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          width: '100%',
+          padding: '0.5rem 0.75rem',
+          background: 'none',
+          border: 'none',
+          cursor: 'pointer',
+          color: 'var(--foreground)',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
+          <span style={{
+            fontSize: '0.5rem',
+            display: 'inline-block',
+            transition: 'transform 0.15s ease',
+            transform: expanded ? 'rotate(90deg)' : 'rotate(0deg)',
+            color: borderColor || 'var(--muted-foreground)',
+          }}>▶</span>
+          <span style={{
+            fontSize: '0.7rem',
+            fontWeight: 500,
+            textTransform: 'uppercase',
+            letterSpacing: '0.1em',
+            color: borderColor || 'var(--muted-foreground)',
+          }}>{title}</span>
+        </div>
+        {!expanded && summary && (
+          <div style={{ fontSize: '0.7rem', color: 'var(--muted-foreground)', opacity: 0.7 }}>
+            {summary}
+          </div>
+        )}
+      </button>
+      {expanded && (
+        <div style={{ padding: '0 0.75rem 0.625rem' }}>
+          {children}
+        </div>
+      )}
+    </div>
+  );
+}
+
 type PromptSuggestions = { traits: string[]; skills: string[] };
 
 const BASE_PROMPT_SUGGESTIONS: PromptSuggestions = {
@@ -200,12 +424,18 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
   const [lcosSeed, setLcosSeed] = useState<string>('');
   const [lcosAvatarUrl, setLcosAvatarUrl] = useState<string | null>(null);
   const [creatingFromLcos, setCreatingFromLcos] = useState(false);
-  const [lcosBlendHeritage, setLcosBlendHeritage] = useState(false);
-  const [lcosMononym, setLcosMononym] = useState<'' | 'squishe' | 'simple' | 'aminal-blend' | 'aminal-clear'>('');
-  const [lcosRelic, setLcosRelic] = useState(false);
-  const [lcosRelicEra, setLcosRelicEra] = useState<'archaic' | 'modern' | ''>('');
+  const [lcosRelicEra, setLcosRelicEra] = useState<'archaic' | 'modern' | 'timeless'>('modern');
   const [lcosLockedRelic, setLcosLockedRelic] = useState<Relic | null>(null);
-  const [lcosCore, setLcosCore] = useState<'' | 'vaporwave' | 'witchy' | 'scene' | 'cybergoth' | 'fairycore' | 'weirdcore'>('');
+  const [lcosCore, setLcosCore] = useState<string>('');
+  const [lcosVariance, setLcosVariance] = useState<number>(0);
+  const [lcosNameMode, setLcosNameMode] = useState<string>('standard');
+  const [lcosShowDetails, setLcosShowDetails] = useState(false);
+  const [lcosAdminMode, setLcosAdminMode] = useState(false);
+  const [lcosMode, setLcosMode] = useState<'character' | 'relic'>('character');
+  const [imprintExpanded, setGenomeExpanded] = useState(false);
+  const [lcosSettingsExpanded, setLcosSettingsExpanded] = useState(true);
+  const [lcosClassExpanded, setLcosClassExpanded] = useState(false);
+  const [lcosBackstoryExpanded, setLcosBackstoryExpanded] = useState(false);
 
   // Advanced Oripheon mode (external API)
   const [oripheonSeed, setOripheonSeed] = useState<string>('');
@@ -273,12 +503,18 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
     setLcosSeed('');
     setLcosAvatarUrl(null);
     setCreatingFromLcos(false);
-    setLcosBlendHeritage(false);
-    setLcosMononym('');
-    setLcosRelic(false);
-    setLcosRelicEra('');
+    setLcosRelicEra('modern');
     setLcosLockedRelic(null);
     setLcosCore('');
+    setLcosVariance(0);
+    setLcosNameMode('standard');
+    setLcosShowDetails(false);
+    setLcosAdminMode(false);
+    setLcosMode('character');
+    setGenomeExpanded(false);
+    setLcosSettingsExpanded(true);
+    setLcosClassExpanded(false);
+    setLcosBackstoryExpanded(false);
 
     // Advanced Oripheon state
     setOripheonSeed('');
@@ -316,18 +552,29 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
 
     try {
       const seedNumber = Number(lcosSeed);
+      const isBlend = lcosHeritage === 'blend';
+      const isMononym = lcosNameMode !== 'standard';
+      let mononymType: string | undefined;
+      if (lcosNameMode === 'mononym-squishe') mononymType = 'squishe';
+      else if (lcosNameMode === 'mononym-simple') mononymType = 'simple';
+      else if (lcosNameMode === 'aminal-blend') mononymType = 'aminal-blend';
+      else if (lcosNameMode === 'aminal-clear') mononymType = 'aminal-clear';
+
+      const isRelic = lcosMode === 'relic';
+
       const generated = await generateLCOSCharacter(
         {
           seed: Number.isFinite(seedNumber) && seedNumber > 0 ? seedNumber : undefined,
-          heritage: lcosBlendHeritage ? undefined : (lcosHeritage || undefined),
+          heritage: isBlend ? undefined : (lcosHeritage || undefined),
           gender: lcosGender || undefined,
-          blendHeritage: lcosBlendHeritage,
-          mononym: lcosMononym !== '',
-          mononymType: lcosMononym || undefined,
-          relic: lcosRelic,
-          relicEra: lcosRelicEra || undefined,
+          blendHeritage: isBlend,
+          mononym: isMononym,
+          mononymType: mononymType as 'squishe' | 'simple' | 'aminal-blend' | 'aminal-clear' | undefined,
+          relic: isRelic,
+          relicEra: isRelic ? (lcosRelicEra || undefined) : undefined,
           lockedRelic: lcosLockedRelic || undefined,
           core: lcosCore || undefined,
+          variance: lcosVariance > 0 ? lcosVariance : undefined,
         },
         { signal: controller.signal }
       );
@@ -391,7 +638,7 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
 
       // Then create the genome and link it
       const genomeData = {
-        name: `${lcosGenerated.name} Genome`,
+        name: `${lcosGenerated.name} Imprint`,
         characterId: character.id,
         orishaConfiguration: {
           headOrisha: charenomePreview.orisha,
@@ -671,372 +918,350 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
       <div className="modal" onClick={(e) => e.stopPropagation()} style={{ maxWidth: 720 }}>
         <div className="modal-header">
           <h2 className="modal-title">New Character</h2>
-          <button className="modal-close" onClick={handleClose}>
-            X
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <button
+              type="button"
+              onClick={() => {
+                const next = !lcosAdminMode;
+                setLcosAdminMode(next);
+                if (!next && mode !== 'quick') setMode('quick');
+              }}
+              style={{
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                padding: '0.375rem',
+                borderRadius: '0.5rem',
+                color: lcosAdminMode ? 'var(--foreground)' : 'var(--muted-foreground)',
+                transition: 'color 0.15s ease',
+                fontSize: '0.85rem',
+                opacity: lcosAdminMode ? 1 : 0.4,
+              }}
+              title={lcosAdminMode ? 'Hide admin controls' : 'Show admin controls'}
+            >
+              {lcosAdminMode ? '◉' : '◎'}
+            </button>
+            <button className="modal-close" onClick={handleClose}>
+              X
+            </button>
+          </div>
         </div>
 
-        <div className="flex gap-2" style={{ marginBottom: '1rem' }}>
-          <button
-            type="button"
-            className={mode === 'quick' ? 'btn btn-primary' : 'btn btn-secondary'}
-            onClick={() => setMode('quick')}
-          >
-            Quick Generate
-          </button>
-          <button
-            type="button"
-            className={mode === 'oripheon' ? 'btn btn-primary' : 'btn btn-secondary'}
-            onClick={() => setMode('oripheon')}
-          >
-            Advanced (External)
-          </button>
-          <button
-            type="button"
-            className={mode === 'manual' ? 'btn btn-primary' : 'btn btn-secondary'}
-            onClick={() => setMode('manual')}
-          >
-            Manual
-          </button>
-        </div>
+        {lcosAdminMode && (
+          <div className="flex gap-2" style={{ marginBottom: '1rem' }}>
+            <button
+              type="button"
+              className={mode === 'quick' ? 'btn btn-primary' : 'btn btn-secondary'}
+              onClick={() => setMode('quick')}
+            >
+              Quick Generate
+            </button>
+            <button
+              type="button"
+              className={mode === 'oripheon' ? 'btn btn-primary' : 'btn btn-secondary'}
+              onClick={() => setMode('oripheon')}
+            >
+              Advanced (External)
+            </button>
+            <button
+              type="button"
+              className={mode === 'manual' ? 'btn btn-primary' : 'btn btn-secondary'}
+              onClick={() => setMode('manual')}
+            >
+              Manual
+            </button>
+          </div>
+        )}
 
         {mode === 'quick' && (
           <div>
-            <p className="text-sm" style={{ color: 'var(--muted-foreground)', marginBottom: '1rem' }}>
-              Instantly generate a unique character using the built-in Oripheon engine.
-            </p>
-
-            <div className="flex gap-4" style={{ marginBottom: '1rem', flexWrap: 'wrap' }}>
-              <div className="flex gap-2">
+            {/* Mode Tabs: Character / Relic — compact */}
+            <div style={{ display: 'flex', borderBottom: '1px solid var(--border)', marginBottom: '0.5rem' }}>
+              {[
+                { value: 'character' as const, label: 'Character' },
+                { value: 'relic' as const, label: 'Relic' },
+              ].map((tab) => (
                 <button
+                  key={tab.value}
                   type="button"
-                  className={!lcosBlendHeritage ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
-                  onClick={() => setLcosBlendHeritage(false)}
-                  title="Use names from specific cultural heritages"
-                >
-                  Cultural
-                </button>
-                <button
-                  type="button"
-                  className={lcosBlendHeritage ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
-                  onClick={() => setLcosBlendHeritage(true)}
-                  title="Blend names across cultures to create something new"
-                >
-                  Blend
-                </button>
-              </div>
-              <div className="flex gap-2" style={{ flexWrap: 'wrap', alignItems: 'center' }}>
-                <button
-                  type="button"
-                  className={lcosMononym === '' ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
-                  onClick={() => setLcosMononym('')}
-                  title="Full name (first + last)"
-                >
-                  Full Name
-                </button>
-                <button
-                  type="button"
-                  className={lcosMononym === 'squishe' ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
-                  onClick={() => setLcosMononym('squishe')}
-                  title="Squishe - blend of first and last names into one"
-                >
-                  Squishe
-                </button>
-                <button
-                  type="button"
-                  className={lcosMononym === 'simple' ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
-                  onClick={() => setLcosMononym('simple')}
-                  title="Simple mononym - first name only"
-                >
-                  Simple
-                </button>
-                <button
-                  type="button"
-                  className={(lcosMononym === 'aminal-blend' || lcosMononym === 'aminal-clear') ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
-                  onClick={() => setLcosMononym(lcosMononym === 'aminal-blend' || lcosMononym === 'aminal-clear' ? '' : 'aminal-blend')}
-                  title="Aminal - include mythical beast or animal in name"
-                >
-                  Aminal
-                </button>
-                {(lcosMononym === 'aminal-blend' || lcosMononym === 'aminal-clear') && (
-                  <div style={{
-                    display: 'flex',
-                    gap: '0.25rem',
-                    padding: '0.25rem',
-                    backgroundColor: 'var(--card)',
-                    borderRadius: '0.375rem',
-                    border: '1px solid var(--border)'
-                  }}>
-                    <button
-                      type="button"
-                      className={lcosMononym === 'aminal-blend' ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
-                      onClick={() => setLcosMononym('aminal-blend')}
-                      title="Blend - mash beast name with character name"
-                      style={{ padding: '0.2rem 0.5rem', fontSize: '0.7rem' }}
-                    >
-                      Blend
-                    </button>
-                    <button
-                      type="button"
-                      className={lcosMononym === 'aminal-clear' ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
-                      onClick={() => setLcosMononym('aminal-clear')}
-                      title="Clear - animal name clearly visible"
-                      style={{ padding: '0.2rem 0.5rem', fontSize: '0.7rem' }}
-                    >
-                      Clear
-                    </button>
-                  </div>
-                )}
-              </div>
-              <div className="flex gap-2">
-                <button
-                  type="button"
-                  className={lcosRelic ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
-                  onClick={() => {
-                    setLcosRelic(!lcosRelic);
-                    if (!lcosRelic) {
-                      setLcosLockedRelic(null);
-                    }
+                  onClick={() => { setLcosMode(tab.value); setLcosLockedRelic(null); }}
+                  style={{
+                    padding: '0.375rem 1rem',
+                    fontSize: '0.75rem',
+                    fontWeight: 500,
+                    background: 'none',
+                    border: 'none',
+                    borderBottom: `2px solid ${lcosMode === tab.value ? 'rgba(255,255,255,0.5)' : 'transparent'}`,
+                    marginBottom: '-1px',
+                    color: lcosMode === tab.value ? 'var(--foreground)' : 'var(--muted-foreground)',
+                    cursor: 'pointer',
                   }}
-                  title="Generate strange objects as the character"
                 >
-                  Relic
+                  {tab.label}
                 </button>
-                {lcosRelic && (
+              ))}
+            </div>
+
+            {/* Settings — collapsible */}
+            <CollapsibleSection
+              title="Settings"
+              expanded={lcosSettingsExpanded}
+              onToggle={() => setLcosSettingsExpanded(!lcosSettingsExpanded)}
+              summary={(() => {
+                const parts: string[] = [];
+                if (lcosHeritage && lcosHeritage !== 'blend') parts.push(lcosHeritage);
+                if (lcosHeritage === 'blend') parts.push('Blend');
+                if (lcosGender) parts.push(lcosGender);
+                if (lcosCore) parts.push(lcosCore.replace(/_/g, ' '));
+                if (lcosVariance > 0) parts.push(`${lcosVariance}%`);
+                return parts.length > 0 ? parts.join(' · ') : 'defaults';
+              })()}
+            >
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                {lcosMode === 'character' && (
                   <>
-                    <button
-                      type="button"
-                      className={lcosRelicEra === 'archaic' ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
-                      onClick={() => {
-                        setLcosRelicEra(lcosRelicEra === 'archaic' ? '' : 'archaic');
-                        setLcosLockedRelic(null);
-                      }}
-                      title="Ancient/mythic objects"
-                    >
-                      Archaic
-                    </button>
-                    <button
-                      type="button"
-                      className={lcosRelicEra === 'modern' ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
-                      onClick={() => {
-                        setLcosRelicEra(lcosRelicEra === 'modern' ? '' : 'modern');
-                        setLcosLockedRelic(null);
-                      }}
-                      title="Contemporary/mundane objects"
-                    >
-                      Modern
-                    </button>
+                    <PillSelector label="Heritage" options={HERITAGE_OPTIONS} value={lcosHeritage} onChange={(v) => setLcosHeritage(v)} />
+                    <PillSelector label="Gender" options={GENDER_OPTIONS} value={lcosGender} onChange={(v) => setLcosGender(v)} />
+                    <PillSelector label="Name Mode" options={NAME_MODES} value={lcosNameMode} onChange={(v) => setLcosNameMode(v)} />
                   </>
                 )}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-3 gap-4">
-              <div className="form-group" style={{ marginBottom: 0 }}>
-                <label className="label">Heritage</label>
-                <select
-                  className="input"
-                  value={lcosHeritage}
-                  onChange={(e) => setLcosHeritage(e.target.value)}
-                  disabled={lcosBlendHeritage}
-                  style={lcosBlendHeritage ? { opacity: 0.5 } : undefined}
-                >
-                  <option value="">Any</option>
-                  <option value="yoruba">Yoruba</option>
-                  <option value="igbo">Igbo</option>
-                  <option value="arabic">Arabic</option>
-                  <option value="celtic">Celtic</option>
-                  <option value="norse">Norse</option>
-                  <option value="european">European</option>
-                </select>
-              </div>
-
-              <div className="form-group" style={{ marginBottom: 0 }}>
-                <label className="label">Gender</label>
-                <select
-                  className="input"
-                  value={lcosGender}
-                  onChange={(e) => setLcosGender(e.target.value)}
-                >
-                  <option value="">Any</option>
-                  <option value="masculine">Masculine</option>
-                  <option value="feminine">Feminine</option>
-                  <option value="neutral">Neutral</option>
-                </select>
-              </div>
-
-              <div className="form-group" style={{ marginBottom: 0 }}>
-                <label className="label">Seed</label>
-                <input
-                  type="number"
-                  className="input"
-                  value={lcosSeed}
-                  onChange={(e) => setLcosSeed(e.target.value)}
-                  placeholder="Random"
-                />
-              </div>
-            </div>
-
-            <div className="form-group" style={{ marginTop: '0.75rem', marginBottom: 0 }}>
-              <label className="label">Core</label>
-              <select
-                className="input"
-                value={lcosCore}
-                onChange={(e) => setLcosCore(e.target.value as typeof lcosCore)}
-              >
-                <option value="">None</option>
-                <option value="vaporwave">Vaporwave (永夢)</option>
-                <option value="witchy">Witchy (☽☾)</option>
-                <option value="scene">Scene (xX★Xx)</option>
-                <option value="cybergoth">Cybergoth (†∆)</option>
-                <option value="fairycore">Fairycore (✿❀)</option>
-                <option value="weirdcore">Weirdcore (▲◇)</option>
-              </select>
-            </div>
-
-            {lcosGenerated && (
-              <div className="card" style={{ marginTop: '1rem', marginBottom: '1rem' }}>
-                <div className="flex gap-2" style={{ alignItems: 'center', marginBottom: '0.5rem' }}>
-                  <h3 className="card-title" style={{ marginBottom: 0 }}>{lcosGenerated.name}</h3>
-                  {lcosGenerated.pseudonym && (
-                    <span className="badge badge-approved" style={{ fontSize: '0.875rem' }}>
-                      "{lcosGenerated.pseudonym}"
-                    </span>
-                  )}
-                </div>
-                {lcosGenerated.samplePost && lcosRelic && lcosRelicEra === 'modern' && (
-                  <div style={{
-                    margin: '1rem 0',
-                    padding: '1.25rem',
-                    background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
-                    borderRadius: '0.75rem',
-                    border: '1px solid rgba(255,255,255,0.1)',
-                    position: 'relative',
-                    overflow: 'hidden',
-                  }}>
-                    <div style={{
-                      position: 'absolute',
-                      top: '0.5rem',
-                      right: '0.75rem',
-                      fontSize: '0.65rem',
-                      color: 'rgba(255,255,255,0.4)',
-                      fontFamily: 'Futura, "Century Gothic", "Trebuchet MS", sans-serif',
-                      letterSpacing: '0.1em',
-                      textTransform: 'uppercase',
-                    }}>
-                      VOICE
-                    </div>
-                    <div style={{
-                      fontFamily: 'Futura, "Century Gothic", "Trebuchet MS", sans-serif',
-                      fontSize: '1.1rem',
-                      lineHeight: '1.5',
-                      color: '#fff',
-                      fontWeight: 500,
-                      letterSpacing: '0.02em',
-                    }}>
-                      "{lcosGenerated.samplePost}"
-                    </div>
-                    {lcosGenerated.sacredNumber !== undefined && (
-                      <div style={{
-                        marginTop: '0.75rem',
-                        fontSize: '0.7rem',
-                        color: 'rgba(255,255,255,0.5)',
-                        fontFamily: 'Futura, "Century Gothic", "Trebuchet MS", sans-serif',
-                        letterSpacing: '0.15em',
-                      }}>
-                        #{lcosGenerated.sacredNumber}
-                      </div>
-                    )}
-                  </div>
+                {lcosMode === 'relic' && (
+                  <PillSelector label="Era" options={[{ value: 'modern', label: 'Modern' }, { value: 'archaic', label: 'Archaic' }, { value: 'timeless', label: 'Timeless' }]} value={lcosRelicEra} onChange={(v) => { setLcosRelicEra(v as 'archaic' | 'modern' | 'timeless'); setLcosLockedRelic(null); }} />
                 )}
-                <p className="card-description" style={{ whiteSpace: 'pre-wrap' }}>
-                  {lcosGenerated.backstory}
-                </p>
-                <div className="mt-4 flex gap-2" style={{ flexWrap: 'wrap' }}>
-                  <span className="badge badge-draft">{lcosGenerated.heritage}</span>
-                  <span className="badge badge-draft">{lcosGenerated.order?.name}</span>
-                  <span className="badge badge-approved" title={lcosGenerated.arcana?.meaning}>
-                    {lcosGenerated.arcana?.system?.toUpperCase()}: {lcosGenerated.arcana?.archetype}
-                  </span>
-                  <span className="badge badge-draft">{lcosGenerated.gender}</span>
+                <PillSelector label="Aesthetic" options={CORE_STYLES} value={lcosCore} onChange={(v) => setLcosCore(v)} />
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.7rem', color: 'var(--muted-foreground)', marginBottom: '0.25rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 500 }}>
+                    Variance <span style={{ textTransform: 'none', letterSpacing: 'normal' }}>{lcosVariance}%</span>
+                  </label>
+                  <input type="range" min={0} max={100} step={1} value={lcosVariance} onChange={(e) => setLcosVariance(Number(e.target.value))} style={{ width: '100%', WebkitAppearance: 'none', appearance: 'none', height: '4px', borderRadius: '2px', background: `linear-gradient(to right, var(--border) 0%, var(--foreground) ${lcosVariance}%, var(--border) ${lcosVariance}%)`, outline: 'none', cursor: 'pointer' }} />
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.6rem', color: 'var(--muted-foreground)', opacity: 0.5 }}><span>Clean</span><span>Corrupted</span></div>
                 </div>
-                <div className="mt-4 grid grid-cols-2 gap-4" style={{ fontSize: '0.875rem' }}>
-                  <div>
-                    <strong>Appearance:</strong> {lcosGenerated.appearance?.build}, {lcosGenerated.appearance?.distinctiveTrait}
-                  </div>
-                  <div>
-                    <strong>Style:</strong> {lcosGenerated.appearance?.styleAesthetic}
-                  </div>
-                  <div>
-                    <strong>Voice:</strong> {lcosGenerated.personality?.voiceTone}
-                  </div>
-                  <div>
-                    <strong>Core Desire:</strong> {lcosGenerated.personality?.coreDesire}
-                  </div>
-                </div>
-                {lcosGenerated.arcana && (
-                  <div className="mt-4" style={{ fontSize: '0.875rem' }}>
-                    <div style={{ marginBottom: '0.5rem' }}>
-                      <strong>Archetype:</strong> {lcosGenerated.arcana.archetype} — {lcosGenerated.arcana.meaning}
-                    </div>
-                    <div className="flex gap-2" style={{ flexWrap: 'wrap' }}>
-                      {lcosGenerated.arcana.goldenGifts?.map((gift) => (
-                        <span key={gift} className="badge badge-approved" style={{ fontSize: '0.75rem' }}>
-                          {gift}
-                        </span>
-                      ))}
-                      {lcosGenerated.arcana.shadowThemes?.map((shadow) => (
-                        <span key={shadow} className="badge badge-failed" style={{ fontSize: '0.75rem' }}>
-                          {shadow}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-                {lcosGenerated.relics && lcosGenerated.relics.length > 0 && lcosRelic && (
-                  <div className="mt-4" style={{ fontSize: '0.875rem' }}>
-                    <div className="flex gap-2" style={{ alignItems: 'center', marginBottom: '0.5rem' }}>
-                      <strong>Object:</strong>
-                      <button
-                        type="button"
-                        className={lcosLockedRelic ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
-                        onClick={() => {
-                          if (lcosLockedRelic) {
-                            setLcosLockedRelic(null);
-                          } else if (lcosGenerated.relics?.[0]) {
-                            setLcosLockedRelic(lcosGenerated.relics[0]);
-                          }
-                        }}
-                        title={lcosLockedRelic ? 'Unlock object to generate new ones' : 'Lock this object and only reroll the pseudonym'}
-                        style={{ padding: '0.25rem 0.5rem', fontSize: '0.75rem' }}
-                      >
-                        {lcosLockedRelic ? 'Locked' : 'Lock'}
-                      </button>
-                    </div>
-                    {lcosGenerated.relics.map((relic, idx) => (
-                      <div key={idx} style={{ marginBottom: '0.5rem', paddingLeft: '0.5rem', borderLeft: `2px solid ${lcosLockedRelic ? 'var(--primary)' : 'var(--border)'}` }}>
-                        <div style={{ fontStyle: 'italic' }}>{relic.object}</div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-                <p className="mt-4 text-sm" style={{ color: 'var(--muted-foreground)' }}>
-                  Seed: {lcosGenerated.seed}
-                </p>
+              </div>
+            </CollapsibleSection>
+
+            {/* Loading state */}
+            {lcosGenerating && !lcosGenerated && (
+              <div style={{ padding: '1.5rem', textAlign: 'center', background: 'var(--muted)', borderRadius: '0.375rem', border: '1px solid var(--border)', marginBottom: '0.5rem', color: 'var(--muted-foreground)', fontSize: '0.8rem' }}>
+                Generating...
               </div>
             )}
 
-            {/* Charenome Preview - Genome Sync */}
+            {/* Result — always visible when generated */}
+            {lcosGenerated && (
+              <>
+                {/* Name + badges — always shown */}
+                <div style={{ padding: '0.625rem 0.75rem', background: 'var(--muted)', borderRadius: '0.375rem', border: '1px solid var(--border)', marginBottom: '0.5rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: '0.5rem', flexWrap: 'wrap' }}>
+                    <div style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--foreground)', fontFamily: 'Futura, "Century Gothic", "Trebuchet MS", sans-serif', letterSpacing: '0.02em' }}>
+                      {lcosGenerated.name}
+                    </div>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.25rem' }}>
+                      {lcosAdminMode ? (
+                        <>
+                          <GenBadge variant="purple">{lcosGenerated.heritage}</GenBadge>
+                          <GenBadge variant="blue">{lcosGenerated.order?.name}</GenBadge>
+                          <GenBadge variant="amber">{lcosGenerated.arcana?.system}: {lcosGenerated.arcana?.archetype}</GenBadge>
+                        </>
+                      ) : lcosGenerated.subtaste ? (
+                        <>
+                          <GenBadge variant="purple">{lcosGenerated.subtaste.code}</GenBadge>
+                          <GenBadge variant="amber">{lcosGenerated.subtaste.glyph}</GenBadge>
+                          <GenBadge>{lcosGenerated.subtaste.label}</GenBadge>
+                        </>
+                      ) : null}
+                    </div>
+                  </div>
+
+                  {/* Compact inline details */}
+                  <div style={{ fontSize: '0.8rem', color: 'var(--muted-foreground)', marginTop: '0.375rem', lineHeight: 1.5 }}>
+                    {lcosMode === 'relic' ? (
+                      <>
+                        {lcosGenerated.relics?.[0] && <span style={{ fontStyle: 'italic' }}>{lcosGenerated.relics[0].object}</span>}
+                        {lcosGenerated.pseudonym && <span> — aka {lcosGenerated.pseudonym}</span>}
+                        {lcosGenerated.sacredNumber !== undefined && <span> · No. {lcosGenerated.sacredNumber}</span>}
+                      </>
+                    ) : (
+                      <>
+                        <span>{lcosGenerated.appearance?.build}, {lcosGenerated.appearance?.distinctiveTrait}</span>
+                        <span> · {lcosGenerated.appearance?.styleAesthetic}</span>
+                        <span> · {lcosGenerated.personality?.voiceTone}</span>
+                      </>
+                    )}
+                  </div>
+                  <div style={{ fontSize: '0.65rem', color: 'var(--muted-foreground)', opacity: 0.5, marginTop: '0.25rem' }}>
+                    Seed: {lcosGenerated.seed}
+                  </div>
+                </div>
+
+                {/* Backstory — collapsible */}
+                <CollapsibleSection
+                  title={lcosMode === 'relic' ? 'Story' : 'Backstory'}
+                  expanded={lcosBackstoryExpanded}
+                  onToggle={() => setLcosBackstoryExpanded(!lcosBackstoryExpanded)}
+                  summary={lcosGenerated.backstory.slice(0, 60) + '...'}
+                >
+                  <div style={{ fontSize: '0.8rem', color: 'var(--muted-foreground)', lineHeight: 1.6 }}>
+                    {lcosGenerated.backstory}
+                  </div>
+                  {lcosMode === 'relic' && lcosGenerated.samplePost && (
+                    <div style={{ fontSize: '0.8rem', color: 'var(--foreground)', fontStyle: 'italic', marginTop: '0.5rem', opacity: 0.8 }}>
+                      &ldquo;{lcosGenerated.samplePost}&rdquo;
+                    </div>
+                  )}
+                  {lcosMode === 'relic' && lcosGenerated.relics && lcosGenerated.relics.length > 0 && (
+                    <div style={{ marginTop: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <button type="button" onClick={() => { if (lcosLockedRelic) { setLcosLockedRelic(null); } else if (lcosGenerated.relics?.[0]) { setLcosLockedRelic(lcosGenerated.relics[0]); } }} style={{ padding: '0.125rem 0.5rem', fontSize: '0.65rem', borderRadius: '0.25rem', border: lcosLockedRelic ? '1px solid rgba(255,255,255,0.25)' : '1px solid var(--border)', background: lcosLockedRelic ? 'rgba(255,255,255,0.08)' : 'transparent', color: 'var(--foreground)', cursor: 'pointer' }}>
+                        {lcosLockedRelic ? 'Unlock Relic' : 'Lock Relic'}
+                      </button>
+                    </div>
+                  )}
+                </CollapsibleSection>
+
+                {/* Classifications — collapsible */}
+                <CollapsibleSection
+                  title="Classifications"
+                  expanded={lcosClassExpanded}
+                  onToggle={() => setLcosClassExpanded(!lcosClassExpanded)}
+                  borderColor="rgba(168, 85, 247, 0.3)"
+                  summary={(() => {
+                    const parts: string[] = [];
+                    if (lcosGenerated.subtaste) parts.push(`${lcosGenerated.subtaste.glyph} · ${lcosGenerated.subtaste.phase}`);
+                    if (lcosGenerated.approximateMBTI) parts.push(lcosGenerated.approximateMBTI);
+                    return parts.join(' · ');
+                  })()}
+                >
+                  {/* Primary archetype */}
+                  {lcosGenerated.arcana && (
+                    <div style={{ marginBottom: '0.625rem' }}>
+                      <div style={{ fontSize: '0.6rem', color: 'rgba(168, 85, 247, 0.7)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.25rem', fontWeight: 600 }}>Primary</div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', flexWrap: 'wrap', marginBottom: '0.25rem' }}>
+                        <GenBadge variant="purple">{lcosGenerated.arcana.system}</GenBadge>
+                        <GenBadge variant="amber">{lcosGenerated.arcana.archetype}</GenBadge>
+                        {lcosGenerated.subtaste && (
+                          <GenBadge variant="blue">{lcosGenerated.subtaste.code} {lcosGenerated.subtaste.glyph}</GenBadge>
+                        )}
+                        {lcosGenerated.subtaste?.phase && (
+                          <span style={{
+                            display: 'inline-block',
+                            padding: '0.125rem 0.4rem',
+                            borderRadius: '0.25rem',
+                            fontSize: '0.65rem',
+                            fontWeight: 500,
+                            background: 'rgba(34, 197, 94, 0.1)',
+                            color: '#86efac',
+                            border: '1px solid rgba(34, 197, 94, 0.2)',
+                            textTransform: 'capitalize',
+                          }}>{lcosGenerated.subtaste.phase}</span>
+                        )}
+                      </div>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', lineHeight: 1.4 }}>
+                        {lcosGenerated.arcana.meaning}
+                      </div>
+                      {lcosGenerated.subtaste && (
+                        <div style={{ fontSize: '0.7rem', color: 'rgba(168, 85, 247, 0.6)', marginTop: '0.125rem', fontStyle: 'italic' }}>
+                          {lcosGenerated.subtaste.label}: {lcosGenerated.subtaste.description}
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Personality axes + MBTI */}
+                  {lcosGenerated.personality && (
+                    <div style={{ marginBottom: '0.625rem' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
+                        <div style={{ fontSize: '0.6rem', color: 'rgba(139, 92, 246, 0.6)', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 600 }}>Axes</div>
+                        {lcosGenerated.approximateMBTI && (
+                          <span style={{
+                            fontSize: '0.65rem',
+                            color: 'var(--muted-foreground)',
+                            opacity: 0.6,
+                            fontFamily: 'monospace',
+                            letterSpacing: '0.05em',
+                          }} title="Approximate MBTI — lossy projection from personality axes">{lcosGenerated.approximateMBTI}</span>
+                        )}
+                      </div>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                        <AxisBar value={lcosGenerated.personality.axes.orderChaos} leftLabel="Order" rightLabel="Chaos" />
+                        <AxisBar value={lcosGenerated.personality.axes.mercyRuthlessness} leftLabel="Mercy" rightLabel="Ruthless" />
+                        <AxisBar value={lcosGenerated.personality.axes.introvertExtrovert} leftLabel="Intro" rightLabel="Extro" />
+                        <AxisBar value={lcosGenerated.personality.axes.faithDoubt} leftLabel="Faith" rightLabel="Doubt" />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Subdominant archetypes */}
+                  {lcosGenerated.subdominantArcana && lcosGenerated.subdominantArcana.length > 0 && (
+                    <div>
+                      <div style={{ fontSize: '0.6rem', color: 'rgba(139, 92, 246, 0.6)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.375rem', fontWeight: 600 }}>Subdominant</div>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.375rem' }}>
+                        {lcosGenerated.subdominantArcana.map((sub, idx) => (
+                          <div key={idx} style={{
+                            padding: '0.375rem 0.5rem',
+                            background: 'rgba(255,255,255,0.03)',
+                            borderRadius: '0.25rem',
+                            borderLeft: '2px solid rgba(139, 92, 246, 0.3)',
+                          }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', flexWrap: 'wrap', marginBottom: '0.125rem' }}>
+                              <GenBadge variant="purple">{sub.arcana.system}</GenBadge>
+                              <GenBadge variant="amber">{sub.arcana.archetype}</GenBadge>
+                              <GenBadge variant="blue">{sub.subtaste.code} {sub.subtaste.glyph}</GenBadge>
+                              {sub.subtaste.phase && (
+                                <span style={{
+                                  display: 'inline-block',
+                                  padding: '0.1rem 0.35rem',
+                                  borderRadius: '0.2rem',
+                                  fontSize: '0.6rem',
+                                  fontWeight: 500,
+                                  background: 'rgba(34, 197, 94, 0.08)',
+                                  color: 'rgba(134, 239, 172, 0.7)',
+                                  textTransform: 'capitalize',
+                                }}>{sub.subtaste.phase}</span>
+                              )}
+                            </div>
+                            <div style={{ fontSize: '0.7rem', color: 'var(--muted-foreground)', opacity: 0.7 }}>
+                              {sub.arcana.meaning}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </CollapsibleSection>
+              </>
+            )}
+
+            {/* Charenome Preview - Genome Sync (collapsible) */}
             {lcosGenerated && charenomePreview && (
               <div className="card" style={{
-                marginTop: '1rem',
-                marginBottom: '1rem',
+                marginBottom: '1.25rem',
                 background: 'linear-gradient(135deg, #1a1a2e 0%, #0f0f1a 100%)',
                 border: '1px solid rgba(139, 92, 246, 0.3)',
               }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
+                {/* Collapsible header */}
+                <button
+                  type="button"
+                  onClick={() => setGenomeExpanded(!imprintExpanded)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    width: '100%',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    padding: 0,
+                    marginBottom: imprintExpanded ? '0.75rem' : 0,
+                  }}
+                >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <h4 style={{ margin: 0, fontSize: '0.9rem', color: '#a78bfa' }}>Genome Preview</h4>
+                    <span style={{
+                      fontSize: '0.625rem',
+                      color: '#a78bfa',
+                      transition: 'transform 0.15s ease',
+                      display: 'inline-block',
+                      transform: imprintExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
+                    }}>▶</span>
+                    <h4 style={{ margin: 0, fontSize: '0.9rem', color: '#a78bfa' }}>Imprint Preview</h4>
                     <span style={{
                       padding: '0.15rem 0.5rem',
                       borderRadius: '4px',
@@ -1047,191 +1272,210 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
                       aligned
                     </span>
                   </div>
-                </div>
+                  {!imprintExpanded && (
+                    <div style={{ display: 'flex', gap: '0.375rem', alignItems: 'center' }}>
+                      <span style={{
+                        fontSize: '0.65rem',
+                        color: '#fbbf24',
+                        opacity: 0.7,
+                      }}>{charenomePreview.orisha}</span>
+                      <span style={{ fontSize: '0.5rem', color: 'rgba(255,255,255,0.2)' }}>·</span>
+                      <span style={{
+                        fontSize: '0.65rem',
+                        color: '#a78bfa',
+                        opacity: 0.7,
+                      }}>{charenomePreview.sephira}</span>
+                    </div>
+                  )}
+                </button>
 
-                {/* Alignment Sources */}
-                {charenomePreview.alignment && (
-                  <div style={{
-                    display: 'flex',
-                    gap: '0.5rem',
-                    flexWrap: 'wrap',
-                    marginBottom: '1rem',
-                    padding: '0.5rem',
-                    backgroundColor: 'rgba(255,255,255,0.03)',
-                    borderRadius: '6px',
-                  }}>
-                    <span style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.4)' }}>ALIGNED FROM:</span>
-                    <span style={{
-                      padding: '0.15rem 0.4rem',
-                      borderRadius: '4px',
-                      backgroundColor: 'rgba(34, 197, 94, 0.2)',
-                      fontSize: '0.7rem',
-                      color: '#86efac',
-                      textTransform: 'capitalize',
-                    }}>
-                      {charenomePreview.alignment.heritage}
-                    </span>
-                    <span style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.3)' }}>+</span>
-                    <span style={{
-                      padding: '0.15rem 0.4rem',
-                      borderRadius: '4px',
-                      backgroundColor: 'rgba(239, 68, 68, 0.2)',
-                      fontSize: '0.7rem',
-                      color: '#fca5a5',
-                      textTransform: 'capitalize',
-                    }}>
-                      {charenomePreview.alignment.order}
-                    </span>
-                    <span style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.3)' }}>+</span>
-                    <span style={{
-                      padding: '0.15rem 0.4rem',
-                      borderRadius: '4px',
-                      backgroundColor: 'rgba(59, 130, 246, 0.2)',
-                      fontSize: '0.7rem',
-                      color: '#93c5fd',
-                      textTransform: 'capitalize',
-                    }}>
-                      {charenomePreview.alignment.archetype?.replace(/_/g, ' ')}
-                    </span>
-                  </div>
-                )}
-
-                {/* Orisha & Sephira */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '1rem' }}>
-                  <div style={{
-                    padding: '0.75rem',
-                    backgroundColor: 'rgba(255,255,255,0.05)',
-                    borderRadius: '8px',
-                    borderLeft: '3px solid #f59e0b',
-                  }}>
-                    <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.5)', marginBottom: '0.25rem' }}>HEAD ORISHA</div>
-                    <div style={{ fontWeight: 600, color: '#fbbf24' }}>{charenomePreview.orisha}</div>
-                    {charenomePreview.camino && (
-                      <div style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.6)', marginTop: '0.25rem' }}>
-                        {charenomePreview.camino}
+                {imprintExpanded && (
+                  <>
+                    {/* Alignment Sources */}
+                    {charenomePreview.alignment && (
+                      <div style={{
+                        display: 'flex',
+                        gap: '0.5rem',
+                        flexWrap: 'wrap',
+                        marginBottom: '1rem',
+                        padding: '0.5rem',
+                        backgroundColor: 'rgba(255,255,255,0.03)',
+                        borderRadius: '6px',
+                      }}>
+                        <span style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.4)' }}>ALIGNED FROM:</span>
+                        <span style={{
+                          padding: '0.15rem 0.4rem',
+                          borderRadius: '4px',
+                          backgroundColor: 'rgba(34, 197, 94, 0.2)',
+                          fontSize: '0.7rem',
+                          color: '#86efac',
+                          textTransform: 'capitalize',
+                        }}>
+                          {charenomePreview.alignment.heritage}
+                        </span>
+                        <span style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.3)' }}>+</span>
+                        <span style={{
+                          padding: '0.15rem 0.4rem',
+                          borderRadius: '4px',
+                          backgroundColor: 'rgba(239, 68, 68, 0.2)',
+                          fontSize: '0.7rem',
+                          color: '#fca5a5',
+                          textTransform: 'capitalize',
+                        }}>
+                          {charenomePreview.alignment.order}
+                        </span>
+                        <span style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.3)' }}>+</span>
+                        <span style={{
+                          padding: '0.15rem 0.4rem',
+                          borderRadius: '4px',
+                          backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                          fontSize: '0.7rem',
+                          color: '#93c5fd',
+                          textTransform: 'capitalize',
+                        }}>
+                          {charenomePreview.alignment.archetype?.replace(/_/g, ' ')}
+                        </span>
                       </div>
                     )}
-                  </div>
-                  <div style={{
-                    padding: '0.75rem',
-                    backgroundColor: 'rgba(255,255,255,0.05)',
-                    borderRadius: '8px',
-                    borderLeft: '3px solid #8b5cf6',
-                  }}>
-                    <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.5)', marginBottom: '0.25rem' }}>SEPHIRA</div>
-                    <div style={{ fontWeight: 600, color: '#a78bfa' }}>{charenomePreview.sephira}</div>
-                    <div style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.6)', marginTop: '0.25rem' }}>
-                      {charenomePreview.trajectory}
-                    </div>
-                  </div>
-                </div>
 
-                {/* Secondary Influences */}
-                {charenomePreview.secondaryInfluences.length > 0 && (
-                  <div style={{ marginBottom: '1rem' }}>
-                    <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.5)', marginBottom: '0.5rem' }}>SECONDARY INFLUENCES</div>
-                    <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                      {charenomePreview.secondaryInfluences.map((inf, idx) => (
-                        <span key={idx} style={{
-                          padding: '0.25rem 0.5rem',
+                    {/* Orisha & Sephira */}
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '1rem' }}>
+                      <div style={{
+                        padding: '0.75rem',
+                        backgroundColor: 'rgba(255,255,255,0.05)',
+                        borderRadius: '8px',
+                        borderLeft: '3px solid #f59e0b',
+                      }}>
+                        <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.5)', marginBottom: '0.25rem' }}>HEAD ORISHA</div>
+                        <div style={{ fontWeight: 600, color: '#fbbf24' }}>{charenomePreview.orisha}</div>
+                        {charenomePreview.camino && (
+                          <div style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.6)', marginTop: '0.25rem' }}>
+                            {charenomePreview.camino}
+                          </div>
+                        )}
+                      </div>
+                      <div style={{
+                        padding: '0.75rem',
+                        backgroundColor: 'rgba(255,255,255,0.05)',
+                        borderRadius: '8px',
+                        borderLeft: '3px solid #8b5cf6',
+                      }}>
+                        <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.5)', marginBottom: '0.25rem' }}>SEPHIRA</div>
+                        <div style={{ fontWeight: 600, color: '#a78bfa' }}>{charenomePreview.sephira}</div>
+                        <div style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.6)', marginTop: '0.25rem' }}>
+                          {charenomePreview.trajectory}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Secondary Influences */}
+                    {charenomePreview.secondaryInfluences.length > 0 && (
+                      <div style={{ marginBottom: '1rem' }}>
+                        <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.5)', marginBottom: '0.5rem' }}>SECONDARY INFLUENCES</div>
+                        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                          {charenomePreview.secondaryInfluences.map((inf, idx) => (
+                            <span key={idx} style={{
+                              padding: '0.25rem 0.5rem',
+                              borderRadius: '4px',
+                              backgroundColor: 'rgba(255,255,255,0.1)',
+                              fontSize: '0.75rem',
+                              color: 'rgba(255,255,255,0.8)',
+                            }}>
+                              {inf.orisha} ({Math.round(inf.strength * 100)}%)
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Voice Profile */}
+                    <div style={{
+                      padding: '0.75rem',
+                      backgroundColor: 'rgba(255,255,255,0.05)',
+                      borderRadius: '8px',
+                      marginBottom: '1rem',
+                    }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                        <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.5)' }}>VOICE</div>
+                        <span style={{
+                          padding: '0.15rem 0.4rem',
                           borderRadius: '4px',
-                          backgroundColor: 'rgba(255,255,255,0.1)',
-                          fontSize: '0.75rem',
-                          color: 'rgba(255,255,255,0.8)',
+                          backgroundColor: charenomePreview.hotCoolAxis > 0 ? 'rgba(239, 68, 68, 0.2)' : 'rgba(59, 130, 246, 0.2)',
+                          fontSize: '0.65rem',
+                          color: charenomePreview.hotCoolAxis > 0 ? '#fca5a5' : '#93c5fd',
+                          textTransform: 'uppercase',
                         }}>
-                          {inf.orisha} ({Math.round(inf.strength * 100)}%)
+                          {charenomePreview.voice.type}
                         </span>
-                      ))}
+                        <span style={{
+                          padding: '0.15rem 0.4rem',
+                          borderRadius: '4px',
+                          backgroundColor: charenomePreview.hotCoolAxis > 0 ? 'rgba(239, 68, 68, 0.15)' : 'rgba(59, 130, 246, 0.15)',
+                          fontSize: '0.65rem',
+                          color: charenomePreview.hotCoolAxis > 0 ? '#fca5a5' : '#93c5fd',
+                        }}>
+                          {charenomePreview.hotCoolAxis > 0 ? 'hot' : charenomePreview.hotCoolAxis < 0 ? 'cool' : 'crossroads'}
+                        </span>
+                      </div>
+                      <div style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.7)' }}>
+                        {charenomePreview.voice.quality}
+                      </div>
                     </div>
-                  </div>
-                )}
 
-                {/* Voice Profile */}
-                <div style={{
-                  padding: '0.75rem',
-                  backgroundColor: 'rgba(255,255,255,0.05)',
-                  borderRadius: '8px',
-                  marginBottom: '1rem',
-                }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
-                    <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.5)' }}>VOICE</div>
-                    <span style={{
-                      padding: '0.15rem 0.4rem',
-                      borderRadius: '4px',
-                      backgroundColor: charenomePreview.hotCoolAxis > 0 ? 'rgba(239, 68, 68, 0.2)' : 'rgba(59, 130, 246, 0.2)',
-                      fontSize: '0.65rem',
-                      color: charenomePreview.hotCoolAxis > 0 ? '#fca5a5' : '#93c5fd',
-                      textTransform: 'uppercase',
+                    {/* Sample Tweet */}
+                    <div style={{
+                      padding: '1rem',
+                      background: 'linear-gradient(135deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.5) 100%)',
+                      borderRadius: '8px',
+                      border: '1px solid rgba(255,255,255,0.1)',
                     }}>
-                      {charenomePreview.voice.type}
-                    </span>
-                    <span style={{
-                      padding: '0.15rem 0.4rem',
-                      borderRadius: '4px',
-                      backgroundColor: charenomePreview.hotCoolAxis > 0 ? 'rgba(239, 68, 68, 0.15)' : 'rgba(59, 130, 246, 0.15)',
-                      fontSize: '0.65rem',
-                      color: charenomePreview.hotCoolAxis > 0 ? '#fca5a5' : '#93c5fd',
-                    }}>
-                      {charenomePreview.hotCoolAxis > 0 ? 'hot' : charenomePreview.hotCoolAxis < 0 ? 'cool' : 'crossroads'}
-                    </span>
-                  </div>
-                  <div style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.7)' }}>
-                    {charenomePreview.voice.quality}
-                  </div>
-                </div>
-
-                {/* Sample Tweet */}
-                <div style={{
-                  padding: '1rem',
-                  background: 'linear-gradient(135deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.5) 100%)',
-                  borderRadius: '8px',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                }}>
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    marginBottom: '0.5rem',
-                  }}>
-                    <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)', letterSpacing: '0.05em' }}>
-                      SAMPLE VOICE
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        if (charenomePreview) {
-                          const newTweet = generateSampleTweet(charenomePreview.orisha);
-                          setCharenomePreview({ ...charenomePreview, sampleTweet: newTweet });
-                        }
-                      }}
-                      style={{
-                        background: 'none',
-                        border: 'none',
-                        color: 'rgba(255,255,255,0.4)',
-                        cursor: 'pointer',
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        marginBottom: '0.5rem',
+                      }}>
+                        <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)', letterSpacing: '0.05em' }}>
+                          SAMPLE VOICE
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (charenomePreview) {
+                              const newTweet = generateSampleTweet(charenomePreview.orisha);
+                              setCharenomePreview({ ...charenomePreview, sampleTweet: newTweet });
+                            }
+                          }}
+                          style={{
+                            background: 'none',
+                            border: 'none',
+                            color: 'rgba(255,255,255,0.4)',
+                            cursor: 'pointer',
+                            fontSize: '0.7rem',
+                            padding: '0.25rem 0.5rem',
+                          }}
+                        >
+                          refresh
+                        </button>
+                      </div>
+                      <div style={{
+                        fontSize: '0.95rem',
+                        lineHeight: 1.5,
+                        color: '#fff',
+                        fontStyle: 'italic',
+                      }}>
+                        &ldquo;{charenomePreview.sampleTweet}&rdquo;
+                      </div>
+                      <div style={{
+                        marginTop: '0.5rem',
                         fontSize: '0.7rem',
-                        padding: '0.25rem 0.5rem',
-                      }}
-                    >
-                      refresh
-                    </button>
-                  </div>
-                  <div style={{
-                    fontSize: '0.95rem',
-                    lineHeight: 1.5,
-                    color: '#fff',
-                    fontStyle: 'italic',
-                  }}>
-                    "{charenomePreview.sampleTweet}"
-                  </div>
-                  <div style={{
-                    marginTop: '0.5rem',
-                    fontSize: '0.7rem',
-                    color: 'rgba(255,255,255,0.4)',
-                  }}>
-                    — {lcosGenerated.pseudonym || lcosGenerated.name}
-                  </div>
-                </div>
+                        color: 'rgba(255,255,255,0.4)',
+                      }}>
+                        — {lcosGenerated.pseudonym || lcosGenerated.name}
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
             )}
 
@@ -1243,53 +1487,95 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
               />
             )}
 
-            {lcosGenerating && !lcosGenerated && (
-              <div className="card" style={{ marginTop: '1rem', marginBottom: '1rem', textAlign: 'center', padding: '2rem' }}>
-                <p>Generating character...</p>
-              </div>
-            )}
-
             {error && (
               <div style={{ color: 'var(--error)', marginBottom: '1rem', fontSize: '0.875rem' }}>
                 {error}
               </div>
             )}
 
-            <div className="flex gap-2" style={{ justifyContent: 'flex-end', marginTop: '1rem', flexWrap: 'wrap' }}>
-              <button type="button" className="btn btn-secondary" onClick={handleClose}>
-                Cancel
-              </button>
-              <button
-                type="button"
-                className="btn btn-secondary"
-                onClick={handleGenerateLCOS}
-                disabled={lcosGenerating || creatingFromLcos || creatingCharenome}
-              >
-                {lcosGenerating ? 'Generating...' : lcosGenerated ? 'Reroll' : 'Generate'}
-              </button>
-              <button
-                type="button"
-                className="btn btn-secondary"
-                onClick={handleCreateFromLCOS}
-                disabled={!lcosGenerated || lcosGenerating || creatingFromLcos || creatingCharenome}
-              >
-                {creatingFromLcos ? 'Creating...' : 'Character Only'}
-              </button>
-              {lcosGenerated && charenomePreview && (
+            {/* Actions */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              paddingTop: '0.5rem',
+              gap: '0.5rem',
+              flexWrap: 'wrap',
+            }}>
+              <div style={{ display: 'flex', gap: '0.5rem' }}>
                 <button
                   type="button"
-                  className="btn btn-primary"
-                  onClick={handleCreateCharenome}
+                  onClick={handleGenerateLCOS}
                   disabled={lcosGenerating || creatingFromLcos || creatingCharenome}
-                  title="Create synced character + genome together"
                   style={{
-                    background: 'linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%)',
-                    border: 'none',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    padding: '0.5rem 1rem',
+                    background: 'var(--muted)',
+                    color: 'var(--foreground)',
+                    borderRadius: '0.5rem',
+                    border: '1px solid var(--border)',
+                    cursor: 'pointer',
+                    fontSize: '0.875rem',
+                    fontWeight: 500,
+                    transition: 'all 0.15s ease',
+                    opacity: (lcosGenerating || creatingFromLcos || creatingCharenome) ? 0.5 : 1,
                   }}
                 >
-                  {creatingCharenome ? 'Creating...' : 'Create Charenome'}
+                  ↻ {lcosGenerating ? 'Generating...' : 'Reroll'}
                 </button>
-              )}
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={handleClose}
+                >
+                  Cancel
+                </button>
+              </div>
+              <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <button
+                  type="button"
+                  onClick={handleCreateFromLCOS}
+                  disabled={!lcosGenerated || lcosGenerating || creatingFromLcos || creatingCharenome}
+                  style={{
+                    padding: '0.5rem 1rem',
+                    background: 'var(--muted)',
+                    color: 'var(--foreground)',
+                    borderRadius: '0.5rem',
+                    border: '1px solid rgba(255,255,255,0.25)',
+                    cursor: 'pointer',
+                    fontSize: '0.875rem',
+                    fontWeight: 500,
+                    transition: 'all 0.15s ease',
+                    opacity: (!lcosGenerated || lcosGenerating || creatingFromLcos || creatingCharenome) ? 0.5 : 1,
+                  }}
+                >
+                  {creatingFromLcos ? 'Creating...' : 'Accept & Create'}
+                </button>
+                {lcosGenerated && charenomePreview && (
+                  <button
+                    type="button"
+                    onClick={handleCreateCharenome}
+                    disabled={lcosGenerating || creatingFromLcos || creatingCharenome}
+                    title="Create synced character + imprint together"
+                    style={{
+                      padding: '0.5rem 1rem',
+                      background: 'linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%)',
+                      color: '#fff',
+                      borderRadius: '0.5rem',
+                      border: 'none',
+                      cursor: 'pointer',
+                      fontSize: '0.875rem',
+                      fontWeight: 500,
+                      transition: 'all 0.15s ease',
+                      opacity: (lcosGenerating || creatingFromLcos || creatingCharenome) ? 0.5 : 1,
+                    }}
+                  >
+                    {creatingCharenome ? 'Creating...' : 'Create Imprint'}
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         )}

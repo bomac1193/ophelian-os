@@ -2,8 +2,8 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
-import { getGenomes, deleteGenome, exportGenome, type CharacterGenome } from '../../lib/genome-api';
-import { GenomeSummaryCard } from '../../components/genome';
+import { getImprints, deleteImprint, exportImprint, type CharacterImprint } from '../../lib/imprint-api';
+import { ImprintSummaryCard } from '../../components/imprint';
 
 type FilterKey = 'orisha' | 'sephira' | 'trajectory' | 'tag';
 
@@ -17,8 +17,8 @@ const SEPHIRA_OPTIONS = [
 
 const TRAJECTORY_OPTIONS = ['emergence', 'ascent', 'crisis', 'descent', 'integration', 'transcendence'];
 
-export default function GenomeLibraryPage() {
-  const [genomes, setGenomes] = useState<CharacterGenome[]>([]);
+export default function ImprintLibraryPage() {
+  const [imprints, setImprints] = useState<CharacterImprint[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filters, setFilters] = useState<Record<FilterKey, string>>({
@@ -28,7 +28,7 @@ export default function GenomeLibraryPage() {
     tag: '',
   });
 
-  const fetchGenomes = useCallback(async () => {
+  const fetchImprints = useCallback(async () => {
     setLoading(true);
     setError(null);
 
@@ -39,44 +39,44 @@ export default function GenomeLibraryPage() {
       if (filters.trajectory) filterParams.trajectory = filters.trajectory;
       if (filters.tag) filterParams.tag = filters.tag;
 
-      const data = await getGenomes(Object.keys(filterParams).length > 0 ? filterParams : undefined);
-      setGenomes(data);
+      const data = await getImprints(Object.keys(filterParams).length > 0 ? filterParams : undefined);
+      setImprints(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch genomes');
+      setError(err instanceof Error ? err.message : 'Failed to fetch imprints');
     } finally {
       setLoading(false);
     }
   }, [filters]);
 
   useEffect(() => {
-    fetchGenomes();
-  }, [fetchGenomes]);
+    fetchImprints();
+  }, [fetchImprints]);
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this genome?')) return;
+    if (!confirm('Are you sure you want to delete this imprint?')) return;
 
     try {
-      await deleteGenome(id);
-      setGenomes(genomes.filter((g) => g.id !== id));
+      await deleteImprint(id);
+      setImprints(imprints.filter((g) => g.id !== id));
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to delete genome');
+      setError(err instanceof Error ? err.message : 'Failed to delete imprint');
     }
   };
 
   const handleExport = async (id: string) => {
     try {
-      const exported = await exportGenome(id, 'json');
+      const exported = await exportImprint(id, 'json');
       const blob = new Blob([exported], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `genome-${id}.json`;
+      a.download = `imprint-${id}.json`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to export genome');
+      setError(err instanceof Error ? err.message : 'Failed to export imprint');
     }
   };
 
@@ -96,13 +96,13 @@ export default function GenomeLibraryPage() {
         }}
       >
         <div>
-          <h1 style={{ margin: '0 0 0.5rem', fontSize: '1.75rem' }}>Character Genomes</h1>
+          <h1 style={{ margin: '0 0 0.5rem', fontSize: '1.75rem' }}>Character Imprints</h1>
           <p style={{ margin: 0, color: 'var(--muted-foreground)' }}>
-            Create and manage character genomes for AI-driven personalities.
+            Create and manage character imprints for AI-driven personalities.
           </p>
         </div>
         <Link
-          href="/genome/create"
+          href="/imprint/create"
           style={{
             padding: '0.75rem 1.5rem',
             borderRadius: '8px',
@@ -112,7 +112,7 @@ export default function GenomeLibraryPage() {
             fontWeight: 500,
           }}
         >
-          Create Genome
+          Create Imprint
         </Link>
       </div>
 
@@ -272,12 +272,12 @@ export default function GenomeLibraryPage() {
             color: 'var(--muted-foreground)',
           }}
         >
-          Loading genomes...
+          Loading imprints...
         </div>
       )}
 
-      {/* Genome list */}
-      {!loading && genomes.length === 0 && (
+      {/* Imprint list */}
+      {!loading && imprints.length === 0 && (
         <div
           style={{
             padding: '3rem',
@@ -287,20 +287,20 @@ export default function GenomeLibraryPage() {
             borderRadius: '12px',
           }}
         >
-          <p style={{ margin: '0 0 1rem', fontSize: '1.1rem' }}>No genomes found.</p>
+          <p style={{ margin: '0 0 1rem', fontSize: '1.1rem' }}>No imprints found.</p>
           <Link
-            href="/genome/create"
+            href="/imprint/create"
             style={{
               color: 'var(--primary)',
               textDecoration: 'underline',
             }}
           >
-            Create your first genome
+            Create your first imprint
           </Link>
         </div>
       )}
 
-      {!loading && genomes.length > 0 && (
+      {!loading && imprints.length > 0 && (
         <div
           style={{
             display: 'grid',
@@ -308,21 +308,21 @@ export default function GenomeLibraryPage() {
             gap: '1rem',
           }}
         >
-          {genomes.map((genome) => (
-            <GenomeSummaryCard
-              key={genome.id}
-              genome={genome}
-              onClick={() => (window.location.href = `/genome/${genome.id}`)}
-              onEdit={() => (window.location.href = `/genome/${genome.id}`)}
-              onDelete={() => handleDelete(genome.id)}
-              onExport={() => handleExport(genome.id)}
+          {imprints.map((imprint) => (
+            <ImprintSummaryCard
+              key={imprint.id}
+              genome={imprint}
+              onClick={() => (window.location.href = `/imprint/${imprint.id}`)}
+              onEdit={() => (window.location.href = `/imprint/${imprint.id}`)}
+              onDelete={() => handleDelete(imprint.id)}
+              onExport={() => handleExport(imprint.id)}
             />
           ))}
         </div>
       )}
 
       {/* Count */}
-      {!loading && genomes.length > 0 && (
+      {!loading && imprints.length > 0 && (
         <p
           style={{
             marginTop: '1.5rem',
@@ -331,7 +331,7 @@ export default function GenomeLibraryPage() {
             color: 'var(--muted-foreground)',
           }}
         >
-          Showing {genomes.length} genome{genomes.length !== 1 ? 's' : ''}
+          Showing {imprints.length} imprint{imprints.length !== 1 ? 's' : ''}
         </p>
       )}
     </div>

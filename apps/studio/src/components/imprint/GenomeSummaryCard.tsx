@@ -1,6 +1,6 @@
 'use client';
 
-import type { CharacterGenome } from '../../lib/genome-api';
+import type { CharacterGenome } from '../../lib/imprint-api';
 
 interface GenomeSummaryCardProps {
   genome: CharacterGenome;

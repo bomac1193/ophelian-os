@@ -3,5 +3,5 @@ export { OrishaSelector } from './OrishaSelector';
 export { SephiraSelector } from './SephiraSelector';
 export { HotCoolSlider } from './HotCoolSlider';
 export { MultiModalPreview } from './MultiModalPreview';
-export { GenomeSummaryCard } from './GenomeSummaryCard';
-export { GenomeCreator } from './GenomeCreator';
+export { GenomeSummaryCard as ImprintSummaryCard } from './GenomeSummaryCard';
+export { GenomeCreator as ImprintCreator } from './GenomeCreator';

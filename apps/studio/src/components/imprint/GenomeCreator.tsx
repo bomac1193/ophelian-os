@@ -10,7 +10,7 @@ import {
   createGenome,
   type CharacterGenome,
   type GenomeGenerationOptions,
-} from '../../lib/genome-api';
+} from '../../lib/imprint-api';
 
 // Orisha to Sephira mapping (Kenneth Grant correspondences)
 const ORISHA_SEPHIRA_MAP: Record<string, string> = {

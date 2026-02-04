@@ -1,11 +1,11 @@
 /**
- * Bóveda Studio - Genome API Client
+ * Bóveda Studio - Imprint API Client
  */
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 const API_KEY = process.env.NEXT_PUBLIC_API_KEY || 'default-dev-key';
 
-// Types matching the genome system
+// Types matching the imprint system
 export interface OrishaConfiguration {
   headOrisha: string;
   camino?: string;
@@ -106,7 +106,7 @@ export interface EvolutionRules {
   changeVelocity: 'glacial' | 'slow' | 'moderate' | 'rapid';
 }
 
-export interface CharacterGenome {
+export interface CharacterImprint {
   id: string;
   name: string;
   schemaVersion: string;
@@ -124,7 +124,10 @@ export interface CharacterGenome {
   tags?: string[];
 }
 
-export interface GenomeGenerationOptions {
+/** @deprecated Use CharacterImprint instead */
+export type CharacterGenome = CharacterImprint;
+
+export interface ImprintGenerationOptions {
   name?: string;
   seed?: number;
   forceOrisha?: string;
@@ -134,13 +137,19 @@ export interface GenomeGenerationOptions {
   tags?: string[];
 }
 
-export interface GenomeSystemPrompt {
+/** @deprecated Use ImprintGenerationOptions instead */
+export type GenomeGenerationOptions = ImprintGenerationOptions;
+
+export interface ImprintSystemPrompt {
   prompt: string;
   characterName: string;
   traitSummary: string[];
   guidelines: string[];
   constraints: string[];
 }
+
+/** @deprecated Use ImprintSystemPrompt instead */
+export type GenomeSystemPrompt = ImprintSystemPrompt;
 
 async function apiFetch<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   const response = await fetch(`${API_URL}${endpoint}`, {
@@ -167,19 +176,22 @@ async function apiFetch<T>(endpoint: string, options: RequestInit = {}): Promise
 
 // CRUD Operations
 
-export async function createGenome(options?: GenomeGenerationOptions): Promise<CharacterGenome> {
-  return apiFetch<CharacterGenome>('/genomes', {
+export async function createImprint(options?: ImprintGenerationOptions): Promise<CharacterImprint> {
+  return apiFetch<CharacterImprint>('/genomes', {
     method: 'POST',
     body: JSON.stringify(options || {}),
   });
 }
 
-export async function getGenomes(filters?: {
+/** @deprecated Use createImprint instead */
+export const createGenome = createImprint;
+
+export async function getImprints(filters?: {
   orisha?: string;
   sephira?: string;
   trajectory?: string;
   tag?: string;
-}): Promise<CharacterGenome[]> {
+}): Promise<CharacterImprint[]> {
   const params = new URLSearchParams();
   if (filters?.orisha) params.set('orisha', filters.orisha);
   if (filters?.sephira) params.set('sephira', filters.sephira);
@@ -189,72 +201,96 @@ export async function getGenomes(filters?: {
   const queryString = params.toString();
   const endpoint = queryString ? `/genomes?${queryString}` : '/genomes';
 
-  return apiFetch<CharacterGenome[]>(endpoint);
+  return apiFetch<CharacterImprint[]>(endpoint);
 }
 
-export async function getGenome(id: string): Promise<CharacterGenome> {
-  return apiFetch<CharacterGenome>(`/genomes/${id}`);
+/** @deprecated Use getImprints instead */
+export const getGenomes = getImprints;
+
+export async function getImprint(id: string): Promise<CharacterImprint> {
+  return apiFetch<CharacterImprint>(`/genomes/${id}`);
 }
 
-export async function updateGenome(id: string, data: Partial<CharacterGenome>): Promise<CharacterGenome> {
-  return apiFetch<CharacterGenome>(`/genomes/${id}`, {
+/** @deprecated Use getImprint instead */
+export const getGenome = getImprint;
+
+export async function updateImprint(id: string, data: Partial<CharacterImprint>): Promise<CharacterImprint> {
+  return apiFetch<CharacterImprint>(`/genomes/${id}`, {
     method: 'PATCH',
     body: JSON.stringify(data),
   });
 }
 
-export async function deleteGenome(id: string): Promise<void> {
+/** @deprecated Use updateImprint instead */
+export const updateGenome = updateImprint;
+
+export async function deleteImprint(id: string): Promise<void> {
   await apiFetch<void>(`/genomes/${id}`, {
     method: 'DELETE',
   });
 }
 
+/** @deprecated Use deleteImprint instead */
+export const deleteGenome = deleteImprint;
+
 // Generation (without saving)
 
-export async function generateGenome(options?: GenomeGenerationOptions): Promise<CharacterGenome> {
-  return apiFetch<CharacterGenome>('/genomes/generate', {
+export async function generateImprint(options?: ImprintGenerationOptions): Promise<CharacterImprint> {
+  return apiFetch<CharacterImprint>('/genomes/generate', {
     method: 'POST',
     body: JSON.stringify(options || {}),
   });
 }
 
-export async function generateGenomeForOrisha(
+/** @deprecated Use generateImprint instead */
+export const generateGenome = generateImprint;
+
+export async function generateImprintForOrisha(
   orisha: string,
-  options?: Omit<GenomeGenerationOptions, 'forceOrisha'>
-): Promise<CharacterGenome> {
-  return apiFetch<CharacterGenome>(`/genomes/generate/orisha/${orisha}`, {
+  options?: Omit<ImprintGenerationOptions, 'forceOrisha'>
+): Promise<CharacterImprint> {
+  return apiFetch<CharacterImprint>(`/genomes/generate/orisha/${orisha}`, {
     method: 'POST',
     body: JSON.stringify(options || {}),
   });
 }
 
-export async function generateGenomeForSephira(
+/** @deprecated Use generateImprintForOrisha instead */
+export const generateGenomeForOrisha = generateImprintForOrisha;
+
+export async function generateImprintForSephira(
   sephira: string,
-  options?: Omit<GenomeGenerationOptions, 'forceSephira'>
-): Promise<CharacterGenome> {
-  return apiFetch<CharacterGenome>(`/genomes/generate/sephira/${sephira}`, {
+  options?: Omit<ImprintGenerationOptions, 'forceSephira'>
+): Promise<CharacterImprint> {
+  return apiFetch<CharacterImprint>(`/genomes/generate/sephira/${sephira}`, {
     method: 'POST',
     body: JSON.stringify(options || {}),
   });
 }
 
-export async function rerollGenome(
+/** @deprecated Use generateImprintForSephira instead */
+export const generateGenomeForSephira = generateImprintForSephira;
+
+export async function rerollImprint(
   seed: number,
-  options?: Partial<GenomeGenerationOptions>
-): Promise<CharacterGenome> {
-  return apiFetch<CharacterGenome>(`/genomes/reroll/${seed}`, {
+  options?: Partial<ImprintGenerationOptions>
+): Promise<CharacterImprint> {
+  return apiFetch<CharacterImprint>(`/genomes/reroll/${seed}`, {
     method: 'POST',
     body: JSON.stringify(options || {}),
   });
 }
+
+/** @deprecated Use rerollImprint instead */
+export const rerollGenome = rerollImprint;
 
 // Prompt Generation
 
 export async function generatePrompt(
-  genomeId: string,
+  imprintId: string,
   style: 'concise' | 'detailed' | 'poetic' = 'detailed'
-): Promise<GenomeSystemPrompt> {
-  return apiFetch<GenomeSystemPrompt>(`/genomes/${genomeId}/generate-prompt`, {
+): Promise<ImprintSystemPrompt> {
+  return apiFetch<ImprintSystemPrompt>(`/genomes/${imprintId}/generate-prompt`, {
     method: 'POST',
     body: JSON.stringify({ style }),
   });
@@ -262,12 +298,12 @@ export async function generatePrompt(
 
 // Export
 
-export async function exportGenome(
-  genomeId: string,
+export async function exportImprint(
+  imprintId: string,
   format: 'json' | 'markdown' | 'system-prompt',
   promptStyle?: 'concise' | 'detailed' | 'poetic'
 ): Promise<string> {
-  const response = await fetch(`${API_URL}/genomes/${genomeId}/export`, {
+  const response = await fetch(`${API_URL}/genomes/${imprintId}/export`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -284,16 +320,25 @@ export async function exportGenome(
   return response.text();
 }
 
+/** @deprecated Use exportImprint instead */
+export const exportGenome = exportImprint;
+
 // Character Linking
 
-export async function linkGenomeToCharacter(genomeId: string, characterId: string): Promise<CharacterGenome> {
-  return apiFetch<CharacterGenome>(`/genomes/${genomeId}/link/${characterId}`, {
+export async function linkImprintToCharacter(imprintId: string, characterId: string): Promise<CharacterImprint> {
+  return apiFetch<CharacterImprint>(`/genomes/${imprintId}/link/${characterId}`, {
     method: 'POST',
   });
 }
 
-export async function unlinkGenome(genomeId: string): Promise<CharacterGenome> {
-  return apiFetch<CharacterGenome>(`/genomes/${genomeId}/link`, {
+/** @deprecated Use linkImprintToCharacter instead */
+export const linkGenomeToCharacter = linkImprintToCharacter;
+
+export async function unlinkImprint(imprintId: string): Promise<CharacterImprint> {
+  return apiFetch<CharacterImprint>(`/genomes/${imprintId}/link`, {
     method: 'DELETE',
   });
 }
+
+/** @deprecated Use unlinkImprint instead */
+export const unlinkGenome = unlinkImprint;

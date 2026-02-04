@@ -4,75 +4,75 @@ import { useEffect, useState, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
-  getGenome,
-  updateGenome,
-  deleteGenome,
-  exportGenome,
+  getImprint,
+  updateImprint,
+  deleteImprint,
+  exportImprint,
   generatePrompt,
-  type CharacterGenome,
-  type GenomeSystemPrompt,
-} from '../../../lib/genome-api';
-import { TreeOfLifeVisualization, MultiModalPreview } from '../../../components/genome';
+  type CharacterImprint,
+  type ImprintSystemPrompt,
+} from '../../../lib/imprint-api';
+import { TreeOfLifeVisualization, MultiModalPreview } from '../../../components/imprint';
 
-export default function GenomeDetailPage() {
+export default function ImprintDetailPage() {
   const params = useParams();
   const router = useRouter();
   const id = params.id as string;
 
-  const [genome, setGenome] = useState<CharacterGenome | null>(null);
+  const [genome, setGenome] = useState<CharacterImprint | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [_saving, setSaving] = useState(false);
-  const [systemPrompt, setSystemPrompt] = useState<GenomeSystemPrompt | null>(null);
+  const [systemPrompt, setSystemPrompt] = useState<ImprintSystemPrompt | null>(null);
   const [promptLoading, setPromptLoading] = useState(false);
   const [promptStyle, setPromptStyle] = useState<'concise' | 'detailed' | 'poetic'>('detailed');
   const [activeTab, setActiveTab] = useState<'overview' | 'multimodal' | 'narrative' | 'prompt'>('overview');
 
-  const fetchGenome = useCallback(async () => {
+  const fetchImprint = useCallback(async () => {
     setLoading(true);
     setError(null);
 
     try {
-      const data = await getGenome(id);
+      const data = await getImprint(id);
       setGenome(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch genome');
+      setError(err instanceof Error ? err.message : 'Failed to fetch imprint');
     } finally {
       setLoading(false);
     }
   }, [id]);
 
   useEffect(() => {
-    fetchGenome();
-  }, [fetchGenome]);
+    fetchImprint();
+  }, [fetchImprint]);
 
   const handleDelete = async () => {
-    if (!confirm('Are you sure you want to delete this genome? This cannot be undone.')) return;
+    if (!confirm('Are you sure you want to delete this imprint? This cannot be undone.')) return;
 
     try {
-      await deleteGenome(id);
-      router.push('/genome');
+      await deleteImprint(id);
+      router.push('/imprint');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to delete genome');
+      setError(err instanceof Error ? err.message : 'Failed to delete imprint');
     }
   };
 
   const handleExport = async (format: 'json' | 'markdown' | 'system-prompt') => {
     try {
-      const exported = await exportGenome(id, format, promptStyle);
+      const exported = await exportImprint(id, format, promptStyle);
       const blob = new Blob([exported], {
         type: format === 'json' ? 'application/json' : 'text/plain',
       });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `genome-${id}.${format === 'json' ? 'json' : format === 'markdown' ? 'md' : 'txt'}`;
+      a.download = `imprint-${id}.${format === 'json' ? 'json' : format === 'markdown' ? 'md' : 'txt'}`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to export genome');
+      setError(err instanceof Error ? err.message : 'Failed to export imprint');
     }
   };
 
@@ -95,7 +95,7 @@ export default function GenomeDetailPage() {
     setSaving(true);
 
     try {
-      const updated = await updateGenome(id, { name: newName });
+      const updated = await updateImprint(id, { name: newName });
       setGenome(updated);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to update name');
@@ -107,7 +107,7 @@ export default function GenomeDetailPage() {
   if (loading) {
     return (
       <div className="container" style={{ padding: '2rem', textAlign: 'center' }}>
-        Loading genome...
+        Loading imprint...
       </div>
     );
   }
@@ -126,8 +126,8 @@ export default function GenomeDetailPage() {
         >
           {error}
         </div>
-        <Link href="/genome" style={{ color: 'var(--primary)' }}>
-          Back to Genome Library
+        <Link href="/imprint" style={{ color: 'var(--primary)' }}>
+          Back to Imprint Library
         </Link>
       </div>
     );
@@ -150,8 +150,8 @@ export default function GenomeDetailPage() {
       >
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
-            <Link href="/genome" style={{ color: 'var(--muted-foreground)', textDecoration: 'none' }}>
-              Genomes
+            <Link href="/imprint" style={{ color: 'var(--muted-foreground)', textDecoration: 'none' }}>
+              Imprints
             </Link>
             <span style={{ color: 'var(--muted-foreground)' }}>/</span>
           </div>
@@ -688,7 +688,7 @@ export default function GenomeDetailPage() {
             }}
           >
             <p style={{ margin: 0, color: 'var(--muted-foreground)' }}>
-              Generate an AI system prompt from this genome configuration.
+              Generate an AI system prompt from this imprint configuration.
             </p>
             <button
               type="button"
@@ -794,7 +794,7 @@ export default function GenomeDetailPage() {
                 borderRadius: '12px',
               }}
             >
-              Click &quot;Generate Prompt&quot; to create an AI system prompt from this genome.
+              Click &quot;Generate Prompt&quot; to create an AI system prompt from this imprint.
             </div>
           )}
         </div>

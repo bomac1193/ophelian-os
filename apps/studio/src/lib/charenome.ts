@@ -584,7 +584,7 @@ export function buildCharenomeData(
       avatarUrl,
     },
     genome: {
-      name: `${character.name} Genome`,
+      name: `${character.name} Imprint`,
       orishaConfiguration: {
         headOrisha: preview.orisha,
         camino: preview.camino,
