@@ -46,7 +46,7 @@ export default function LedgerPage() {
             value={month}
             onChange={(e) => setMonth(e.target.value)}
           />
-          <button className="btn btn-primary" onClick={handleFetchSettlement} disabled={loading}>
+          <button className="btn btn-secondary" onClick={handleFetchSettlement} disabled={loading}>
             {loading ? 'Loading...' : 'Fetch Settlement'}
           </button>
         </div>

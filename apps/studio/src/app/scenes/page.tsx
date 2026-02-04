@@ -98,8 +98,8 @@ export default function ScenesPage() {
           <h1 className="page-title">Scenes</h1>
           <p className="page-subtitle">Locations and events in your world</p>
         </div>
-        <button className="btn btn-primary" onClick={() => openModal()}>
-          + New Scene
+        <button className="btn btn-secondary" onClick={() => openModal()}>
+          New Scene
         </button>
       </div>
 

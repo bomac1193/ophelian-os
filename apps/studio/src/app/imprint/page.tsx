@@ -87,32 +87,17 @@ export default function ImprintLibraryPage() {
   return (
     <div className="container" style={{ padding: '2rem' }}>
       {/* Header */}
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: '2rem',
-        }}
-      >
+      <div className="page-header">
         <div>
-          <h1 style={{ margin: '0 0 0.5rem', fontSize: '1.75rem' }}>Character Imprints</h1>
-          <p style={{ margin: 0, color: 'var(--muted-foreground)' }}>
-            Create and manage character imprints for AI-driven personalities.
-          </p>
+          <h1 className="page-title">Character Imprints</h1>
+          <p className="page-subtitle">Create and manage character imprints for AI-driven personalities.</p>
         </div>
         <Link
           href="/imprint/create"
-          style={{
-            padding: '0.75rem 1.5rem',
-            borderRadius: '8px',
-            backgroundColor: 'var(--primary)',
-            color: 'white',
-            textDecoration: 'none',
-            fontWeight: 500,
-          }}
+          className="btn btn-secondary"
+          style={{ textDecoration: 'none' }}
         >
-          Create Imprint
+          New Imprint
         </Link>
       </div>
 

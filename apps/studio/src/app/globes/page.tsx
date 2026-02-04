@@ -98,8 +98,8 @@ export default function GlobesPage() {
           <h1 className="page-title">Globes</h1>
           <p className="page-subtitle">Worlds and realms in your universe</p>
         </div>
-        <button className="btn btn-primary" onClick={() => openModal()}>
-          + New Globe
+        <button className="btn btn-secondary" onClick={() => openModal()}>
+          New Globe
         </button>
       </div>
 

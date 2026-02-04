@@ -1493,25 +1493,27 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
                 </button>
               </div>
               <div style={{ display: 'flex', gap: '0.5rem' }}>
-                <button
-                  type="button"
-                  onClick={handleCreateFromLCOS}
-                  disabled={!lcosGenerated || lcosGenerating || creatingFromLcos || creatingCharenome}
-                  style={{
-                    padding: '0.5rem 1rem',
-                    background: 'var(--muted)',
-                    color: 'var(--foreground)',
-                    borderRadius: '0.5rem',
-                    border: '1px solid rgba(255,255,255,0.25)',
-                    cursor: 'pointer',
-                    fontSize: '0.875rem',
-                    fontWeight: 500,
-                    transition: 'all 0.15s ease',
-                    opacity: (!lcosGenerated || lcosGenerating || creatingFromLcos || creatingCharenome) ? 0.5 : 1,
-                  }}
-                >
-                  {creatingFromLcos ? 'Creating...' : 'Accept & Create'}
-                </button>
+                {lcosAdminMode && (
+                  <button
+                    type="button"
+                    onClick={handleCreateFromLCOS}
+                    disabled={!lcosGenerated || lcosGenerating || creatingFromLcos || creatingCharenome}
+                    style={{
+                      padding: '0.5rem 1rem',
+                      background: 'var(--muted)',
+                      color: 'var(--foreground)',
+                      borderRadius: '0.5rem',
+                      border: '1px solid rgba(255,255,255,0.25)',
+                      cursor: 'pointer',
+                      fontSize: '0.875rem',
+                      fontWeight: 500,
+                      transition: 'all 0.15s ease',
+                      opacity: (!lcosGenerated || lcosGenerating || creatingFromLcos || creatingCharenome) ? 0.5 : 1,
+                    }}
+                  >
+                    {creatingFromLcos ? 'Creating...' : 'Accept & Create'}
+                  </button>
+                )}
                 {lcosGenerated && charenomePreview && (
                   <button
                     type="button"
@@ -1520,18 +1522,33 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
                     title="Create synced character + imprint together"
                     style={{
                       padding: '0.5rem 1rem',
-                      background: 'linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%)',
-                      color: '#fff',
+                      background: 'rgba(167, 139, 250, 0.22)',
+                      color: '#cbbef5',
                       borderRadius: '0.5rem',
-                      border: 'none',
-                      cursor: 'pointer',
-                      fontSize: '0.875rem',
+                      border: '1px solid rgba(167, 139, 250, 0.35)',
+                      cursor: (lcosGenerating || creatingFromLcos || creatingCharenome) ? 'not-allowed' : 'pointer',
+                      fontSize: '0.75rem',
                       fontWeight: 500,
-                      transition: 'all 0.15s ease',
-                      opacity: (lcosGenerating || creatingFromLcos || creatingCharenome) ? 0.5 : 1,
+                      fontFamily: 'monospace',
+                      letterSpacing: '0.08em',
+                      transition: 'all 0.2s ease',
+                      opacity: (lcosGenerating || creatingFromLcos || creatingCharenome) ? 0.4 : 1,
+                      boxShadow: '0 0 20px rgba(167, 139, 250, 0.35), 0 0 40px rgba(167, 139, 250, 0.15)',
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!(lcosGenerating || creatingFromLcos || creatingCharenome)) {
+                        e.currentTarget.style.background = 'rgba(167, 139, 250, 0.28)';
+                        e.currentTarget.style.borderColor = 'rgba(167, 139, 250, 0.6)';
+                        e.currentTarget.style.boxShadow = '0 0 30px rgba(167, 139, 250, 0.5), 0 0 60px rgba(167, 139, 250, 0.25)';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = 'rgba(167, 139, 250, 0.18)';
+                      e.currentTarget.style.borderColor = 'rgba(167, 139, 250, 0.35)';
+                      e.currentTarget.style.boxShadow = '0 0 20px rgba(167, 139, 250, 0.35), 0 0 40px rgba(167, 139, 250, 0.15)';
                     }}
                   >
-                    {creatingCharenome ? 'Creating...' : 'Create Imprint'}
+                    {creatingCharenome ? 'Forging...' : 'Forge Imprint'}
                   </button>
                 )}
               </div>
