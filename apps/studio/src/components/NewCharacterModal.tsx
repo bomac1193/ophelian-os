@@ -81,39 +81,46 @@ function PillSelector({ label, options, value, onChange }: {
   onChange: (v: string) => void;
 }) {
   return (
-    <div>
+    <div style={{
+      padding: '0.5rem 0.625rem',
+      backgroundColor: 'rgba(0,0,0,0.25)',
+      borderRadius: '0.375rem',
+      border: '1px solid rgba(255,255,255,0.06)',
+    }}>
       <label style={{
         display: 'block',
-        fontSize: '0.7rem',
-        color: 'var(--muted-foreground)',
+        fontSize: '0.65rem',
+        color: 'rgba(255,255,255,0.4)',
         marginBottom: '0.375rem',
         textTransform: 'uppercase',
-        letterSpacing: '0.1em',
+        letterSpacing: '0.12em',
         fontWeight: 500,
+        fontFamily: 'monospace',
       }}>{label}</label>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.375rem' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.3rem' }}>
         {options.map((opt) => (
           <button
             key={opt.value}
             type="button"
             onClick={() => onChange(opt.value)}
             style={{
-              padding: '0.25rem 0.75rem',
-              borderRadius: '9999px',
-              fontSize: '0.75rem',
+              padding: '0.2rem 0.6rem',
+              borderRadius: '0.25rem',
+              fontSize: '0.7rem',
               fontWeight: 500,
+              fontFamily: 'monospace',
               transition: 'all 0.15s ease',
               cursor: 'pointer',
               ...(value === opt.value
                 ? {
-                    background: 'rgba(255,255,255,0.08)',
-                    color: 'var(--foreground)',
-                    border: '1px solid rgba(255,255,255,0.25)',
+                    background: 'rgba(255,255,255,0.1)',
+                    color: '#ffffff',
+                    border: '1px solid rgba(255,255,255,0.3)',
                   }
                 : {
-                    background: 'var(--muted)',
-                    color: 'var(--muted-foreground)',
-                    border: '1px solid transparent',
+                    background: 'rgba(255,255,255,0.03)',
+                    color: 'rgba(255,255,255,0.45)',
+                    border: '1px solid rgba(255,255,255,0.08)',
                   }),
             }}
           >
@@ -436,6 +443,8 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
   const [lcosSettingsExpanded, setLcosSettingsExpanded] = useState(true);
   const [lcosClassExpanded, setLcosClassExpanded] = useState(false);
   const [lcosBackstoryExpanded, setLcosBackstoryExpanded] = useState(false);
+  const [primaryDetailExpanded, setPrimaryDetailExpanded] = useState(false);
+  const [subDetailExpanded, setSubDetailExpanded] = useState<Record<number, boolean>>({});
 
   // Advanced Oripheon mode (external API)
   const [oripheonSeed, setOripheonSeed] = useState<string>('');
@@ -515,6 +524,8 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
     setLcosSettingsExpanded(true);
     setLcosClassExpanded(false);
     setLcosBackstoryExpanded(false);
+    setPrimaryDetailExpanded(false);
+    setSubDetailExpanded({});
 
     // Advanced Oripheon state
     setOripheonSeed('');
@@ -1020,21 +1031,39 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                 {lcosMode === 'character' && (
                   <>
-                    <PillSelector label="Heritage" options={HERITAGE_OPTIONS} value={lcosHeritage} onChange={(v) => setLcosHeritage(v)} />
-                    <PillSelector label="Gender" options={GENDER_OPTIONS} value={lcosGender} onChange={(v) => setLcosGender(v)} />
-                    <PillSelector label="Name Mode" options={NAME_MODES} value={lcosNameMode} onChange={(v) => setLcosNameMode(v)} />
+                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                      <div style={{ flex: '1 1 50%', minWidth: 0 }}>
+                        <PillSelector label="Heritage" options={HERITAGE_OPTIONS} value={lcosHeritage} onChange={(v) => setLcosHeritage(v)} />
+                      </div>
+                      <div style={{ flex: '1 1 50%', minWidth: 0 }}>
+                        <PillSelector label="Gender" options={GENDER_OPTIONS} value={lcosGender} onChange={(v) => setLcosGender(v)} />
+                      </div>
+                    </div>
                   </>
                 )}
-                {lcosMode === 'relic' && (
-                  <PillSelector label="Era" options={[{ value: 'modern', label: 'Modern' }, { value: 'archaic', label: 'Archaic' }, { value: 'timeless', label: 'Timeless' }]} value={lcosRelicEra} onChange={(v) => { setLcosRelicEra(v as 'archaic' | 'modern' | 'timeless'); setLcosLockedRelic(null); }} />
-                )}
-                <PillSelector label="Aesthetic" options={CORE_STYLES} value={lcosCore} onChange={(v) => setLcosCore(v)} />
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.7rem', color: 'var(--muted-foreground)', marginBottom: '0.25rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 500 }}>
-                    Variance <span style={{ textTransform: 'none', letterSpacing: 'normal' }}>{lcosVariance}%</span>
+                {/* Name Mode / Era + Aesthetic side by side */}
+                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                  {lcosMode === 'character' && (
+                    <div style={{ flex: '1 1 50%', minWidth: 0 }}>
+                      <PillSelector label="Name Mode" options={NAME_MODES} value={lcosNameMode} onChange={(v) => setLcosNameMode(v)} />
+                    </div>
+                  )}
+                  {lcosMode === 'relic' && (
+                    <div style={{ flex: '1 1 50%', minWidth: 0 }}>
+                      <PillSelector label="Era" options={[{ value: 'modern', label: 'Modern' }, { value: 'archaic', label: 'Archaic' }, { value: 'timeless', label: 'Timeless' }]} value={lcosRelicEra} onChange={(v) => { setLcosRelicEra(v as 'archaic' | 'modern' | 'timeless'); setLcosLockedRelic(null); }} />
+                    </div>
+                  )}
+                  <div style={{ flex: '1 1 50%', minWidth: 0 }}>
+                    <PillSelector label="Aesthetic" options={CORE_STYLES} value={lcosCore} onChange={(v) => setLcosCore(v)} />
+                  </div>
+                </div>
+                {/* Variance — compact, matching container style */}
+                <div style={{ maxWidth: '50%', padding: '0.5rem 0.625rem', backgroundColor: 'rgba(0,0,0,0.25)', borderRadius: '0.375rem', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  <label style={{ display: 'block', fontSize: '0.65rem', color: 'rgba(255,255,255,0.4)', marginBottom: '0.3rem', textTransform: 'uppercase', letterSpacing: '0.12em', fontWeight: 500, fontFamily: 'monospace' }}>
+                    Variance <span style={{ textTransform: 'none', letterSpacing: 'normal', color: 'rgba(255,255,255,0.6)' }}>{lcosVariance}%</span>
                   </label>
-                  <input type="range" min={0} max={100} step={1} value={lcosVariance} onChange={(e) => setLcosVariance(Number(e.target.value))} style={{ width: '100%', WebkitAppearance: 'none', appearance: 'none', height: '4px', borderRadius: '2px', background: `linear-gradient(to right, var(--border) 0%, var(--foreground) ${lcosVariance}%, var(--border) ${lcosVariance}%)`, outline: 'none', cursor: 'pointer' }} />
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.6rem', color: 'var(--muted-foreground)', opacity: 0.5 }}><span>Clean</span><span>Corrupted</span></div>
+                  <input type="range" min={0} max={100} step={1} value={lcosVariance} onChange={(e) => setLcosVariance(Number(e.target.value))} style={{ width: '100%', WebkitAppearance: 'none', appearance: 'none', height: '4px', borderRadius: '2px', background: `linear-gradient(to right, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.5) ${lcosVariance}%, rgba(255,255,255,0.08) ${lcosVariance}%)`, outline: 'none', cursor: 'pointer' }} />
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.55rem', color: 'rgba(255,255,255,0.25)', fontFamily: 'monospace', marginTop: '0.15rem' }}><span>Clean</span><span>Corrupted</span></div>
                 </div>
               </div>
             </CollapsibleSection>
@@ -1122,65 +1151,128 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
                   title="Classifications"
                   expanded={lcosClassExpanded}
                   onToggle={() => setLcosClassExpanded(!lcosClassExpanded)}
-                  borderColor="rgba(168, 85, 247, 0.3)"
+                  borderColor="rgba(255,255,255,0.1)"
                   summary={(() => {
                     const parts: string[] = [];
-                    if (lcosGenerated.subtaste) parts.push(`${lcosGenerated.subtaste.glyph} · ${lcosGenerated.subtaste.phase}`);
-                    if (lcosGenerated.approximateMBTI) parts.push(lcosGenerated.approximateMBTI);
+                    if (lcosGenerated.subtaste) parts.push(`${lcosGenerated.subtaste.code} ${lcosGenerated.subtaste.glyph}`);
+                    if (lcosGenerated.subdominantArcana?.[0]?.subtaste) parts.push(lcosGenerated.subdominantArcana[0].subtaste.code);
+                    if (lcosGenerated.subdominantArcana?.[1]?.subtaste) parts.push(lcosGenerated.subdominantArcana[1].subtaste.code);
                     return parts.join(' · ');
                   })()}
                 >
-                  {/* Primary archetype */}
-                  {lcosGenerated.arcana && (
-                    <div style={{ marginBottom: '0.625rem' }}>
-                      <div style={{ fontSize: '0.6rem', color: 'rgba(168, 85, 247, 0.7)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.25rem', fontWeight: 600 }}>Primary</div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', flexWrap: 'wrap', marginBottom: '0.25rem' }}>
-                        <GenBadge variant="purple">{lcosGenerated.arcana.system}</GenBadge>
-                        <GenBadge variant="amber">{lcosGenerated.arcana.archetype}</GenBadge>
-                        {lcosGenerated.subtaste && (
-                          <GenBadge variant="blue">{lcosGenerated.subtaste.code} {lcosGenerated.subtaste.glyph}</GenBadge>
-                        )}
-                        {lcosGenerated.subtaste?.phase && (
-                          <span style={{
-                            display: 'inline-block',
-                            padding: '0.125rem 0.4rem',
-                            borderRadius: '0.25rem',
-                            fontSize: '0.65rem',
-                            fontWeight: 500,
-                            background: 'rgba(34, 197, 94, 0.1)',
-                            color: '#86efac',
-                            border: '1px solid rgba(34, 197, 94, 0.2)',
-                            textTransform: 'capitalize',
-                          }}>{lcosGenerated.subtaste.phase}</span>
-                        )}
-                      </div>
-                      <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', lineHeight: 1.4 }}>
-                        {lcosGenerated.arcana.meaning}
-                      </div>
-                      {lcosGenerated.subtaste && (
-                        <div style={{ fontSize: '0.7rem', color: 'rgba(168, 85, 247, 0.6)', marginTop: '0.125rem', fontStyle: 'italic' }}>
-                          {lcosGenerated.subtaste.label}: {lcosGenerated.subtaste.description}
+                  {/* Primary + Subdominant side by side */}
+                  <div style={{ display: 'flex', gap: '0.375rem', marginBottom: '0.375rem' }}>
+                    {/* Primary — takes more space, expandable */}
+                    {lcosGenerated.arcana && (
+                      <div style={{ flex: '1.4 1 0', minWidth: 0, padding: '0.375rem 0.5rem', backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: '0.25rem', borderLeft: '2px solid rgba(255,255,255,0.15)' }}>
+                        <button
+                          type="button"
+                          onClick={() => setPrimaryDetailExpanded(!primaryDetailExpanded)}
+                          style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', background: 'none', border: 'none', padding: 0, cursor: 'pointer', width: '100%', marginBottom: '0.2rem' }}
+                        >
+                          <span style={{ fontSize: '0.45rem', display: 'inline-block', transition: 'transform 0.15s ease', transform: primaryDetailExpanded ? 'rotate(90deg)' : 'rotate(0deg)', color: 'rgba(255,255,255,0.3)' }}>▶</span>
+                          <span style={{ fontSize: '0.55rem', color: 'rgba(255,255,255,0.35)', fontFamily: 'monospace', letterSpacing: '0.08em' }}>PRIMARY</span>
+                        </button>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', flexWrap: 'wrap', marginBottom: '0.15rem' }}>
+                          {lcosGenerated.subtaste && (
+                            <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'rgba(255,255,255,0.9)', fontFamily: 'monospace', letterSpacing: '0.02em' }}>
+                              {lcosGenerated.subtaste.code}
+                            </span>
+                          )}
+                          {lcosGenerated.subtaste && (
+                            <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.5)' }}>{lcosGenerated.subtaste.glyph}</span>
+                          )}
+                          {lcosGenerated.subtaste && (
+                            <span style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.55)', fontFamily: 'monospace' }}>
+                              — {lcosGenerated.subtaste.label}
+                            </span>
+                          )}
                         </div>
-                      )}
-                    </div>
-                  )}
-
-                  {/* Personality axes + MBTI */}
-                  {lcosGenerated.personality && (
-                    <div style={{ marginBottom: '0.625rem' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
-                        <div style={{ fontSize: '0.6rem', color: 'rgba(139, 92, 246, 0.6)', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 600 }}>Axes</div>
-                        {lcosGenerated.approximateMBTI && (
-                          <span style={{
-                            fontSize: '0.65rem',
-                            color: 'var(--muted-foreground)',
-                            opacity: 0.6,
-                            fontFamily: 'monospace',
-                            letterSpacing: '0.05em',
-                          }} title="Approximate MBTI — lossy projection from personality axes">{lcosGenerated.approximateMBTI}</span>
+                        {lcosGenerated.subtaste?.phase && (
+                          <span style={{ padding: '0.075rem 0.3rem', borderRadius: '0.2rem', fontSize: '0.55rem', fontWeight: 500, background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.5)', border: '1px solid rgba(255,255,255,0.08)', textTransform: 'capitalize', fontFamily: 'monospace' }}>{lcosGenerated.subtaste.phase}</span>
+                        )}
+                        {primaryDetailExpanded && (
+                          <div style={{ marginTop: '0.375rem', paddingTop: '0.375rem', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                            {lcosGenerated.subtaste?.description && (
+                              <div style={{ fontSize: '0.6rem', color: 'rgba(255,255,255,0.45)', lineHeight: 1.4, marginBottom: '0.25rem' }}>
+                                {lcosGenerated.subtaste.description}
+                              </div>
+                            )}
+                            {lcosAdminMode && (
+                              <div style={{ display: 'flex', gap: '0.2rem', flexWrap: 'wrap', marginTop: '0.15rem' }}>
+                                <GenBadge variant="purple">{lcosGenerated.arcana.system}</GenBadge>
+                                <GenBadge variant="amber">{lcosGenerated.arcana.archetype}</GenBadge>
+                              </div>
+                            )}
+                            {lcosAdminMode && (
+                              <div style={{ fontSize: '0.6rem', color: 'var(--muted-foreground)', lineHeight: 1.3, marginTop: '0.15rem' }}>
+                                {lcosGenerated.arcana.meaning}
+                              </div>
+                            )}
+                          </div>
                         )}
                       </div>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                    )}
+
+                    {/* Subdominant — compact column, each expandable */}
+                    {lcosGenerated.subdominantArcana && lcosGenerated.subdominantArcana.length > 0 && (
+                      <div style={{ flex: '1 1 0', minWidth: 0, display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                        {lcosGenerated.subdominantArcana.map((sub, idx) => {
+                          const isSubExpanded = subDetailExpanded[idx] || false;
+                          return (
+                            <div key={idx} style={{ padding: '0.3rem 0.4rem', backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: '0.25rem', borderLeft: '2px solid rgba(255,255,255,0.08)' }}>
+                              <button
+                                type="button"
+                                onClick={() => setSubDetailExpanded((prev) => ({ ...prev, [idx]: !prev[idx] }))}
+                                style={{ display: 'flex', alignItems: 'center', gap: '0.2rem', background: 'none', border: 'none', padding: 0, cursor: 'pointer', width: '100%', marginBottom: '0.1rem' }}
+                              >
+                                <span style={{ fontSize: '0.4rem', display: 'inline-block', transition: 'transform 0.15s ease', transform: isSubExpanded ? 'rotate(90deg)' : 'rotate(0deg)', color: 'rgba(255,255,255,0.25)' }}>▶</span>
+                                <span style={{ fontSize: '0.5rem', color: 'rgba(255,255,255,0.25)', fontFamily: 'monospace', letterSpacing: '0.08em' }}>SUB {idx + 1}</span>
+                              </button>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '0.2rem', flexWrap: 'wrap' }}>
+                                <span style={{ fontSize: '0.7rem', fontWeight: 600, color: 'rgba(255,255,255,0.75)', fontFamily: 'monospace' }}>
+                                  {sub.subtaste.code}
+                                </span>
+                                <span style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.4)' }}>{sub.subtaste.glyph}</span>
+                                <span style={{ fontSize: '0.55rem', color: 'rgba(255,255,255,0.45)', fontFamily: 'monospace' }}>
+                                  — {sub.subtaste.label}
+                                </span>
+                              </div>
+                              {isSubExpanded && (
+                                <div style={{ marginTop: '0.25rem', paddingTop: '0.25rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+                                  {sub.subtaste.phase && (
+                                    <span style={{ padding: '0.05rem 0.25rem', borderRadius: '0.15rem', fontSize: '0.5rem', background: 'rgba(255,255,255,0.04)', color: 'rgba(255,255,255,0.4)', border: '1px solid rgba(255,255,255,0.06)', textTransform: 'capitalize', fontFamily: 'monospace' }}>{sub.subtaste.phase}</span>
+                                  )}
+                                  {sub.subtaste.description && (
+                                    <div style={{ fontSize: '0.55rem', color: 'rgba(255,255,255,0.4)', lineHeight: 1.4, marginTop: '0.2rem' }}>
+                                      {sub.subtaste.description}
+                                    </div>
+                                  )}
+                                  {lcosAdminMode && (
+                                    <>
+                                      <div style={{ display: 'flex', gap: '0.15rem', flexWrap: 'wrap', marginTop: '0.15rem' }}>
+                                        <GenBadge variant="purple">{sub.arcana.system}</GenBadge>
+                                        <GenBadge variant="amber">{sub.arcana.archetype}</GenBadge>
+                                      </div>
+                                      <div style={{ fontSize: '0.55rem', color: 'var(--muted-foreground)', opacity: 0.6, marginTop: '0.1rem', lineHeight: 1.2 }}>
+                                        {sub.arcana.meaning}
+                                      </div>
+                                    </>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Personality axes — half width */}
+                  {lcosGenerated.personality && (
+                    <div style={{ maxWidth: '50%' }}>
+                      <div style={{ fontSize: '0.55rem', color: 'rgba(255,255,255,0.3)', fontFamily: 'monospace', letterSpacing: '0.08em', marginBottom: '0.2rem' }}>AXES</div>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.15rem' }}>
                         <AxisBar value={lcosGenerated.personality.axes.orderChaos} leftLabel="Order" rightLabel="Chaos" />
                         <AxisBar value={lcosGenerated.personality.axes.mercyRuthlessness} leftLabel="Mercy" rightLabel="Ruthless" />
                         <AxisBar value={lcosGenerated.personality.axes.introvertExtrovert} leftLabel="Intro" rightLabel="Extro" />
@@ -1188,295 +1280,162 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
                       </div>
                     </div>
                   )}
-
-                  {/* Subdominant archetypes */}
-                  {lcosGenerated.subdominantArcana && lcosGenerated.subdominantArcana.length > 0 && (
-                    <div>
-                      <div style={{ fontSize: '0.6rem', color: 'rgba(139, 92, 246, 0.6)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.375rem', fontWeight: 600 }}>Subdominant</div>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.375rem' }}>
-                        {lcosGenerated.subdominantArcana.map((sub, idx) => (
-                          <div key={idx} style={{
-                            padding: '0.375rem 0.5rem',
-                            background: 'rgba(255,255,255,0.03)',
-                            borderRadius: '0.25rem',
-                            borderLeft: '2px solid rgba(139, 92, 246, 0.3)',
-                          }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', flexWrap: 'wrap', marginBottom: '0.125rem' }}>
-                              <GenBadge variant="purple">{sub.arcana.system}</GenBadge>
-                              <GenBadge variant="amber">{sub.arcana.archetype}</GenBadge>
-                              <GenBadge variant="blue">{sub.subtaste.code} {sub.subtaste.glyph}</GenBadge>
-                              {sub.subtaste.phase && (
-                                <span style={{
-                                  display: 'inline-block',
-                                  padding: '0.1rem 0.35rem',
-                                  borderRadius: '0.2rem',
-                                  fontSize: '0.6rem',
-                                  fontWeight: 500,
-                                  background: 'rgba(34, 197, 94, 0.08)',
-                                  color: 'rgba(134, 239, 172, 0.7)',
-                                  textTransform: 'capitalize',
-                                }}>{sub.subtaste.phase}</span>
-                              )}
-                            </div>
-                            <div style={{ fontSize: '0.7rem', color: 'var(--muted-foreground)', opacity: 0.7 }}>
-                              {sub.arcana.meaning}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
                 </CollapsibleSection>
               </>
             )}
 
-            {/* Charenome Preview - Genome Sync (collapsible) */}
+            {/* Imprint Preview (collapsible) */}
             {lcosGenerated && charenomePreview && (
-              <div className="card" style={{
-                marginBottom: '1.25rem',
-                background: 'linear-gradient(135deg, #1a1a2e 0%, #0f0f1a 100%)',
-                border: '1px solid rgba(139, 92, 246, 0.3)',
-              }}>
-                {/* Collapsible header */}
-                <button
-                  type="button"
-                  onClick={() => setGenomeExpanded(!imprintExpanded)}
-                  style={{
+              <CollapsibleSection
+                title="Imprint Preview"
+                expanded={imprintExpanded}
+                onToggle={() => setGenomeExpanded(!imprintExpanded)}
+                borderColor="rgba(255,255,255,0.1)"
+                summary={(() => {
+                  const parts: string[] = [];
+                  parts.push(charenomePreview.voice.type);
+                  parts.push(charenomePreview.hotCoolAxis > 0 ? 'hot' : charenomePreview.hotCoolAxis < 0 ? 'cool' : 'crossroads');
+                  if (lcosAdminMode) {
+                    parts.push(charenomePreview.orisha);
+                    parts.push(charenomePreview.sephira);
+                  }
+                  return parts.join(' · ');
+                })()}
+              >
+                {/* Admin only: Alignment Sources */}
+                {lcosAdminMode && charenomePreview.alignment && (
+                  <div style={{
                     display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    width: '100%',
-                    background: 'none',
-                    border: 'none',
-                    cursor: 'pointer',
-                    padding: 0,
-                    marginBottom: imprintExpanded ? '0.75rem' : 0,
-                  }}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <span style={{
-                      fontSize: '0.625rem',
-                      color: '#a78bfa',
-                      transition: 'transform 0.15s ease',
-                      display: 'inline-block',
-                      transform: imprintExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
-                    }}>▶</span>
-                    <h4 style={{ margin: 0, fontSize: '0.9rem', color: '#a78bfa' }}>Imprint Preview</h4>
-                    <span style={{
-                      padding: '0.15rem 0.5rem',
-                      borderRadius: '4px',
-                      backgroundColor: 'rgba(139, 92, 246, 0.2)',
-                      fontSize: '0.7rem',
-                      color: '#c4b5fd',
-                    }}>
-                      aligned
+                    gap: '0.375rem',
+                    flexWrap: 'wrap',
+                    marginBottom: '0.5rem',
+                    padding: '0.375rem 0.5rem',
+                    backgroundColor: 'rgba(255,255,255,0.03)',
+                    borderRadius: '0.25rem',
+                  }}>
+                    <span style={{ fontSize: '0.6rem', color: 'rgba(255,255,255,0.3)', fontFamily: 'monospace', letterSpacing: '0.05em' }}>ALIGNED FROM</span>
+                    <span style={{ padding: '0.1rem 0.35rem', borderRadius: '0.2rem', backgroundColor: 'rgba(255,255,255,0.06)', fontSize: '0.65rem', color: 'rgba(255,255,255,0.6)', textTransform: 'capitalize', border: '1px solid rgba(255,255,255,0.08)' }}>
+                      {charenomePreview.alignment.heritage}
+                    </span>
+                    <span style={{ fontSize: '0.5rem', color: 'rgba(255,255,255,0.2)', alignSelf: 'center' }}>+</span>
+                    <span style={{ padding: '0.1rem 0.35rem', borderRadius: '0.2rem', backgroundColor: 'rgba(255,255,255,0.06)', fontSize: '0.65rem', color: 'rgba(255,255,255,0.6)', textTransform: 'capitalize', border: '1px solid rgba(255,255,255,0.08)' }}>
+                      {charenomePreview.alignment.order}
+                    </span>
+                    <span style={{ fontSize: '0.5rem', color: 'rgba(255,255,255,0.2)', alignSelf: 'center' }}>+</span>
+                    <span style={{ padding: '0.1rem 0.35rem', borderRadius: '0.2rem', backgroundColor: 'rgba(255,255,255,0.06)', fontSize: '0.65rem', color: 'rgba(255,255,255,0.6)', textTransform: 'capitalize', border: '1px solid rgba(255,255,255,0.08)' }}>
+                      {charenomePreview.alignment.archetype?.replace(/_/g, ' ')}
                     </span>
                   </div>
-                  {!imprintExpanded && (
-                    <div style={{ display: 'flex', gap: '0.375rem', alignItems: 'center' }}>
-                      <span style={{
-                        fontSize: '0.65rem',
-                        color: '#fbbf24',
-                        opacity: 0.7,
-                      }}>{charenomePreview.orisha}</span>
-                      <span style={{ fontSize: '0.5rem', color: 'rgba(255,255,255,0.2)' }}>·</span>
-                      <span style={{
-                        fontSize: '0.65rem',
-                        color: '#a78bfa',
-                        opacity: 0.7,
-                      }}>{charenomePreview.sephira}</span>
-                    </div>
-                  )}
-                </button>
-
-                {imprintExpanded && (
-                  <>
-                    {/* Alignment Sources */}
-                    {charenomePreview.alignment && (
-                      <div style={{
-                        display: 'flex',
-                        gap: '0.5rem',
-                        flexWrap: 'wrap',
-                        marginBottom: '1rem',
-                        padding: '0.5rem',
-                        backgroundColor: 'rgba(255,255,255,0.03)',
-                        borderRadius: '6px',
-                      }}>
-                        <span style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.4)' }}>ALIGNED FROM:</span>
-                        <span style={{
-                          padding: '0.15rem 0.4rem',
-                          borderRadius: '4px',
-                          backgroundColor: 'rgba(34, 197, 94, 0.2)',
-                          fontSize: '0.7rem',
-                          color: '#86efac',
-                          textTransform: 'capitalize',
-                        }}>
-                          {charenomePreview.alignment.heritage}
-                        </span>
-                        <span style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.3)' }}>+</span>
-                        <span style={{
-                          padding: '0.15rem 0.4rem',
-                          borderRadius: '4px',
-                          backgroundColor: 'rgba(239, 68, 68, 0.2)',
-                          fontSize: '0.7rem',
-                          color: '#fca5a5',
-                          textTransform: 'capitalize',
-                        }}>
-                          {charenomePreview.alignment.order}
-                        </span>
-                        <span style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.3)' }}>+</span>
-                        <span style={{
-                          padding: '0.15rem 0.4rem',
-                          borderRadius: '4px',
-                          backgroundColor: 'rgba(59, 130, 246, 0.2)',
-                          fontSize: '0.7rem',
-                          color: '#93c5fd',
-                          textTransform: 'capitalize',
-                        }}>
-                          {charenomePreview.alignment.archetype?.replace(/_/g, ' ')}
-                        </span>
-                      </div>
-                    )}
-
-                    {/* Orisha & Sephira */}
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '1rem' }}>
-                      <div style={{
-                        padding: '0.75rem',
-                        backgroundColor: 'rgba(255,255,255,0.05)',
-                        borderRadius: '8px',
-                        borderLeft: '3px solid #f59e0b',
-                      }}>
-                        <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.5)', marginBottom: '0.25rem' }}>HEAD ORISHA</div>
-                        <div style={{ fontWeight: 600, color: '#fbbf24' }}>{charenomePreview.orisha}</div>
-                        {charenomePreview.camino && (
-                          <div style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.6)', marginTop: '0.25rem' }}>
-                            {charenomePreview.camino}
-                          </div>
-                        )}
-                      </div>
-                      <div style={{
-                        padding: '0.75rem',
-                        backgroundColor: 'rgba(255,255,255,0.05)',
-                        borderRadius: '8px',
-                        borderLeft: '3px solid #8b5cf6',
-                      }}>
-                        <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.5)', marginBottom: '0.25rem' }}>SEPHIRA</div>
-                        <div style={{ fontWeight: 600, color: '#a78bfa' }}>{charenomePreview.sephira}</div>
-                        <div style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.6)', marginTop: '0.25rem' }}>
-                          {charenomePreview.trajectory}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Secondary Influences */}
-                    {charenomePreview.secondaryInfluences.length > 0 && (
-                      <div style={{ marginBottom: '1rem' }}>
-                        <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.5)', marginBottom: '0.5rem' }}>SECONDARY INFLUENCES</div>
-                        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                          {charenomePreview.secondaryInfluences.map((inf, idx) => (
-                            <span key={idx} style={{
-                              padding: '0.25rem 0.5rem',
-                              borderRadius: '4px',
-                              backgroundColor: 'rgba(255,255,255,0.1)',
-                              fontSize: '0.75rem',
-                              color: 'rgba(255,255,255,0.8)',
-                            }}>
-                              {inf.orisha} ({Math.round(inf.strength * 100)}%)
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Voice Profile */}
-                    <div style={{
-                      padding: '0.75rem',
-                      backgroundColor: 'rgba(255,255,255,0.05)',
-                      borderRadius: '8px',
-                      marginBottom: '1rem',
-                    }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
-                        <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.5)' }}>VOICE</div>
-                        <span style={{
-                          padding: '0.15rem 0.4rem',
-                          borderRadius: '4px',
-                          backgroundColor: charenomePreview.hotCoolAxis > 0 ? 'rgba(239, 68, 68, 0.2)' : 'rgba(59, 130, 246, 0.2)',
-                          fontSize: '0.65rem',
-                          color: charenomePreview.hotCoolAxis > 0 ? '#fca5a5' : '#93c5fd',
-                          textTransform: 'uppercase',
-                        }}>
-                          {charenomePreview.voice.type}
-                        </span>
-                        <span style={{
-                          padding: '0.15rem 0.4rem',
-                          borderRadius: '4px',
-                          backgroundColor: charenomePreview.hotCoolAxis > 0 ? 'rgba(239, 68, 68, 0.15)' : 'rgba(59, 130, 246, 0.15)',
-                          fontSize: '0.65rem',
-                          color: charenomePreview.hotCoolAxis > 0 ? '#fca5a5' : '#93c5fd',
-                        }}>
-                          {charenomePreview.hotCoolAxis > 0 ? 'hot' : charenomePreview.hotCoolAxis < 0 ? 'cool' : 'crossroads'}
-                        </span>
-                      </div>
-                      <div style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.7)' }}>
-                        {charenomePreview.voice.quality}
-                      </div>
-                    </div>
-
-                    {/* Sample Tweet */}
-                    <div style={{
-                      padding: '1rem',
-                      background: 'linear-gradient(135deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.5) 100%)',
-                      borderRadius: '8px',
-                      border: '1px solid rgba(255,255,255,0.1)',
-                    }}>
-                      <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        marginBottom: '0.5rem',
-                      }}>
-                        <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)', letterSpacing: '0.05em' }}>
-                          SAMPLE VOICE
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            if (charenomePreview) {
-                              const newTweet = generateSampleTweet(charenomePreview.orisha);
-                              setCharenomePreview({ ...charenomePreview, sampleTweet: newTweet });
-                            }
-                          }}
-                          style={{
-                            background: 'none',
-                            border: 'none',
-                            color: 'rgba(255,255,255,0.4)',
-                            cursor: 'pointer',
-                            fontSize: '0.7rem',
-                            padding: '0.25rem 0.5rem',
-                          }}
-                        >
-                          refresh
-                        </button>
-                      </div>
-                      <div style={{
-                        fontSize: '0.95rem',
-                        lineHeight: 1.5,
-                        color: '#fff',
-                        fontStyle: 'italic',
-                      }}>
-                        &ldquo;{charenomePreview.sampleTweet}&rdquo;
-                      </div>
-                      <div style={{
-                        marginTop: '0.5rem',
-                        fontSize: '0.7rem',
-                        color: 'rgba(255,255,255,0.4)',
-                      }}>
-                        — {lcosGenerated.pseudonym || lcosGenerated.name}
-                      </div>
-                    </div>
-                  </>
                 )}
-              </div>
+
+                {/* Admin only: Orisha & Sephira */}
+                {lcosAdminMode && (
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.375rem', marginBottom: '0.5rem' }}>
+                    <div style={{ padding: '0.5rem', backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: '0.25rem', borderLeft: '2px solid rgba(255,255,255,0.15)' }}>
+                      <div style={{ fontSize: '0.6rem', color: 'rgba(255,255,255,0.35)', fontFamily: 'monospace', letterSpacing: '0.05em', marginBottom: '0.125rem' }}>HEAD ORISHA</div>
+                      <div style={{ fontWeight: 600, fontSize: '0.85rem', color: 'rgba(255,255,255,0.9)' }}>{charenomePreview.orisha}</div>
+                      {charenomePreview.camino && (
+                        <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.45)', marginTop: '0.125rem' }}>{charenomePreview.camino}</div>
+                      )}
+                    </div>
+                    <div style={{ padding: '0.5rem', backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: '0.25rem', borderLeft: '2px solid rgba(255,255,255,0.15)' }}>
+                      <div style={{ fontSize: '0.6rem', color: 'rgba(255,255,255,0.35)', fontFamily: 'monospace', letterSpacing: '0.05em', marginBottom: '0.125rem' }}>SEPHIRA</div>
+                      <div style={{ fontWeight: 600, fontSize: '0.85rem', color: 'rgba(255,255,255,0.9)' }}>{charenomePreview.sephira}</div>
+                      <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.45)', marginTop: '0.125rem' }}>{charenomePreview.trajectory}</div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Admin only: Secondary Influences */}
+                {lcosAdminMode && charenomePreview.secondaryInfluences.length > 0 && (
+                  <div style={{ marginBottom: '0.5rem' }}>
+                    <div style={{ fontSize: '0.6rem', color: 'rgba(255,255,255,0.35)', fontFamily: 'monospace', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>SECONDARY</div>
+                    <div style={{ display: 'flex', gap: '0.25rem', flexWrap: 'wrap' }}>
+                      {charenomePreview.secondaryInfluences.map((inf, idx) => (
+                        <span key={idx} style={{ padding: '0.125rem 0.375rem', borderRadius: '0.2rem', backgroundColor: 'rgba(255,255,255,0.06)', fontSize: '0.65rem', color: 'rgba(255,255,255,0.6)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                          {inf.orisha} ({Math.round(inf.strength * 100)}%)
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Voice Profile — always visible */}
+                <div style={{
+                  padding: '0.5rem',
+                  backgroundColor: 'rgba(255,255,255,0.03)',
+                  borderRadius: '0.25rem',
+                  marginBottom: '0.375rem',
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', marginBottom: '0.25rem' }}>
+                    <div style={{ fontSize: '0.6rem', color: 'rgba(255,255,255,0.35)', fontFamily: 'monospace', letterSpacing: '0.05em' }}>VOICE</div>
+                    <span style={{
+                      padding: '0.1rem 0.35rem',
+                      borderRadius: '0.2rem',
+                      backgroundColor: 'rgba(255,255,255,0.06)',
+                      fontSize: '0.6rem',
+                      color: 'rgba(255,255,255,0.7)',
+                      border: '1px solid rgba(255,255,255,0.08)',
+                      textTransform: 'uppercase',
+                      fontFamily: 'monospace',
+                    }}>
+                      {charenomePreview.voice.type}
+                    </span>
+                    <span style={{
+                      padding: '0.1rem 0.35rem',
+                      borderRadius: '0.2rem',
+                      backgroundColor: 'rgba(255,255,255,0.04)',
+                      fontSize: '0.6rem',
+                      color: 'rgba(255,255,255,0.5)',
+                      border: '1px solid rgba(255,255,255,0.06)',
+                      fontFamily: 'monospace',
+                    }}>
+                      {charenomePreview.hotCoolAxis > 0 ? 'hot' : charenomePreview.hotCoolAxis < 0 ? 'cool' : 'crossroads'}
+                    </span>
+                  </div>
+                  <div style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.55)', lineHeight: 1.4 }}>
+                    {charenomePreview.voice.quality}
+                  </div>
+                </div>
+
+                {/* Sample Voice — always visible */}
+                <div style={{
+                  padding: '0.5rem',
+                  backgroundColor: 'rgba(255,255,255,0.03)',
+                  borderRadius: '0.25rem',
+                  border: '1px solid rgba(255,255,255,0.06)',
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
+                    <div style={{ fontSize: '0.6rem', color: 'rgba(255,255,255,0.35)', fontFamily: 'monospace', letterSpacing: '0.05em' }}>SAMPLE VOICE</div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (charenomePreview) {
+                          const newTweet = generateSampleTweet(charenomePreview.orisha);
+                          setCharenomePreview({ ...charenomePreview, sampleTweet: newTweet });
+                        }
+                      }}
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        color: 'rgba(255,255,255,0.3)',
+                        cursor: 'pointer',
+                        fontSize: '0.6rem',
+                        fontFamily: 'monospace',
+                        padding: '0.125rem 0.375rem',
+                      }}
+                    >
+                      refresh
+                    </button>
+                  </div>
+                  <div style={{ fontSize: '0.85rem', lineHeight: 1.5, color: 'rgba(255,255,255,0.85)', fontStyle: 'italic' }}>
+                    &ldquo;{charenomePreview.sampleTweet}&rdquo;
+                  </div>
+                  <div style={{ marginTop: '0.25rem', fontSize: '0.65rem', color: 'rgba(255,255,255,0.3)', fontFamily: 'monospace' }}>
+                    — {lcosGenerated.pseudonym || lcosGenerated.name}
+                  </div>
+                </div>
+              </CollapsibleSection>
             )}
 
             {lcosGenerated && (

@@ -66,13 +66,6 @@ const PATHS: PathData[] = [
   { from: 'Yesod', to: 'Malkuth' },
 ];
 
-// Pillar colors
-const PILLAR_COLORS = {
-  Mercy: '#3b82f6', // Blue
-  Severity: '#ef4444', // Red
-  Balance: '#f59e0b', // Gold/Amber
-};
-
 interface TreeOfLifeVisualizationProps {
   selectedSephira?: string | null;
   onSephiraSelect?: (sephira: string) => void;
@@ -133,9 +126,10 @@ export function TreeOfLifeVisualization({
         y1={from.y}
         x2={to.x}
         y2={to.y}
-        stroke={isConnected ? 'var(--primary)' : 'var(--border)'}
-        strokeWidth={isConnected ? 2.5 : 1.5}
-        strokeOpacity={isConnected ? 1 : 0.4}
+        stroke={isConnected ? '#ffffff' : 'rgba(255,255,255,0.15)'}
+        strokeWidth={isConnected ? 1.5 : 0.75}
+        strokeOpacity={isConnected ? 0.9 : 0.4}
+        filter={isConnected ? 'url(#pathGlow)' : undefined}
       />
     );
   };
@@ -156,17 +150,41 @@ export function TreeOfLifeVisualization({
         onMouseLeave={() => setHoveredSephira(null)}
         style={{ cursor: isInteractive ? 'pointer' : 'default' }}
       >
-        {/* Glow effect for selected */}
+        {/* Outer glow ring for selected */}
         {isSelected && (
+          <>
+            <circle
+              cx={x}
+              cy={y}
+              r={radius + 12}
+              fill="none"
+              stroke="rgba(255,255,255,0.15)"
+              strokeWidth={1}
+              filter="url(#nodeGlow)"
+            />
+            <circle
+              cx={x}
+              cy={y}
+              r={radius + 6}
+              fill="none"
+              stroke="rgba(255,255,255,0.4)"
+              strokeWidth={1.5}
+              filter="url(#nodeGlow)"
+              className="animate-pulse"
+            />
+          </>
+        )}
+
+        {/* Hover glow */}
+        {isHovered && !isSelected && (
           <circle
             cx={x}
             cy={y}
-            r={radius + 8}
+            r={radius + 4}
             fill="none"
-            stroke={PILLAR_COLORS[sephira.pillar]}
-            strokeWidth={3}
-            strokeOpacity={0.5}
-            className="animate-pulse"
+            stroke="rgba(255,255,255,0.2)"
+            strokeWidth={1}
+            filter="url(#nodeGlow)"
           />
         )}
 
@@ -175,14 +193,15 @@ export function TreeOfLifeVisualization({
           cx={x}
           cy={y}
           r={radius}
-          fill={isSelected ? PILLAR_COLORS[sephira.pillar] : 'var(--background)'}
-          stroke={PILLAR_COLORS[sephira.pillar]}
-          strokeWidth={isDaath ? 2 : 3}
-          strokeDasharray={isDaath ? '5,3' : undefined}
+          fill={isSelected ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.8)'}
+          stroke={isSelected ? '#ffffff' : isDaath ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.5)'}
+          strokeWidth={isSelected ? 2 : isDaath ? 1 : 1.5}
+          strokeDasharray={isDaath ? '4,3' : undefined}
           opacity={isDaath ? 0.7 : 1}
+          filter={isSelected ? 'url(#nodeGlow)' : undefined}
           style={{
-            transition: 'all 0.2s ease',
-            transform: isHovered ? `scale(1.1)` : undefined,
+            transition: 'all 0.3s ease',
+            transform: isHovered ? `scale(1.08)` : undefined,
             transformOrigin: `${x}px ${y}px`,
           }}
         />
@@ -192,9 +211,12 @@ export function TreeOfLifeVisualization({
           x={x}
           y={y - 4}
           textAnchor="middle"
-          fill={isSelected ? 'white' : 'var(--foreground)'}
+          fill={isSelected ? '#ffffff' : 'rgba(255,255,255,0.85)'}
           fontSize={10 * Math.min(scaleX, scaleY)}
-          fontWeight="bold"
+          fontWeight={isSelected ? '600' : '400'}
+          fontFamily="monospace"
+          letterSpacing="0.5px"
+          filter={isSelected ? 'url(#textGlow)' : undefined}
         >
           {sephira.name}
         </text>
@@ -204,8 +226,9 @@ export function TreeOfLifeVisualization({
           x={x}
           y={y + 10}
           textAnchor="middle"
-          fill={isSelected ? 'rgba(255,255,255,0.8)' : 'var(--muted-foreground)'}
+          fill={isSelected ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.4)'}
           fontSize={9 * Math.min(scaleX, scaleY)}
+          fontFamily="serif"
         >
           {sephira.hebrewName}
         </text>
@@ -217,10 +240,10 @@ export function TreeOfLifeVisualization({
   const renderQliphoth = () => {
     if (!showQliphoth) return null;
 
-    const qliphothY = height * 0.95; // Start of qliphothic reflection
+    const qliphothY = height * 0.95;
 
     return (
-      <g opacity={0.3} transform={`scale(1, -0.4) translate(0, ${-qliphothY * 3.5})`}>
+      <g opacity={0.2} transform={`scale(1, -0.4) translate(0, ${-qliphothY * 3.5})`}>
         {/* Paths */}
         {PATHS.map((path, i) => {
           const from = getSephiraPosition(path.from);
@@ -233,8 +256,8 @@ export function TreeOfLifeVisualization({
               y1={from.y}
               x2={to.x}
               y2={to.y}
-              stroke="var(--destructive)"
-              strokeWidth={1}
+              stroke="rgba(255,255,255,0.15)"
+              strokeWidth={0.5}
               strokeOpacity={0.3}
             />
           );
@@ -243,15 +266,16 @@ export function TreeOfLifeVisualization({
         {SEPHIROTH.map((sephira) => {
           const x = sephira.x * scaleX;
           const y = sephira.y * scaleY;
-          const radius = 20 * Math.min(scaleX, scaleY);
+          const r = 20 * Math.min(scaleX, scaleY);
           return (
             <circle
               key={`qlip-${sephira.name}`}
               cx={x}
               cy={y}
-              r={radius}
-              fill="var(--destructive)"
-              opacity={0.2}
+              r={r}
+              fill="rgba(255,255,255,0.05)"
+              stroke="rgba(255,255,255,0.1)"
+              strokeWidth={0.5}
             />
           );
         })}
@@ -267,46 +291,109 @@ export function TreeOfLifeVisualization({
         viewBox={`0 0 ${width} ${height}`}
         style={{ overflow: 'visible' }}
       >
-        {/* Background gradient */}
         <defs>
-          <radialGradient id="treeGlow" cx="50%" cy="40%" r="60%">
-            <stop offset="0%" stopColor="var(--primary)" stopOpacity={0.1} />
-            <stop offset="100%" stopColor="transparent" stopOpacity={0} />
-          </radialGradient>
-        </defs>
-        <rect x={0} y={0} width={width} height={height} fill="url(#treeGlow)" />
+          {/* Bio-tech glow filter for nodes */}
+          <filter id="nodeGlow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="4" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+          </filter>
 
-        {/* Pillar guidelines (optional visual aid) */}
+          {/* Subtle glow for active paths */}
+          <filter id="pathGlow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="2" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+          </filter>
+
+          {/* Text glow for selected labels */}
+          <filter id="textGlow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="1.5" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+          </filter>
+
+          {/* Subtle radial vignette */}
+          <radialGradient id="treeVignette" cx="50%" cy="45%" r="65%">
+            <stop offset="0%" stopColor="rgba(255,255,255,0.03)" />
+            <stop offset="100%" stopColor="transparent" />
+          </radialGradient>
+
+          {/* Vertical scan line effect */}
+          <pattern id="scanlines" width="4" height="4" patternUnits="userSpaceOnUse">
+            <line x1="0" y1="0" x2="0" y2="4" stroke="rgba(255,255,255,0.02)" strokeWidth="1" />
+          </pattern>
+        </defs>
+
+        {/* Black background */}
+        <rect x={0} y={0} width={width} height={height} fill="#0a0a0a" rx={8} />
+
+        {/* Scanline overlay */}
+        <rect x={0} y={0} width={width} height={height} fill="url(#scanlines)" rx={8} />
+
+        {/* Subtle center glow */}
+        <rect x={0} y={0} width={width} height={height} fill="url(#treeVignette)" rx={8} />
+
+        {/* Pillar guidelines — monochrome, very subtle */}
         <line
           x1={80 * scaleX}
           y1={50 * scaleY}
           x2={80 * scaleX}
           y2={450 * scaleY}
-          stroke={PILLAR_COLORS.Severity}
+          stroke="rgba(255,255,255,0.06)"
           strokeWidth={1}
-          strokeOpacity={0.1}
-          strokeDasharray="4,4"
+          strokeDasharray="2,6"
         />
         <line
           x1={200 * scaleX}
           y1={20 * scaleY}
           x2={200 * scaleX}
           y2={560 * scaleY}
-          stroke={PILLAR_COLORS.Balance}
+          stroke="rgba(255,255,255,0.06)"
           strokeWidth={1}
-          strokeOpacity={0.1}
-          strokeDasharray="4,4"
+          strokeDasharray="2,6"
         />
         <line
           x1={320 * scaleX}
           y1={50 * scaleY}
           x2={320 * scaleX}
           y2={450 * scaleY}
-          stroke={PILLAR_COLORS.Mercy}
+          stroke="rgba(255,255,255,0.06)"
           strokeWidth={1}
-          strokeOpacity={0.1}
-          strokeDasharray="4,4"
+          strokeDasharray="2,6"
         />
+
+        {/* Pillar labels — minimal */}
+        <text
+          x={80 * scaleX}
+          y={470 * scaleY}
+          textAnchor="middle"
+          fill="rgba(255,255,255,0.15)"
+          fontSize={8 * Math.min(scaleX, scaleY)}
+          fontFamily="monospace"
+          letterSpacing="2px"
+        >
+          SEVERITY
+        </text>
+        <text
+          x={200 * scaleX}
+          y={575 * scaleY}
+          textAnchor="middle"
+          fill="rgba(255,255,255,0.15)"
+          fontSize={8 * Math.min(scaleX, scaleY)}
+          fontFamily="monospace"
+          letterSpacing="2px"
+        >
+          BALANCE
+        </text>
+        <text
+          x={320 * scaleX}
+          y={470 * scaleY}
+          textAnchor="middle"
+          fill="rgba(255,255,255,0.15)"
+          fontSize={8 * Math.min(scaleX, scaleY)}
+          fontFamily="monospace"
+          letterSpacing="2px"
+        >
+          MERCY
+        </text>
 
         {/* Qliphothic shadow */}
         {renderQliphoth()}
@@ -329,25 +416,30 @@ export function TreeOfLifeVisualization({
             bottom: '8px',
             left: '50%',
             transform: 'translateX(-50%)',
-            backgroundColor: 'var(--popover)',
-            border: '1px solid var(--border)',
-            borderRadius: '8px',
-            padding: '8px 12px',
-            fontSize: '0.875rem',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+            backgroundColor: 'rgba(0,0,0,0.95)',
+            border: '1px solid rgba(255,255,255,0.2)',
+            borderRadius: '4px',
+            padding: '8px 14px',
+            fontSize: '0.8rem',
+            fontFamily: 'monospace',
+            color: 'rgba(255,255,255,0.9)',
+            boxShadow: '0 0 20px rgba(255,255,255,0.05)',
             zIndex: 10,
             whiteSpace: 'nowrap',
+            letterSpacing: '0.3px',
           }}
         >
-          <strong>
+          <strong style={{ color: '#ffffff' }}>
             {hoveredSephira === 'Daath'
               ? DAATH.name
               : SEPHIROTH.find((s) => s.name === hoveredSephira)?.name}
           </strong>
-          {' — '}
-          {hoveredSephira === 'Daath'
-            ? DAATH.meaning
-            : SEPHIROTH.find((s) => s.name === hoveredSephira)?.meaning}
+          <span style={{ color: 'rgba(255,255,255,0.4)', margin: '0 6px' }}>//</span>
+          <span style={{ color: 'rgba(255,255,255,0.6)' }}>
+            {hoveredSephira === 'Daath'
+              ? DAATH.meaning
+              : SEPHIROTH.find((s) => s.name === hoveredSephira)?.meaning}
+          </span>
         </div>
       )}
     </div>

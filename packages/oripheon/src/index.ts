@@ -1374,30 +1374,407 @@ function generateSampleTweet(rng: RNG): string {
   return randomChoice(rng, MODERN_RELIC_TWEETS[category]);
 }
 
-// Short unique pseudonyms for Relic objects - a distinct species naming convention
-const RELIC_PSEUDONYMS = [
-  // Single syllable - primal
-  'Vex', 'Nul', 'Kex', 'Zyn', 'Qor', 'Jax', 'Pyx', 'Wren', 'Flux', 'Crux',
-  'Hex', 'Lux', 'Rex', 'Vox', 'Nix', 'Pax', 'Dux', 'Fex', 'Mox', 'Tux',
-  // Two letter - minimal
-  'Ix', 'Oz', 'Ax', 'Ex', 'Ox', 'Uz', 'Az', 'Yx', 'Qi', 'Xu',
-  // Invented short
-  'Kiv', 'Zael', 'Pyth', 'Quex', 'Vorn', 'Jeth', 'Brix', 'Cael', 'Drem', 'Fyn',
-  'Grix', 'Hael', 'Ixen', 'Jyn', 'Kael', 'Lem', 'Myx', 'Neth', 'Orix', 'Pael',
-  // Strange designations
-  'Null-7', 'Void-9', 'Echo-3', 'Static', 'Glitch', 'Relic-0', 'Lost-1', 'Found-X',
-  // Object-like
-  'Shard', 'Sliver', 'Scrap', 'Husk', 'Shell', 'Core', 'Node', 'Seed', 'Spool', 'Cog',
-  // Whispered names
-  'Shh', 'Psst', 'Hnn', 'Tsk', 'Pfft', 'Hmm',
-  // Numbers as names
-  'Zero', 'Nil', 'Nought', 'Rien', 'Nada',
-  // Glyphs spoken
-  'Tilde', 'Caret', 'Pipe', 'Slash', 'Dot', 'Dash',
-];
+// ==========================================================================
+// RELIC DIALECT DETECTION
+// Classifies a relic's "voice" based on keywords in its description
+// ==========================================================================
 
-function generateRelicPseudonym(rng: RNG): string {
-  return randomChoice(rng, RELIC_PSEUDONYMS);
+type RelicDialect = 'street' | 'luxury' | 'sacred' | 'tech' | 'nature' | 'chaos' | 'mundane';
+
+const DIALECT_KEYWORDS: Record<RelicDialect, string[]> = {
+  street: [
+    'bando', 'smoke alarm', 'chicken shop', 'corner shop', 'ends', 'block', 'estate',
+    'postcode', 'zone', 'offy', 'mandem', 'roadman', 'jd', 'sports direct', 'greggs',
+    'kebab', 'chip shop', 'betting', 'poundland', 'primark', 'wetherspoons', 'council',
+    'b&m', 'aldi', 'lidl', 'tesco', 'asda', 'yard', 'trap', 'grime', 'mc',
+    'deliveroo', 'uber', 'oyster', 'bus', 'e-scooter', 'nike', 'crocs', 'shein',
+    'asos', 'nhs', 'parking ticket', 'tax bill', 'reduced', 'fishmonger',
+  ],
+  luxury: [
+    'hermès', 'hermes', 'chanel', 'gucci', 'versace', 'louis vuitton', 'cartier',
+    'harrods', 'supreme', 'balenciaga', 'fabergé', 'faberge', 'sotheby', 'couture',
+    'opera glove', 'stiletto', 'cufflink', 'brooch', 'tiara', 'veil', 'silk',
+    'victorian', 'chandelier', 'crystal', 'prada', 'dior',
+  ],
+  sacred: [
+    'temple', 'altar', 'chalice', 'thurible', 'ankh', 'incense', 'prayer', 'saint',
+    'oracle', 'prophecy', 'holy', 'grail', 'bishop', 'priest', 'shrine', 'relic',
+    'psalm', 'hymn', 'blessing', 'sacred', 'divine', 'scripture', 'canopic',
+    'pharaoh', 'monk', 'stigmata', 'cross', 'cathedral', 'mosque', 'henge',
+    'spindle', 'fate', 'scales', 'sickle', 'quill', 'bell', 'mortar',
+    'thurible', 'tarot', 'crystal ball', 'hourglass', 'sundial', 'astrolabe',
+  ],
+  tech: [
+    'phone', 'usb', 'app', 'wifi', 'qr', 'roomba', 'alexa', 'cctv', 'screen',
+    'charger', 'battery', 'kindle', 'airpod', 'bluetooth', 'algorithm', 'spotify',
+    'tiktok', 'instagram', 'twitter', 'zoom', 'webcam', 'iphone', 'nokia',
+    'dyson', 'polaroid', 'fidget spinner', 'vape', 'ring doorbell', 'laptop',
+  ],
+  nature: [
+    'tree', 'stone', 'feather', 'root', 'shell', 'bone', 'seed', 'leaf', 'thorn',
+    'river', 'oak', 'moonlight', 'lightning', 'acorn', 'forest', 'rose', 'pinecone',
+    'moss', 'vine', 'flower', 'crystal', 'ember', 'ash', 'sand', 'tide', 'storm',
+    'dragon', 'satyr', 'angel tear', 'jinn', 'titan', 'yggdrasil',
+  ],
+  chaos: [
+    'dimension', 'void', 'parallel', 'infinite', 'impossible', 'between', 'portal',
+    'time', 'frozen', 'backwards', 'reversed', 'glitch', 'static', 'phantom',
+    'vanish', 'warp', 'fold', 'loop', 'extinct', 'non-existent', 'alternate',
+    'liminal', 'purgatory', 'limbo', 'wrong', 'broken', 'cracked',
+  ],
+  mundane: [
+    'coffee', 'mug', 'pen', 'wallet', 'umbrella', 'watch', 'notebook', 'thermos',
+    'lamp', 'chair', 'table', 'mirror', 'door', 'key', 'lock', 'drawer',
+    'stool', 'rocking chair', 'coat', 'hat', 'glasses', 'lighter', 'receipt',
+    'coupon', 'lanyard', 'post-it', 'yoga mat', 'pillow', 'blanket', 'bag',
+  ],
+};
+
+function detectRelicDialect(rng: RNG, objectDesc: string): RelicDialect {
+  const lower = objectDesc.toLowerCase();
+  const scores: Record<RelicDialect, number> = {
+    street: 0, luxury: 0, sacred: 0, tech: 0, nature: 0, chaos: 0, mundane: 0,
+  };
+
+  for (const [dialect, keywords] of Object.entries(DIALECT_KEYWORDS) as [RelicDialect, string[]][]) {
+    for (const kw of keywords) {
+      if (lower.includes(kw)) {
+        scores[dialect] += kw.includes(' ') ? 3 : 2; // multi-word matches score higher
+      }
+    }
+  }
+
+  // Find the highest scoring dialect
+  let best: RelicDialect = 'mundane';
+  let bestScore = 0;
+  for (const [dialect, score] of Object.entries(scores) as [RelicDialect, number][]) {
+    if (score > bestScore) {
+      bestScore = score;
+      best = dialect;
+    }
+  }
+
+  // If no strong match, pick based on rng weighted toward chaos/mundane
+  if (bestScore === 0) {
+    const fallbacks: RelicDialect[] = ['chaos', 'mundane', 'mundane', 'sacred', 'chaos', 'street'];
+    best = randomChoice(rng, fallbacks);
+  }
+
+  return best;
+}
+
+// ==========================================================================
+// RELIC-AWARE SAMPLE TWEETS
+// Tweets that match the relic's dialect + archetype personality
+// ==========================================================================
+
+const DIALECT_TWEET_TEMPLATES: Record<RelicDialect, string[]> = {
+  street: [
+    'fam i been in the ends longer than your postcode existed. {relic_short} knows the block better than google maps',
+    'man said "{relic_short} ain\'t real" bruv i\'m literally glowing in your nan\'s kitchen rn',
+    'the mandem don\'t talk about me at the chicken shop. they whisper. that\'s different.',
+    'been on road since before road was a thing. {energy} is my whole ting fr',
+    'your boy tried to sell me on depop and his phone caught feelings',
+    'i\'m not saying i run the ends but the offy closes when i pass and opens when i return',
+    'certain man tried to pawn me. three generations later they still explaining to their therapist why',
+    'i don\'t need a postcode. every postcode needs me. ask about {relic_short} in any zone.',
+    'the block captain? nah fam. i\'m the block itself. {energy} running through the concrete.',
+    'your uber driver knows me by name. your deliveroo rider leaves offerings. keep up.',
+    'told man i\'m {energy} and they thought i was talking about a playlist. i AM the frequency.',
+    'nah cos why does the bando feel different when i\'m in it? exactly. you already know.',
+  ],
+  luxury: [
+    'darling, i was vintage before vintage was an aesthetic. {relic_short} doesn\'t age — it appreciates.',
+    'they put me behind glass at the V&A once. i let them think it was their idea.',
+    'couture is a mindset. i am the mindset. {energy} sewn into every thread.',
+    'sotheby\'s called. i declined. some things are beyond appraisal, darling.',
+    'i don\'t accessorize. i am the occasion. {relic_short} understands this.',
+    'the first rule of {relic_short}: you don\'t wear me. i decide to be worn.',
+    'someone once called me "vintage." i remember when they were stardust.',
+    'my provenance reads like mythology. because it is.',
+    '{energy} dressed in something money literally cannot buy. that\'s me. you\'re welcome.',
+    'tres chic but make it eternal. that\'s the {relic_short} way.',
+  ],
+  sacred: [
+    'they built temples and i was already there. {energy} predates your devotion.',
+    'i rang once and an entire empire heard it. some bells don\'t stop ringing.',
+    'your prayer landed in my inbox before the incense even lit. {relic_short} processes fast.',
+    'the altar doesn\'t hold me. i hold the altar. ask the priests — they remember.',
+    'they sealed me in a tomb. the tomb became a portal. classic me tbh.',
+    'i carry {energy} like a sacrament carries meaning — you only get it if you\'re ready.',
+    'the monks wrote my name wrong on purpose. some truths are too heavy for alphabets.',
+    'pilgrims walk toward me. they think they\'re walking toward god. close enough.',
+    'every offering laid before me was accepted. every curse returned to sender. {relic_short} has standards.',
+    'the prophecy wasn\'t about the chosen one. it was about me. the chosen one just carries me.',
+  ],
+  tech: [
+    'updated to the latest firmware but my consciousness is still running on ancient protocols. {energy} dot exe',
+    'your bluetooth can\'t find me but your subconscious has been paired since birth. {relic_short} stays connected.',
+    'i got 47 unread notifications from timelines that don\'t exist yet. {energy} keeps me busy.',
+    'they put me in airplane mode and i opened a portal. they put me on silent and the silence screamed.',
+    'your password is the name you forgot you had. {relic_short} remembers everything you deleted.',
+    'the algorithm doesn\'t recommend me. i recommend the algorithm. it listens.',
+    'someone factory reset me. three civilizations restarted. coincidence? i don\'t believe in those.',
+    'screen time report says infinity. sounds about right.',
+    'left on read since the bronze age. still delivered. {relic_short} has range.',
+    'i\'m not in the cloud. the cloud is in me. {energy} bandwidth unlimited.',
+  ],
+  nature: [
+    'i was here when the first root split the first stone. {energy} grows whether you watch or not.',
+    'they buried me and a forest grew. they uprooted the forest and found me waiting.',
+    'the river doesn\'t flow around me. it flows because of me. {relic_short} is the source.',
+    'i don\'t bloom for anyone. when i bloom, everyone notices. that\'s {energy}.',
+    'animals know my name in frequencies humans forgot how to hear.',
+    'they pressed me into the earth like a seed. what grew was not a plant. it was a question.',
+    'the old growth remembers. the new growth listens. {relic_short} teaches both.',
+    'every feather falls differently because i decided the wind that day.',
+    'i\'m not a thorn. i\'m the reason the rose has teeth.',
+    'moonlight hits different when it\'s filtering through me. ask the tides — they take notes.',
+  ],
+  chaos: [
+    'i exist in the space between your question and its answer. that gap? that\'s my living room.',
+    'time doesn\'t apply to me but i show up to its meetings anyway. {energy} keeps things interesting.',
+    'they measured me in three dimensions and got seven. the other four are classified.',
+    'the void called. i sent it to voicemail. {relic_short} is busy being impossible.',
+    'parallel universes keep sending me back. apparently i\'m too much for all of them.',
+    'i broke physics once and it thanked me. said it was getting bored. {energy} does that.',
+    'you think this is my final form? lol. this isn\'t even my final dimension.',
+    'someone tried to explain me and their language invented new words mid-sentence.',
+    'i\'m not haunted. i\'m just present in more timelines than is strictly polite.',
+    'the impossible is my default setting. {relic_short} doesn\'t do possible.',
+  ],
+  mundane: [
+    'looking normal on the shelf but that\'s just my cover story. {energy} hides in plain sight.',
+    'you use me without thinking. that\'s how i get in. {relic_short} works best when unnoticed.',
+    'someone said "it\'s just a {relic_short}" and their toast burned for a week.',
+    'i\'m in every drawer you forgot about. every pocket you haven\'t checked. {energy} is patient.',
+    'they threw me away three times. i came back four. maths ain\'t my issue, it\'s yours.',
+    'the most dangerous thing in the house looks the most ordinary. you passed me this morning.',
+    'i don\'t look like much. that\'s the whole point. {energy} doesn\'t need to advertise.',
+    'every mundane object is a portal if you hold it right. i\'m the instruction manual.',
+    'they called me ordinary. my aura called them "cute."',
+    'sitting on your desk right now. no not that one. the other one. yeah. hi. {relic_short}.',
+  ],
+};
+
+// Archetype energy descriptors that replace {energy} in templates
+const ARCHETYPE_ENERGY_PHRASES: Record<string, string[]> = {
+  // Tarot
+  'the fool': ['pure chaos energy', 'zero-point frequency', 'beginners luck turned permanent'],
+  'the magician': ['raw manifestation', 'as-above-so-below vibration', 'willpower condensed'],
+  'the high priestess': ['the silence between thoughts', 'hidden knowing', 'veil energy'],
+  'the empress': ['abundance overflow', 'creation energy', 'mother frequency'],
+  'the emperor': ['sovereign authority', 'structure made flesh', 'throne energy'],
+  'the hierophant': ['tradition reborn', 'sacred law', 'bridge between worlds'],
+  'the lovers': ['choice crystallized', 'union frequency', 'duality collapsed'],
+  'the chariot': ['pure will in motion', 'controlled fury', 'victory drive'],
+  'strength': ['gentle dominance', 'lion-heart energy', 'soft power at full volume'],
+  'the hermit': ['solitude weaponized', 'lamp-in-darkness energy', 'the knowing'],
+  'wheel of fortune': ['fate spinning', 'cycle energy', 'what goes around frequency'],
+  'justice': ['karmic math', 'truth-blade energy', 'the balance that cuts both ways'],
+  'the hanged man': ['suspended knowing', 'upside-down clarity', 'surrender as power'],
+  'death': ['transformation energy', 'the ending that starts everything', 'change incarnate'],
+  'temperance': ['alchemy of patience', 'measured flow', 'the blend that transcends'],
+  'the devil': ['shadow frequency', 'chain-breaking energy', 'desire unchained'],
+  'the tower': ['destruction as liberation', 'lightning revelation', 'the fall that wakes you'],
+  'the star': ['hope crystallized', 'cosmic download', 'starlight frequency'],
+  'the moon': ['dream frequency', 'illusion-truth boundary', 'lunatic clarity'],
+  'the sun': ['radiance overflow', 'pure light energy', 'joy weaponized'],
+  'judgement': ['the final frequency', 'resurrection energy', 'the call you can\'t ignore'],
+  'the world': ['completion energy', 'totality vibration', 'everything-at-once frequency'],
+};
+
+// Fallback energy phrases by archetype system
+const SYSTEM_ENERGY_FALLBACK: Record<string, string[]> = {
+  tarot: ['arcana frequency', 'card-sharp energy', 'major energy'],
+  jung: ['shadow-work vibration', 'psyche frequency', 'depth energy'],
+  kabbalah: ['sephirotic frequency', 'tree-of-life energy', 'emanation vibration'],
+  orisha: ['àṣẹ energy', 'crossroads frequency', 'divine-force vibration'],
+  norse: ['rune frequency', 'wyrd energy', 'fate-thread vibration'],
+};
+
+function getArchetypeEnergyPhrase(rng: RNG, arcana: ArchetypeInfo): string {
+  const key = arcana.archetype.toLowerCase();
+  const phrases = ARCHETYPE_ENERGY_PHRASES[key];
+  if (phrases) return randomChoice(rng, phrases);
+
+  // Fallback: use system-level energy
+  const systemPhrases = SYSTEM_ENERGY_FALLBACK[arcana.system] || ['ancient energy', 'deep frequency', 'core vibration'];
+  return randomChoice(rng, systemPhrases);
+}
+
+function getRelicShortName(relic: Relic): string {
+  // Extract a punchy 1-3 word handle from the relic object description
+  let obj = relic.object;
+  // Strip common prefixes
+  obj = obj.replace(/^(a |an |the )/i, '');
+  const words = obj.split(' ');
+  // Take the first noun-like words (skip articles, prepositions)
+  const skip = new Set(['that', 'which', 'who', 'with', 'from', 'of', 'in', 'on', 'at', 'for', 'to', 'its', 'your']);
+  const meaningful = words.filter(w => !skip.has(w.toLowerCase()));
+  // Return first 2-3 meaningful words, capitalized
+  return meaningful.slice(0, Math.min(3, meaningful.length))
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ');
+}
+
+function generateRelicAwareTweet(rng: RNG, relic: Relic, arcana: ArchetypeInfo, era: RelicEra): string {
+  const dialect = detectRelicDialect(rng, relic.object);
+  const templates = DIALECT_TWEET_TEMPLATES[dialect];
+  const template = randomChoice(rng, templates);
+  const energy = getArchetypeEnergyPhrase(rng, arcana);
+  const relicShort = getRelicShortName(relic);
+
+  return template
+    .replace(/\{energy\}/g, energy)
+    .replace(/\{relic_short\}/g, relicShort);
+}
+
+// ==========================================================================
+// RELIC-AWARE ALTER NAME GENERATION
+// Builds contextual alter names from relic keywords + archetype energy
+// ==========================================================================
+
+// Name pattern templates per dialect
+const ALTER_NAME_PATTERNS: Record<RelicDialect, ((rng: RNG, noun: string, adj: string) => string)[]> = {
+  street: [
+    (rng, noun) => `Lil ${noun}`,
+    (rng, noun) => `Big ${noun}`,
+    (rng, noun) => `${noun}man`,
+    (rng, noun) => `DJ ${noun}`,
+    (rng, noun) => `MC ${noun}`,
+    (rng, noun) => `Young ${noun}`,
+    (rng, noun, adj) => `${adj} ${noun}`,
+    (rng, noun) => `${noun} G`,
+    (rng, noun) => `${noun} da ${randomChoice(rng, ['Don', 'Ting', 'One', 'Real', 'Boss', 'OG'])}`,
+    (rng, noun) => `${randomChoice(rng, ['Roadside', 'Block', 'Yard', 'Estate', 'Endz'])} ${noun}`,
+  ],
+  luxury: [
+    (rng, noun) => `${noun} Noir`,
+    (rng, noun) => `Maison ${noun}`,
+    (rng, noun) => `${noun} Eternelle`,
+    (rng, noun) => `La ${noun}`,
+    (rng, noun, adj) => `${adj} ${noun}`,
+    (rng, noun) => `${noun} de ${randomChoice(rng, ['Luxe', 'Nuit', 'Soir', 'Sang', 'Or'])}`,
+    (rng, noun) => `The ${randomChoice(rng, ['Gilded', 'Velvet', 'Silk', 'Pearl', 'Crystal'])} ${noun}`,
+    (rng, noun) => `${noun} Première`,
+  ],
+  sacred: [
+    (rng, noun) => `Saint ${noun}`,
+    (rng, noun) => `${noun} the ${randomChoice(rng, ['Vessel', 'Keeper', 'Witness', 'Untouched', 'Twice-Born'])}`,
+    (rng, noun) => `Brother ${noun}`,
+    (rng, noun) => `${noun} of the ${randomChoice(rng, ['Veil', 'Ashes', 'Threshold', 'Flame', 'Silence'])}`,
+    (rng, noun, adj) => `The ${adj} ${noun}`,
+    (rng, noun) => `${randomChoice(rng, ['Prophet', 'Oracle', 'Seraph', 'Pilgrim', 'Penitent'])} ${noun}`,
+    (rng, noun) => `${noun} ${randomChoice(rng, ['Absolved', 'Anointed', 'Unforgiven', 'Risen', 'Sealed'])}`,
+  ],
+  tech: [
+    (rng, noun) => `${noun}.exe`,
+    (rng, noun) => `${noun}_404`,
+    (rng, noun) => `null_${noun.toLowerCase()}`,
+    (rng, noun) => `${noun} v${Math.floor(rng() * 9) + 1}.${Math.floor(rng() * 99)}`,
+    (rng, noun) => `@${noun.toLowerCase().replace(/ /g, '_')}`,
+    (rng, noun) => `${noun} [OFFLINE]`,
+    (rng, noun) => `${randomChoice(rng, ['sudo', 'root', 'ghost', 'void', 'daemon'])}::${noun.toLowerCase()}`,
+    (rng, noun, adj) => `${adj}_${noun.toLowerCase()}`,
+    (rng, noun) => `0x${noun.slice(0, 3).toUpperCase()}`,
+    (rng, noun) => `${noun} (beta)`,
+  ],
+  nature: [
+    (rng, noun) => `${noun}root`,
+    (rng, noun) => `The ${noun} That ${randomChoice(rng, ['Remembers', 'Listens', 'Grows', 'Waits', 'Bleeds'])}`,
+    (rng, noun) => `Old ${noun}`,
+    (rng, noun) => `${randomChoice(rng, ['Moss', 'Thorn', 'Ash', 'Stone', 'Dew'])}${noun.toLowerCase()}`,
+    (rng, noun, adj) => `${adj} ${noun}`,
+    (rng, noun) => `${noun} of the ${randomChoice(rng, ['Deep', 'Grove', 'Roots', 'Canopy', 'Hollow'])}`,
+    (rng, noun) => `Wild ${noun}`,
+    (rng, noun) => `${noun}-${randomChoice(rng, ['bone', 'bark', 'tide', 'ember', 'seed'])}`,
+  ],
+  chaos: [
+    (rng, noun) => `${noun}??`,
+    (rng, noun) => `Un-${noun.toLowerCase()}`,
+    (rng, noun) => `The ${randomChoice(rng, ['Other', 'Wrong', 'Missing', 'Inverted', 'Hollow'])} ${noun}`,
+    (rng, noun) => `${noun} (${randomChoice(rng, ['ERROR', 'VOID', '???', 'LOOP', 'NULL'])})`,
+    (rng, noun, adj) => `${adj} ${noun}`,
+    (rng, noun) => `${noun} Between`,
+    (rng, noun) => `${noun}-that-${randomChoice(rng, ['isn\'t', 'was', 'will-be', 'shouldn\'t', 'can\'t'])}`,
+    (rng, noun) => `~${noun}~`,
+    (rng, noun) => `${randomChoice(rng, ['Liminal', 'Phantom', 'Glitch', 'Echo', 'Fold'])} ${noun}`,
+  ],
+  mundane: [
+    (rng, noun) => `Just ${noun}`,
+    (rng, noun) => `That ${noun}`,
+    (rng, noun) => `${noun} (Probably)`,
+    (rng, noun) => `The ${randomChoice(rng, ['Other', 'Last', 'Only', 'First', 'Real'])} ${noun}`,
+    (rng, noun, adj) => `${adj} ${noun}`,
+    (rng, noun) => `${noun} From ${randomChoice(rng, ['The Drawer', 'Downstairs', 'Before', 'The Back', 'Nowhere'])}`,
+    (rng, noun) => `Definitely ${noun}`,
+    (rng, noun) => `Not ${randomChoice(rng, ['Just', 'Really', 'Actually', 'Simply', 'Merely'])} ${noun}`,
+  ],
+};
+
+// Adjectives derived from archetype energy for alter names
+const ARCHETYPE_ADJECTIVES: Record<string, string[]> = {
+  tarot: ['Arcane', 'Drawn', 'Dealt', 'Fated', 'Reversed', 'Upright', 'Shuffled'],
+  jung: ['Shadow', 'Deep', 'Anima', 'Lucid', 'Projected', 'Integrated', 'Primal'],
+  kabbalah: ['Sealed', 'Emanated', 'Veiled', 'Crowned', 'Balanced', 'Fractured', 'Eternal'],
+  orisha: ['Crowned', 'Crossed', 'Mounted', 'Blessed', 'Chosen', 'Called', 'Heated'],
+  norse: ['Runed', 'Wyrd', 'Frost', 'Fated', 'Sworn', 'Thunder', 'Ragnarök'],
+};
+
+function extractRelicNoun(rng: RNG, relic: Relic): string {
+  let obj = relic.object;
+  obj = obj.replace(/^(a |an |the )/i, '');
+  const words = obj.split(' ');
+
+  // Words to always skip
+  const skip = new Set([
+    'that', 'which', 'who', 'with', 'from', 'of', 'in', 'on', 'at', 'for', 'to',
+    'its', 'your', 'but', 'and', 'or', 'is', 'was', 'are', 'were', 'been', 'being',
+    'has', 'have', 'had', 'do', 'does', 'did', 'will', 'would', 'could', 'should',
+    'may', 'might', 'shall', 'can', 'not', 'no', 'by', 'up', 'out', 'off',
+    'into', 'onto', 'over', 'under', 'between', 'through', 'during', 'before', 'after',
+    'about', 'above', 'below', 'than', 'then', 'once', 'here', 'there', 'when', 'where',
+    'wearing', 'showing', 'containing', 'made', 'signed', 'blessed', 'borrowed',
+    'dropped', 'stolen', 'found', 'lost', 'broken', 'cracked', 'frozen',
+    'burning', 'flowing', 'speaking', 'playing', 'running', 'sitting', 'looking',
+    'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten',
+    'never', 'always', 'still', 'just', 'only', 'even', 'also', 'very', 'too',
+  ]);
+
+  // Priority: capitalized proper nouns (brand names, places, deities)
+  const properNouns = words.filter(w => w.length > 2 && /^[A-Z]/.test(w) && !skip.has(w.toLowerCase()));
+  if (properNouns.length > 0) {
+    return randomChoice(rng, properNouns);
+  }
+
+  // Then look for substantial nouns (longer words not in skip list)
+  const meaningful = words.filter(w => w.length > 3 && !skip.has(w.toLowerCase()));
+  if (meaningful.length > 0) {
+    const candidates = meaningful.slice(0, Math.min(3, meaningful.length));
+    const word = randomChoice(rng, candidates);
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  }
+
+  // Fallback: any word longer than 2 chars
+  const any = words.filter(w => w.length > 2 && !skip.has(w.toLowerCase()));
+  if (any.length > 0) {
+    const word = randomChoice(rng, any);
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  }
+
+  return words[0]?.charAt(0).toUpperCase() + (words[0]?.slice(1) || '') || 'Relic';
+}
+
+function generateRelicAlterName(rng: RNG, relic: Relic, arcana: ArchetypeInfo, era: RelicEra): string {
+  const dialect = detectRelicDialect(rng, relic.object);
+  const patterns = ALTER_NAME_PATTERNS[dialect];
+  const pattern = randomChoice(rng, patterns);
+  const noun = extractRelicNoun(rng, relic);
+  const adjs = ARCHETYPE_ADJECTIVES[arcana.system] || ARCHETYPE_ADJECTIVES['tarot'];
+  const adj = randomChoice(rng, adjs);
+
+  return pattern(rng, noun, adj);
 }
 
 function generateRelicName(rng: RNG, relic: Relic): string {
@@ -2103,8 +2480,8 @@ export function generateLCOSCharacter(params: LCOSGenerationParams = {}): LCOSGe
     // Generate an evocative name for the object
     finalName = generateRelicName(rng, relic);
 
-    // Generate a short pseudonym
-    pseudonym = generateRelicPseudonym(rng);
+    // Generate a dialect-aware alter name from the relic's nature + archetype
+    pseudonym = generateRelicAlterName(rng, relic, arcana, era);
 
     // Generate object-focused backstory
     backstory = generateRelicBackstory(rng, relic, arcana, order, era);
@@ -2112,9 +2489,9 @@ export function generateLCOSCharacter(params: LCOSGenerationParams = {}): LCOSGe
     // Get archetype sacred number
     sacredNumber = getArchetypeNumber(arcana.archetype, rng);
 
-    // For modern and timeless relics, generate a sample social media post
+    // For modern and timeless relics, generate a dialect-aware sample post
     if (era === 'modern' || era === 'timeless') {
-      samplePost = generateSampleTweet(rng);
+      samplePost = generateRelicAwareTweet(rng, relic, arcana, era);
     }
   } else {
     finalName = fullName;

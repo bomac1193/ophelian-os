@@ -18,6 +18,13 @@ const SEPHIRA_DATA = [
 
 const DAATH_RELATIONSHIPS = ['seeking', 'touched', 'integrated', 'avoiding'] as const;
 
+// Pillar abbreviation for compact display
+const PILLAR_LABEL: Record<string, string> = {
+  Mercy: 'MCY',
+  Severity: 'SVR',
+  Balance: 'BAL',
+};
+
 interface SephiraSelectorProps {
   selectedSephira?: string | null;
   daathRelationship?: (typeof DAATH_RELATIONSHIPS)[number];
@@ -41,22 +48,36 @@ export function SephiraSelector({
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-      <label className="label">Kabbalistic Position</label>
+      <label
+        style={{
+          fontFamily: 'monospace',
+          fontSize: '0.75rem',
+          letterSpacing: '2px',
+          textTransform: 'uppercase',
+          color: 'rgba(255,255,255,0.5)',
+        }}
+      >
+        Kabbalistic Position
+      </label>
 
       {suggestedSephira && suggestedSephira !== selectedSephira && (
         <div
           style={{
-            padding: '0.75rem 1rem',
-            backgroundColor: 'var(--primary-muted)',
-            borderRadius: '8px',
-            fontSize: '0.875rem',
+            padding: '0.625rem 1rem',
+            backgroundColor: 'rgba(255,255,255,0.04)',
+            borderRadius: '4px',
+            border: '1px solid rgba(255,255,255,0.1)',
+            fontSize: '0.8rem',
+            fontFamily: 'monospace',
             display: 'flex',
             alignItems: 'center',
             gap: '0.5rem',
+            color: 'rgba(255,255,255,0.6)',
           }}
         >
-          <span>Suggested based on Orisha: </span>
-          <strong>{suggestedSephira}</strong>
+          <span style={{ color: 'rgba(255,255,255,0.3)' }}>//</span>
+          <span>suggested:</span>
+          <strong style={{ color: '#ffffff' }}>{suggestedSephira}</strong>
           <button
             type="button"
             onClick={() => onSephiraChange?.(suggestedSephira)}
@@ -64,15 +85,29 @@ export function SephiraSelector({
             style={{
               marginLeft: 'auto',
               padding: '0.25rem 0.75rem',
-              borderRadius: '6px',
-              border: 'none',
-              backgroundColor: 'var(--primary)',
-              color: 'white',
+              borderRadius: '2px',
+              border: '1px solid rgba(255,255,255,0.3)',
+              backgroundColor: 'transparent',
+              color: '#ffffff',
               cursor: disabled ? 'not-allowed' : 'pointer',
-              fontSize: '0.8rem',
+              fontSize: '0.7rem',
+              fontFamily: 'monospace',
+              letterSpacing: '1px',
+              textTransform: 'uppercase',
+              transition: 'all 0.2s ease',
+            }}
+            onMouseEnter={(e) => {
+              if (!disabled) {
+                e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.1)';
+                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.6)';
+              }
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'transparent';
+              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)';
             }}
           >
-            Use Suggestion
+            Apply
           </button>
         </div>
       )}
@@ -80,7 +115,7 @@ export function SephiraSelector({
       <div
         style={{
           display: 'flex',
-          gap: '2rem',
+          gap: '1.5rem',
           flexWrap: 'wrap',
           alignItems: 'flex-start',
         }}
@@ -89,10 +124,9 @@ export function SephiraSelector({
         <div
           style={{
             flex: '0 0 auto',
-            padding: '1rem',
-            backgroundColor: 'var(--card)',
-            borderRadius: '12px',
-            border: '1px solid var(--border)',
+            borderRadius: '6px',
+            overflow: 'hidden',
+            border: '1px solid rgba(255,255,255,0.08)',
           }}
         >
           <TreeOfLifeVisualization
@@ -112,14 +146,27 @@ export function SephiraSelector({
             <div
               style={{
                 padding: '1rem',
-                backgroundColor: 'var(--card)',
-                borderRadius: '12px',
-                border: '1px solid var(--border)',
+                backgroundColor: 'rgba(255,255,255,0.03)',
+                borderRadius: '4px',
+                border: '1px solid rgba(255,255,255,0.1)',
                 marginBottom: '1rem',
               }}
             >
-              <h4 style={{ margin: '0 0 0.5rem', fontSize: '1.1rem' }}>
-                {selectedData.name} — {selectedData.meaning}
+              <h4
+                style={{
+                  margin: '0 0 0.5rem',
+                  fontSize: '1rem',
+                  fontFamily: 'monospace',
+                  color: '#ffffff',
+                  fontWeight: 500,
+                  letterSpacing: '0.5px',
+                }}
+              >
+                {selectedData.name}
+                <span style={{ color: 'rgba(255,255,255,0.3)', margin: '0 8px' }}>//</span>
+                <span style={{ fontWeight: 400, color: 'rgba(255,255,255,0.6)' }}>
+                  {selectedData.meaning}
+                </span>
               </h4>
               <div
                 style={{
@@ -130,34 +177,29 @@ export function SephiraSelector({
               >
                 <span
                   style={{
-                    padding: '0.25rem 0.5rem',
-                    borderRadius: '4px',
-                    fontSize: '0.75rem',
-                    backgroundColor:
-                      selectedData.pillar === 'Mercy'
-                        ? '#3b82f620'
-                        : selectedData.pillar === 'Severity'
-                          ? '#ef444420'
-                          : '#f59e0b20',
-                    color:
-                      selectedData.pillar === 'Mercy'
-                        ? '#3b82f6'
-                        : selectedData.pillar === 'Severity'
-                          ? '#ef4444'
-                          : '#f59e0b',
+                    padding: '0.2rem 0.5rem',
+                    borderRadius: '2px',
+                    fontSize: '0.65rem',
+                    fontFamily: 'monospace',
+                    letterSpacing: '1.5px',
+                    backgroundColor: 'rgba(255,255,255,0.06)',
+                    color: 'rgba(255,255,255,0.6)',
+                    border: '1px solid rgba(255,255,255,0.1)',
                   }}
                 >
-                  Pillar of {selectedData.pillar}
+                  {PILLAR_LABEL[selectedData.pillar] || selectedData.pillar}
                 </span>
               </div>
               <p
                 style={{
                   margin: 0,
-                  fontSize: '0.875rem',
-                  color: 'var(--muted-foreground)',
+                  fontSize: '0.8rem',
+                  fontFamily: 'monospace',
+                  color: 'rgba(255,255,255,0.4)',
                 }}
               >
-                <strong>Qliphothic Shadow:</strong> {selectedData.qliphoth}
+                <span style={{ color: 'rgba(255,255,255,0.25)' }}>shadow:</span>{' '}
+                <span style={{ color: 'rgba(255,255,255,0.55)' }}>{selectedData.qliphoth}</span>
               </p>
             </div>
           )}
@@ -166,21 +208,25 @@ export function SephiraSelector({
           <div
             style={{
               padding: '1rem',
-              backgroundColor: 'var(--card)',
-              borderRadius: '12px',
-              border: '1px solid var(--border)',
+              backgroundColor: 'rgba(255,255,255,0.03)',
+              borderRadius: '4px',
+              border: '1px solid rgba(255,255,255,0.1)',
               marginBottom: '1rem',
             }}
           >
             <label
               style={{
-                fontSize: '0.875rem',
-                fontWeight: 500,
+                fontSize: '0.7rem',
+                fontWeight: 400,
+                fontFamily: 'monospace',
+                letterSpacing: '1px',
+                textTransform: 'uppercase',
                 display: 'block',
                 marginBottom: '0.5rem',
+                color: 'rgba(255,255,255,0.4)',
               }}
             >
-              Relationship with Daath (Hidden Knowledge)
+              Da'ath Relationship
             </label>
             <select
               value={daathRelationship}
@@ -191,26 +237,32 @@ export function SephiraSelector({
               style={{
                 width: '100%',
                 padding: '0.5rem',
-                borderRadius: '6px',
-                border: '1px solid var(--border)',
-                backgroundColor: 'var(--background)',
-                color: 'var(--foreground)',
-                fontSize: '0.875rem',
+                borderRadius: '2px',
+                border: '1px solid rgba(255,255,255,0.15)',
+                backgroundColor: 'rgba(0,0,0,0.5)',
+                color: 'rgba(255,255,255,0.8)',
+                fontSize: '0.8rem',
+                fontFamily: 'monospace',
+                appearance: 'none',
+                backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M3 5l3 3 3-3' fill='none' stroke='rgba(255,255,255,0.4)' stroke-width='1.5'/%3E%3C/svg%3E")`,
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'right 8px center',
+                paddingRight: '28px',
               }}
             >
-              <option value="seeking">Seeking — Actively pursuing hidden knowledge</option>
-              <option value="touched">Touched — Has glimpsed the abyss</option>
-              <option value="integrated">Integrated — Has crossed and returned</option>
-              <option value="avoiding">Avoiding — Shuns forbidden knowledge</option>
+              <option value="seeking">seeking // actively pursuing hidden knowledge</option>
+              <option value="touched">touched // has glimpsed the abyss</option>
+              <option value="integrated">integrated // has crossed and returned</option>
+              <option value="avoiding">avoiding // shuns forbidden knowledge</option>
             </select>
           </div>
 
-          {/* Quick select list */}
+          {/* Quick select grid */}
           <div
             style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(2, 1fr)',
-              gap: '0.5rem',
+              gap: '4px',
             }}
           >
             {SEPHIRA_DATA.map((sephira) => {
@@ -224,21 +276,40 @@ export function SephiraSelector({
                   onClick={() => onSephiraChange?.(sephira.name)}
                   disabled={disabled}
                   style={{
-                    padding: '0.5rem',
-                    borderRadius: '6px',
-                    border: `2px solid ${isSelected ? 'var(--primary)' : isSuggested ? 'var(--primary)' : 'var(--border)'}`,
-                    backgroundColor: isSelected ? 'var(--primary)' : 'transparent',
-                    color: isSelected ? 'white' : 'var(--foreground)',
+                    padding: '0.5rem 0.625rem',
+                    borderRadius: '2px',
+                    border: `1px solid ${
+                      isSelected
+                        ? 'rgba(255,255,255,0.5)'
+                        : isSuggested
+                          ? 'rgba(255,255,255,0.25)'
+                          : 'rgba(255,255,255,0.08)'
+                    }`,
+                    backgroundColor: isSelected
+                      ? 'rgba(255,255,255,0.1)'
+                      : 'rgba(255,255,255,0.02)',
+                    color: isSelected ? '#ffffff' : 'rgba(255,255,255,0.6)',
                     cursor: disabled ? 'not-allowed' : 'pointer',
-                    fontSize: '0.8rem',
+                    fontSize: '0.75rem',
+                    fontFamily: 'monospace',
                     textAlign: 'left',
-                    opacity: disabled ? 0.5 : 1,
+                    opacity: disabled ? 0.4 : 1,
                     borderStyle: isSuggested && !isSelected ? 'dashed' : 'solid',
+                    transition: 'all 0.15s ease',
+                    boxShadow: isSelected ? '0 0 12px rgba(255,255,255,0.05)' : 'none',
                   }}
                 >
-                  <strong>{sephira.name}</strong>
+                  <strong style={{ letterSpacing: '0.3px' }}>{sephira.name}</strong>
                   <br />
-                  <span style={{ opacity: 0.8, fontSize: '0.75rem' }}>{sephira.meaning}</span>
+                  <span
+                    style={{
+                      opacity: 0.5,
+                      fontSize: '0.65rem',
+                      letterSpacing: '0.5px',
+                    }}
+                  >
+                    {sephira.meaning}
+                  </span>
                 </button>
               );
             })}
