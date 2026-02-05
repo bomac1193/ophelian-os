@@ -93,6 +93,13 @@
   - Dynamic hints based on riddle type
   - 50+ unique riddle variations
 
+**Three-Layer System Properly Aligned (Latest Session)**
+- **Layer 1 (Surface):** Symbolic imprint always visible on all cards
+- **Layer 2 (Gateway):** Basic details (Orisha/Sephira/trajectory) via simple expand on list cards
+- **Layer 3 (Depths):** Full mythology unlocked via puzzle on detail pages only
+- **Removed:** 4th layer confusion - puzzles no longer block basic info
+- **UX Benefit:** Casual users get quick access, engaged users earn deep wisdom
+
 ### 🟢 System Health
 
 **API Server** (localhost:3001)
