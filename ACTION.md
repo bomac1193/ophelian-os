@@ -1,15 +1,15 @@
 # Action Plan - Bóveda (Living Character OS)
 
 **Last Updated:** 2026-02-05
-**Status:** Progressive Disclosure System Complete, Ready for Next Phase
+**Status:** Progressive Disclosure Integrated, All Genomes Synced
 
 ---
 
 ## Current State
 
-### ✅ Recently Completed (Task #17)
+### ✅ Recently Completed (Task #22)
 
-**Progressive Disclosure System** - Fully implemented and committed to GitHub
+**Progressive Disclosure System - Fully Integrated**
 - Three-layer genome display system (Surface → Gateway → Depths)
 - Symbol mapping library (∞, ♦, ◊, etc. → Orishas)
 - React components:
@@ -17,11 +17,24 @@
   - `SymbolicImprint` - L-class + symbols (Surface layer)
   - `GatewayTooltip` - Hover hints (Gateway layer)
   - `AdvancedView` - Full mythology (Depths layer, unlocked after 3 characters)
+- **INTEGRATED:** Progressive disclosure now live on imprint pages
+  - `/imprint/[id]` - Shows three-layer display with collapsible details
+  - `/imprint` - Character cards show symbolic imprints
+  - Symbolic imprints visible in Character Oripheon Status section
 - Demo page live at `/genome-demo` (localhost:3100)
-- Comprehensive documentation:
-  - `DESIGN_PHILOSOPHY.md` - Strategic rationale & blue ocean positioning
-  - `IMPLEMENTATION_SUMMARY.md` - Technical architecture
-  - `INTEGRATION_STATUS.md` - Testing & next steps
+
+**Genome Sync System - Fixed and Verified**
+- All 14 characters now have genomes (was 12/14 with errors)
+- Fixed 'caminos' undefined error (removed invalid Aganjú mapping)
+- Created comprehensive `genome-stress-test.sh` script
+- `/genomes/sync-all` endpoint working perfectly
+- Stress test results: 14/14 characters, 8/8 relics, 0 errors, 9ms response time
+
+**UI Improvements**
+- Relics separated from regular characters in dedicated section
+- Removed all emojis from interface (per user request)
+- Full genome details hidden behind collapsible expandable toggle
+- Symbolic imprints displayed consistently across all character views
 
 ### 🟢 System Health
 
@@ -50,42 +63,26 @@
 
 ## What Needs to Be Added
 
-### 🎯 High Priority - UI Integration
+### 🎯 High Priority - Remaining Integration
 
-#### 1. Integrate Progressive Disclosure into Existing Pages
-**Goal:** Replace placeholder genome displays with the new system
-
-**Pages to Update:**
-- `/imprint/[id]` - Character detail page
-  - Add `GenomeDisplay` component
-  - Replace current genome visualization
-  - Show symbolic imprint prominently
-
-- `/characters` - Characters list page
-  - Update `GenomeSummaryCard` to show symbolic imprints
-  - Add L-class badge to each character card
-  - Consider adding gateway hints on hover
-
-- `/imprint/create` - Character creation flow
-  - Show symbolic imprint preview as user selects Orishas
-  - Display gateway hints to guide selection
-  - Optionally show advanced view if user is eligible
-
-**Technical Tasks:**
-- [ ] Update character detail page to use `GenomeDisplay`
-- [ ] Refactor `GenomeSummaryCard` component
-- [ ] Add symbolic imprint to character creation preview
-- [ ] Move inline styles to CSS modules for maintainability
-- [ ] Add CSS transitions and animations for layer reveals
-
-#### 2. Genome API Route Fixes
-**Current Issue:** `/api/genome` endpoint needs attention
+#### 1. Character Creation Flow Enhancement
+**Goal:** Add progressive disclosure to genome creation experience
 
 **Tasks:**
-- [ ] Review and test genome creation endpoint
-- [ ] Ensure proper error handling for missing data
-- [ ] Add validation for Orisha configuration
-- [ ] Return proper symbolic imprint data in API responses
+- [ ] `/imprint/create` - Show symbolic imprint preview as user selects Orishas
+- [ ] Display gateway hints to guide Orisha/Sephira selection
+- [ ] Show real-time L-class calculation as options change
+- [ ] Add "What does this mean?" tooltips for each selection
+
+#### 2. Visual Polish
+**Goal:** Improve aesthetics and transitions
+
+**Tasks:**
+- [ ] Move inline styles to CSS modules for maintainability
+- [ ] Add CSS transitions for collapsible sections
+- [ ] Animate symbolic imprint reveal on page load
+- [ ] Add hover effects for gateway hints
+- [ ] Consider subtle animations for L-class symbols
 
 ### 🔄 Medium Priority - Feature Enhancements
 
