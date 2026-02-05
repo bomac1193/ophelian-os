@@ -19,6 +19,7 @@ import { CharacterTimeline } from '../../../components/timeline';
 import { VoiceGenerator } from '../../../components/voice/VoiceGenerator';
 import { AvatarGenerator } from '../../../components/avatar/AvatarGenerator';
 import { RelationshipManager } from '../../../components/relationships/RelationshipManager';
+import { TransmediaStoryManager } from '../../../components/transmedia/TransmediaStoryManager';
 import { getSurfaceView, getGatewayHint, getDepthsView } from '@lcos/oripheon';
 import { refreshUserProgress } from '../../../lib/user-progress';
 import { generateMockTimeline, getCharacterAge } from '../../../lib/timeline-utils';
@@ -36,7 +37,7 @@ export default function ImprintDetailPage() {
   const [systemPrompt, setSystemPrompt] = useState<ImprintSystemPrompt | null>(null);
   const [promptLoading, setPromptLoading] = useState(false);
   const [promptStyle, setPromptStyle] = useState<'concise' | 'detailed' | 'poetic'>('detailed');
-  const [activeTab, setActiveTab] = useState<'overview' | 'multimodal' | 'narrative' | 'prompt' | 'content' | 'timeline' | 'voice' | 'avatar' | 'relationships'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'multimodal' | 'narrative' | 'prompt' | 'content' | 'timeline' | 'voice' | 'avatar' | 'relationships' | 'stories'>('overview');
   const [mysteriesUnlocked, setMysteriesUnlocked] = useState(false);
   const [hasAdvancedAccess, setHasAdvancedAccess] = useState(false);
   const [suggestedIntent, setSuggestedIntent] = useState<string>('');
@@ -293,7 +294,7 @@ export default function ImprintDetailPage() {
           paddingBottom: '0.5rem',
         }}
       >
-        {(['overview', 'timeline', 'multimodal', 'narrative', 'prompt', 'content', 'voice', 'avatar', 'relationships'] as const).map((tab) => (
+        {(['overview', 'timeline', 'multimodal', 'narrative', 'prompt', 'content', 'voice', 'avatar', 'relationships', 'stories'] as const).map((tab) => (
           <button
             key={tab}
             type="button"
@@ -950,6 +951,19 @@ export default function ImprintDetailPage() {
             Relationships enable multi-character stories and dynamic interactions.
           </p>
           <RelationshipManager
+            characterId={id}
+            characterName={genome.name}
+          />
+        </div>
+      )}
+
+      {activeTab === 'stories' && (
+        <div>
+          <p style={{ margin: '0 0 1.5rem', color: 'var(--muted-foreground)' }}>
+            Create transmedia stories featuring {genome.name} that adapt across multiple platforms and media types.
+            Stories leverage character relationships and maintain narrative consistency.
+          </p>
+          <TransmediaStoryManager
             characterId={id}
             characterName={genome.name}
           />

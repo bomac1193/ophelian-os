@@ -174,3 +174,94 @@ export const SettlementQuerySchema = z.object({
   month: z.string().regex(/^\d{4}-\d{2}$/, 'Month must be in YYYY-MM format'),
 });
 export type SettlementQuery = z.infer<typeof SettlementQuerySchema>;
+
+// Transmedia Story Engine schemas
+export const StoryBeatTypeEnum = z.enum([
+  'INTRODUCTION',
+  'INCITING_INCIDENT',
+  'RISING_ACTION',
+  'CLIMAX',
+  'FALLING_ACTION',
+  'RESOLUTION',
+  'CLIFFHANGER',
+  'REVELATION',
+  'REFLECTION',
+  'TRANSFORMATION',
+]);
+export type StoryBeatType = z.infer<typeof StoryBeatTypeEnum>;
+
+export const MediaTypeEnum = z.enum([
+  'TEXT',
+  'AUDIO',
+  'VISUAL',
+  'VIDEO',
+  'INTERACTIVE',
+]);
+export type MediaType = z.infer<typeof MediaTypeEnum>;
+
+export const PlatformTargetEnum = z.enum([
+  'TWITTER',
+  'INSTAGRAM',
+  'TIKTOK',
+  'PODCAST',
+  'BLOG',
+  'NEWSLETTER',
+  'YOUTUBE',
+]);
+export type PlatformTarget = z.infer<typeof PlatformTargetEnum>;
+
+export const StoryArcSchema = z.object({
+  name: z.string().min(1),
+  description: z.string().min(1),
+  theme: z.string(),
+  targetAudience: z.string(),
+  estimatedDuration: z.string(), // e.g., "3 episodes", "10 posts", "5 minutes"
+});
+export type StoryArc = z.infer<typeof StoryArcSchema>;
+
+export const MediaAdaptationSchema = z.object({
+  mediaType: MediaTypeEnum,
+  platform: PlatformTargetEnum.optional(),
+  content: z.string(),
+  metadata: z.record(z.unknown()).default({}),
+  duration: z.number().optional(), // seconds for audio/video
+  wordCount: z.number().optional(), // for text
+  imagePrompt: z.string().optional(), // for visual generation
+});
+export type MediaAdaptation = z.infer<typeof MediaAdaptationSchema>;
+
+export const StoryBeatSchema = z.object({
+  beatType: StoryBeatTypeEnum,
+  coreNarrative: z.string().min(1), // Platform-agnostic story content
+  emotionalTone: z.string(),
+  characterIds: z.array(z.string()),
+  relationshipDynamics: z.array(z.object({
+    relationshipId: z.string(),
+    evolutionNote: z.string(), // How this beat affects the relationship
+  })).optional(),
+  adaptations: z.array(MediaAdaptationSchema),
+  sequenceOrder: z.number(),
+  metadata: z.record(z.unknown()).default({}),
+});
+export type StoryBeat = z.infer<typeof StoryBeatSchema>;
+
+export const CreateTransmediaStorySchema = z.object({
+  title: z.string().min(1),
+  arc: StoryArcSchema,
+  primaryCharacterId: z.string().min(1),
+  supportingCharacterIds: z.array(z.string()).default([]),
+  targetMediaTypes: z.array(MediaTypeEnum),
+  targetPlatforms: z.array(PlatformTargetEnum),
+  genre: z.string(),
+  tags: z.array(z.string()).default([]),
+});
+export type CreateTransmediaStoryInput = z.infer<typeof CreateTransmediaStorySchema>;
+
+export const TransmediaStorySchema = CreateTransmediaStorySchema.extend({
+  id: z.string(),
+  beats: z.array(StoryBeatSchema),
+  status: z.enum(['DRAFT', 'IN_PROGRESS', 'PUBLISHED', 'COMPLETED']),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+});
+export type TransmediaStory = z.infer<typeof TransmediaStorySchema>;
