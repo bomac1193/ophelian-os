@@ -48,11 +48,9 @@ function Chip({ children }: { children: React.ReactNode }) {
 
 function Section({
   title,
-  icon,
   children,
 }: {
   title: string;
-  icon: string;
   children: React.ReactNode;
 }) {
   return (
@@ -68,12 +66,9 @@ function Section({
         style={{
           margin: '0 0 0.75rem',
           fontSize: '0.9rem',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.5rem',
+          fontWeight: 600,
         }}
       >
-        <span>{icon}</span>
         {title}
       </h4>
       {children}
@@ -83,7 +78,7 @@ function Section({
 
 function VisualPreview({ visual }: { visual: VisualSignature }) {
   return (
-    <Section title="Visual Signature" icon="🎨">
+    <Section title="Visual Signature" >
       <div style={{ marginBottom: '0.75rem' }}>
         <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginBottom: '0.25rem' }}>
           Primary Colors
@@ -154,7 +149,7 @@ function VisualPreview({ visual }: { visual: VisualSignature }) {
 
 function VoicePreview({ voice }: { voice: VoiceSignature }) {
   return (
-    <Section title="Voice Signature" icon="🎤">
+    <Section title="Voice Signature" >
       <div style={{ marginBottom: '0.5rem' }}>
         <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginBottom: '0.25rem' }}>
           Pitch Range
@@ -216,7 +211,7 @@ function VoicePreview({ voice }: { voice: VoiceSignature }) {
 
 function MusicPreview({ music }: { music: MusicSignature }) {
   return (
-    <Section title="Music Signature" icon="🎵">
+    <Section title="Music Signature" >
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', marginBottom: '0.5rem' }}>
         <div>
           <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginBottom: '0.25rem' }}>
@@ -288,7 +283,7 @@ function MusicPreview({ music }: { music: MusicSignature }) {
 
 function MovementPreview({ movement }: { movement: MovementSignature }) {
   return (
-    <Section title="Movement Signature" icon="💃">
+    <Section title="Movement Signature" >
       <div style={{ marginBottom: '0.5rem' }}>
         <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginBottom: '0.25rem' }}>
           Quality of Motion
