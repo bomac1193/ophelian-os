@@ -1,8 +1,10 @@
 'use client';
 
+import { useState } from 'react';
 import type { CharacterGenome } from '../../lib/imprint-api';
-import { getSurfaceView } from '@lcos/oripheon';
+import { getSurfaceView, getGatewayHint } from '@lcos/oripheon';
 import { SymbolicImprint } from '../genome';
+import puzzleStyles from '../genome/GenomePuzzleUnlock.module.css';
 
 interface GenomeSummaryCardProps {
   genome: CharacterGenome;
@@ -22,6 +24,11 @@ export function GenomeSummaryCard({
   selected,
 }: GenomeSummaryCardProps) {
   const { orishaConfiguration, kabbalisticPosition, psychologicalState, multiModalSignature } = genome;
+  const [detailsUnlocked, setDetailsUnlocked] = useState(false);
+  const [answer, setAnswer] = useState('');
+  const [showHint, setShowHint] = useState(false);
+  const [attempts, setAttempts] = useState(0);
+  const [error, setError] = useState('');
 
   // Get primary colors for visual display
   const primaryColors = multiModalSignature?.visual?.primaryColors || [];
@@ -30,6 +37,32 @@ export function GenomeSummaryCard({
   const hotCool = psychologicalState?.hotCoolAxis || 0;
   const temperatureLabel =
     hotCool <= -0.5 ? 'Cool' : hotCool >= 0.5 ? 'Hot' : 'Balanced';
+
+  // Simple riddle based on Orisha number
+  const orishaNumbers: Record<string, number> = {
+    'Èṣù': 3, 'Ògún': 7, 'Ọ̀ṣun': 5, 'Yemọja': 7,
+    'Ṣàngó': 6, 'Ọya': 9, 'Obàtálá': 8, 'Ọ̀rúnmìlà': 16,
+    'Ọ̀ṣọ́ọ̀sì': 7, 'Ọ̀sanyìn': 1,
+  };
+
+  const correctAnswer = String(orishaNumbers[orishaConfiguration?.headOrisha] || 0);
+
+  const handleUnlock = (e: React.FormEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (answer.trim() === correctAnswer) {
+      setDetailsUnlocked(true);
+      setError('');
+    } else {
+      setAttempts(prev => prev + 1);
+      setError('Incorrect');
+      setAnswer('');
+      if (attempts >= 1) {
+        setShowHint(true);
+      }
+    }
+  };
 
   return (
     <div
@@ -118,84 +151,174 @@ export function GenomeSummaryCard({
         }
       })()}
 
-      {/* Orisha & Sephira info */}
-      <div
-        style={{
-          display: 'flex',
-          gap: '0.5rem',
-          flexWrap: 'wrap',
-          marginBottom: '0.75rem',
-        }}
-      >
-        <span
+      {/* Unlock Deep Mysteries */}
+      {!detailsUnlocked ? (
+        <div
+          onClick={(e) => e.stopPropagation()}
           style={{
-            padding: '0.25rem 0.5rem',
-            borderRadius: '6px',
-            backgroundColor: 'var(--primary-muted)',
-            fontSize: '0.75rem',
-          }}
-        >
-          {orishaConfiguration?.headOrisha || 'Unknown'}
-          {orishaConfiguration?.camino && ` (${orishaConfiguration.camino.split(' ').pop()})`}
-        </span>
-        <span
-          style={{
-            padding: '0.25rem 0.5rem',
-            borderRadius: '6px',
+            padding: '0.75rem',
             backgroundColor: 'var(--muted)',
-            fontSize: '0.75rem',
+            borderRadius: '8px',
+            marginBottom: '0.75rem',
+            border: '1px solid var(--border)',
           }}
         >
-          {kabbalisticPosition?.primarySephira || 'Unknown'}
-        </span>
-        <span
-          style={{
-            padding: '0.25rem 0.5rem',
-            borderRadius: '6px',
-            backgroundColor:
-              temperatureLabel === 'Hot'
-                ? '#ef444420'
-                : temperatureLabel === 'Cool'
-                  ? '#3b82f620'
-                  : '#8b5cf620',
-            color:
-              temperatureLabel === 'Hot'
-                ? '#ef4444'
-                : temperatureLabel === 'Cool'
-                  ? '#3b82f6'
-                  : '#8b5cf6',
-            fontSize: '0.75rem',
-          }}
-        >
-          {temperatureLabel}
-        </span>
-      </div>
+          <div style={{ fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.5rem', opacity: 0.7 }}>
+            Deep Knowledge Locked
+          </div>
+          <div style={{ fontSize: '0.75rem', fontStyle: 'italic', marginBottom: '0.5rem', opacity: 0.8 }}>
+            What sacred number do I carry?
+          </div>
 
-      {/* Trajectory */}
-      <div style={{ marginBottom: '0.75rem' }}>
-        <span style={{ fontSize: '0.8rem', color: 'var(--muted-foreground)' }}>Trajectory: </span>
-        <span style={{ fontSize: '0.8rem', textTransform: 'capitalize' }}>
-          {psychologicalState?.trajectory || 'Unknown'}
-        </span>
-      </div>
-
-      {/* Tags */}
-      {genome.tags && genome.tags.length > 0 && (
-        <div style={{ display: 'flex', gap: '0.25rem', flexWrap: 'wrap', marginBottom: '0.75rem' }}>
-          {genome.tags.map((tag) => (
-            <span
-              key={tag}
+          <form onSubmit={handleUnlock} style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+            <input
+              type="text"
+              value={answer}
+              onChange={(e) => {
+                e.stopPropagation();
+                setAnswer(e.target.value);
+              }}
+              onClick={(e) => e.stopPropagation()}
+              placeholder="Answer..."
+              className={puzzleStyles.inputField}
               style={{
-                padding: '0.125rem 0.375rem',
+                flex: 1,
+                padding: '0.375rem',
                 borderRadius: '4px',
-                backgroundColor: 'var(--muted)',
-                fontSize: '0.7rem',
-                color: 'var(--muted-foreground)',
+                border: `1px solid ${error ? 'var(--destructive)' : 'var(--border)'}`,
+                backgroundColor: 'var(--background)',
+                color: 'var(--foreground)',
+                fontSize: '0.75rem',
+                outline: 'none',
+              }}
+              autoComplete="off"
+            />
+            <button
+              type="submit"
+              onClick={(e) => e.stopPropagation()}
+              className={puzzleStyles.submitButton}
+              style={{
+                padding: '0.375rem 0.75rem',
+                borderRadius: '4px',
+                border: 'none',
+                backgroundColor: 'var(--primary)',
+                color: 'white',
+                cursor: 'pointer',
+                fontSize: '0.75rem',
+                fontWeight: 600,
               }}
             >
-              #{tag}
+              Unlock
+            </button>
+          </form>
+
+          {error && (
+            <div className={puzzleStyles.errorMessage} style={{ fontSize: '0.7rem', color: 'var(--destructive)', marginTop: '0.25rem' }}>
+              {error}
+            </div>
+          )}
+
+          {showHint && (
+            <div className={puzzleStyles.hintBox} style={{
+              marginTop: '0.5rem',
+              padding: '0.5rem',
+              backgroundColor: 'var(--background)',
+              borderRadius: '4px',
+              fontSize: '0.7rem',
+              fontStyle: 'italic',
+              opacity: 0.8,
+              borderLeft: '2px solid var(--primary)',
+            }}>
+              Hint: Check the gateway hints above
+            </div>
+          )}
+        </div>
+      ) : (
+        <div
+          className={puzzleStyles.detailsContainer}
+          onClick={(e) => e.stopPropagation()}
+          style={{ marginBottom: '0.75rem' }}
+        >
+          {/* Orisha & Sephira info */}
+          <div
+            style={{
+              display: 'flex',
+              gap: '0.5rem',
+              flexWrap: 'wrap',
+              marginBottom: '0.75rem',
+            }}
+          >
+            <span
+              style={{
+                padding: '0.25rem 0.5rem',
+                borderRadius: '6px',
+                backgroundColor: 'var(--primary-muted)',
+                fontSize: '0.75rem',
+              }}
+            >
+              {orishaConfiguration?.headOrisha || 'Unknown'}
+              {orishaConfiguration?.camino && ` (${orishaConfiguration.camino.split(' ').pop()})`}
             </span>
-          ))}
+            <span
+              style={{
+                padding: '0.25rem 0.5rem',
+                borderRadius: '6px',
+                backgroundColor: 'var(--muted)',
+                fontSize: '0.75rem',
+              }}
+            >
+              {kabbalisticPosition?.primarySephira || 'Unknown'}
+            </span>
+            <span
+              style={{
+                padding: '0.25rem 0.5rem',
+                borderRadius: '6px',
+                backgroundColor:
+                  temperatureLabel === 'Hot'
+                    ? '#ef444420'
+                    : temperatureLabel === 'Cool'
+                      ? '#3b82f620'
+                      : '#8b5cf620',
+                color:
+                  temperatureLabel === 'Hot'
+                    ? '#ef4444'
+                    : temperatureLabel === 'Cool'
+                      ? '#3b82f6'
+                      : '#8b5cf6',
+                fontSize: '0.75rem',
+              }}
+            >
+              {temperatureLabel}
+            </span>
+          </div>
+
+          {/* Trajectory */}
+          <div style={{ marginBottom: '0.75rem' }}>
+            <span style={{ fontSize: '0.8rem', color: 'var(--muted-foreground)' }}>Trajectory: </span>
+            <span style={{ fontSize: '0.8rem', textTransform: 'capitalize' }}>
+              {psychologicalState?.trajectory || 'Unknown'}
+            </span>
+          </div>
+
+          {/* Tags */}
+          {genome.tags && genome.tags.length > 0 && (
+            <div style={{ display: 'flex', gap: '0.25rem', flexWrap: 'wrap', marginBottom: '0.75rem' }}>
+              {genome.tags.map((tag) => (
+                <span
+                  key={tag}
+                  style={{
+                    padding: '0.125rem 0.375rem',
+                    borderRadius: '4px',
+                    backgroundColor: 'var(--muted)',
+                    fontSize: '0.7rem',
+                    color: 'var(--muted-foreground)',
+                  }}
+                >
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
       )}
 
