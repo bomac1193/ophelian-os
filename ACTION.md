@@ -1,13 +1,13 @@
 # Action Plan - Bóveda (Living Character OS)
 
 **Last Updated:** 2026-02-05
-**Status:** Progressive Disclosure Integrated, All Genomes Synced
+**Status:** Interactive Puzzle System Live, Creation Flow Enhanced
 
 ---
 
 ## Current State
 
-### ✅ Recently Completed (Task #22)
+### ✅ Recently Completed (Tasks #22, #23, #24)
 
 **Progressive Disclosure System - Fully Integrated**
 - Three-layer genome display system (Surface → Gateway → Depths)
@@ -32,9 +32,23 @@
 
 **UI Improvements**
 - Relics separated from regular characters in dedicated section
-- Removed all emojis from interface (per user request)
-- Full genome details hidden behind collapsible expandable toggle
+- Removed all emojis from interface
 - Symbolic imprints displayed consistently across all character views
+
+**Interactive Puzzle System (New!)**
+- Replaced simple expandable with riddle-based authentication for deep genome mysteries
+- Dynamic riddles generated from genome properties (Orisha sacred numbers, Sephira names)
+- Hint system unlocks after 2 failed attempts
+- Smooth animations: fade-in, slide-down, shake on error, shimmer effects
+- Gateway hints guide users to discover answers
+- Makes knowledge discovery engaging and aligned with mysterious aesthetic
+
+**Enhanced Character Creation Flow (New!)**
+- Live symbolic imprint preview during creation
+- Real-time updates as users select Orisha/Sephira/Psychology
+- Shows Surface layer (L-class + symbol) and Gateway hints immediately
+- Auto-generates preview genome when selections change
+- Educates users about symbolic meaning while they create
 
 ### 🟢 System Health
 
@@ -63,26 +77,33 @@
 
 ## What Needs to Be Added
 
-### 🎯 High Priority - Remaining Integration
+### 🎯 High Priority - Polish & Refinement
 
-#### 1. Character Creation Flow Enhancement
-**Goal:** Add progressive disclosure to genome creation experience
+#### 1. Visual Polish (Partially Complete)
+**Goal:** Improve aesthetics and code maintainability
+
+**Completed:**
+- ✅ CSS transitions and animations for puzzle unlock
+- ✅ Smooth fade-in for details reveal
+- ✅ Hover effects and shimmer effects on buttons
+- ✅ Shake animation for error states
+- ✅ Live preview animations in creation flow
+
+**Remaining:**
+- [ ] Move remaining inline styles to CSS modules
+- [ ] Add page load animations for symbolic imprints
+- [ ] Refine hover states across all components
+- [ ] Consider adding sound effects for puzzle unlocks (optional)
+
+#### 2. Additional Riddle Types
+**Goal:** Expand puzzle variety
 
 **Tasks:**
-- [ ] `/imprint/create` - Show symbolic imprint preview as user selects Orishas
-- [ ] Display gateway hints to guide Orisha/Sephira selection
-- [ ] Show real-time L-class calculation as options change
-- [ ] Add "What does this mean?" tooltips for each selection
-
-#### 2. Visual Polish
-**Goal:** Improve aesthetics and transitions
-
-**Tasks:**
-- [ ] Move inline styles to CSS modules for maintainability
-- [ ] Add CSS transitions for collapsible sections
-- [ ] Animate symbolic imprint reveal on page load
-- [ ] Add hover effects for gateway hints
-- [ ] Consider subtle animations for L-class symbols
+- [ ] Add more riddle variations for each Orisha
+- [ ] Create riddles based on Caminos (paths)
+- [ ] Add difficulty levels (easy/medium/hard)
+- [ ] Consider adding image-based puzzles for visual learners
+- [ ] Track user solve times for analytics
 
 ### 🔄 Medium Priority - Feature Enhancements
 
