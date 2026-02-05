@@ -5,6 +5,7 @@ import { OrishaSelector } from './OrishaSelector';
 import { SephiraSelector } from './SephiraSelector';
 import { HotCoolSlider } from './HotCoolSlider';
 import { MultiModalPreview } from './MultiModalPreview';
+import { LiveImprintPreview } from '../genome';
 import {
   generateGenome,
   createGenome,
@@ -88,7 +89,14 @@ export function GenomeCreator({ initialName, initialSeed, onSave, onCancel }: Ge
   // Get suggested Sephira based on selected Orisha
   const suggestedSephira = headOrisha ? ORISHA_SEPHIRA_MAP[headOrisha] : null;
 
-  // Generate preview when relevant fields change
+  // Generate preview when Orisha or Sephira changes
+  useEffect(() => {
+    if (headOrisha && primarySephira) {
+      handleGeneratePreview();
+    }
+  }, [headOrisha, primarySephira]);
+
+  // Generate preview when entering multimodal step
   useEffect(() => {
     if (headOrisha && primarySephira && currentStep === 'multimodal') {
       handleGeneratePreview();
@@ -295,18 +303,34 @@ export function GenomeCreator({ initialName, initialSeed, onSave, onCancel }: Ge
 
       case 'sephira':
         return (
-          <SephiraSelector
-            selectedSephira={primarySephira}
-            daathRelationship={daathRelationship}
-            suggestedSephira={suggestedSephira}
-            onSephiraChange={setPrimarySephira}
-            onDaathRelationshipChange={setDaathRelationship}
-          />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+            <SephiraSelector
+              selectedSephira={primarySephira}
+              daathRelationship={daathRelationship}
+              suggestedSephira={suggestedSephira}
+              onSephiraChange={setPrimarySephira}
+              onDaathRelationshipChange={setDaathRelationship}
+            />
+
+            {headOrisha && (
+              <LiveImprintPreview
+                genome={previewGenome}
+                isGenerating={isGenerating}
+              />
+            )}
+          </div>
         );
 
       case 'psychology':
         return (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+            {headOrisha && primarySephira && (
+              <LiveImprintPreview
+                genome={previewGenome}
+                isGenerating={isGenerating}
+              />
+            )}
+
             <HotCoolSlider value={hotCoolAxis} onChange={setHotCoolAxis} />
 
             <div className="form-group">
