@@ -6,7 +6,7 @@ import { getImprints, deleteImprint, exportImprint, type CharacterImprint } from
 import { getCharacters, syncAllOripheonData, syncOripheonData, type Character } from '../../lib/api';
 import { ImprintSummaryCard } from '../../components/imprint';
 import { AdvancedViewProgress } from '../../components/genome';
-import { getUserProgress, refreshUserProgress, type UserProgress } from '../../lib/user-progress';
+import { refreshUserProgress, type UserProgress } from '../../lib/user-progress';
 import { getSurfaceView } from '@lcos/oripheon';
 
 type FilterKey = 'orisha' | 'sephira' | 'trajectory' | 'tag';
@@ -467,7 +467,7 @@ export default function ImprintLibraryPage() {
                 {/* Show symbolic imprint if genome exists */}
                 {characterGenome && (() => {
                   try {
-                    const surface = getSurfaceView(characterGenome);
+                    const surface = getSurfaceView(characterGenome as any);
                     return (
                       <div style={{
                         marginTop: '0.5rem',

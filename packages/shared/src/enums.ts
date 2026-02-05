@@ -21,6 +21,7 @@ export type ContentType = (typeof ContentType)[keyof typeof ContentType];
 
 export const VoiceProvider = {
   ELEVENLABS: 'ELEVENLABS',
+  CHROMOX: 'CHROMOX',
   NONE: 'NONE',
 } as const;
 export type VoiceProvider = (typeof VoiceProvider)[keyof typeof VoiceProvider];

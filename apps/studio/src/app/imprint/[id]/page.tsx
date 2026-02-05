@@ -14,8 +14,14 @@ import {
 } from '../../../lib/imprint-api';
 import { TreeOfLifeVisualization, MultiModalPreview } from '../../../components/imprint';
 import { GenomeDisplay, GenomePuzzleUnlock } from '../../../components/genome';
-import { getSurfaceView, getGatewayHint, getDepthsView, hasAdvancedViewAccess } from '@lcos/oripheon';
-import { getUserProgress, refreshUserProgress } from '../../../lib/user-progress';
+import { ContentGenerator, ContentSuggester } from '../../../components/content';
+import { CharacterTimeline } from '../../../components/timeline';
+import { VoiceGenerator } from '../../../components/voice/VoiceGenerator';
+import { AvatarGenerator } from '../../../components/avatar/AvatarGenerator';
+import { RelationshipManager } from '../../../components/relationships/RelationshipManager';
+import { getSurfaceView, getGatewayHint, getDepthsView } from '@lcos/oripheon';
+import { refreshUserProgress } from '../../../lib/user-progress';
+import { generateMockTimeline, getCharacterAge } from '../../../lib/timeline-utils';
 import puzzleStyles from '../../../components/genome/GenomePuzzleUnlock.module.css';
 
 export default function ImprintDetailPage() {
@@ -30,9 +36,10 @@ export default function ImprintDetailPage() {
   const [systemPrompt, setSystemPrompt] = useState<ImprintSystemPrompt | null>(null);
   const [promptLoading, setPromptLoading] = useState(false);
   const [promptStyle, setPromptStyle] = useState<'concise' | 'detailed' | 'poetic'>('detailed');
-  const [activeTab, setActiveTab] = useState<'overview' | 'multimodal' | 'narrative' | 'prompt'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'multimodal' | 'narrative' | 'prompt' | 'content' | 'timeline' | 'voice' | 'avatar' | 'relationships'>('overview');
   const [mysteriesUnlocked, setMysteriesUnlocked] = useState(false);
   const [hasAdvancedAccess, setHasAdvancedAccess] = useState(false);
+  const [suggestedIntent, setSuggestedIntent] = useState<string>('');
 
   const fetchImprint = useCallback(async () => {
     setLoading(true);
@@ -286,7 +293,7 @@ export default function ImprintDetailPage() {
           paddingBottom: '0.5rem',
         }}
       >
-        {(['overview', 'multimodal', 'narrative', 'prompt'] as const).map((tab) => (
+        {(['overview', 'timeline', 'multimodal', 'narrative', 'prompt', 'content', 'voice', 'avatar', 'relationships'] as const).map((tab) => (
           <button
             key={tab}
             type="button"
@@ -314,9 +321,9 @@ export default function ImprintDetailPage() {
           {/* Progressive Disclosure Genome Display */}
           <div style={{ marginBottom: '2rem' }}>
             {(() => {
-              const surface = getSurfaceView(genome);
-              const gateway = getGatewayHint(genome);
-              const depths = hasAdvancedAccess ? getDepthsView(genome) : undefined;
+              const surface = getSurfaceView(genome as any);
+              const gateway = getGatewayHint(genome as any);
+              const depths = hasAdvancedAccess ? getDepthsView(genome as any) : undefined;
 
               return (
                 <GenomeDisplay
@@ -326,7 +333,7 @@ export default function ImprintDetailPage() {
                     gateway,
                     depths,
                   }}
-                  orisha={genome.orishaConfiguration.headOrisha}
+                  orisha={genome.orishaConfiguration.headOrisha as any}
                   hasAdvancedAccess={hasAdvancedAccess}
                 />
               );
@@ -864,6 +871,88 @@ export default function ImprintDetailPage() {
               Click &quot;Generate Prompt&quot; to create an AI system prompt from this imprint.
             </div>
           )}
+        </div>
+      )}
+
+      {activeTab === 'content' && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+          <p style={{ margin: 0, color: 'var(--muted-foreground)' }}>
+            Generate authentic content using {genome.name}&apos;s genome signature.
+            The Orisha essence, Sephira themes, and aesthetic class will shape the voice and style.
+          </p>
+
+          <ContentSuggester
+            characterName={genome.name}
+            orisha={genome.orishaConfiguration.headOrisha as any}
+            sephira={genome.kabbalisticPosition.primarySephira as any}
+            onSelectTopic={(topic) => setSuggestedIntent(`Share insights about ${topic}`)}
+          />
+
+          <ContentGenerator
+            characterId={id}
+            characterName={genome.name}
+            orisha={genome.orishaConfiguration.headOrisha as any}
+            sephira={genome.kabbalisticPosition.primarySephira as any}
+            lClass={(genome.multiModalSignature as any)?.aestheticClass}
+            suggestedIntent={suggestedIntent}
+          />
+        </div>
+      )}
+
+      {activeTab === 'timeline' && (
+        <div>
+          <p style={{ margin: '0 0 1.5rem', color: 'var(--muted-foreground)' }}>
+            {genome.name}&apos;s journey through time. {getCharacterAge(genome.createdAt)}.
+          </p>
+          <CharacterTimeline
+            characterName={genome.name}
+            events={generateMockTimeline({
+              id: genome.id,
+              name: genome.name,
+              createdAt: genome.createdAt,
+              currentArc: genome.narrativeIdentity?.telos,
+            })}
+            onEventClick={(event) => {
+              console.log('Timeline event clicked:', event);
+            }}
+          />
+        </div>
+      )}
+
+      {activeTab === 'voice' && (
+        <div>
+          <p style={{ margin: '0 0 1.5rem', color: 'var(--muted-foreground)' }}>
+            Synthesize text into {genome.name}&apos;s voice using advanced prosody and emotion controls.
+          </p>
+          <VoiceGenerator
+            characterId={id}
+            characterName={genome.name}
+          />
+        </div>
+      )}
+
+      {activeTab === 'avatar' && (
+        <div>
+          <p style={{ margin: '0 0 1.5rem', color: 'var(--muted-foreground)' }}>
+            Generate a consent-tracked avatar for {genome.name}. Every avatar includes an immutable consent record.
+          </p>
+          <AvatarGenerator
+            characterId={id}
+            characterName={genome.name}
+          />
+        </div>
+      )}
+
+      {activeTab === 'relationships' && (
+        <div>
+          <p style={{ margin: '0 0 1.5rem', color: 'var(--muted-foreground)' }}>
+            Define and manage {genome.name}&apos;s relationships with other characters.
+            Relationships enable multi-character stories and dynamic interactions.
+          </p>
+          <RelationshipManager
+            characterId={id}
+            characterName={genome.name}
+          />
         </div>
       )}
 

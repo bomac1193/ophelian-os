@@ -436,7 +436,7 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
   const [lcosCore, setLcosCore] = useState<string>('');
   const [lcosVariance, setLcosVariance] = useState<number>(0);
   const [lcosNameMode, setLcosNameMode] = useState<string>('standard');
-  const [lcosShowDetails, setLcosShowDetails] = useState(false);
+  const [_lcosShowDetails, setLcosShowDetails] = useState(false);
   const [lcosAdminMode, setLcosAdminMode] = useState(false);
   const [lcosMode, setLcosMode] = useState<'character' | 'relic'>('character');
   const [imprintExpanded, setGenomeExpanded] = useState(false);

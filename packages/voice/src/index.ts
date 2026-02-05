@@ -2,6 +2,7 @@ import type { VoiceProfile } from '@lcos/shared';
 import { VoiceProvider } from '@lcos/shared';
 import { StubVoiceProvider } from './providers/stub.js';
 import { ElevenLabsProvider } from './providers/elevenlabs.js';
+import { ChromoxProvider } from './providers/chromox.js';
 import type {
   AudioResult,
   VoiceProviderConfig,
@@ -13,6 +14,7 @@ import type {
 
 export { StubVoiceProvider } from './providers/stub.js';
 export { ElevenLabsProvider } from './providers/elevenlabs.js';
+export { ChromoxProvider } from './providers/chromox.js';
 export type {
   AudioResult,
   VoiceProviderConfig,
@@ -39,12 +41,15 @@ export interface EnhancedGenerateOptions extends SimpleGenerateOptions {
 
 export interface VoiceServiceConfig {
   elevenLabsApiKey?: string;
+  chromoxApiKey?: string;
+  chromoxApiUrl?: string;
   storagePath: string;
 }
 
 export class VoiceService {
   private stubProvider: StubVoiceProvider;
   private elevenLabsProvider: ElevenLabsProvider;
+  private chromoxProvider: ChromoxProvider;
 
   constructor(config: VoiceServiceConfig) {
     const baseConfig: VoiceProviderConfig = {
@@ -55,6 +60,11 @@ export class VoiceService {
     this.elevenLabsProvider = new ElevenLabsProvider({
       ...baseConfig,
       apiKey: config.elevenLabsApiKey,
+    });
+    this.chromoxProvider = new ChromoxProvider({
+      ...baseConfig,
+      apiKey: config.chromoxApiKey,
+      apiUrl: config.chromoxApiUrl,
     });
   }
 
@@ -69,6 +79,14 @@ export class VoiceService {
       }
       // Fall back to stub if ElevenLabs not configured
       console.warn('ElevenLabs not available, using stub provider');
+    }
+
+    if (voiceProfile.provider === VoiceProvider.CHROMOX) {
+      if (this.chromoxProvider.isAvailable()) {
+        return this.chromoxProvider.generateAudio(voiceProfile, text);
+      }
+      // Fall back to stub if Chromox not configured
+      console.warn('Chromox not available, using stub provider');
     }
 
     // Default to stub provider
@@ -98,6 +116,21 @@ export class VoiceService {
       console.warn('ElevenLabs not available, using stub provider');
     }
 
+    if (voiceProfile.provider === VoiceProvider.CHROMOX) {
+      if (this.chromoxProvider.isAvailable()) {
+        return this.chromoxProvider.generateAudioEnhanced({
+          profile: voiceProfile,
+          text,
+          styleControls,
+          prosodyHints,
+          emotion,
+          pronunciationHints,
+          accentType,
+        });
+      }
+      console.warn('Chromox not available, using stub provider');
+    }
+
     // Default to stub provider (no enhanced features)
     return this.stubProvider.generateAudio(voiceProfile, text);
   }
@@ -106,6 +139,9 @@ export class VoiceService {
     const providers: string[] = ['stub'];
     if (this.elevenLabsProvider.isAvailable()) {
       providers.push('elevenlabs');
+    }
+    if (this.chromoxProvider.isAvailable()) {
+      providers.push('chromox');
     }
     return providers;
   }

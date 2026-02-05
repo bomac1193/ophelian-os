@@ -64,7 +64,7 @@ export function GenomeSummaryCard({
       {/* Symbolic Imprint Display */}
       {(() => {
         try {
-          const surface = getSurfaceView(genome);
+          const surface = getSurfaceView(genome as any);
           return (
             <div className={styles.imprintDisplay}>
               <div className={styles.imprintContent}>

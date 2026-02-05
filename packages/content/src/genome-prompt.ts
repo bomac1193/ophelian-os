@@ -140,7 +140,7 @@ export const SEPHIRA_THEMES: Record<SephiraName, SephiraTheme> = {
   'Geburah': {
     essence: 'Severity - Strength, discipline, judgment',
     contentFocus: ['strength', 'discipline', 'judgment', 'boundaries', 'cutting'],
-    tonalGuidance: 'Be strong and decisive, cut what doesn't serve',
+    tonalGuidance: 'Be strong and decisive, cut what doesn\'t serve',
   },
 
   'Tiphareth': {
@@ -211,7 +211,7 @@ export const L_CLASS_AESTHETICS: Record<string, AestheticStyle> = {
 
   'L-5': {
     visualLanguage: ['predatory', 'focused', 'sharp', 'hunting', 'precise'],
-    writingStyle: 'Hunter's precision, focused and deliberate, tracking truth',
+    writingStyle: 'Hunter\'s precision, focused and deliberate, tracking truth',
     avoid: ['scattered', 'vague', 'passive'],
   },
 
@@ -241,7 +241,7 @@ export const L_CLASS_AESTHETICS: Record<string, AestheticStyle> = {
 
   'L-10': {
     visualLanguage: ['prophetic', 'oracle-like', 'mysterious', 'wise', 'ancient'],
-    writingStyle: 'Prophetic wisdom, oracle's voice, ancient knowing',
+    writingStyle: 'Prophetic wisdom, oracle\'s voice, ancient knowing',
     avoid: ['casual', 'shallow', 'trendy'],
   },
 

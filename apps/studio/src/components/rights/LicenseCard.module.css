@@ -1,0 +1,232 @@
+.card {
+  background: linear-gradient(135deg, rgba(26, 26, 46, 0.8) 0%, rgba(22, 33, 62, 0.8) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 24px;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  border-color: rgba(100, 255, 218, 0.3);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.typeContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.subjectType {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.licenseType {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.licenseType.exclusive {
+  background: rgba(255, 107, 107, 0.2);
+  color: #ff6b6b;
+}
+
+.licenseType.non_exclusive {
+  background: rgba(100, 255, 218, 0.2);
+  color: #64ffda;
+}
+
+.licenseType.revshare {
+  background: rgba(102, 126, 234, 0.2);
+  color: #667eea;
+}
+
+.deleteButton {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  color: #ff6b6b;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.deleteButton:hover {
+  background: rgba(255, 107, 107, 0.2);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.infoRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+}
+
+.label {
+  color: var(--muted-foreground);
+}
+
+.value {
+  color: var(--foreground);
+  font-weight: 500;
+  font-family: monospace;
+}
+
+.sectionTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--foreground);
+  margin: 0 0 12px 0;
+}
+
+.permissions {
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.permissionGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.permission {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.permissionIcon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.permissionIcon.granted {
+  background: rgba(100, 255, 218, 0.2);
+  color: #64ffda;
+}
+
+.permissionIcon.denied {
+  background: rgba(255, 107, 107, 0.2);
+  color: #ff6b6b;
+}
+
+.permissionLabel {
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+
+.royalties {
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.splitGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.splitItem {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.splitBar {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.splitFill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.splitFill.voiceActor {
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+}
+
+.splitFill.creator {
+  background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%);
+}
+
+.splitFill.platform {
+  background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.splitLabel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+
+.splitValue {
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.terms {
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.termsText {
+  font-size: 13px;
+  color: var(--muted-foreground);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.footer {
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.date {
+  font-size: 12px;
+  color: var(--muted-foreground);
+  font-style: italic;
+}

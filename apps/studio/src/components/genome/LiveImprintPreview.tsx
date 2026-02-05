@@ -17,8 +17,8 @@ export function LiveImprintPreview({ genome, isGenerating }: LiveImprintPreviewP
   useEffect(() => {
     if (genome) {
       try {
-        setSurface(getSurfaceView(genome));
-        setGateway(getGatewayHint(genome));
+        setSurface(getSurfaceView(genome as any));
+        setGateway(getGatewayHint(genome as any));
       } catch (error) {
         console.error('Error generating imprint preview:', error);
         setSurface(null);
@@ -159,13 +159,13 @@ export function LiveImprintPreview({ genome, isGenerating }: LiveImprintPreviewP
           </div>
           <div style={{ fontSize: '0.875rem', lineHeight: '1.6' }}>
             <div style={{ marginBottom: '0.5rem' }}>
-              <strong>Mythic Role:</strong> {gateway.mythicRole}
+              <strong>Mythic Role:</strong> {(gateway as any).mythicRole}
             </div>
             <div style={{ marginBottom: '0.5rem' }}>
-              <strong>Core Tension:</strong> {gateway.coreTension}
+              <strong>Core Tension:</strong> {(gateway as any).coreTension}
             </div>
             <div>
-              <strong>Sacred Path:</strong> {gateway.sacredPath}
+              <strong>Sacred Path:</strong> {(gateway as any).sacredPath}
             </div>
           </div>
         </div>

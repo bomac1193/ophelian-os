@@ -34,7 +34,7 @@ export type Character = z.infer<typeof CharacterSchema>;
 
 // VoiceProfile schemas
 export const CreateVoiceProfileSchema = z.object({
-  provider: z.enum([VoiceProvider.ELEVENLABS, VoiceProvider.NONE]),
+  provider: z.enum([VoiceProvider.ELEVENLABS, VoiceProvider.CHROMOX, VoiceProvider.NONE]),
   providerVoiceId: z.string().nullable().default(null),
   label: z.string().min(1).max(255),
   meta: z.record(z.unknown()).default({}),
@@ -118,11 +118,55 @@ export const UsageEventSchema = CreateUsageEventSchema.extend({
 });
 export type UsageEvent = z.infer<typeof UsageEventSchema>;
 
+// Relationship schemas
+export const RelationshipTypeEnum = z.enum([
+  'FRIEND',
+  'RIVAL',
+  'MENTOR',
+  'STUDENT',
+  'FAMILY',
+  'ROMANTIC',
+  'ENEMY',
+  'ALLY',
+  'NEUTRAL',
+]);
+export type RelationshipType = z.infer<typeof RelationshipTypeEnum>;
+
+export const CreateRelationshipSchema = z.object({
+  characterAId: z.string().min(1),
+  characterBId: z.string().min(1),
+  relationshipType: RelationshipTypeEnum,
+  strength: z.number().min(0).max(100).default(50),
+  isPublic: z.boolean().default(true),
+  description: z.string().nullable().default(null),
+  history: z.array(z.object({
+    timestamp: z.date(),
+    event: z.string(),
+    impactOnStrength: z.number(),
+  })).default([]),
+  meta: z.record(z.unknown()).default({}),
+});
+export type CreateRelationshipInput = z.infer<typeof CreateRelationshipSchema>;
+
+export const RelationshipSchema = CreateRelationshipSchema.extend({
+  id: z.string().cuid(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+});
+export type Relationship = z.infer<typeof RelationshipSchema>;
+
 // API request schemas
 export const GenerateContentRequestSchema = z.object({
   characterId: z.string().min(1),
   platform: z.enum([Platform.X, Platform.TIKTOK, Platform.INSTAGRAM]),
   intent: z.string().min(1),
+  genomeData: z
+    .object({
+      orisha: z.string(),
+      sephira: z.string(),
+      lClass: z.string(),
+    })
+    .optional(),
 });
 export type GenerateContentRequest = z.infer<typeof GenerateContentRequestSchema>;
 
