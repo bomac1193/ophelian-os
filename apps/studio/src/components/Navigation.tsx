@@ -9,6 +9,7 @@ const navLinks = [
   { href: '/genome-legend', label: 'Symbols' },
   { href: '/marketplace', label: 'Marketplace' },
   { href: '/rights', label: 'Rights' },
+  { href: '/universes', label: 'Universes' },
   { href: '/scenes', label: 'Scenes' },
   { href: '/globes', label: 'Globes' },
   { href: '/nexus', label: 'Nexus' },

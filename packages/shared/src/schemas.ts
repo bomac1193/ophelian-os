@@ -265,3 +265,85 @@ export const TransmediaStorySchema = CreateTransmediaStorySchema.extend({
   updatedAt: z.date(),
 });
 export type TransmediaStory = z.infer<typeof TransmediaStorySchema>;
+
+// Collaborative Universe schemas
+export const CharacterPermissionSchema = z.object({
+  characterId: z.string(),
+  ownerId: z.string(),
+  permissions: z.object({
+    canRead: z.boolean().default(true),
+    canUseInStories: z.boolean().default(false),
+    canModifyRelationships: z.boolean().default(false),
+    canAdaptPersonality: z.boolean().default(false),
+  }),
+  licenseTerms: z.string().optional(),
+  royaltyShare: z.number().min(0).max(100).optional(), // Percentage for revenue sharing
+});
+export type CharacterPermission = z.infer<typeof CharacterPermissionSchema>;
+
+export const UniverseMemberSchema = z.object({
+  userId: z.string(),
+  userName: z.string(),
+  role: z.enum(['CREATOR', 'CONTRIBUTOR', 'VIEWER']),
+  joinedAt: z.date(),
+  contributionCount: z.number().default(0),
+});
+export type UniverseMember = z.infer<typeof UniverseMemberSchema>;
+
+export const CanonEventSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  description: z.string(),
+  timestamp: z.string(), // In-universe timeline
+  affectedCharacters: z.array(z.string()),
+  createdBy: z.string(), // userId
+  isCanon: z.boolean().default(true),
+  votes: z.object({
+    approve: z.number().default(0),
+    reject: z.number().default(0),
+  }),
+});
+export type CanonEvent = z.infer<typeof CanonEventSchema>;
+
+export const CreateUniverseSchema = z.object({
+  name: z.string().min(1),
+  description: z.string().min(1),
+  genre: z.string(),
+  setting: z.string(), // e.g., "Modern Earth", "Fantasy Realm", "Sci-Fi Future"
+  rules: z.array(z.string()).default([]), // World-building rules
+  isPublic: z.boolean().default(false),
+  allowContributions: z.boolean().default(true),
+  requiresApproval: z.boolean().default(true), // New contributions need approval
+  tags: z.array(z.string()).default([]),
+});
+export type CreateUniverseInput = z.infer<typeof CreateUniverseSchema>;
+
+export const UniverseSchema = CreateUniverseSchema.extend({
+  id: z.string(),
+  creatorId: z.string(),
+  creatorName: z.string(),
+  members: z.array(UniverseMemberSchema),
+  characterPermissions: z.array(CharacterPermissionSchema),
+  canonEvents: z.array(CanonEventSchema),
+  storyIds: z.array(z.string()).default([]), // TransmediaStory IDs in this universe
+  characterIds: z.array(z.string()).default([]), // Character IDs in this universe
+  createdAt: z.date(),
+  updatedAt: z.date(),
+});
+export type Universe = z.infer<typeof UniverseSchema>;
+
+export const UniverseInvitationSchema = z.object({
+  id: z.string(),
+  universeId: z.string(),
+  universeName: z.string(),
+  fromUserId: z.string(),
+  fromUserName: z.string(),
+  toUserId: z.string(),
+  toUserName: z.string(),
+  role: z.enum(['CONTRIBUTOR', 'VIEWER']),
+  status: z.enum(['PENDING', 'ACCEPTED', 'REJECTED']),
+  message: z.string().optional(),
+  createdAt: z.date(),
+  respondedAt: z.date().optional(),
+});
+export type UniverseInvitation = z.infer<typeof UniverseInvitationSchema>;
