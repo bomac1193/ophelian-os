@@ -20,6 +20,7 @@ import { VoiceGenerator } from '../../../components/voice/VoiceGenerator';
 import { AvatarGenerator } from '../../../components/avatar/AvatarGenerator';
 import { RelationshipManager } from '../../../components/relationships/RelationshipManager';
 import { TransmediaStoryManager } from '../../../components/transmedia/TransmediaStoryManager';
+import { MerchManager } from '../../../components/merch/MerchManager';
 import { getSurfaceView, getGatewayHint, getDepthsView } from '@lcos/oripheon';
 import { refreshUserProgress } from '../../../lib/user-progress';
 import { generateMockTimeline, getCharacterAge } from '../../../lib/timeline-utils';
@@ -37,7 +38,7 @@ export default function ImprintDetailPage() {
   const [systemPrompt, setSystemPrompt] = useState<ImprintSystemPrompt | null>(null);
   const [promptLoading, setPromptLoading] = useState(false);
   const [promptStyle, setPromptStyle] = useState<'concise' | 'detailed' | 'poetic'>('detailed');
-  const [activeTab, setActiveTab] = useState<'overview' | 'multimodal' | 'narrative' | 'prompt' | 'content' | 'timeline' | 'voice' | 'avatar' | 'relationships' | 'stories'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'multimodal' | 'narrative' | 'prompt' | 'content' | 'timeline' | 'voice' | 'avatar' | 'relationships' | 'stories' | 'merch'>('overview');
   const [mysteriesUnlocked, setMysteriesUnlocked] = useState(false);
   const [hasAdvancedAccess, setHasAdvancedAccess] = useState(false);
   const [suggestedIntent, setSuggestedIntent] = useState<string>('');
@@ -294,7 +295,7 @@ export default function ImprintDetailPage() {
           paddingBottom: '0.5rem',
         }}
       >
-        {(['overview', 'timeline', 'multimodal', 'narrative', 'prompt', 'content', 'voice', 'avatar', 'relationships', 'stories'] as const).map((tab) => (
+        {(['overview', 'timeline', 'multimodal', 'narrative', 'prompt', 'content', 'voice', 'avatar', 'relationships', 'stories', 'merch'] as const).map((tab) => (
           <button
             key={tab}
             type="button"
@@ -966,6 +967,20 @@ export default function ImprintDetailPage() {
           <TransmediaStoryManager
             characterId={id}
             characterName={genome.name}
+          />
+        </div>
+      )}
+
+      {activeTab === 'merch' && (
+        <div>
+          <p style={{ margin: '0 0 1.5rem', color: 'var(--muted-foreground)' }}>
+            Create and sell merchandise featuring {genome.name}. Designs are automatically generated from the
+            character's visual signature. You earn 70% of all sales.
+          </p>
+          <MerchManager
+            characterId={id}
+            characterName={genome.name}
+            visualSignature={(genome as any).multiModalSignature?.visual}
           />
         </div>
       )}

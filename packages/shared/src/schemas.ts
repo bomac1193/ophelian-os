@@ -347,3 +347,87 @@ export const UniverseInvitationSchema = z.object({
   respondedAt: z.date().optional(),
 });
 export type UniverseInvitation = z.infer<typeof UniverseInvitationSchema>;
+
+// Character Merchandise schemas
+export const MerchProductTypeEnum = z.enum([
+  'T_SHIRT',
+  'HOODIE',
+  'MUG',
+  'POSTER',
+  'STICKER',
+  'PHONE_CASE',
+  'TOTE_BAG',
+  'NOTEBOOK',
+  'PILLOW',
+  'CANVAS_PRINT',
+]);
+export type MerchProductType = z.infer<typeof MerchProductTypeEnum>;
+
+export const MerchDesignSchema = z.object({
+  id: z.string(),
+  characterId: z.string(),
+  designName: z.string(),
+  imageUrl: z.string(),
+  imagePrompt: z.string(), // AI prompt used to generate the design
+  genomeInspired: z.boolean().default(true), // Generated from character genome
+  colors: z.array(z.string()), // Hex color codes from character visual signature
+  style: z.string(), // e.g., "minimalist", "detailed", "abstract"
+  consentToken: z.string().optional(), // Consent tracking for design usage
+  createdAt: z.date(),
+});
+export type MerchDesign = z.infer<typeof MerchDesignSchema>;
+
+export const MerchProductVariantSchema = z.object({
+  size: z.string(), // "S", "M", "L", "XL", etc.
+  color: z.string(),
+  price: z.number(), // In cents
+  printfulVariantId: z.string().optional(), // Printful variant ID
+});
+export type MerchProductVariant = z.infer<typeof MerchProductVariantSchema>;
+
+export const CreateMerchProductSchema = z.object({
+  characterId: z.string().min(1),
+  designId: z.string().min(1),
+  productType: MerchProductTypeEnum,
+  title: z.string().min(1),
+  description: z.string(),
+  basePrice: z.number().min(0), // In cents
+  variants: z.array(MerchProductVariantSchema),
+  tags: z.array(z.string()).default([]),
+  isActive: z.boolean().default(true),
+});
+export type CreateMerchProductInput = z.infer<typeof CreateMerchProductSchema>;
+
+export const MerchProductSchema = CreateMerchProductSchema.extend({
+  id: z.string(),
+  creatorId: z.string(),
+  creatorName: z.string(),
+  salesCount: z.number().default(0),
+  revenue: z.number().default(0), // Total revenue in cents
+  revenueShare: z.object({
+    creator: z.number(), // Percentage
+    platform: z.number(), // Percentage
+    printProvider: z.number(), // Percentage (cost)
+  }),
+  printfulProductId: z.string().optional(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+});
+export type MerchProduct = z.infer<typeof MerchProductSchema>;
+
+export const MerchOrderSchema = z.object({
+  id: z.string(),
+  productId: z.string(),
+  characterId: z.string(),
+  buyerEmail: z.string().email(),
+  variantSize: z.string(),
+  variantColor: z.string(),
+  quantity: z.number().min(1),
+  totalPrice: z.number(), // In cents
+  status: z.enum(['PENDING', 'PROCESSING', 'SHIPPED', 'DELIVERED', 'CANCELLED']),
+  printfulOrderId: z.string().optional(),
+  trackingNumber: z.string().optional(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+});
+export type MerchOrder = z.infer<typeof MerchOrderSchema>;
