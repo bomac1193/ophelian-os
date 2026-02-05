@@ -326,6 +326,7 @@ export default function ImprintDetailPage() {
                     gateway,
                     depths,
                   }}
+                  orisha={genome.orishaConfiguration.headOrisha}
                   hasAdvancedAccess={hasAdvancedAccess}
                 />
               );

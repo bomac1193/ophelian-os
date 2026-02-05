@@ -6,6 +6,7 @@
 export { GenomeDisplay } from './GenomeDisplay';
 export { SymbolicImprint, ImprintBadge, MarkerList } from './SymbolicImprint';
 export { GatewayTooltip, InlineTooltip } from './GatewayTooltip';
+export { EnhancedGatewayTooltip } from './EnhancedGatewayTooltip';
 export { AdvancedView } from './AdvancedView';
 export { GenomePuzzleUnlock } from './GenomePuzzleUnlock';
 export { LiveImprintPreview } from './LiveImprintPreview';

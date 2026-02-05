@@ -2737,4 +2737,5 @@ export * from './data/compatibility-data.js';
 
 // Progressive Disclosure System (Task #17)
 export * from './data/symbol-mapping.js';
+export * from './data/gateway-hints.js';
 export * from './lib/progressive-disclosure.js';

@@ -6,8 +6,9 @@
  */
 
 import React, { useState } from 'react';
+import type { OrishaName } from '@lcos/oripheon';
 import { SymbolicImprint, MarkerList } from './SymbolicImprint';
-import { GatewayTooltip } from './GatewayTooltip';
+import { EnhancedGatewayTooltip } from './EnhancedGatewayTooltip';
 import { AdvancedView } from './AdvancedView';
 
 interface GenomeDisplayProps {
@@ -45,10 +46,11 @@ interface GenomeDisplayProps {
     // Layer 3: Depths (optional, requires access)
     depths?: any;
   };
+  orisha?: OrishaName;
   hasAdvancedAccess?: boolean;
 }
 
-export function GenomeDisplay({ genome, hasAdvancedAccess = false }: GenomeDisplayProps) {
+export function GenomeDisplay({ genome, orisha, hasAdvancedAccess = false }: GenomeDisplayProps) {
   const [showAdvanced, setShowAdvanced] = useState(false);
 
   const { surface, gateway, depths } = genome;
@@ -67,15 +69,27 @@ export function GenomeDisplay({ genome, hasAdvancedAccess = false }: GenomeDispl
         </h2>
       </div>
 
-      {/* Layer 1 + 2: Surface with Gateway Tooltip */}
+      {/* Layer 1 + 2: Surface with Enhanced Gateway Tooltip */}
       <div style={{ marginBottom: '2rem' }}>
-        <GatewayTooltip
-          title={gateway.title}
-          keywords={gateway.keywords}
-          essence={gateway.essence}
-          creativePhase={gateway.creativePhase}
-          learnMoreUrl={gateway.learnMoreUrl}
-        >
+        {orisha ? (
+          <EnhancedGatewayTooltip
+            orisha={orisha}
+            title={gateway.title}
+            keywords={gateway.keywords}
+            essence={gateway.essence}
+            creativePhase={gateway.creativePhase}
+          >
+            <div>
+              <SymbolicImprint
+                symbol={surface.imprint.symbol}
+                primitive={surface.imprint.primitive}
+                label={surface.imprint.label}
+                aestheticClass={surface.classification}
+                onClick={() => {}}
+              />
+            </div>
+          </EnhancedGatewayTooltip>
+        ) : (
           <div>
             <SymbolicImprint
               symbol={surface.imprint.symbol}
@@ -85,7 +99,7 @@ export function GenomeDisplay({ genome, hasAdvancedAccess = false }: GenomeDispl
               onClick={() => {}}
             />
           </div>
-        </GatewayTooltip>
+        )}
       </div>
 
       {/* State Profile */}
