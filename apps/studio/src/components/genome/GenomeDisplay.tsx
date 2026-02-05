@@ -7,11 +7,13 @@
 
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, lazy, Suspense, useMemo } from 'react';
 import type { OrishaName } from '@lcos/oripheon';
 import { SymbolicImprint, MarkerList } from './SymbolicImprint';
 import { EnhancedGatewayTooltip } from './EnhancedGatewayTooltip';
-import { AdvancedView } from './AdvancedView';
+
+// Lazy load AdvancedView - only loads when user clicks "Show Full Archetype Data"
+const AdvancedView = lazy(() => import('./AdvancedView').then(module => ({ default: module.AdvancedView })));
 
 interface GenomeDisplayProps {
   genome: {
@@ -52,10 +54,15 @@ interface GenomeDisplayProps {
   hasAdvancedAccess?: boolean;
 }
 
-export function GenomeDisplay({ genome, orisha, hasAdvancedAccess = false }: GenomeDisplayProps) {
+export const GenomeDisplay = React.memo(function GenomeDisplay({ genome, orisha, hasAdvancedAccess = false }: GenomeDisplayProps) {
   const [showAdvanced, setShowAdvanced] = useState(false);
 
   const { surface, gateway, depths } = genome;
+
+  // Memoize calculations to prevent re-computing on every render
+  const chargePercentage = useMemo(() => Math.abs(surface.state.charge) * 10, [surface.state.charge]);
+  const chargeColor = useMemo(() => surface.state.charge > 0 ? '#f59e0b' : '#3b82f6', [surface.state.charge]);
+  const stabilityPercentage = useMemo(() => surface.state.stability * 100, [surface.state.stability]);
 
   return (
     <div className="genome-display" style={{
@@ -129,8 +136,8 @@ export function GenomeDisplay({ genome, orisha, hasAdvancedAccess = false }: Gen
               <div
                 style={{
                   height: '100%',
-                  width: `${Math.abs(surface.state.charge) * 10}%`,
-                  backgroundColor: surface.state.charge > 0 ? '#f59e0b' : '#3b82f6',
+                  width: `${chargePercentage}%`,
+                  backgroundColor: chargeColor,
                   transition: 'width 0.3s ease',
                 }}
               />
@@ -142,14 +149,14 @@ export function GenomeDisplay({ genome, orisha, hasAdvancedAccess = false }: Gen
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
               <span style={{ fontSize: '0.875rem', opacity: 0.7 }}>Stability</span>
               <span style={{ fontSize: '0.875rem', fontWeight: 600 }}>
-                {Math.round(surface.state.stability * 100)}%
+                {Math.round(stabilityPercentage)}%
               </span>
             </div>
             <div style={{ height: '4px', backgroundColor: 'rgba(255, 255, 255, 0.1)', borderRadius: '2px', overflow: 'hidden' }}>
               <div
                 style={{
                   height: '100%',
-                  width: `${surface.state.stability * 100}%`,
+                  width: `${stabilityPercentage}%`,
                   backgroundColor: '#8b5cf6',
                   transition: 'width 0.3s ease',
                 }}
@@ -234,12 +241,29 @@ export function GenomeDisplay({ genome, orisha, hasAdvancedAccess = false }: Gen
 
       {/* Advanced View Modal */}
       {depths && (
-        <AdvancedView
-          data={depths}
-          isOpen={showAdvanced}
-          onClose={() => setShowAdvanced(false)}
-        />
+        <Suspense fallback={
+          <div style={{
+            position: 'fixed',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            padding: '2rem',
+            backgroundColor: 'rgba(10, 10, 10, 0.95)',
+            borderRadius: '8px',
+            fontSize: '0.875rem',
+            opacity: 0.8,
+            zIndex: 10000,
+          }}>
+            Loading advanced data...
+          </div>
+        }>
+          <AdvancedView
+            data={depths}
+            isOpen={showAdvanced}
+            onClose={() => setShowAdvanced(false)}
+          />
+        </Suspense>
       )}
     </div>
   );
-}
+});

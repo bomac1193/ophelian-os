@@ -8,8 +8,7 @@
 
 import React, { useState } from 'react';
 import type { OrishaName } from '@lcos/oripheon';
-import { SYMBOLIC_IMPRINTS, getSymbolicImprint } from '@lcos/oripheon';
-import { ORISHA_DATA } from '@lcos/oripheon';
+import { getSymbolicImprint, ORISHA_DATA } from '@lcos/oripheon';
 import { EnhancedGatewayTooltip } from './EnhancedGatewayTooltip';
 import { SymbolicImprint } from './SymbolicImprint';
 import styles from './SymbolLegend.module.css';
