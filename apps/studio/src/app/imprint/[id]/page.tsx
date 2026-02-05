@@ -29,6 +29,7 @@ export default function ImprintDetailPage() {
   const [promptLoading, setPromptLoading] = useState(false);
   const [promptStyle, setPromptStyle] = useState<'concise' | 'detailed' | 'poetic'>('detailed');
   const [activeTab, setActiveTab] = useState<'overview' | 'multimodal' | 'narrative' | 'prompt'>('overview');
+  const [detailsExpanded, setDetailsExpanded] = useState(false);
 
   const fetchImprint = useCallback(async () => {
     setLoading(true);
@@ -322,14 +323,42 @@ export default function ImprintDetailPage() {
             })()}
           </div>
 
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-              gap: '1.5rem',
-            }}
-          >
-            {/* Orisha Configuration */}
+          {/* Expandable Details Section */}
+          <div style={{ marginBottom: '2rem' }}>
+            <button
+              onClick={() => setDetailsExpanded(!detailsExpanded)}
+              style={{
+                width: '100%',
+                padding: '0.75rem',
+                backgroundColor: 'var(--card)',
+                border: '1px solid var(--border)',
+                borderRadius: '8px',
+                color: 'var(--foreground)',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                fontSize: '0.875rem',
+                fontWeight: 600,
+              }}
+            >
+              <span>Full Genome Details (Orisha, Kabbalah, Psychology)</span>
+              <span style={{ fontSize: '1.25rem', transform: detailsExpanded ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}>
+                ▼
+              </span>
+            </button>
+          </div>
+
+          {detailsExpanded && (
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+                gap: '1.5rem',
+                marginBottom: '2rem',
+              }}
+            >
+              {/* Orisha Configuration */}
           <div
             style={{
               padding: '1.5rem',
@@ -584,7 +613,8 @@ export default function ImprintDetailPage() {
               </div>
             )}
           </div>
-          </div>
+            </div>
+          )}
         </>
       )}
 

@@ -140,7 +140,7 @@ export default function GenomeDemoPage() {
           {!mockUser.isAdmin && mockUser.characterCount >= 3 && 'Advanced Access (3+ characters)'}
           {!mockUser.isAdmin && mockUser.characterCount < 3 && `Locked (${mockUser.characterCount}/3 characters)`}
           <br />
-          <strong>Advanced View:</strong> {hasAccess ? '✅ Unlocked' : '🔒 Locked'}
+          <strong>Advanced View:</strong> {hasAccess ? '[Unlocked]' : '[Locked]'}
         </div>
       </div>
 
