@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { getImprints, deleteImprint, exportImprint, type CharacterImprint } from '../../lib/imprint-api';
 import { getCharacters, syncAllOripheonData, syncOripheonData, type Character } from '../../lib/api';
 import { ImprintSummaryCard } from '../../components/imprint';
+import { AdvancedViewProgress } from '../../components/genome';
+import { getUserProgress, refreshUserProgress, type UserProgress } from '../../lib/user-progress';
 import { getSurfaceView } from '@lcos/oripheon';
 
 type FilterKey = 'orisha' | 'sephira' | 'trajectory' | 'tag';
@@ -27,6 +29,7 @@ export default function ImprintLibraryPage() {
   const [syncingAll, setSyncingAll] = useState(false);
   const [syncingId, setSyncingId] = useState<string | null>(null);
   const [syncResult, setSyncResult] = useState<string | null>(null);
+  const [userProgress, setUserProgress] = useState<UserProgress | null>(null);
   const [filters, setFilters] = useState<Record<FilterKey, string>>({
     orisha: '',
     sephira: '',
@@ -63,10 +66,20 @@ export default function ImprintLibraryPage() {
     }
   }, []);
 
+  const fetchUserProgress = useCallback(async () => {
+    try {
+      const progress = await refreshUserProgress();
+      setUserProgress(progress);
+    } catch {
+      // User progress is supplementary, don't block on errors
+    }
+  }, []);
+
   useEffect(() => {
     fetchImprints();
     fetchCharacters();
-  }, [fetchImprints, fetchCharacters]);
+    fetchUserProgress();
+  }, [fetchImprints, fetchCharacters, fetchUserProgress]);
 
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this imprint?')) return;
@@ -170,6 +183,21 @@ export default function ImprintLibraryPage() {
           }}
         >
           {syncResult}
+        </div>
+      )}
+
+      {/* Advanced View Progress */}
+      {userProgress && (
+        <div style={{ marginBottom: '1.5rem' }}>
+          <AdvancedViewProgress
+            genomeCount={imprints.length}
+            accountAgeDays={userProgress.accountAgeDays}
+            hasUnlocked={userProgress.hasAdvancedAccess}
+            onUnlock={() => {
+              // Refresh progress to update state
+              fetchUserProgress();
+            }}
+          />
         </div>
       )}
 

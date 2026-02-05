@@ -15,6 +15,7 @@ import {
 import { TreeOfLifeVisualization, MultiModalPreview } from '../../../components/imprint';
 import { GenomeDisplay, GenomePuzzleUnlock } from '../../../components/genome';
 import { getSurfaceView, getGatewayHint, getDepthsView, hasAdvancedViewAccess } from '@lcos/oripheon';
+import { getUserProgress, refreshUserProgress } from '../../../lib/user-progress';
 import puzzleStyles from '../../../components/genome/GenomePuzzleUnlock.module.css';
 
 export default function ImprintDetailPage() {
@@ -31,6 +32,7 @@ export default function ImprintDetailPage() {
   const [promptStyle, setPromptStyle] = useState<'concise' | 'detailed' | 'poetic'>('detailed');
   const [activeTab, setActiveTab] = useState<'overview' | 'multimodal' | 'narrative' | 'prompt'>('overview');
   const [mysteriesUnlocked, setMysteriesUnlocked] = useState(false);
+  const [hasAdvancedAccess, setHasAdvancedAccess] = useState(false);
 
   const fetchImprint = useCallback(async () => {
     setLoading(true);
@@ -49,6 +51,20 @@ export default function ImprintDetailPage() {
   useEffect(() => {
     fetchImprint();
   }, [fetchImprint]);
+
+  useEffect(() => {
+    // Fetch user progress to determine advanced access
+    async function checkAccess() {
+      try {
+        const progress = await refreshUserProgress();
+        setHasAdvancedAccess(progress.hasAdvancedAccess);
+      } catch {
+        // Default to no access on error
+        setHasAdvancedAccess(false);
+      }
+    }
+    checkAccess();
+  }, []);
 
   const handleDelete = async () => {
     if (!confirm('Are you sure you want to delete this imprint? This cannot be undone.')) return;
@@ -298,17 +314,9 @@ export default function ImprintDetailPage() {
           {/* Progressive Disclosure Genome Display */}
           <div style={{ marginBottom: '2rem' }}>
             {(() => {
-              // Mock user for now - TODO: Replace with actual user context
-              const mockUser = {
-                isAdmin: false,
-                characterCount: 3,
-                createdAt: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000),
-              };
-
-              const hasAccess = hasAdvancedViewAccess(mockUser);
               const surface = getSurfaceView(genome);
               const gateway = getGatewayHint(genome);
-              const depths = hasAccess ? getDepthsView(genome) : undefined;
+              const depths = hasAdvancedAccess ? getDepthsView(genome) : undefined;
 
               return (
                 <GenomeDisplay
@@ -318,7 +326,7 @@ export default function ImprintDetailPage() {
                     gateway,
                     depths,
                   }}
-                  hasAdvancedAccess={hasAccess}
+                  hasAdvancedAccess={hasAdvancedAccess}
                 />
               );
             })()}

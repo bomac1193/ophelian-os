@@ -9,3 +9,4 @@ export { GatewayTooltip, InlineTooltip } from './GatewayTooltip';
 export { AdvancedView } from './AdvancedView';
 export { GenomePuzzleUnlock } from './GenomePuzzleUnlock';
 export { LiveImprintPreview } from './LiveImprintPreview';
+export { AdvancedViewProgress } from './AdvancedViewProgress';

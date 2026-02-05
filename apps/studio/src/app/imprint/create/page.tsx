@@ -3,6 +3,7 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 import { ImprintCreator } from '../../../components/imprint';
+import { incrementGenomeCount } from '../../../lib/user-progress';
 import type { CharacterImprint } from '../../../lib/imprint-api';
 
 function ImprintCreateContent() {
@@ -13,7 +14,9 @@ function ImprintCreateContent() {
   const seedParam = searchParams.get('seed');
   const initialSeed = seedParam ? parseInt(seedParam, 10) : undefined;
 
-  const handleSave = (imprint: CharacterImprint) => {
+  const handleSave = async (imprint: CharacterImprint) => {
+    // Increment user's genome count for progression tracking
+    await incrementGenomeCount();
     router.push(`/imprint/${imprint.id}`);
   };
 
