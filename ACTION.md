@@ -93,9 +93,12 @@
 - ✅ Hover effects and shimmer effects on buttons
 - ✅ Shake animation for error states
 - ✅ Live preview animations in creation flow
+- ✅ Move inline styles to CSS modules
+  - GenomeSummaryCard.tsx → GenomeSummaryCard.module.css
+  - MultiModalPreview.tsx → MultiModalPreview.module.css
+  - 500+ lines of inline styles converted to maintainable CSS
 
 **Remaining:**
-- [ ] Move remaining inline styles to CSS modules
 - [ ] Add page load animations for symbolic imprints
 - [ ] Refine hover states across all components
 - [ ] Consider adding sound effects for puzzle unlocks (optional)

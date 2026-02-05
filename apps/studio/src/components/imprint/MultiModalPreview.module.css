@@ -1,9 +1,30 @@
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .noSignature {
   padding: 2rem;
   text-align: center;
   color: var(--muted-foreground);
   background-color: var(--muted);
   border-radius: 12px;
+  animation: fadeIn 0.3s ease-out;
 }
 
 .noSignature br {
@@ -19,6 +40,7 @@
   background-color: var(--card);
   border-radius: 12px;
   border: 1px solid var(--border);
+  animation: fadeIn 0.3s ease-out;
 }
 
 .compactColors {
@@ -45,6 +67,13 @@
 .colorSwatch {
   border-radius: 4px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+.colorSwatch:hover {
+  transform: scale(1.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 .colorSwatch.white {
@@ -58,6 +87,13 @@
   background-color: var(--muted);
   font-size: 0.75rem;
   margin: 0.125rem;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  cursor: default;
+}
+
+.chip:hover {
+  transform: translateY(-1px);
+  background-color: var(--primary-muted, var(--muted));
 }
 
 .section {
@@ -65,6 +101,30 @@
   background-color: var(--card);
   border-radius: 12px;
   border: 1px solid var(--border);
+  animation: fadeInUp 0.4s ease-out both;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.section:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Staggered animations for each section */
+.section:nth-child(1) {
+  animation-delay: 0.05s;
+}
+
+.section:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.section:nth-child(3) {
+  animation-delay: 0.15s;
+}
+
+.section:nth-child(4) {
+  animation-delay: 0.2s;
 }
 
 .sectionTitle {
