@@ -3,7 +3,7 @@
  * Interactive reference for all Orisha symbols and their meanings
  */
 
-import { SymbolLegend } from '@/components/genome';
+import { SymbolLegend, SymbolLegendGuide } from '@/components/genome';
 
 export const metadata = {
   title: 'Symbol Legend | Bóveda Studio',
@@ -11,5 +11,10 @@ export const metadata = {
 };
 
 export default function GenomeLegendPage() {
-  return <SymbolLegend searchable />;
+  return (
+    <>
+      <SymbolLegendGuide />
+      <SymbolLegend searchable />
+    </>
+  );
 }

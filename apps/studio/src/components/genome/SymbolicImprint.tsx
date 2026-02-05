@@ -4,12 +4,14 @@
  */
 
 import React from 'react';
+import { HelpIcon } from './HelpIcon';
 
 interface SymbolicImprintProps {
   symbol: string;      // λ
   primitive: string;   // ⬡
   label: string;       // Architect
   aestheticClass: string; // L-3 (Industrial)
+  showHelp?: boolean;  // Show help icon with explanation
   onHover?: () => void;
   onClick?: () => void;
 }
@@ -19,6 +21,7 @@ export function SymbolicImprint({
   primitive,
   label,
   aestheticClass,
+  showHelp = false,
   onHover,
   onClick,
 }: SymbolicImprintProps) {
@@ -29,13 +32,32 @@ export function SymbolicImprint({
       onClick={onClick}
       style={{ cursor: onClick ? 'pointer' : 'default' }}
     >
-      <div className="imprint-header">
+      <div className="imprint-header" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
         <span className="imprint-symbol" style={{ fontSize: '2rem', fontWeight: 300 }}>
           {symbol}
         </span>
-        <span className="imprint-primitive" style={{ fontSize: '1.5rem', marginLeft: '0.5rem', opacity: 0.7 }}>
+        <span className="imprint-primitive" style={{ fontSize: '1.5rem', opacity: 0.7 }}>
           {primitive}
         </span>
+        {showHelp && (
+          <HelpIcon
+            title="Symbolic Imprint"
+            content={
+              <div>
+                <p>This is your character's symbolic signature:</p>
+                <ul style={{ marginTop: '0.5rem', paddingLeft: '1.25rem', lineHeight: 1.6 }}>
+                  <li><strong>{symbol}</strong> - Mathematical symbol representing the Orisha's essence</li>
+                  <li><strong>{primitive}</strong> - Geometric primitive for visual recognition</li>
+                  <li><strong>{aestheticClass}</strong> - Aesthetic class (L-0 to L-11)</li>
+                </ul>
+                <p style={{ marginTop: '0.75rem', fontSize: '0.8rem', opacity: 0.8 }}>
+                  Visit the <strong>Symbols</strong> page to learn about all archetypes.
+                </p>
+              </div>
+            }
+            position="right"
+          />
+        )}
       </div>
       <div className="imprint-label" style={{ fontSize: '1.25rem', fontWeight: 500, marginTop: '0.25rem' }}>
         {symbol}-{label}

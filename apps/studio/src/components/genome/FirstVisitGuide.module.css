@@ -1,0 +1,273 @@
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -40%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@keyframes slideInTop {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Backdrop */
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 9998;
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Guide Modal */
+.guide {
+  position: fixed;
+  z-index: 9999;
+  min-width: 400px;
+  max-width: 600px;
+  background: linear-gradient(
+    135deg,
+    rgba(20, 20, 30, 0.98),
+    rgba(10, 10, 20, 0.98)
+  );
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  padding: 0;
+  overflow: hidden;
+}
+
+.guide.center {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: slideIn 0.4s ease-out;
+}
+
+.guide.top {
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: slideInTop 0.4s ease-out;
+}
+
+.guide.bottom {
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: slideInTop 0.4s ease-out;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 2rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light, var(--primary)));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.closeButton {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.closeButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.4);
+  color: var(--foreground);
+}
+
+/* Content */
+.content {
+  padding: 2rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.guideContent p {
+  margin-bottom: 1.25rem;
+  opacity: 0.9;
+}
+
+.guideContent p:last-child {
+  margin-bottom: 0;
+}
+
+.guideContent strong {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* Layers */
+.layers {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.layer {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.layer:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.layerNumber {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light, var(--primary)));
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.layerText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.layerText strong {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.layerText span {
+  font-size: 0.85rem;
+  opacity: 0.75;
+}
+
+/* Tip */
+.tip {
+  padding: 1rem;
+  background: rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  margin-top: 1.5rem !important;
+}
+
+/* Footer */
+.footer {
+  padding: 1.5rem 2rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.gotItButton {
+  padding: 0.75rem 2rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light, var(--primary)));
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.gotItButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
+}
+
+.gotItButton:active {
+  transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .guide {
+    min-width: 90vw;
+    max-width: 90vw;
+  }
+
+  .header {
+    padding: 1rem 1.5rem;
+  }
+
+  .title {
+    font-size: 1.125rem;
+  }
+
+  .content {
+    padding: 1.5rem;
+  }
+
+  .footer {
+    padding: 1rem 1.5rem;
+  }
+
+  .layers {
+    gap: 0.75rem;
+  }
+
+  .layer {
+    padding: 0.75rem;
+  }
+}

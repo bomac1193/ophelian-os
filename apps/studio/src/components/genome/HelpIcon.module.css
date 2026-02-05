@@ -1,0 +1,143 @@
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Container */
+.container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Icon Button */
+.iconButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.iconButton:hover {
+  color: var(--primary);
+  transform: scale(1.1);
+}
+
+.iconButton:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 50%;
+}
+
+/* Tooltip */
+.tooltip {
+  position: absolute;
+  z-index: 1000;
+  min-width: 200px;
+  max-width: 320px;
+  padding: 0.875rem;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.12),
+    rgba(255, 255, 255, 0.08)
+  );
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  animation: fadeIn 0.2s ease-out;
+  pointer-events: none;
+}
+
+.tooltip.top {
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.tooltip.bottom {
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.tooltip.left {
+  right: calc(100% + 8px);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.tooltip.right {
+  left: calc(100% + 8px);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.tooltipTitle {
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tooltipContent {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  opacity: 0.9;
+}
+
+/* Inline Help */
+.inlineHelp {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  margin: 0.5rem 0;
+}
+
+.inlineIcon {
+  font-size: 1rem;
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.inlineText {
+  opacity: 0.9;
+  line-height: 1.4;
+}
+
+.learnMore {
+  margin-left: auto;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--primary);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: opacity 0.2s ease;
+}
+
+.learnMore:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
