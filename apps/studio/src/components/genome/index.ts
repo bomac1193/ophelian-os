@@ -11,3 +11,4 @@ export { AdvancedView } from './AdvancedView';
 export { GenomePuzzleUnlock } from './GenomePuzzleUnlock';
 export { LiveImprintPreview } from './LiveImprintPreview';
 export { AdvancedViewProgress } from './AdvancedViewProgress';
+export { SymbolLegend } from './SymbolLegend';
