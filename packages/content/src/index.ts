@@ -5,11 +5,18 @@ import {
   buildPersonalityPrompt,
   type PersonalityProfile,
 } from './personality.js';
+import {
+  buildGenomePrompt,
+  getGenomeSuggestedTopics,
+  type GenomePromptData,
+} from './genome-prompt.js';
 
 export interface GeneratePostOptions {
   character: Character;
   platform: Platform;
   intent: string;
+  /** Optional genome data for genome-driven generation */
+  genomeData?: GenomePromptData;
   /** Optional LLM provider function for real content generation */
   llmProvider?: (prompt: string) => Promise<string>;
 }
@@ -41,10 +48,10 @@ export const PLATFORM_STYLES: Record<Platform, string> = {
 
 /**
  * Generate content for a character on a specific platform
- * Uses personality system adapted from Oripheon for character-authentic voice
+ * Uses genome-driven generation when available, falls back to personality system
  */
 export async function generatePost(options: GeneratePostOptions): Promise<GeneratedPost> {
-  const { character, platform, intent, llmProvider } = options;
+  const { character, platform, intent, genomeData, llmProvider } = options;
   const state = createCharacterState(character);
   const context = buildContextPrompt(state);
 
@@ -55,8 +62,14 @@ export async function generatePost(options: GeneratePostOptions): Promise<Genera
   let generationMethod: 'stub' | 'llm' = 'stub';
 
   if (llmProvider) {
-    // Build personality-aware prompt for LLM
-    const prompt = buildLLMPrompt(character, personalityProfile, platform, intent);
+    // Build genome-enhanced prompt if genome data available
+    const prompt = genomeData
+      ? buildGenomePrompt(
+          { ...genomeData, personalityProfile },
+          `Platform: ${platform}\nIntent: ${intent}\n\n${character.systemPrompt || ''}`
+        )
+      : buildLLMPrompt(character, personalityProfile, platform, intent);
+
     try {
       text = await llmProvider(prompt);
       generationMethod = 'llm';
@@ -178,6 +191,16 @@ export {
   type PersonalityProfile,
   type PersonalityAxes,
 } from './personality.js';
+
+// Re-export genome-driven generation
+export {
+  buildGenomePrompt,
+  getGenomeSuggestedTopics,
+  type GenomePromptData,
+  ORISHA_VOICES,
+  SEPHIRA_THEMES,
+  L_CLASS_AESTHETICS,
+} from './genome-prompt.js';
 
 export function validateContentForPlatform(
   text: string,
