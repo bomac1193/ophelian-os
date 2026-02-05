@@ -130,6 +130,15 @@ export async function generateRandomCharacter(options?: GenerateCharacterOptions
   });
 }
 
+// Oripheon Sync APIs
+export async function syncOripheonData(characterId: string): Promise<Character> {
+  return apiFetch<Character>(`/characters/${characterId}/sync-oripheon`, { method: 'POST', body: JSON.stringify({}) });
+}
+
+export async function syncAllOripheonData(): Promise<{ synced: number; results: Array<{ id: string; name: string; status: string }> }> {
+  return apiFetch<{ synced: number; results: Array<{ id: string; name: string; status: string }> }>('/characters/sync-oripheon-all', { method: 'POST', body: JSON.stringify({}) });
+}
+
 // Content APIs
 export interface ContentItem {
   id: string;

@@ -1,7 +1,8 @@
 import type { FastifyInstance } from 'fastify';
+import type { Prisma } from '@prisma/client';
 import { prisma } from '../db.js';
 import { CreateCharacterSchema } from '@lcos/shared';
-import { generateCharacter, generateCharacterWithSeed, rerollCharacter, generateLCOSCharacter } from '@lcos/oripheon';
+import { generateCharacter, generateCharacterWithSeed, rerollCharacter, generateLCOSCharacter, deriveHexagramReading, getSubtasteDesignation } from '@lcos/oripheon';
 
 export async function characterRoutes(fastify: FastifyInstance): Promise<void> {
   // POST /characters - Create a new character
@@ -62,6 +63,7 @@ export async function characterRoutes(fastify: FastifyInstance): Promise<void> {
       toneForbidden?: string[];
       systemPrompt?: string;
       currentArc?: string | null;
+      timelineState?: Record<string, unknown>;
     };
 
     const character = await prisma.character.findUnique({
@@ -72,9 +74,15 @@ export async function characterRoutes(fastify: FastifyInstance): Promise<void> {
       return reply.code(404).send({ error: 'Character not found' });
     }
 
+    const { timelineState, ...rest } = body;
     const updated = await prisma.character.update({
       where: { id },
-      data: body,
+      data: {
+        ...rest,
+        ...(timelineState !== undefined && {
+          timelineState: timelineState as Prisma.InputJsonValue,
+        }),
+      },
     });
 
     return reply.send(updated);
@@ -166,5 +174,92 @@ export async function characterRoutes(fastify: FastifyInstance): Promise<void> {
     });
 
     return reply.send(generated);
+  });
+
+  // Helper: sync oripheon data for a single character record.
+  // Returns { updated, status } where status indicates what happened.
+  // NEVER overwrites existing hexagram, subtaste, or core generated data.
+  async function syncOripheonForCharacter(character: { id: string; name: string; bio: string | null; timelineState: any }) {
+    const ts = (character.timelineState as Record<string, any>) || {};
+    const oripheon = ts.oripheon || {};
+    const generated = oripheon.generated;
+
+    const hasAxes = !!generated?.personality?.axes;
+    const hasArcana = !!generated?.arcana;
+    const hasHexagram = !!generated?.hexagram;
+    const hasSubtaste = !!generated?.subtaste;
+
+    // Fully complete — nothing to do
+    if (hasAxes && hasArcana && hasHexagram && hasSubtaste) {
+      return { updated: null, status: 'already_complete' as const };
+    }
+
+    let updatedGenerated: any;
+    let extraUpdates: Record<string, any> = {};
+
+    if (hasAxes && hasArcana) {
+      // Core data present — only fill in missing derived fields, preserve everything else
+      updatedGenerated = { ...generated };
+      if (!hasHexagram) {
+        updatedGenerated.hexagram = deriveHexagramReading(generated.personality.axes);
+      }
+      if (!hasSubtaste) {
+        updatedGenerated.subtaste = getSubtasteDesignation('tarot', generated.arcana.archetype);
+      }
+    } else {
+      // No core data — full generation needed
+      const fresh = generateLCOSCharacter();
+      updatedGenerated = fresh;
+      extraUpdates = {
+        bio: fresh.backstory?.substring(0, 500) || character.bio,
+      };
+    }
+
+    const updated = await prisma.character.update({
+      where: { id: character.id },
+      data: {
+        ...extraUpdates,
+        timelineState: {
+          ...ts,
+          oripheon: {
+            ...oripheon,
+            seed: oripheon.seed || updatedGenerated.seed,
+            generated: updatedGenerated,
+            subtaste: updatedGenerated.subtaste,
+          },
+        },
+      },
+    });
+
+    const status = (hasAxes && hasArcana) ? 'enriched' as const : 'generated' as const;
+    return { updated, status };
+  }
+
+  // POST /characters/:id/sync-oripheon - Sync/generate oripheon data for a character
+  fastify.post<{ Params: { id: string } }>('/characters/:id/sync-oripheon', async (request, reply) => {
+    const { id } = request.params;
+    const character = await prisma.character.findUnique({ where: { id } });
+    if (!character) return reply.code(404).send({ error: 'Character not found' });
+
+    const { updated, status } = await syncOripheonForCharacter(character);
+
+    if (status === 'already_complete') {
+      return reply.send(character);
+    }
+
+    return reply.send(updated);
+  });
+
+  // POST /characters/sync-oripheon-all - Sync oripheon data for all characters
+  fastify.post('/characters/sync-oripheon-all', async (_request, reply) => {
+    const characters = await prisma.character.findMany();
+    const results = [];
+
+    for (const character of characters) {
+      const { status } = await syncOripheonForCharacter(character);
+      results.push({ id: character.id, name: character.name, status });
+    }
+
+    return reply.send({ synced: results.length, results });
   });
 }

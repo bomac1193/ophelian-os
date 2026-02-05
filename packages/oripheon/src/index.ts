@@ -2734,3 +2734,7 @@ export {
 } from './data/subtaste-data.js';
 export * from './data/iching-data.js';
 export * from './data/compatibility-data.js';
+
+// Progressive Disclosure System (Task #17)
+export * from './data/symbol-mapping.js';
+export * from './lib/progressive-disclosure.js';
