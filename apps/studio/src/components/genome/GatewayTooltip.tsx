@@ -3,8 +3,10 @@
  * Shows Layer 2 (Gateway) contextual hints
  */
 
+'use client';
+
 import React, { useState } from 'react';
-import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 interface GatewayTooltipProps {
   title: string;
@@ -24,7 +26,6 @@ export function GatewayTooltip({
   children,
 }: GatewayTooltipProps) {
   const [isVisible, setIsVisible] = useState(false);
-  const router = useRouter();
 
   return (
     <div
@@ -82,20 +83,16 @@ export function GatewayTooltip({
           </div>
 
           {learnMoreUrl && (
-            <button
-              onClick={() => router.push(learnMoreUrl)}
+            <Link
+              href={learnMoreUrl}
               style={{
                 fontSize: '0.75rem',
                 color: '#8b5cf6',
-                background: 'none',
-                border: 'none',
-                padding: 0,
-                cursor: 'pointer',
                 textDecoration: 'underline',
               }}
             >
               Learn Full Correspondences →
-            </button>
+            </Link>
           )}
         </div>
       )}

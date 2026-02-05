@@ -5,6 +5,8 @@
  * See /DESIGN_PHILOSOPHY.md for full rationale
  */
 
+'use client';
+
 import React, { useState } from 'react';
 import type { OrishaName } from '@lcos/oripheon';
 import { SymbolicImprint, MarkerList } from './SymbolicImprint';
