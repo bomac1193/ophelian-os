@@ -432,7 +432,6 @@ export async function genomeRoutes(fastify: FastifyInstance): Promise<void> {
         const oripheonData = (character.timelineState as any)?.oripheon?.generated;
         const options: GenomeGenerationOptions = {
           name: `${character.name} Genome`,
-          tags: ['auto-generated', 'from-character'],
         };
 
         // If character has orisha from oripheon, use it

@@ -1,0 +1,98 @@
+/* Fade in animation for unlocked state */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    max-height: 0;
+    opacity: 0;
+  }
+  to {
+    max-height: 1000px;
+    opacity: 1;
+  }
+}
+
+.puzzleContainer {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.unlockedState {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.riddleText {
+  animation: fadeIn 0.4s ease-out 0.1s backwards;
+}
+
+.inputField {
+  transition: all 0.2s ease;
+}
+
+.inputField:focus {
+  transform: scale(1.01);
+  box-shadow: 0 0 0 2px var(--primary);
+}
+
+.submitButton {
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.submitButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.submitButton:active {
+  transform: translateY(0);
+}
+
+.errorMessage {
+  animation: shake 0.4s ease;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.hintBox {
+  animation: slideDown 0.3s ease-out;
+}
+
+.detailsContainer {
+  animation: fadeIn 0.5s ease-out;
+  overflow: hidden;
+}
+
+/* Shimmer effect for unlock button */
+.submitButton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s;
+}
+
+.submitButton:hover::before {
+  left: 100%;
+}

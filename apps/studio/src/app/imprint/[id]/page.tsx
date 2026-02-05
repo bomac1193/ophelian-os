@@ -13,8 +13,9 @@ import {
   type ImprintSystemPrompt,
 } from '../../../lib/imprint-api';
 import { TreeOfLifeVisualization, MultiModalPreview } from '../../../components/imprint';
-import { GenomeDisplay } from '../../../components/genome';
+import { GenomeDisplay, GenomePuzzleUnlock } from '../../../components/genome';
 import { getSurfaceView, getGatewayHint, getDepthsView, hasAdvancedViewAccess } from '@lcos/oripheon';
+import puzzleStyles from '../../../components/genome/GenomePuzzleUnlock.module.css';
 
 export default function ImprintDetailPage() {
   const params = useParams();
@@ -29,7 +30,7 @@ export default function ImprintDetailPage() {
   const [promptLoading, setPromptLoading] = useState(false);
   const [promptStyle, setPromptStyle] = useState<'concise' | 'detailed' | 'poetic'>('detailed');
   const [activeTab, setActiveTab] = useState<'overview' | 'multimodal' | 'narrative' | 'prompt'>('overview');
-  const [detailsExpanded, setDetailsExpanded] = useState(false);
+  const [mysteriesUnlocked, setMysteriesUnlocked] = useState(false);
 
   const fetchImprint = useCallback(async () => {
     setLoading(true);
@@ -323,34 +324,28 @@ export default function ImprintDetailPage() {
             })()}
           </div>
 
-          {/* Expandable Details Section */}
+          {/* Puzzle Unlock for Deep Mysteries */}
           <div style={{ marginBottom: '2rem' }}>
-            <button
-              onClick={() => setDetailsExpanded(!detailsExpanded)}
+            <div
               style={{
-                width: '100%',
-                padding: '0.75rem',
-                backgroundColor: 'var(--card)',
-                border: '1px solid var(--border)',
-                borderRadius: '8px',
-                color: 'var(--foreground)',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
+                marginBottom: '1rem',
                 fontSize: '0.875rem',
-                fontWeight: 600,
+                color: 'var(--muted-foreground)',
               }}
             >
-              <span>Full Genome Details (Orisha, Kabbalah, Psychology)</span>
-              <span style={{ fontSize: '1.25rem', transform: detailsExpanded ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}>
-                ▼
-              </span>
-            </button>
+              The full genome mysteries (Orisha configuration, Kabbalistic position, and psychological state)
+              are protected by sacred knowledge. Solve the riddle to unlock the depths.
+            </div>
+            <GenomePuzzleUnlock
+              genome={genome}
+              onUnlock={() => setMysteriesUnlocked(true)}
+              isUnlocked={mysteriesUnlocked}
+            />
           </div>
 
-          {detailsExpanded && (
+          {mysteriesUnlocked && (
             <div
+              className={puzzleStyles.detailsContainer}
               style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
