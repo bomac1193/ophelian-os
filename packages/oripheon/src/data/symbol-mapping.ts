@@ -17,7 +17,7 @@ import type { OrishaName, SephiraName } from '../types/genome.types.js';
 
 export type MathSymbol = 'λ' | 'Σ' | 'Δ' | 'Ω' | 'Φ' | '∞' | 'Ψ' | 'Θ' | 'Ξ' | 'Π';
 
-export type GeometricPrimitive = '⬡' | '●' | '▲' | '⚡' | '♛' | '◇' | '◆' | '○' | '▶' | '+' | '〰️';
+export type GeometricPrimitive = '⬡' | '●' | '▲' | '×' | '◆' | '◇' | '■' | '○' | '▶' | '+' | '≈';
 
 export type AestheticClass =
   | 'L-0'  // Liminal/Paradox
@@ -67,7 +67,7 @@ export const SYMBOLIC_IMPRINTS: Record<OrishaName, SymbolicImprint> = {
 
   'Ọ̀ṣun': {
     symbol: 'Σ',
-    primitive: '〰️',
+    primitive: '≈',
     aestheticClass: 'L-7',
     label: 'Flow',
     keywords: ['Beauty', 'Attraction', 'Fluidity'],
@@ -79,7 +79,7 @@ export const SYMBOLIC_IMPRINTS: Record<OrishaName, SymbolicImprint> = {
 
   'Èṣù': {
     symbol: 'Δ',
-    primitive: '⚡',
+    primitive: '×',
     aestheticClass: 'L-1',
     label: 'Threshold',
     keywords: ['Chaos', 'Change', 'Crossroads'],
@@ -91,7 +91,7 @@ export const SYMBOLIC_IMPRINTS: Record<OrishaName, SymbolicImprint> = {
 
   'Ṣàngó': {
     symbol: 'Ω',
-    primitive: '♛',
+    primitive: '■',
     aestheticClass: 'L-9',
     label: 'Sovereign',
     keywords: ['Justice', 'Thunder', 'Authority'],
