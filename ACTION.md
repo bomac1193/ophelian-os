@@ -1,13 +1,13 @@
 # Action Plan - Bóveda (Living Character OS)
 
 **Last Updated:** 2026-02-05
-**Status:** Visual Polish Complete, Multi-Type Riddle System Live, All Emojis Removed
+**Status:** Symbol Library Expansion Complete (Phases 1-2), All Help Integration Live
 
 ---
 
 ## Current State
 
-### ✅ Recently Completed (Tasks #22, #23, #24)
+### ✅ Recently Completed (Tasks #22-#25)
 
 **Progressive Disclosure System - Fully Integrated**
 - Three-layer genome display system (Surface → Gateway → Depths)
@@ -99,6 +99,30 @@
 - **Layer 3 (Depths):** Full mythology unlocked via puzzle on detail pages only
 - **Removed:** 4th layer confusion - puzzles no longer block basic info
 - **UX Benefit:** Casual users get quick access, engaged users earn deep wisdom
+
+**Symbol Library Expansion (Task #25) - Complete**
+- **Phase 1: Symbol Legend Component**
+  - Interactive reference page at `/genome-legend`
+  - Grid layout showing all 10 Orishas with symbols, primitives, L-classes
+  - Each card displays: symbol, primitive, name, title, element, number, color palette
+  - Search/filter functionality for finding symbols by name or traits
+  - EnhancedGatewayTooltip integration for rich hover states
+  - Glass-morphism aesthetic with card animations
+  - Usage guide explaining three-layer progressive disclosure
+  - Added "Symbols" link to main navigation
+- **Phase 2: Help Integration**
+  - HelpIcon component for contextual tooltips throughout app
+  - FirstVisitGuide component with onboarding modals
+  - SymbolLegendGuide: Shows on first visit to explain 3-layer system
+  - CharacterCreationGuide: Explains genome preview during creation
+  - SymbolicImprint: Added optional help icon with layer explanation
+  - localStorage-based tracking prevents repeated guides
+  - Mobile-responsive modal layouts with backdrop blur
+- **UX Benefits:**
+  - Makes Layer 1 discoverable and educational
+  - Reduces learning curve for new users
+  - Provides just-in-time education without being intrusive
+  - Helps users understand symbols before creating characters
 
 ### 🟢 System Health
 
@@ -205,14 +229,21 @@
 - [ ] Create onboarding tooltip explaining the unlock system
 - [ ] Consider additional gamification (badges, achievements)
 
-#### 4. Symbol Library Expansion
+#### 4. Symbol Library Expansion ✅ COMPLETE
 **Goal:** Complete the symbol-to-Orisha mapping
 
-**Tasks:**
-- [ ] Review and finalize symbol assignments for all Orishas
-- [ ] Add alternative symbols for visual variety
-- [ ] Create symbol legend/guide in UI
-- [ ] Document symbol meanings in user-facing help
+**Completed:**
+- ✅ Created Symbol Legend page at `/genome-legend` with interactive grid
+- ✅ All 10 Orishas displayed with symbols, primitives, and L-classes
+- ✅ Search/filter functionality for finding symbols
+- ✅ Help integration with first-visit guides and contextual tooltips
+- ✅ Usage documentation explaining three-layer system
+- ✅ Added to main navigation ("Symbols" link)
+
+**Future Enhancements:**
+- [ ] Add alternative symbols for visual variety (optional)
+- [ ] Consider A/B testing different symbol presentations
+- [ ] Add animation on symbol hover for visual feedback
 
 #### 5. Gateway Layer Enhancement ✅ COMPLETE
 **Goal:** Improve tooltip content and interactivity
@@ -286,17 +317,19 @@
 ## Immediate Next Steps
 
 ### Recommended Order:
-1. ✅ **Test the demo page** (`/genome-demo`) - COMPLETED: Demo page working
-2. ✅ **Integrate into character detail page** - COMPLETED: Added to `/imprint/[id]` overview tab
-3. ✅ **Update character cards** - COMPLETED: Added ImprintBadge to GenomeSummaryCard
-4. **Implement unlock tracking** to complete the progression loop - IN PROGRESS
-5. **Polish and optimize** based on user feedback
+1. ✅ **Test the demo page** (`/genome-demo`) - COMPLETED
+2. ✅ **Integrate into character detail page** - COMPLETED
+3. ✅ **Update character cards** - COMPLETED
+4. ✅ **Implement unlock tracking** - COMPLETED
+5. ✅ **Symbol Library Expansion** - COMPLETED (Phases 1-2)
+6. **Next: User Documentation** or **Performance Optimization**
 
 ### Quick Wins:
-- ✅ Add `GenomeDisplay` to one existing page (character detail) - DONE
-- Write 5-10 compelling gateway hints - TODO
-- Create CSS module to replace inline styles - TODO
-- Add simple fade-in animations for layer reveals - TODO
+- ✅ Progressive disclosure system fully integrated
+- ✅ All gateway hints written and enhanced
+- ✅ CSS modules created for all genome components
+- ✅ Animations and polish complete
+- ✅ Symbol Legend with help integration live
 
 ---
 
@@ -328,8 +361,15 @@
 ## Notes
 
 - Progressive disclosure system is ready for production use
-- All code committed to `main` branch (commit: 59f2712)
+- Symbol Library Expansion (Phases 1-2) complete
+- All code committed to `main` branch (latest: 66aab9f)
 - Documentation comprehensive and up-to-date
 - System is designed to scale with additional Orishas/features
+
+**Latest Session Accomplishments (2026-02-05):**
+- Built Symbol Legend page with interactive grid of all 10 Orishas
+- Implemented help system with contextual tooltips and first-visit guides
+- Integrated onboarding for Symbol Legend and Character Creation pages
+- Made Layer 1 (Surface) fully discoverable and educational
 
 **Key Insight:** This system allows Bóveda to be both accessible (Surface layer) AND deeply engaging (Depths layer) - a true blue ocean position that competitors can't easily replicate.
