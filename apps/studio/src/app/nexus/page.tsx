@@ -39,6 +39,7 @@ import {
   createSnapshot,
   restoreSnapshot,
   deleteSnapshot,
+  syncAllOripheonData,
   type Character,
   type Scene,
   type World,
@@ -102,6 +103,8 @@ export default function WorldBuilderPage() {
   const [snapshotName, setSnapshotName] = useState('');
   const [savingSnapshot, setSavingSnapshot] = useState(false);
   const [restoringSnapshot, setRestoringSnapshot] = useState<string | null>(null);
+  const [syncingAll, setSyncingAll] = useState(false);
+  const [syncResult, setSyncResult] = useState<string | null>(null);
 
   // Story Templates state
   const [showStoryTemplates, setShowStoryTemplates] = useState(false);
@@ -551,6 +554,25 @@ export default function WorldBuilderPage() {
     }
   };
 
+  // Handle bulk oripheon sync
+  const handleSyncAllOripheon = async () => {
+    setSyncingAll(true);
+    setSyncResult(null);
+    try {
+      const result = await syncAllOripheonData();
+      const generated = result.results.filter(r => r.status === 'generated').length;
+      const enriched = result.results.filter(r => r.status === 'enriched').length;
+      const skipped = result.results.filter(r => r.status === 'already_complete').length;
+      setSyncResult(`${generated} generated, ${enriched} enriched, ${skipped} skipped`);
+      await loadData();
+    } catch (error) {
+      console.error('Failed to sync oripheon data:', error);
+      setSyncResult('Sync failed');
+    } finally {
+      setSyncingAll(false);
+    }
+  };
+
   // Get selected entity data
   const getSelectedCharacter = () => {
     if (selectedEntity?.type === 'character') {
@@ -659,6 +681,24 @@ export default function WorldBuilderPage() {
               + Globe
             </button>
           </div>
+        </div>
+
+        {/* Oripheon Sync */}
+        <div className="sidebar-section">
+          <h3 className="section-title">Oripheon</h3>
+          <button
+            className="btn btn-sm btn-secondary"
+            style={{ width: '100%' }}
+            onClick={handleSyncAllOripheon}
+            disabled={syncingAll}
+          >
+            {syncingAll ? 'Syncing...' : 'Sync All Characters'}
+          </button>
+          {syncResult && (
+            <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginTop: '4px' }}>
+              {syncResult}
+            </div>
+          )}
         </div>
 
         {/* Snapshots Section */}
@@ -881,6 +921,7 @@ export default function WorldBuilderPage() {
             <CharacterDetailPanel
               character={selectedCharacter}
               onClose={() => setSelectedEntity(null)}
+              onRefresh={loadData}
             />
             <SuggestedRelationshipsPanel
               selectedCharacter={selectedCharacter}

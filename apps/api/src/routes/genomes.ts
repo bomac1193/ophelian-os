@@ -389,4 +389,130 @@ export async function genomeRoutes(fastify: FastifyInstance): Promise<void> {
 
     return reply.send(genome);
   });
+
+  // POST /genomes/sync-all - Generate genomes for all characters without genomes
+  fastify.post('/genomes/sync-all', async (request, reply) => {
+    const { force } = request.body as { force?: boolean } || {};
+
+    // Get all characters
+    const characters = await prisma.character.findMany();
+
+    // Get existing genomes
+    const existingGenomes = await prisma.characterGenome.findMany({
+      where: {
+        characterId: { not: null },
+      },
+    });
+
+    const existingCharacterIds = new Set(
+      existingGenomes.map((g) => g.characterId).filter(Boolean)
+    );
+
+    const results: Array<{
+      characterId: string;
+      characterName: string;
+      status: 'generated' | 'already_exists' | 'linked' | 'error';
+      genomeId?: string;
+      error?: string;
+    }> = [];
+
+    for (const character of characters) {
+      try {
+        // Skip if already has genome and not forcing
+        if (existingCharacterIds.has(character.id) && !force) {
+          results.push({
+            characterId: character.id,
+            characterName: character.name,
+            status: 'already_exists',
+          });
+          continue;
+        }
+
+        // Generate genome based on character's oripheon data if available
+        const oripheonData = (character.timelineState as any)?.oripheon?.generated;
+        const options: GenomeGenerationOptions = {
+          name: `${character.name} Genome`,
+          tags: ['auto-generated', 'from-character'],
+        };
+
+        // If character has orisha from oripheon, use it
+        if (oripheonData?.arcana?.archetype) {
+          const archetype = oripheonData.arcana.archetype;
+          // Map common archetypes to Orishas if possible
+          // This is a basic mapping - extend as needed
+          // Only includes Orishas that exist in ORISHA_DATA
+          const archetypeToOrisha: Record<string, OrishaName> = {
+            'eleggua': 'Èṣù',
+            'obatala': 'Obàtálá',
+            'oshun': 'Ọ̀ṣun',
+            'yemoja': 'Yemọja',
+            'shango': 'Ṣàngó',
+            'oya': 'Ọya',
+            'ogun': 'Ògún',
+            'orunmila': 'Ọ̀rúnmìlà',
+            'osanyin': 'Ọ̀sanyìn',
+            'oshoosi': 'Ọ̀ṣọ́ọ̀sì',
+          };
+
+          const orishaName = archetypeToOrisha[archetype.toLowerCase()];
+          if (orishaName) {
+            options.forceOrisha = orishaName;
+          }
+        }
+
+        // Use oripheon seed if available
+        if (oripheonData?.seed) {
+          options.seed = oripheonData.seed;
+        }
+
+        // Generate the genome
+        const genome = generateGenome(options);
+
+        // Save to database with character link
+        const saved = await prisma.characterGenome.create({
+          data: {
+            id: genome.id,
+            name: genome.name,
+            schemaVersion: genome.schemaVersion,
+            seed: genome.seed,
+            tags: genome.tags || [],
+            characterId: character.id, // Link to character
+            orishaConfiguration: genome.orishaConfiguration as any,
+            kabbalisticPosition: genome.kabbalisticPosition as any,
+            psychologicalState: genome.psychologicalState as any,
+            multiModalSignature: genome.multiModalSignature as any,
+            narrativeIdentity: genome.narrativeIdentity as any,
+            invariantMarkers: genome.invariantMarkers as any,
+            evolutionRules: genome.evolutionRules as any,
+          },
+        });
+
+        results.push({
+          characterId: character.id,
+          characterName: character.name,
+          status: 'generated',
+          genomeId: saved.id,
+        });
+      } catch (error) {
+        results.push({
+          characterId: character.id,
+          characterName: character.name,
+          status: 'error',
+          error: error instanceof Error ? error.message : 'Unknown error',
+        });
+      }
+    }
+
+    const summary = {
+      total: characters.length,
+      generated: results.filter((r) => r.status === 'generated').length,
+      alreadyExists: results.filter((r) => r.status === 'already_exists').length,
+      errors: results.filter((r) => r.status === 'error').length,
+    };
+
+    return reply.send({
+      summary,
+      results,
+    });
+  });
 }

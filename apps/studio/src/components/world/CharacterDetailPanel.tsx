@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import type { Character } from '@/lib/api';
+import { syncOripheonData } from '@/lib/api';
 import { getSubtasteInfo } from '@/components/world/SuggestedRelationshipsPanel';
 
 const WU_XING_SYMBOLS: Record<string, string> = {
@@ -16,10 +17,12 @@ const WU_XING_SYMBOLS: Record<string, string> = {
 interface CharacterDetailPanelProps {
   character: Character;
   onClose: () => void;
+  onRefresh?: () => void;
 }
 
-export function CharacterDetailPanel({ character, onClose }: CharacterDetailPanelProps) {
+export function CharacterDetailPanel({ character, onClose, onRefresh }: CharacterDetailPanelProps) {
   const [showSubtaste, setShowSubtaste] = useState(false);
+  const [syncing, setSyncing] = useState(false);
 
   const getInitials = (name: string) => {
     return name
@@ -31,6 +34,24 @@ export function CharacterDetailPanel({ character, onClose }: CharacterDetailPane
   };
 
   const subtasteInfo = getSubtasteInfo(character);
+  const hasOripheonData = !!(character.timelineState as any)?.oripheon?.generated;
+  const hexagram = (character.timelineState as any)?.oripheon?.generated?.hexagram as {
+    presentHexagram: { number: number; name: string; chinese: string; image: string; judgment: string; lines: boolean[] };
+    transformingHexagram: { number: number; name: string; chinese: string; lines: boolean[] } | null;
+    movingLines: number[];
+  } | undefined;
+
+  const handleSyncOripheon = async () => {
+    setSyncing(true);
+    try {
+      await syncOripheonData(character.id);
+      onRefresh?.();
+    } catch (error) {
+      console.error('Failed to sync oripheon data:', error);
+    } finally {
+      setSyncing(false);
+    }
+  };
 
   return (
     <div className="detail-panel">
@@ -166,10 +187,54 @@ export function CharacterDetailPanel({ character, onClose }: CharacterDetailPane
         </div>
       )}
 
+      {/* I Ching Hexagram */}
+      {hexagram && (
+        <div className="detail-section">
+          <label className="label">I Ching Hexagram</label>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '4px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', alignItems: 'center' }}>
+              {[...hexagram.presentHexagram.lines].reverse().map((yang, i) => (
+                <div key={i} style={{
+                  width: '36px',
+                  height: '4px',
+                  background: yang ? 'var(--text-primary)' : 'transparent',
+                  borderLeft: yang ? 'none' : '14px solid var(--text-primary)',
+                  borderRight: yang ? 'none' : '14px solid var(--text-primary)',
+                }} />
+              ))}
+            </div>
+            <div>
+              <div style={{ fontSize: '14px', fontWeight: 600 }}>
+                <span style={{ marginRight: '6px' }}>{hexagram.presentHexagram.chinese}</span>
+                #{hexagram.presentHexagram.number} {hexagram.presentHexagram.name}
+              </div>
+              <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginTop: '2px' }}>
+                {hexagram.presentHexagram.image}
+              </div>
+              <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginTop: '2px', fontStyle: 'italic' }}>
+                {hexagram.presentHexagram.judgment}
+              </div>
+              {hexagram.transformingHexagram && (
+                <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginTop: '4px' }}>
+                  Transforms to: {hexagram.transformingHexagram.chinese} #{hexagram.transformingHexagram.number} {hexagram.transformingHexagram.name}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="detail-actions">
         <Link href={`/characters/${character.id}`} className="btn btn-primary">
           View Full Profile
         </Link>
+        <button
+          className="btn btn-secondary"
+          onClick={handleSyncOripheon}
+          disabled={syncing}
+        >
+          {syncing ? 'Syncing...' : hasOripheonData ? 'Sync Oripheon Data' : 'Generate Oripheon Data'}
+        </button>
       </div>
     </div>
   );

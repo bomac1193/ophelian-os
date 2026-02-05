@@ -393,118 +393,156 @@ export default function ImprintLibraryPage() {
       )}
 
       {/* Character Oripheon Status */}
-      {characters.length > 0 && (
-        <div style={{ marginTop: '2.5rem' }}>
-          <h2 style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>Character Oripheon Status</h2>
-          <p style={{ fontSize: '0.8rem', color: 'var(--muted-foreground)', marginBottom: '1rem' }}>
-            Shows which characters have oripheon data (axes, arcana, hexagram, subtaste).
-          </p>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-              gap: '0.75rem',
-            }}
-          >
-            {characters.map((char) => {
-              const ts = char.timelineState as Record<string, any>;
-              const gen = ts?.oripheon?.generated;
-              const hasAxes = !!gen?.personality?.axes;
-              const hasArcana = !!gen?.arcana;
-              const hasHexagram = !!gen?.hexagram;
-              const hasSubtaste = !!gen?.subtaste;
-              const isComplete = hasAxes && hasArcana && hasHexagram && hasSubtaste;
-              const hasNothing = !hasAxes && !hasArcana && !hasHexagram && !hasSubtaste;
+      {characters.length > 0 && (() => {
+        // Separate relics from regular characters
+        const relics = characters.filter(char => {
+          const ts = char.timelineState as Record<string, any>;
+          return ts?.oripheon?.generated?.relics && ts.oripheon.generated.relics.length > 0;
+        });
+        const regularCharacters = characters.filter(char => {
+          const ts = char.timelineState as Record<string, any>;
+          return !ts?.oripheon?.generated?.relics || ts.oripheon.generated.relics.length === 0;
+        });
 
-              // Find associated genome/imprint for this character
-              const characterGenome = imprints.find(imp => imp.characterId === char.id);
+        const renderCharacterCard = (char: Character) => {
+          const ts = char.timelineState as Record<string, any>;
+          const gen = ts?.oripheon?.generated;
+          const hasAxes = !!gen?.personality?.axes;
+          const hasArcana = !!gen?.arcana;
+          const hasHexagram = !!gen?.hexagram;
+          const hasSubtaste = !!gen?.subtaste;
+          const isComplete = hasAxes && hasArcana && hasHexagram && hasSubtaste;
+          const hasNothing = !hasAxes && !hasArcana && !hasHexagram && !hasSubtaste;
 
-              return (
+          // Find associated genome/imprint for this character
+          const characterGenome = imprints.find(imp => imp.characterId === char.id);
+
+          return (
+            <div
+              key={char.id}
+              style={{
+                padding: '0.75rem 1rem',
+                backgroundColor: 'var(--card)',
+                border: `1px solid ${isComplete ? 'var(--border)' : 'var(--destructive, #c44)'}`,
+                borderRadius: '8px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: '0.75rem',
+              }}
+            >
+              <div style={{ minWidth: 0, flex: 1 }}>
+                <div style={{ fontWeight: 600, fontSize: '0.875rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {char.name}
+                </div>
+
+                {/* Show symbolic imprint if genome exists */}
+                {characterGenome && (() => {
+                  try {
+                    const surface = getSurfaceView(characterGenome);
+                    return (
+                      <div style={{
+                        marginTop: '0.5rem',
+                        padding: '0.25rem 0.5rem',
+                        backgroundColor: 'var(--muted)',
+                        borderRadius: '4px',
+                        fontSize: '0.7rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                      }}>
+                        <span style={{ fontSize: '1rem' }}>{surface.imprint.symbol}</span>
+                        <span style={{ opacity: 0.7 }}>{surface.imprint.primitive}</span>
+                        <span style={{ fontWeight: 600 }}>{surface.imprint.label}</span>
+                        <span style={{ opacity: 0.5, marginLeft: 'auto' }}>{surface.classification}</span>
+                      </div>
+                    );
+                  } catch (e) {
+                    return null;
+                  }
+                })()}
+
+                {/* Oripheon status */}
+                <div style={{ fontSize: '0.7rem', color: 'var(--muted-foreground)', marginTop: '2px', display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                  <span style={{ color: hasAxes ? 'var(--foreground)' : 'var(--muted-foreground)', opacity: hasAxes ? 1 : 0.4 }}>
+                    {hasAxes ? '\u2713' : '\u2717'} Axes
+                  </span>
+                  <span style={{ color: hasArcana ? 'var(--foreground)' : 'var(--muted-foreground)', opacity: hasArcana ? 1 : 0.4 }}>
+                    {hasArcana ? '\u2713' : '\u2717'} Arcana
+                  </span>
+                  <span style={{ color: hasHexagram ? 'var(--foreground)' : 'var(--muted-foreground)', opacity: hasHexagram ? 1 : 0.4 }}>
+                    {hasHexagram ? '\u2713' : '\u2717'} Hexagram
+                  </span>
+                  <span style={{ color: hasSubtaste ? 'var(--foreground)' : 'var(--muted-foreground)', opacity: hasSubtaste ? 1 : 0.4 }}>
+                    {hasSubtaste ? '\u2713' : '\u2717'} Subtaste
+                  </span>
+                </div>
+                {gen?.arcana?.archetype && (
+                  <div style={{ fontSize: '0.7rem', color: 'var(--muted-foreground)', marginTop: '2px' }}>
+                    {gen.arcana.archetype}{gen.subtaste?.glyph ? ` \u00b7 ${gen.subtaste.glyph}` : ''}
+                    {gen.hexagram?.presentHexagram ? ` \u00b7 ${gen.hexagram.presentHexagram.chinese} #${gen.hexagram.presentHexagram.number}` : ''}
+                  </div>
+                )}
+              </div>
+              {!isComplete && (
+                <button
+                  className="btn btn-secondary"
+                  style={{ fontSize: '0.75rem', padding: '0.25rem 0.5rem', whiteSpace: 'nowrap', flexShrink: 0 }}
+                  onClick={() => handleSyncOne(char.id)}
+                  disabled={syncingId === char.id || syncingAll}
+                >
+                  {syncingId === char.id ? '...' : hasNothing ? 'Generate' : 'Sync'}
+                </button>
+              )}
+              {isComplete && (
+                <span style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', flexShrink: 0 }}>Complete</span>
+              )}
+            </div>
+          );
+        };
+
+        return (
+          <div style={{ marginTop: '2.5rem' }}>
+            {/* Regular Characters Section */}
+            {regularCharacters.length > 0 && (
+              <div style={{ marginBottom: '2rem' }}>
+                <h2 style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>Characters</h2>
+                <p style={{ fontSize: '0.8rem', color: 'var(--muted-foreground)', marginBottom: '1rem' }}>
+                  Regular characters with oripheon data (axes, arcana, hexagram, subtaste).
+                </p>
                 <div
-                  key={char.id}
                   style={{
-                    padding: '0.75rem 1rem',
-                    backgroundColor: 'var(--card)',
-                    border: `1px solid ${isComplete ? 'var(--border)' : 'var(--destructive, #c44)'}`,
-                    borderRadius: '8px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
                     gap: '0.75rem',
                   }}
                 >
-                  <div style={{ minWidth: 0, flex: 1 }}>
-                    <div style={{ fontWeight: 600, fontSize: '0.875rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                      {char.name}
-                    </div>
-
-                    {/* Show symbolic imprint if genome exists */}
-                    {characterGenome && (() => {
-                      try {
-                        const surface = getSurfaceView(characterGenome);
-                        return (
-                          <div style={{
-                            marginTop: '0.5rem',
-                            padding: '0.25rem 0.5rem',
-                            backgroundColor: 'var(--muted)',
-                            borderRadius: '4px',
-                            fontSize: '0.7rem',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '0.5rem',
-                          }}>
-                            <span style={{ fontSize: '1rem' }}>{surface.imprint.symbol}</span>
-                            <span style={{ opacity: 0.7 }}>{surface.imprint.primitive}</span>
-                            <span style={{ fontWeight: 600 }}>{surface.imprint.label}</span>
-                            <span style={{ opacity: 0.5, marginLeft: 'auto' }}>{surface.classification}</span>
-                          </div>
-                        );
-                      } catch (e) {
-                        return null;
-                      }
-                    })()}
-
-                    {/* Oripheon status */}
-                    <div style={{ fontSize: '0.7rem', color: 'var(--muted-foreground)', marginTop: '2px', display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-                      <span style={{ color: hasAxes ? 'var(--foreground)' : 'var(--muted-foreground)', opacity: hasAxes ? 1 : 0.4 }}>
-                        {hasAxes ? '\u2713' : '\u2717'} Axes
-                      </span>
-                      <span style={{ color: hasArcana ? 'var(--foreground)' : 'var(--muted-foreground)', opacity: hasArcana ? 1 : 0.4 }}>
-                        {hasArcana ? '\u2713' : '\u2717'} Arcana
-                      </span>
-                      <span style={{ color: hasHexagram ? 'var(--foreground)' : 'var(--muted-foreground)', opacity: hasHexagram ? 1 : 0.4 }}>
-                        {hasHexagram ? '\u2713' : '\u2717'} Hexagram
-                      </span>
-                      <span style={{ color: hasSubtaste ? 'var(--foreground)' : 'var(--muted-foreground)', opacity: hasSubtaste ? 1 : 0.4 }}>
-                        {hasSubtaste ? '\u2713' : '\u2717'} Subtaste
-                      </span>
-                    </div>
-                    {gen?.arcana?.archetype && (
-                      <div style={{ fontSize: '0.7rem', color: 'var(--muted-foreground)', marginTop: '2px' }}>
-                        {gen.arcana.archetype}{gen.subtaste?.glyph ? ` \u00b7 ${gen.subtaste.glyph}` : ''}
-                        {gen.hexagram?.presentHexagram ? ` \u00b7 ${gen.hexagram.presentHexagram.chinese} #${gen.hexagram.presentHexagram.number}` : ''}
-                      </div>
-                    )}
-                  </div>
-                  {!isComplete && (
-                    <button
-                      className="btn btn-secondary"
-                      style={{ fontSize: '0.75rem', padding: '0.25rem 0.5rem', whiteSpace: 'nowrap', flexShrink: 0 }}
-                      onClick={() => handleSyncOne(char.id)}
-                      disabled={syncingId === char.id || syncingAll}
-                    >
-                      {syncingId === char.id ? '...' : hasNothing ? 'Generate' : 'Sync'}
-                    </button>
-                  )}
-                  {isComplete && (
-                    <span style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', flexShrink: 0 }}>Complete</span>
-                  )}
+                  {regularCharacters.map(renderCharacterCard)}
                 </div>
-              );
-            })}
+              </div>
+            )}
+
+            {/* Relics Section */}
+            {relics.length > 0 && (
+              <div>
+                <h2 style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>Relics</h2>
+                <p style={{ fontSize: '0.8rem', color: 'var(--muted-foreground)', marginBottom: '1rem' }}>
+                  Sacred objects and artifacts with their own oripheon signatures.
+                </p>
+                <div
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+                    gap: '0.75rem',
+                  }}
+                >
+                  {relics.map(renderCharacterCard)}
+                </div>
+              </div>
+            )}
           </div>
-        </div>
-      )}
+        );
+      })()}
     </div>
   );
 }
