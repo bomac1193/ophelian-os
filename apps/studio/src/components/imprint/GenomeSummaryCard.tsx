@@ -1,6 +1,8 @@
 'use client';
 
 import type { CharacterGenome } from '../../lib/imprint-api';
+import { getSurfaceView } from '@lcos/oripheon';
+import { ImprintBadge } from '../genome';
 
 interface GenomeSummaryCardProps {
   genome: CharacterGenome;
@@ -81,6 +83,20 @@ export function GenomeSummaryCard({
           ))}
         </div>
       </div>
+
+      {/* Symbolic Imprint Badge */}
+      {(() => {
+        try {
+          const surface = getSurfaceView(genome);
+          return (
+            <div style={{ marginBottom: '0.75rem' }}>
+              <ImprintBadge imprint={surface} size="compact" />
+            </div>
+          );
+        } catch (e) {
+          return null;
+        }
+      })()}
 
       {/* Orisha & Sephira info */}
       <div

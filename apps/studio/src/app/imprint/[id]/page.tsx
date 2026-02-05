@@ -13,6 +13,8 @@ import {
   type ImprintSystemPrompt,
 } from '../../../lib/imprint-api';
 import { TreeOfLifeVisualization, MultiModalPreview } from '../../../components/imprint';
+import { GenomeDisplay } from '../../../components/genome';
+import { getSurfaceView, getGatewayHint, getDepthsView, hasAdvancedViewAccess } from '@lcos/oripheon';
 
 export default function ImprintDetailPage() {
   const params = useParams();
@@ -290,14 +292,44 @@ export default function ImprintDetailPage() {
 
       {/* Tab content */}
       {activeTab === 'overview' && (
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-            gap: '1.5rem',
-          }}
-        >
-          {/* Orisha Configuration */}
+        <>
+          {/* Progressive Disclosure Genome Display */}
+          <div style={{ marginBottom: '2rem' }}>
+            {(() => {
+              // Mock user for now - TODO: Replace with actual user context
+              const mockUser = {
+                isAdmin: false,
+                characterCount: 3,
+                createdAt: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000),
+              };
+
+              const hasAccess = hasAdvancedViewAccess(mockUser);
+              const surface = getSurfaceView(genome);
+              const gateway = getGatewayHint(genome);
+              const depths = hasAccess ? getDepthsView(genome) : undefined;
+
+              return (
+                <GenomeDisplay
+                  genome={{
+                    id: genome.id,
+                    surface,
+                    gateway,
+                    depths,
+                  }}
+                  hasAdvancedAccess={hasAccess}
+                />
+              );
+            })()}
+          </div>
+
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+              gap: '1.5rem',
+            }}
+          >
+            {/* Orisha Configuration */}
           <div
             style={{
               padding: '1.5rem',
@@ -552,7 +584,8 @@ export default function ImprintDetailPage() {
               </div>
             )}
           </div>
-        </div>
+          </div>
+        </>
       )}
 
       {activeTab === 'multimodal' && <MultiModalPreview signature={genome.multiModalSignature} />}
