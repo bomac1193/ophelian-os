@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { CharacterGenome } from '../../lib/imprint-api';
 import { getSurfaceView, getGatewayHint } from '@lcos/oripheon';
 import { SymbolicImprint } from '../genome';
+import { getRandomRiddle, validateAnswer, type Riddle } from '../../lib/riddles';
 import puzzleStyles from '../genome/GenomePuzzleUnlock.module.css';
 import styles from './GenomeSummaryCard.module.css';
 
@@ -30,6 +31,7 @@ export function GenomeSummaryCard({
   const [showHint, setShowHint] = useState(false);
   const [attempts, setAttempts] = useState(0);
   const [error, setError] = useState('');
+  const [riddle, setRiddle] = useState<Riddle | null>(null);
 
   // Get primary colors for visual display
   const primaryColors = multiModalSignature?.visual?.primaryColors || [];
@@ -39,20 +41,26 @@ export function GenomeSummaryCard({
   const temperatureLabel =
     hotCool <= -0.5 ? 'Cool' : hotCool >= 0.5 ? 'Hot' : 'Balanced';
 
-  // Simple riddle based on Orisha number
-  const orishaNumbers: Record<string, number> = {
-    'Èṣù': 3, 'Ògún': 7, 'Ọ̀ṣun': 5, 'Yemọja': 7,
-    'Ṣàngó': 6, 'Ọya': 9, 'Obàtálá': 8, 'Ọ̀rúnmìlà': 16,
-    'Ọ̀ṣọ́ọ̀sì': 7, 'Ọ̀sanyìn': 1,
-  };
-
-  const correctAnswer = String(orishaNumbers[orishaConfiguration?.headOrisha] || 0);
+  // Generate random riddle on mount
+  useEffect(() => {
+    if (orishaConfiguration?.headOrisha && kabbalisticPosition?.primarySephira) {
+      const generatedRiddle = getRandomRiddle(
+        orishaConfiguration.headOrisha,
+        kabbalisticPosition.primarySephira,
+        orishaConfiguration.camino,
+        primaryColors
+      );
+      setRiddle(generatedRiddle);
+    }
+  }, [orishaConfiguration, kabbalisticPosition, primaryColors]);
 
   const handleUnlock = (e: React.FormEvent) => {
     e.preventDefault();
     e.stopPropagation();
 
-    if (answer.trim() === correctAnswer) {
+    if (!riddle) return;
+
+    if (validateAnswer(answer, riddle.answer)) {
       setDetailsUnlocked(true);
       setError('');
     } else {
@@ -128,10 +136,15 @@ export function GenomeSummaryCard({
           className={styles.lockSection}
         >
           <div className={styles.lockHeader}>
-            Deep Knowledge Locked
+            <span>Deep Knowledge Locked</span>
+            {riddle && (
+              <span className={`${styles.difficultyBadge} ${styles[riddle.difficulty]}`}>
+                {riddle.difficulty}
+              </span>
+            )}
           </div>
           <div className={styles.lockRiddle}>
-            What sacred number do I carry?
+            {riddle?.question || 'Loading riddle...'}
           </div>
 
           <form onSubmit={handleUnlock} className={styles.unlockForm}>
@@ -162,9 +175,9 @@ export function GenomeSummaryCard({
             </div>
           )}
 
-          {showHint && (
+          {showHint && riddle?.hint && (
             <div className={`${styles.hintBox} ${puzzleStyles.hintBox}`}>
-              Hint: Check the gateway hints above
+              Hint: {riddle.hint}
             </div>
           )}
         </div>

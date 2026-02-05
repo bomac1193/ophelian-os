@@ -97,10 +97,18 @@
   - GenomeSummaryCard.tsx → GenomeSummaryCard.module.css
   - MultiModalPreview.tsx → MultiModalPreview.module.css
   - 500+ lines of inline styles converted to maintainable CSS
+- ✅ Add page load animations for symbolic imprints
+  - Card fade-in-up on mount
+  - Staggered section animations (0.05s-0.2s delays)
+  - Symbolic imprint display fade-in with delay
+- ✅ Refine hover states across all components
+  - Cards: lift + shadow effect
+  - Buttons: background + lift
+  - Color swatches: scale + enhanced shadow
+  - Sections: lift + shadow
+  - Chips: subtle lift + color change
 
 **Remaining:**
-- [ ] Add page load animations for symbolic imprints
-- [ ] Refine hover states across all components
 - [ ] Consider adding sound effects for puzzle unlocks (optional)
 
 #### 2. Additional Riddle Types
