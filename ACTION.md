@@ -1,7 +1,7 @@
 # Action Plan - Bóveda (Living Character OS)
 
 **Last Updated:** 2026-02-05
-**Status:** Performance Optimization Complete - Lazy loading, memoization, caching, and skeleton states live
+**Status:** Genome-Driven LLM Generation Live - Blue Ocean feature complete, character DNA → content style
 
 ---
 
@@ -23,6 +23,13 @@
   - React.memo + useMemo for optimized re-renders
   - Genome data caching system (in-memory + localStorage)
   - Skeleton loading states with shimmer animations
+- **Genome-Driven LLM Content Generation (Blue Ocean Feature)**
+  - Orisha → Creative voice mapping (10 Orishas with tone/style/themes)
+  - Sephira → Thematic guidance (11 Sephiroth with content focus)
+  - L-class → Aesthetic style (L-0 to L-11 writing approaches)
+  - buildGenomePrompt() - Character DNA → LLM prompt
+  - Content topic suggestions based on genome
+  - Integrated into existing generatePost() function
 
 ### 🎯 Next Tasks to Implement (Priority Order)
 
@@ -45,9 +52,8 @@
 
 4. **New Features** (Based on roadmap)
    - Character Evolution Timeline UI (#4)
-   - Autonomous Content Suggester (#5)
+   - Autonomous Content Suggester (#5) - Foundation built via getGenomeSuggestedTopics()
    - Rights Management UI (#6)
-   - Genome + LLM Content Generation (#7)
 
 ---
 
@@ -139,7 +145,29 @@
   - Dynamic hints based on riddle type
   - 50+ unique riddle variations
 
-**Three-Layer System Properly Aligned (Latest Session)**
+**Genome-Driven LLM Content Generation (Latest Session) ✅ COMPLETE**
+- **The Blue Ocean Differentiator**: Character DNA → Content Style
+- **Orisha Voice Mapping** - All 10 Orishas → creative voice profiles
+  - Tone presets (playful, direct, sensual, nurturing, etc.)
+  - Style guidance (trickster, forge-focused, flowing, etc.)
+  - Natural themes each Orisha gravitates toward
+  - Opening phrases that feel authentic to each energy
+  - Avoidances (what each Orisha would never say)
+- **Sephira Thematic Guidance** - 11 Sephiroth → content focus
+  - Kether: Unity, transcendence
+  - Chokmah: Creative spark, wisdom
+  - Through all positions with unique guidance
+- **L-Class Aesthetic Styles** - L-0 to L-11 → writing approaches
+  - L-0: Paradoxical, liminal, contradictory
+  - L-3: Industrial, forged, angular
+  - L-7: Fluid, beautiful, sensual
+  - L-11: Pure, clear, pristine
+- **buildGenomePrompt()** - Core function that synthesizes genome into rich LLM prompt
+- **getGenomeSuggestedTopics()** - Suggests what character would naturally discuss
+- **Integrated into generatePost()** with backward compatibility
+- **Competitive Moat**: Requires entire Orisha-Kabbalah-L-class system to work
+
+**Three-Layer System Properly Aligned (Previous Session)**
 - **Layer 1 (Surface):** Symbolic imprint always visible on all cards
 - **Layer 2 (Gateway):** Basic details (Orisha/Sephira/trajectory) via simple expand on list cards
 - **Layer 3 (Depths):** Full mythology unlocked via puzzle on detail pages only
