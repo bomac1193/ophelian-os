@@ -1,11 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import type { CharacterGenome } from '../../lib/imprint-api';
-import { getSurfaceView, getGatewayHint } from '@lcos/oripheon';
-import { SymbolicImprint } from '../genome';
-import { getRandomRiddle, validateAnswer, type Riddle } from '../../lib/riddles';
-import puzzleStyles from '../genome/GenomePuzzleUnlock.module.css';
+import { getSurfaceView } from '@lcos/oripheon';
 import styles from './GenomeSummaryCard.module.css';
 
 interface GenomeSummaryCardProps {
@@ -26,12 +23,7 @@ export function GenomeSummaryCard({
   selected,
 }: GenomeSummaryCardProps) {
   const { orishaConfiguration, kabbalisticPosition, psychologicalState, multiModalSignature } = genome;
-  const [detailsUnlocked, setDetailsUnlocked] = useState(false);
-  const [answer, setAnswer] = useState('');
-  const [showHint, setShowHint] = useState(false);
-  const [attempts, setAttempts] = useState(0);
-  const [error, setError] = useState('');
-  const [riddle, setRiddle] = useState<Riddle | null>(null);
+  const [detailsExpanded, setDetailsExpanded] = useState(false);
 
   // Get primary colors for visual display
   const primaryColors = multiModalSignature?.visual?.primaryColors || [];
@@ -40,38 +32,6 @@ export function GenomeSummaryCard({
   const hotCool = psychologicalState?.hotCoolAxis || 0;
   const temperatureLabel =
     hotCool <= -0.5 ? 'Cool' : hotCool >= 0.5 ? 'Hot' : 'Balanced';
-
-  // Generate random riddle on mount
-  useEffect(() => {
-    if (orishaConfiguration?.headOrisha && kabbalisticPosition?.primarySephira) {
-      const generatedRiddle = getRandomRiddle(
-        orishaConfiguration.headOrisha,
-        kabbalisticPosition.primarySephira,
-        orishaConfiguration.camino,
-        primaryColors
-      );
-      setRiddle(generatedRiddle);
-    }
-  }, [orishaConfiguration, kabbalisticPosition, primaryColors]);
-
-  const handleUnlock = (e: React.FormEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    if (!riddle) return;
-
-    if (validateAnswer(answer, riddle.answer)) {
-      setDetailsUnlocked(true);
-      setError('');
-    } else {
-      setAttempts(prev => prev + 1);
-      setError('Incorrect');
-      setAnswer('');
-      if (attempts >= 1) {
-        setShowHint(true);
-      }
-    }
-  };
 
   return (
     <div
@@ -129,61 +89,24 @@ export function GenomeSummaryCard({
         }
       })()}
 
-      {/* Unlock Deep Mysteries */}
-      {!detailsUnlocked ? (
+      {/* Expand/Collapse Details */}
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          setDetailsExpanded(!detailsExpanded);
+        }}
+        className={styles.expandButton}
+      >
+        {detailsExpanded ? 'Hide Details' : 'Show Details'}
+        <span className={styles.expandIcon}>
+          {detailsExpanded ? '▼' : '▶'}
+        </span>
+      </button>
+
+      {detailsExpanded && (
         <div
-          onClick={(e) => e.stopPropagation()}
-          className={styles.lockSection}
-        >
-          <div className={styles.lockHeader}>
-            <span>Deep Knowledge Locked</span>
-            {riddle && (
-              <span className={`${styles.difficultyBadge} ${styles[riddle.difficulty]}`}>
-                {riddle.difficulty}
-              </span>
-            )}
-          </div>
-          <div className={styles.lockRiddle}>
-            {riddle?.question || 'Loading riddle...'}
-          </div>
-
-          <form onSubmit={handleUnlock} className={styles.unlockForm}>
-            <input
-              type="text"
-              value={answer}
-              onChange={(e) => {
-                e.stopPropagation();
-                setAnswer(e.target.value);
-              }}
-              onClick={(e) => e.stopPropagation()}
-              placeholder="Answer..."
-              className={`${styles.unlockInput} ${error ? styles.error : ''} ${puzzleStyles.inputField}`}
-              autoComplete="off"
-            />
-            <button
-              type="submit"
-              onClick={(e) => e.stopPropagation()}
-              className={`${styles.unlockButton} ${puzzleStyles.submitButton}`}
-            >
-              Unlock
-            </button>
-          </form>
-
-          {error && (
-            <div className={`${styles.errorMessage} ${puzzleStyles.errorMessage}`}>
-              {error}
-            </div>
-          )}
-
-          {showHint && riddle?.hint && (
-            <div className={`${styles.hintBox} ${puzzleStyles.hintBox}`}>
-              Hint: {riddle.hint}
-            </div>
-          )}
-        </div>
-      ) : (
-        <div
-          className={`${styles.detailsContainer} ${puzzleStyles.detailsContainer}`}
+          className={styles.detailsContainer}
           onClick={(e) => e.stopPropagation()}
         >
           {/* Orisha & Sephira info */}
