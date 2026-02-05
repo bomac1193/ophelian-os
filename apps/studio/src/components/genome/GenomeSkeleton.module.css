@@ -1,0 +1,240 @@
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+/* Base skeleton styles */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite linear;
+  border-radius: 4px;
+}
+
+/* Container */
+.container {
+  background-color: #0a0a0a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 2rem;
+}
+
+/* Header */
+.header {
+  margin-bottom: 2rem;
+}
+
+.title {
+  height: 20px;
+  width: 180px;
+}
+
+/* Symbol Section */
+.symbolSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.symbol {
+  height: 48px;
+  width: 48px;
+  border-radius: 50%;
+}
+
+.label {
+  height: 24px;
+  width: 140px;
+}
+
+.classification {
+  height: 16px;
+  width: 120px;
+}
+
+/* State Profile */
+.stateProfile {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.sectionTitle {
+  height: 14px;
+  width: 120px;
+  margin-bottom: 1rem;
+}
+
+.statBar {
+  margin-bottom: 1rem;
+}
+
+.statHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.statLabel {
+  height: 14px;
+  width: 60px;
+}
+
+.statValue {
+  height: 14px;
+  width: 40px;
+}
+
+.bar {
+  height: 4px;
+  width: 100%;
+}
+
+.phase {
+  height: 14px;
+  width: 100px;
+}
+
+/* Lattice Section */
+.latticeSection {
+  margin-bottom: 2rem;
+}
+
+.latticeInfo {
+  height: 14px;
+  width: 200px;
+  margin-bottom: 0.5rem;
+}
+
+/* Markers Section */
+.markersSection {
+  margin-top: 1rem;
+}
+
+.markerList {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.marker {
+  height: 24px;
+  width: 24px;
+  border-radius: 4px;
+}
+
+/* Card Skeleton */
+.cardContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+}
+
+.cardSymbol {
+  height: 32px;
+  width: 32px;
+  border-radius: 50%;
+}
+
+.cardLabel {
+  height: 18px;
+  width: 100px;
+}
+
+.cardClass {
+  height: 14px;
+  width: 80px;
+}
+
+/* Legend Skeleton */
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.legendCard {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.05),
+    rgba(255, 255, 255, 0.02)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.legendSymbol {
+  height: 64px;
+  width: 64px;
+  border-radius: 50%;
+}
+
+.legendName {
+  height: 20px;
+  width: 120px;
+}
+
+.legendTitle {
+  height: 14px;
+  width: 140px;
+}
+
+.legendInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+}
+
+.legendInfoItem {
+  height: 14px;
+  width: 100%;
+}
+
+.colorSwatches {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.colorSwatch {
+  height: 32px;
+  width: 32px;
+  border-radius: 50%;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 1.5rem;
+  }
+
+  .gridContainer {
+    grid-template-columns: 1fr;
+  }
+}

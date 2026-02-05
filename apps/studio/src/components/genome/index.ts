@@ -14,3 +14,4 @@ export { AdvancedViewProgress } from './AdvancedViewProgress';
 export { SymbolLegend } from './SymbolLegend';
 export { HelpIcon, InlineHelp } from './HelpIcon';
 export { FirstVisitGuide, SymbolLegendGuide, CharacterCreationGuide } from './FirstVisitGuide';
+export { GenomeSkeleton, GenomeCardSkeleton, SymbolLegendSkeleton } from './GenomeSkeleton';
