@@ -1,7 +1,7 @@
 # Action Plan - Bóveda (Living Character OS)
 
 **Last Updated:** 2026-02-05
-**Status:** Interactive Puzzle System Live, Creation Flow Enhanced, All Emojis Removed
+**Status:** Visual Polish Complete, Multi-Type Riddle System Live, All Emojis Removed
 
 ---
 
@@ -54,6 +54,44 @@
 - Shows Surface layer (L-class + symbol) and Gateway hints immediately
 - Auto-generates preview genome when selections change
 - Educates users about symbolic meaning while they create
+
+**Visual Polish & CSS Refactoring (Latest Session)**
+- **CSS Modules Migration:**
+  - GenomeSummaryCard: 200+ lines of inline styles → CSS module
+  - MultiModalPreview: 300+ lines of inline styles → CSS module
+  - Total: 500+ lines converted for better maintainability
+- **Page Load Animations:**
+  - Card fade-in-up on mount (0.3s)
+  - Symbolic imprint fade-in with 0.1s delay
+  - Staggered section animations (0.05s-0.2s delays)
+  - All animations use ease-out timing
+- **Refined Hover States:**
+  - Cards: lift (-2px) + shadow on hover
+  - Buttons: background color + lift (-1px)
+  - Color swatches: scale (1.1x) + enhanced shadow
+  - Section cards: lift (-2px) + shadow
+  - Chips: lift (-1px) + subtle color change
+- **Smooth Transitions:**
+  - All interactive elements: 0.2s ease transitions
+  - Consistent timing across all components
+
+**Multi-Type Riddle System (Latest Session)**
+- **5 Riddle Types:**
+  1. Sacred Number (easy) - Orisha numerology
+  2. Element (medium) - Natural correspondences
+  3. Sephira (hard) - Kabbalistic tree
+  4. Camino (medium) - Orisha path names
+  5. Color Count (easy) - Palette analysis
+- **Difficulty System:**
+  - Color-coded badges (green/orange/red)
+  - Easy: Numbers and colors
+  - Medium: Elements and paths
+  - Hard: Mystical correspondences
+- **Smart Features:**
+  - Random riddle selection per genome
+  - Case-insensitive validation
+  - Dynamic hints based on riddle type
+  - 50+ unique riddle variations
 
 ### 🟢 System Health
 
@@ -111,15 +149,27 @@
 **Remaining:**
 - [ ] Consider adding sound effects for puzzle unlocks (optional)
 
-#### 2. Additional Riddle Types
+#### 2. Additional Riddle Types ✅ COMPLETE
 **Goal:** Expand puzzle variety
 
-**Tasks:**
-- [ ] Add more riddle variations for each Orisha
-- [ ] Create riddles based on Caminos (paths)
-- [ ] Add difficulty levels (easy/medium/hard)
+**Completed:**
+- ✅ Add more riddle variations for each Orisha
+  - 5 riddle types: sacred_number, element, sephira, camino, color_count
+  - Random selection provides variety on each page load
+- ✅ Create riddles based on Caminos (paths)
+  - 8 camino riddles with keyword hints
+- ✅ Add difficulty levels (easy/medium/hard)
+  - Easy: sacred numbers, color counts
+  - Medium: elements, caminos
+  - Hard: Sephira correspondences
+  - Color-coded badges (green/orange/red)
+- ✅ Case-insensitive answer validation
+- ✅ Dynamic hints based on riddle type
+
+**Future Enhancements:**
 - [ ] Consider adding image-based puzzles for visual learners
 - [ ] Track user solve times for analytics
+- [ ] Add more camino variations (currently 8, could expand to 20+)
 
 ### 🔄 Medium Priority - Feature Enhancements
 
