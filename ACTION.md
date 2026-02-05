@@ -1,7 +1,7 @@
 # Action Plan - Bóveda (Living Character OS)
 
 **Last Updated:** 2026-02-05
-**Status:** Interactive Puzzle System Live, Creation Flow Enhanced
+**Status:** Interactive Puzzle System Live, Creation Flow Enhanced, All Emojis Removed
 
 ---
 
@@ -32,7 +32,12 @@
 
 **UI Improvements**
 - Relics separated from regular characters in dedicated section
-- Removed all emojis from interface
+- **Removed ALL emojis from interface:**
+  - Removed 4 emojis from MultiModalPreview component (🎨, 🎤, 🎵, 💃)
+  - Replaced emoji-like Unicode in symbolic primitives:
+    - Ọ̀ṣun: '〰️' → '≈' (approximately equal - flow)
+    - Èṣù: '⚡' → '×' (multiplication - threshold)
+    - Ṣàngó: '♛' → '■' (filled square - sovereignty)
 - Symbolic imprints displayed consistently across all character views
 
 **Interactive Puzzle System (New!)**

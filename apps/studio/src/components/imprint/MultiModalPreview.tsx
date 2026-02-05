@@ -7,6 +7,7 @@ import type {
   MovementSignature,
   MultiModalSignature,
 } from '../../lib/imprint-api';
+import styles from './MultiModalPreview.module.css';
 
 interface MultiModalPreviewProps {
   signature?: MultiModalSignature | null;
@@ -16,13 +17,11 @@ interface MultiModalPreviewProps {
 function ColorSwatch({ color, size = 24 }: { color: string; size?: number }) {
   return (
     <div
+      className={`${styles.colorSwatch} ${color.toLowerCase() === '#ffffff' ? styles.white : ''}`}
       style={{
         width: size,
         height: size,
-        borderRadius: '4px',
         backgroundColor: color,
-        border: color.toLowerCase() === '#ffffff' ? '1px solid var(--border)' : 'none',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
       }}
       title={color}
     />
@@ -31,16 +30,7 @@ function ColorSwatch({ color, size = 24 }: { color: string; size?: number }) {
 
 function Chip({ children }: { children: React.ReactNode }) {
   return (
-    <span
-      style={{
-        display: 'inline-block',
-        padding: '0.25rem 0.5rem',
-        borderRadius: '12px',
-        backgroundColor: 'var(--muted)',
-        fontSize: '0.75rem',
-        margin: '0.125rem',
-      }}
-    >
+    <span className={styles.chip}>
       {children}
     </span>
   );
@@ -54,21 +44,8 @@ function Section({
   children: React.ReactNode;
 }) {
   return (
-    <div
-      style={{
-        padding: '1rem',
-        backgroundColor: 'var(--card)',
-        borderRadius: '12px',
-        border: '1px solid var(--border)',
-      }}
-    >
-      <h4
-        style={{
-          margin: '0 0 0.75rem',
-          fontSize: '0.9rem',
-          fontWeight: 600,
-        }}
-      >
+    <div className={styles.section}>
+      <h4 className={styles.sectionTitle}>
         {title}
       </h4>
       {children}
@@ -79,11 +56,11 @@ function Section({
 function VisualPreview({ visual }: { visual: VisualSignature }) {
   return (
     <Section title="Visual Signature" >
-      <div style={{ marginBottom: '0.75rem' }}>
-        <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginBottom: '0.25rem' }}>
+      <div className={styles.fieldGroup}>
+        <div className={styles.fieldLabel}>
           Primary Colors
         </div>
-        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+        <div className={styles.colorGrid}>
           {visual.primaryColors.map((color, i) => (
             <ColorSwatch key={i} color={color} size={32} />
           ))}
@@ -91,11 +68,11 @@ function VisualPreview({ visual }: { visual: VisualSignature }) {
       </div>
 
       {visual.secondaryColors.length > 0 && (
-        <div style={{ marginBottom: '0.75rem' }}>
-          <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginBottom: '0.25rem' }}>
+        <div className={styles.fieldGroup}>
+          <div className={styles.fieldLabel}>
             Secondary Colors
           </div>
-          <div style={{ display: 'flex', gap: '0.25rem', flexWrap: 'wrap' }}>
+          <div className={styles.colorGridSecondary}>
             {visual.secondaryColors.map((color, i) => (
               <ColorSwatch key={i} color={color} size={20} />
             ))}
@@ -103,25 +80,25 @@ function VisualPreview({ visual }: { visual: VisualSignature }) {
         </div>
       )}
 
-      <div style={{ marginBottom: '0.5rem' }}>
-        <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginBottom: '0.25rem' }}>
+      <div className={styles.fieldGroupSmall}>
+        <div className={styles.fieldLabel}>
           Aesthetic Style
         </div>
-        <div style={{ fontWeight: 500 }}>{visual.aestheticStyle}</div>
+        <div className={styles.fieldValue}>{visual.aestheticStyle}</div>
       </div>
 
-      <div style={{ marginBottom: '0.5rem' }}>
-        <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginBottom: '0.25rem' }}>
+      <div className={styles.fieldGroupSmall}>
+        <div className={styles.fieldLabel}>
           Light Quality
         </div>
         <div>{visual.lightQuality}</div>
       </div>
 
       <div>
-        <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginBottom: '0.25rem' }}>
+        <div className={styles.fieldLabel}>
           Patterns & Textures
         </div>
-        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+        <div className={styles.chipContainer}>
           {visual.patterns.map((p) => (
             <Chip key={p}>{p}</Chip>
           ))}
@@ -132,11 +109,11 @@ function VisualPreview({ visual }: { visual: VisualSignature }) {
       </div>
 
       {visual.symbolMotifs.length > 0 && (
-        <div style={{ marginTop: '0.5rem' }}>
-          <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginBottom: '0.25rem' }}>
+        <div className={styles.fieldGroupSmall}>
+          <div className={styles.fieldLabel}>
             Symbol Motifs
           </div>
-          <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+          <div className={styles.chipContainer}>
             {visual.symbolMotifs.map((s) => (
               <Chip key={s}>{s}</Chip>
             ))}
@@ -150,44 +127,44 @@ function VisualPreview({ visual }: { visual: VisualSignature }) {
 function VoicePreview({ voice }: { voice: VoiceSignature }) {
   return (
     <Section title="Voice Signature" >
-      <div style={{ marginBottom: '0.5rem' }}>
-        <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginBottom: '0.25rem' }}>
+      <div className={styles.fieldGroupSmall}>
+        <div className={styles.fieldLabel}>
           Pitch Range
         </div>
-        <div style={{ fontWeight: 500 }}>{voice.pitchRange}</div>
+        <div className={styles.fieldValue}>{voice.pitchRange}</div>
       </div>
 
-      <div style={{ marginBottom: '0.5rem' }}>
-        <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginBottom: '0.25rem' }}>
+      <div className={styles.fieldGroupSmall}>
+        <div className={styles.fieldLabel}>
           Timbre
         </div>
-        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+        <div className={styles.chipContainer}>
           {voice.timbre.map((t) => (
             <Chip key={t}>{t}</Chip>
           ))}
         </div>
       </div>
 
-      <div style={{ marginBottom: '0.5rem' }}>
-        <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginBottom: '0.25rem' }}>
+      <div className={styles.fieldGroupSmall}>
+        <div className={styles.fieldLabel}>
           Speech Patterns
         </div>
-        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+        <div className={styles.chipContainer}>
           {voice.speechPatterns.map((p) => (
             <Chip key={p}>{p}</Chip>
           ))}
         </div>
       </div>
 
-      <div style={{ marginBottom: '0.5rem' }}>
-        <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginBottom: '0.25rem' }}>
+      <div className={styles.fieldGroupSmall}>
+        <div className={styles.fieldLabel}>
           Rhythmic Quality
         </div>
         <div>{voice.rhythmicQuality}</div>
       </div>
 
-      <div style={{ marginBottom: '0.5rem' }}>
-        <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginBottom: '0.25rem' }}>
+      <div className={styles.fieldGroupSmall}>
+        <div className={styles.fieldLabel}>
           Emotional Resonance
         </div>
         <div>{voice.emotionalResonance}</div>
@@ -195,10 +172,10 @@ function VoicePreview({ voice }: { voice: VoiceSignature }) {
 
       {voice.accentInfluences.length > 0 && (
         <div>
-          <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginBottom: '0.25rem' }}>
+          <div className={styles.fieldLabel}>
             Accent Influences
           </div>
-          <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+          <div className={styles.chipContainer}>
             {voice.accentInfluences.map((a) => (
               <Chip key={a}>{a}</Chip>
             ))}
@@ -212,23 +189,23 @@ function VoicePreview({ voice }: { voice: VoiceSignature }) {
 function MusicPreview({ music }: { music: MusicSignature }) {
   return (
     <Section title="Music Signature" >
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', marginBottom: '0.5rem' }}>
+      <div className={styles.twoColumnGrid}>
         <div>
-          <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginBottom: '0.25rem' }}>
+          <div className={styles.fieldLabel}>
             Key Signature
           </div>
-          <div style={{ fontWeight: 500 }}>{music.keySignature}</div>
+          <div className={styles.fieldValue}>{music.keySignature}</div>
         </div>
         <div>
-          <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginBottom: '0.25rem' }}>
+          <div className={styles.fieldLabel}>
             Mode
           </div>
-          <div style={{ fontWeight: 500 }}>{music.mode}</div>
+          <div className={styles.fieldValue}>{music.mode}</div>
         </div>
       </div>
 
-      <div style={{ marginBottom: '0.5rem' }}>
-        <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginBottom: '0.25rem' }}>
+      <div className={styles.fieldGroupSmall}>
+        <div className={styles.fieldLabel}>
           Tempo Range
         </div>
         <div>
@@ -236,29 +213,29 @@ function MusicPreview({ music }: { music: MusicSignature }) {
         </div>
       </div>
 
-      <div style={{ marginBottom: '0.5rem' }}>
-        <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginBottom: '0.25rem' }}>
+      <div className={styles.fieldGroupSmall}>
+        <div className={styles.fieldLabel}>
           Harmonic Complexity
         </div>
         <div>{music.harmonicComplexity}</div>
       </div>
 
-      <div style={{ marginBottom: '0.5rem' }}>
-        <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginBottom: '0.25rem' }}>
+      <div className={styles.fieldGroupSmall}>
+        <div className={styles.fieldLabel}>
           Primary Instruments
         </div>
-        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+        <div className={styles.chipContainer}>
           {music.primaryInstruments.map((i) => (
             <Chip key={i}>{i}</Chip>
           ))}
         </div>
       </div>
 
-      <div style={{ marginBottom: '0.5rem' }}>
-        <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginBottom: '0.25rem' }}>
+      <div className={styles.fieldGroupSmall}>
+        <div className={styles.fieldLabel}>
           Rhythmic Patterns
         </div>
-        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+        <div className={styles.chipContainer}>
           {music.rhythmicPatterns.map((r) => (
             <Chip key={r}>{r}</Chip>
           ))}
@@ -267,10 +244,10 @@ function MusicPreview({ music }: { music: MusicSignature }) {
 
       {music.genreInfluences.length > 0 && (
         <div>
-          <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginBottom: '0.25rem' }}>
+          <div className={styles.fieldLabel}>
             Genre Influences
           </div>
-          <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+          <div className={styles.chipContainer}>
             {music.genreInfluences.map((g) => (
               <Chip key={g}>{g}</Chip>
             ))}
@@ -284,33 +261,33 @@ function MusicPreview({ music }: { music: MusicSignature }) {
 function MovementPreview({ movement }: { movement: MovementSignature }) {
   return (
     <Section title="Movement Signature" >
-      <div style={{ marginBottom: '0.5rem' }}>
-        <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginBottom: '0.25rem' }}>
+      <div className={styles.fieldGroupSmall}>
+        <div className={styles.fieldLabel}>
           Quality of Motion
         </div>
-        <div style={{ fontWeight: 500 }}>{movement.qualityOfMotion}</div>
+        <div className={styles.fieldValue}>{movement.qualityOfMotion}</div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', marginBottom: '0.5rem' }}>
+      <div className={styles.twoColumnGrid}>
         <div>
-          <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginBottom: '0.25rem' }}>
+          <div className={styles.fieldLabel}>
             Tempo Preference
           </div>
           <div>{movement.tempoPreference}</div>
         </div>
         <div>
-          <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginBottom: '0.25rem' }}>
+          <div className={styles.fieldLabel}>
             Spatial Orientation
           </div>
           <div>{movement.spatialOrientation}</div>
         </div>
       </div>
 
-      <div style={{ marginBottom: '0.5rem' }}>
-        <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginBottom: '0.25rem' }}>
+      <div className={styles.fieldGroupSmall}>
+        <div className={styles.fieldLabel}>
           Gesture Vocabulary
         </div>
-        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+        <div className={styles.chipContainer}>
           {movement.gestureVocabulary.map((g) => (
             <Chip key={g}>{g}</Chip>
           ))}
@@ -318,11 +295,11 @@ function MovementPreview({ movement }: { movement: MovementSignature }) {
       </div>
 
       {movement.danceInfluences.length > 0 && (
-        <div style={{ marginBottom: '0.5rem' }}>
-          <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginBottom: '0.25rem' }}>
+        <div className={styles.fieldGroupSmall}>
+          <div className={styles.fieldLabel}>
             Dance Influences
           </div>
-          <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+          <div className={styles.chipContainer}>
             {movement.danceInfluences.map((d) => (
               <Chip key={d}>{d}</Chip>
             ))}
@@ -331,10 +308,10 @@ function MovementPreview({ movement }: { movement: MovementSignature }) {
       )}
 
       <div>
-        <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginBottom: '0.25rem' }}>
+        <div className={styles.fieldLabel}>
           Posture Characteristics
         </div>
-        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+        <div className={styles.chipContainer}>
           {movement.postureCharacteristics.map((p) => (
             <Chip key={p}>{p}</Chip>
           ))}
@@ -347,18 +324,10 @@ function MovementPreview({ movement }: { movement: MovementSignature }) {
 export function MultiModalPreview({ signature, compact }: MultiModalPreviewProps) {
   if (!signature) {
     return (
-      <div
-        style={{
-          padding: '2rem',
-          textAlign: 'center',
-          color: 'var(--muted-foreground)',
-          backgroundColor: 'var(--muted)',
-          borderRadius: '12px',
-        }}
-      >
+      <div className={styles.noSignature}>
         No multi-modal signature generated yet.
         <br />
-        <span style={{ fontSize: '0.8rem' }}>
+        <span className={styles.hint}>
           Select an Orisha and configure the psychological state to generate signatures.
         </span>
       </div>
@@ -368,26 +337,19 @@ export function MultiModalPreview({ signature, compact }: MultiModalPreviewProps
   if (compact) {
     // Compact view showing just colors and key attributes
     return (
-      <div
-        style={{
-          padding: '1rem',
-          backgroundColor: 'var(--card)',
-          borderRadius: '12px',
-          border: '1px solid var(--border)',
-        }}
-      >
-        <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.75rem' }}>
+      <div className={styles.compactView}>
+        <div className={styles.compactColors}>
           {signature.visual.primaryColors.map((color, i) => (
             <ColorSwatch key={i} color={color} size={28} />
           ))}
         </div>
-        <div style={{ fontSize: '0.8rem', marginBottom: '0.25rem' }}>
+        <div className={styles.compactInfo}>
           <strong>Voice:</strong> {signature.voice.pitchRange}, {signature.voice.timbre[0]}
         </div>
-        <div style={{ fontSize: '0.8rem', marginBottom: '0.25rem' }}>
+        <div className={styles.compactInfo}>
           <strong>Music:</strong> {signature.music.keySignature} {signature.music.mode}
         </div>
-        <div style={{ fontSize: '0.8rem' }}>
+        <div className={styles.compactInfo}>
           <strong>Movement:</strong> {signature.movement.qualityOfMotion}
         </div>
       </div>
@@ -395,13 +357,7 @@ export function MultiModalPreview({ signature, compact }: MultiModalPreviewProps
   }
 
   return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-        gap: '1rem',
-      }}
-    >
+    <div className={styles.fullView}>
       <VisualPreview visual={signature.visual} />
       <VoicePreview voice={signature.voice} />
       <MusicPreview music={signature.music} />

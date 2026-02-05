@@ -1,0 +1,124 @@
+.noSignature {
+  padding: 2rem;
+  text-align: center;
+  color: var(--muted-foreground);
+  background-color: var(--muted);
+  border-radius: 12px;
+}
+
+.noSignature br {
+  margin-bottom: 0.5rem;
+}
+
+.hint {
+  font-size: 0.8rem;
+}
+
+.compactView {
+  padding: 1rem;
+  background-color: var(--card);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+.compactColors {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.compactInfo {
+  font-size: 0.8rem;
+  margin-bottom: 0.25rem;
+}
+
+.compactInfo:last-child {
+  margin-bottom: 0;
+}
+
+.fullView {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.colorSwatch {
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.colorSwatch.white {
+  border: 1px solid var(--border);
+}
+
+.chip {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  background-color: var(--muted);
+  font-size: 0.75rem;
+  margin: 0.125rem;
+}
+
+.section {
+  padding: 1rem;
+  background-color: var(--card);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+.sectionTitle {
+  margin: 0 0 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.fieldGroup {
+  margin-bottom: 0.75rem;
+}
+
+.fieldGroup:last-child {
+  margin-bottom: 0;
+}
+
+.fieldGroupSmall {
+  margin-bottom: 0.5rem;
+}
+
+.fieldGroupSmall:last-child {
+  margin-bottom: 0;
+}
+
+.fieldLabel {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  margin-bottom: 0.25rem;
+}
+
+.fieldValue {
+  font-weight: 500;
+}
+
+.chipContainer {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.twoColumnGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.colorGrid {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.colorGridSecondary {
+  display: flex;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+}

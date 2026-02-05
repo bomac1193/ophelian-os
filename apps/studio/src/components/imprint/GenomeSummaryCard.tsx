@@ -5,6 +5,7 @@ import type { CharacterGenome } from '../../lib/imprint-api';
 import { getSurfaceView, getGatewayHint } from '@lcos/oripheon';
 import { SymbolicImprint } from '../genome';
 import puzzleStyles from '../genome/GenomePuzzleUnlock.module.css';
+import styles from './GenomeSummaryCard.module.css';
 
 interface GenomeSummaryCardProps {
   genome: CharacterGenome;
@@ -67,51 +68,26 @@ export function GenomeSummaryCard({
   return (
     <div
       onClick={onClick}
-      style={{
-        padding: '1rem',
-        backgroundColor: 'var(--card)',
-        borderRadius: '12px',
-        border: `2px solid ${selected ? 'var(--primary)' : 'var(--border)'}`,
-        cursor: onClick ? 'pointer' : 'default',
-        transition: 'all 0.2s ease',
-      }}
+      className={`${styles.card} ${selected ? styles.selected : ''} ${!onClick ? styles.nonClickable : ''}`}
     >
       {/* Header */}
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'flex-start',
-          marginBottom: '0.75rem',
-        }}
-      >
+      <div className={styles.header}>
         <div>
-          <h3 style={{ margin: '0 0 0.25rem', fontSize: '1.1rem', fontWeight: 600 }}>
+          <h3 className={styles.title}>
             {genome.name}
           </h3>
-          <p
-            style={{
-              margin: 0,
-              fontSize: '0.75rem',
-              color: 'var(--muted-foreground)',
-            }}
-          >
+          <p className={styles.date}>
             Created {new Date(genome.createdAt).toLocaleDateString()}
           </p>
         </div>
 
         {/* Color swatches */}
-        <div style={{ display: 'flex', gap: '4px' }}>
+        <div className={styles.colorSwatches}>
           {primaryColors.slice(0, 3).map((color, i) => (
             <div
               key={i}
-              style={{
-                width: '20px',
-                height: '20px',
-                borderRadius: '4px',
-                backgroundColor: color,
-                border: color.toLowerCase() === '#ffffff' ? '1px solid var(--border)' : 'none',
-              }}
+              className={`${styles.colorSwatch} ${color.toLowerCase() === '#ffffff' ? styles.white : ''}`}
+              style={{ backgroundColor: color }}
             />
           ))}
         </div>
@@ -122,25 +98,19 @@ export function GenomeSummaryCard({
         try {
           const surface = getSurfaceView(genome);
           return (
-            <div style={{
-              marginBottom: '0.75rem',
-              padding: '0.5rem',
-              backgroundColor: 'var(--muted)',
-              borderRadius: '8px',
-              fontSize: '0.75rem',
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <span style={{ fontSize: '1.25rem', fontWeight: 300 }}>
+            <div className={styles.imprintDisplay}>
+              <div className={styles.imprintContent}>
+                <span className={styles.imprintSymbol}>
                   {surface.imprint.symbol}
                 </span>
-                <span style={{ fontSize: '1rem', opacity: 0.7 }}>
+                <span className={styles.imprintPrimitive}>
                   {surface.imprint.primitive}
                 </span>
-                <span style={{ fontWeight: 600 }}>
+                <span className={styles.imprintLabel}>
                   {surface.imprint.label}
                 </span>
               </div>
-              <div style={{ marginTop: '0.25rem', opacity: 0.6, fontSize: '0.7rem' }}>
+              <div className={styles.imprintClassification}>
                 {surface.classification}
               </div>
             </div>
@@ -155,22 +125,16 @@ export function GenomeSummaryCard({
       {!detailsUnlocked ? (
         <div
           onClick={(e) => e.stopPropagation()}
-          style={{
-            padding: '0.75rem',
-            backgroundColor: 'var(--muted)',
-            borderRadius: '8px',
-            marginBottom: '0.75rem',
-            border: '1px solid var(--border)',
-          }}
+          className={styles.lockSection}
         >
-          <div style={{ fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.5rem', opacity: 0.7 }}>
+          <div className={styles.lockHeader}>
             Deep Knowledge Locked
           </div>
-          <div style={{ fontSize: '0.75rem', fontStyle: 'italic', marginBottom: '0.5rem', opacity: 0.8 }}>
+          <div className={styles.lockRiddle}>
             What sacred number do I carry?
           </div>
 
-          <form onSubmit={handleUnlock} style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+          <form onSubmit={handleUnlock} className={styles.unlockForm}>
             <input
               type="text"
               value={answer}
@@ -180,140 +144,62 @@ export function GenomeSummaryCard({
               }}
               onClick={(e) => e.stopPropagation()}
               placeholder="Answer..."
-              className={puzzleStyles.inputField}
-              style={{
-                flex: 1,
-                padding: '0.375rem',
-                borderRadius: '4px',
-                border: `1px solid ${error ? 'var(--destructive)' : 'var(--border)'}`,
-                backgroundColor: 'var(--background)',
-                color: 'var(--foreground)',
-                fontSize: '0.75rem',
-                outline: 'none',
-              }}
+              className={`${styles.unlockInput} ${error ? styles.error : ''} ${puzzleStyles.inputField}`}
               autoComplete="off"
             />
             <button
               type="submit"
               onClick={(e) => e.stopPropagation()}
-              className={puzzleStyles.submitButton}
-              style={{
-                padding: '0.375rem 0.75rem',
-                borderRadius: '4px',
-                border: 'none',
-                backgroundColor: 'var(--primary)',
-                color: 'white',
-                cursor: 'pointer',
-                fontSize: '0.75rem',
-                fontWeight: 600,
-              }}
+              className={`${styles.unlockButton} ${puzzleStyles.submitButton}`}
             >
               Unlock
             </button>
           </form>
 
           {error && (
-            <div className={puzzleStyles.errorMessage} style={{ fontSize: '0.7rem', color: 'var(--destructive)', marginTop: '0.25rem' }}>
+            <div className={`${styles.errorMessage} ${puzzleStyles.errorMessage}`}>
               {error}
             </div>
           )}
 
           {showHint && (
-            <div className={puzzleStyles.hintBox} style={{
-              marginTop: '0.5rem',
-              padding: '0.5rem',
-              backgroundColor: 'var(--background)',
-              borderRadius: '4px',
-              fontSize: '0.7rem',
-              fontStyle: 'italic',
-              opacity: 0.8,
-              borderLeft: '2px solid var(--primary)',
-            }}>
+            <div className={`${styles.hintBox} ${puzzleStyles.hintBox}`}>
               Hint: Check the gateway hints above
             </div>
           )}
         </div>
       ) : (
         <div
-          className={puzzleStyles.detailsContainer}
+          className={`${styles.detailsContainer} ${puzzleStyles.detailsContainer}`}
           onClick={(e) => e.stopPropagation()}
-          style={{ marginBottom: '0.75rem' }}
         >
           {/* Orisha & Sephira info */}
-          <div
-            style={{
-              display: 'flex',
-              gap: '0.5rem',
-              flexWrap: 'wrap',
-              marginBottom: '0.75rem',
-            }}
-          >
-            <span
-              style={{
-                padding: '0.25rem 0.5rem',
-                borderRadius: '6px',
-                backgroundColor: 'var(--primary-muted)',
-                fontSize: '0.75rem',
-              }}
-            >
+          <div className={styles.badges}>
+            <span className={`${styles.badge} ${styles.orisha}`}>
               {orishaConfiguration?.headOrisha || 'Unknown'}
               {orishaConfiguration?.camino && ` (${orishaConfiguration.camino.split(' ').pop()})`}
             </span>
-            <span
-              style={{
-                padding: '0.25rem 0.5rem',
-                borderRadius: '6px',
-                backgroundColor: 'var(--muted)',
-                fontSize: '0.75rem',
-              }}
-            >
+            <span className={`${styles.badge} ${styles.sephira}`}>
               {kabbalisticPosition?.primarySephira || 'Unknown'}
             </span>
-            <span
-              style={{
-                padding: '0.25rem 0.5rem',
-                borderRadius: '6px',
-                backgroundColor:
-                  temperatureLabel === 'Hot'
-                    ? '#ef444420'
-                    : temperatureLabel === 'Cool'
-                      ? '#3b82f620'
-                      : '#8b5cf620',
-                color:
-                  temperatureLabel === 'Hot'
-                    ? '#ef4444'
-                    : temperatureLabel === 'Cool'
-                      ? '#3b82f6'
-                      : '#8b5cf6',
-                fontSize: '0.75rem',
-              }}
-            >
+            <span className={`${styles.badge} ${styles.temperature} ${styles[temperatureLabel.toLowerCase()]}`}>
               {temperatureLabel}
             </span>
           </div>
 
           {/* Trajectory */}
-          <div style={{ marginBottom: '0.75rem' }}>
-            <span style={{ fontSize: '0.8rem', color: 'var(--muted-foreground)' }}>Trajectory: </span>
-            <span style={{ fontSize: '0.8rem', textTransform: 'capitalize' }}>
+          <div className={styles.trajectory}>
+            <span className={styles.trajectoryLabel}>Trajectory: </span>
+            <span className={styles.trajectoryValue}>
               {psychologicalState?.trajectory || 'Unknown'}
             </span>
           </div>
 
           {/* Tags */}
           {genome.tags && genome.tags.length > 0 && (
-            <div style={{ display: 'flex', gap: '0.25rem', flexWrap: 'wrap', marginBottom: '0.75rem' }}>
+            <div className={styles.tags}>
               {genome.tags.map((tag) => (
-                <span
-                  key={tag}
-                  style={{
-                    padding: '0.125rem 0.375rem',
-                    borderRadius: '4px',
-                    backgroundColor: 'var(--muted)',
-                    fontSize: '0.7rem',
-                    color: 'var(--muted-foreground)',
-                  }}
-                >
+                <span key={tag} className={styles.tag}>
                   #{tag}
                 </span>
               ))}
@@ -324,28 +210,14 @@ export function GenomeSummaryCard({
 
       {/* Character link */}
       {genome.characterId && (
-        <div
-          style={{
-            fontSize: '0.75rem',
-            color: 'var(--primary)',
-            marginBottom: '0.75rem',
-          }}
-        >
+        <div className={styles.characterLink}>
           Linked to character
         </div>
       )}
 
       {/* Actions */}
       {(onEdit || onDelete || onExport) && (
-        <div
-          style={{
-            display: 'flex',
-            gap: '0.5rem',
-            marginTop: '0.5rem',
-            paddingTop: '0.75rem',
-            borderTop: '1px solid var(--border)',
-          }}
-        >
+        <div className={styles.actions}>
           {onEdit && (
             <button
               type="button"
@@ -353,15 +225,7 @@ export function GenomeSummaryCard({
                 e.stopPropagation();
                 onEdit();
               }}
-              style={{
-                padding: '0.375rem 0.75rem',
-                borderRadius: '6px',
-                border: '1px solid var(--border)',
-                backgroundColor: 'transparent',
-                color: 'var(--foreground)',
-                cursor: 'pointer',
-                fontSize: '0.8rem',
-              }}
+              className={styles.actionButton}
             >
               Edit
             </button>
@@ -373,15 +237,7 @@ export function GenomeSummaryCard({
                 e.stopPropagation();
                 onExport();
               }}
-              style={{
-                padding: '0.375rem 0.75rem',
-                borderRadius: '6px',
-                border: '1px solid var(--border)',
-                backgroundColor: 'transparent',
-                color: 'var(--foreground)',
-                cursor: 'pointer',
-                fontSize: '0.8rem',
-              }}
+              className={styles.actionButton}
             >
               Export
             </button>
@@ -393,16 +249,7 @@ export function GenomeSummaryCard({
                 e.stopPropagation();
                 onDelete();
               }}
-              style={{
-                padding: '0.375rem 0.75rem',
-                borderRadius: '6px',
-                border: '1px solid var(--destructive)',
-                backgroundColor: 'transparent',
-                color: 'var(--destructive)',
-                cursor: 'pointer',
-                fontSize: '0.8rem',
-                marginLeft: 'auto',
-              }}
+              className={`${styles.actionButton} ${styles.delete}`}
             >
               Delete
             </button>
