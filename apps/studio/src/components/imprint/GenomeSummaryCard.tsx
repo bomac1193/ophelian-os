@@ -2,7 +2,7 @@
 
 import type { CharacterGenome } from '../../lib/imprint-api';
 import { getSurfaceView } from '@lcos/oripheon';
-import { ImprintBadge } from '../genome';
+import { SymbolicImprint } from '../genome';
 
 interface GenomeSummaryCardProps {
   genome: CharacterGenome;
@@ -84,16 +84,36 @@ export function GenomeSummaryCard({
         </div>
       </div>
 
-      {/* Symbolic Imprint Badge */}
+      {/* Symbolic Imprint Display */}
       {(() => {
         try {
           const surface = getSurfaceView(genome);
           return (
-            <div style={{ marginBottom: '0.75rem' }}>
-              <ImprintBadge imprint={surface} size="compact" />
+            <div style={{
+              marginBottom: '0.75rem',
+              padding: '0.5rem',
+              backgroundColor: 'var(--muted)',
+              borderRadius: '8px',
+              fontSize: '0.75rem',
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <span style={{ fontSize: '1.25rem', fontWeight: 300 }}>
+                  {surface.imprint.symbol}
+                </span>
+                <span style={{ fontSize: '1rem', opacity: 0.7 }}>
+                  {surface.imprint.primitive}
+                </span>
+                <span style={{ fontWeight: 600 }}>
+                  {surface.imprint.label}
+                </span>
+              </div>
+              <div style={{ marginTop: '0.25rem', opacity: 0.6, fontSize: '0.7rem' }}>
+                {surface.classification}
+              </div>
             </div>
           );
         } catch (e) {
+          console.error('Error rendering symbolic imprint:', e);
           return null;
         }
       })()}
