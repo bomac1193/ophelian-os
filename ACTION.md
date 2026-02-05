@@ -123,6 +123,11 @@
   - Reduces learning curve for new users
   - Provides just-in-time education without being intrusive
   - Helps users understand symbols before creating characters
+- **⚠️ DESIGN CONCERN - TO REVISIT:**
+  - **Question:** Does explicit Symbols page contradict "magician rule" archetype (show don't tell)?
+  - **Consideration:** May be too explanatory/educational vs. letting users discover through experience
+  - **Status:** Implemented for now, will revise later based on user feedback and design philosophy alignment
+  - **Alternative approaches to explore:** More implicit discovery, contextual revelation, earned knowledge
 
 ### 🟢 System Health
 
