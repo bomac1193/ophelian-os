@@ -183,51 +183,49 @@ export function RepositionableCircleAvatar({
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
-      <div
-        ref={containerRef}
-        onMouseDown={handleMouseDown}
-        onTouchStart={handleTouchStart}
-        style={{
-          width: `${size}px`,
-          height: `${size}px`,
-          borderRadius: '50%',
-          overflow: 'hidden',
-          cursor: disabled ? 'default' : isDragging ? 'grabbing' : 'grab',
-          border: hasChanges ? '3px solid var(--primary)' : '3px solid var(--border)',
-          backgroundColor: 'var(--muted)',
-          position: 'relative',
-          touchAction: 'none',
-        }}
-      >
-        <img
-          ref={imgRef}
-          src={src}
-          alt="Avatar"
-          draggable={false}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        <div
+          ref={containerRef}
+          onMouseDown={handleMouseDown}
+          onTouchStart={handleTouchStart}
           style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            objectPosition: `${currentPosRef.current.x}% ${currentPosRef.current.y}%`,
-            userSelect: 'none',
-            pointerEvents: 'none',
-            willChange: 'object-position',
+            width: `${size}px`,
+            height: `${size}px`,
+            borderRadius: '50%',
+            overflow: 'hidden',
+            cursor: disabled ? 'default' : isDragging ? 'grabbing' : 'grab',
+            border: hasChanges ? '1px solid var(--foreground)' : '1px solid var(--border)',
+            backgroundColor: 'var(--muted)',
+            position: 'relative',
+            touchAction: 'none',
           }}
-        />
+        >
+          <img
+            ref={imgRef}
+            src={src}
+            alt="Avatar"
+            draggable={false}
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              objectPosition: `${currentPosRef.current.x}% ${currentPosRef.current.y}%`,
+              userSelect: 'none',
+              pointerEvents: 'none',
+              willChange: 'object-position',
+            }}
+          />
+        </div>
         {!disabled && !hasChanges && (
           <div
             style={{
-              position: 'absolute',
-              bottom: '4px',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              backgroundColor: 'rgba(0,0,0,0.6)',
-              color: 'white',
-              padding: '2px 6px',
-              borderRadius: '4px',
+              color: 'var(--muted-foreground)',
               fontSize: '10px',
-              pointerEvents: 'none',
-              whiteSpace: 'nowrap',
+              fontWeight: 500,
+              letterSpacing: '0.05em',
+              textTransform: 'uppercase',
+              writingMode: 'vertical-rl',
+              textOrientation: 'mixed',
             }}
           >
             Drag to reposition
@@ -244,12 +242,15 @@ export function RepositionableCircleAvatar({
             style={{
               padding: '4px 12px',
               fontSize: '12px',
-              borderRadius: '4px',
-              border: 'none',
-              backgroundColor: '#22c55e',
-              color: 'white',
+              borderRadius: '0',
+              border: '1px solid var(--foreground)',
+              backgroundColor: 'transparent',
+              color: 'var(--foreground)',
               cursor: 'pointer',
+              transition: 'border-color 0.2s ease',
             }}
+            onMouseEnter={(e) => e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.4)'}
+            onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--foreground)'}
           >
             Save
           </button>
@@ -260,12 +261,15 @@ export function RepositionableCircleAvatar({
             style={{
               padding: '4px 12px',
               fontSize: '12px',
-              borderRadius: '4px',
-              border: '1px solid var(--border)',
+              borderRadius: '0',
+              border: '1px solid var(--muted-foreground)',
               backgroundColor: 'transparent',
-              color: 'var(--foreground)',
+              color: 'var(--muted-foreground)',
               cursor: 'pointer',
+              transition: 'border-color 0.2s ease',
             }}
+            onMouseEnter={(e) => e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.4)'}
+            onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--muted-foreground)'}
           >
             Reset
           </button>

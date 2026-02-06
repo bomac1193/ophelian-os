@@ -44,6 +44,11 @@ export default function CharacterDetailPage() {
   const [editedName, setEditedName] = useState('');
   const [savingName, setSavingName] = useState(false);
 
+  // Editable persona tags state
+  const [editingTagIndex, setEditingTagIndex] = useState<number | null>(null);
+  const [editedTag, setEditedTag] = useState('');
+  const [savingTag, setSavingTag] = useState(false);
+
   const loadData = async () => {
     try {
       setLoading(true);
@@ -168,6 +173,61 @@ export default function CharacterDetailPage() {
     setEditedName('');
   };
 
+  const handleTagEdit = (index: number) => {
+    if (character) {
+      setEditedTag(character.personaTags[index]);
+      setEditingTagIndex(index);
+    }
+  };
+
+  const handleTagSave = async () => {
+    if (!character || editingTagIndex === null) return;
+
+    const newTags = [...character.personaTags];
+    if (editedTag.trim()) {
+      newTags[editingTagIndex] = editedTag.trim();
+    } else {
+      // Remove tag if empty
+      newTags.splice(editingTagIndex, 1);
+    }
+
+    setSavingTag(true);
+    try {
+      const updated = await updateCharacter(characterId, { personaTags: newTags });
+      setCharacter(updated);
+      setEditingTagIndex(null);
+      setEditedTag('');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to update tag');
+    } finally {
+      setSavingTag(false);
+    }
+  };
+
+  const handleTagCancel = () => {
+    setEditingTagIndex(null);
+    setEditedTag('');
+  };
+
+  const handleAddTag = async () => {
+    if (!character) return;
+    const newTag = 'new-tag';
+    const newTags = [...character.personaTags, newTag];
+
+    setSavingTag(true);
+    try {
+      const updated = await updateCharacter(characterId, { personaTags: newTags });
+      setCharacter(updated);
+      // Start editing the new tag immediately
+      setEditedTag(newTag);
+      setEditingTagIndex(newTags.length - 1);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to add tag');
+    } finally {
+      setSavingTag(false);
+    }
+  };
+
   const handleDelete = async () => {
     if (!character) return;
 
@@ -269,15 +329,15 @@ export default function CharacterDetailPage() {
   return (
     <div className="page-container">
       <div className="page-header">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
           <Link
             href="/"
             title="Back to Characters"
             style={{
               color: 'var(--foreground)',
               fontSize: '1rem',
-              width: '2rem',
-              height: '2rem',
+              width: '2.5rem',
+              height: '2.5rem',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -352,9 +412,9 @@ export default function CharacterDetailPage() {
           title={deleting ? 'Deleting...' : 'Delete Character'}
           style={{
             color: 'var(--error)',
-            fontSize: '1rem',
-            width: '2rem',
-            height: '2rem',
+            fontSize: '1.25rem',
+            width: '2.5rem',
+            height: '2.5rem',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -568,20 +628,119 @@ export default function CharacterDetailPage() {
                 </div>
               )}
 
-              {character.personaTags.length > 0 && (
-                <div className="mt-4">
+              <div className="mt-4">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
                   <strong style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)' }}>
                     PERSONA TAGS
                   </strong>
-                  <div className="flex gap-2 mt-4" style={{ flexWrap: 'wrap' }}>
-                    {character.personaTags.map((tag) => (
-                      <span key={tag} className="badge badge-draft">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
+                  <button
+                    onClick={handleAddTag}
+                    disabled={savingTag}
+                    title="Add tag"
+                    style={{
+                      width: '1.25rem',
+                      height: '1.25rem',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '0.875rem',
+                      color: 'var(--muted-foreground)',
+                      border: '1px solid var(--muted-foreground)',
+                      borderRadius: '0',
+                      background: 'transparent',
+                      cursor: 'pointer',
+                      transition: 'border-color 0.2s ease',
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.borderColor = 'var(--foreground)'}
+                    onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--muted-foreground)'}
+                  >
+                    +
+                  </button>
                 </div>
-              )}
+                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                  {character.personaTags.map((tag, index) => (
+                    editingTagIndex === index ? (
+                      <div key={index} style={{ display: 'flex', gap: '0.25rem' }}>
+                        <input
+                          type="text"
+                          value={editedTag}
+                          onChange={(e) => setEditedTag(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') handleTagSave();
+                            if (e.key === 'Escape') handleTagCancel();
+                          }}
+                          autoFocus
+                          style={{
+                            padding: '0.25rem 0.5rem',
+                            fontSize: '0.75rem',
+                            border: '1px solid var(--foreground)',
+                            borderRadius: '0',
+                            background: '#000000',
+                            color: 'var(--foreground)',
+                            outline: 'none',
+                            width: '100px',
+                          }}
+                        />
+                        <button
+                          onClick={handleTagSave}
+                          disabled={savingTag}
+                          style={{
+                            padding: '0.25rem 0.5rem',
+                            fontSize: '0.625rem',
+                            border: '1px solid var(--foreground)',
+                            borderRadius: '0',
+                            background: 'transparent',
+                            color: 'var(--foreground)',
+                            cursor: 'pointer',
+                          }}
+                        >
+                          {savingTag ? '...' : '✓'}
+                        </button>
+                        <button
+                          onClick={handleTagCancel}
+                          style={{
+                            padding: '0.25rem 0.5rem',
+                            fontSize: '0.625rem',
+                            border: '1px solid var(--muted-foreground)',
+                            borderRadius: '0',
+                            background: 'transparent',
+                            color: 'var(--muted-foreground)',
+                            cursor: 'pointer',
+                          }}
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        key={index}
+                        onClick={() => handleTagEdit(index)}
+                        title="Click to edit"
+                        style={{
+                          padding: '0.25rem 0.75rem',
+                          fontSize: '0.75rem',
+                          fontWeight: 500,
+                          color: 'var(--foreground)',
+                          backgroundColor: '#000000',
+                          border: '1px solid var(--foreground)',
+                          borderRadius: '0',
+                          cursor: 'pointer',
+                          transition: 'border-color 0.2s ease',
+                        }}
+                        onMouseEnter={(e) => e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.4)'}
+                        onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--foreground)'}
+                      >
+                        {tag}
+                      </button>
+                    )
+                  ))}
+                  {character.personaTags.length === 0 && (
+                    <span style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)' }}>
+                      No tags
+                    </span>
+                  )}
+                </div>
+              </div>
 
               {character.currentArc && (
                 <div className="mt-4">
