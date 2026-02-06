@@ -218,9 +218,13 @@ body {
 
 .label {
   display: block;
-  font-size: 0.875rem;
-  font-weight: 500;
-  margin-bottom: 0.25rem;
+  font-family: var(--font-ui);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  margin-bottom: 0.5rem;
 }
 
 .form-group {
@@ -528,8 +532,10 @@ body {
 }
 
 .character-avatar-placeholder {
-  font-size: 2rem;
-  font-weight: 600;
+  font-family: var(--font-ui);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
   color: var(--muted-foreground);
 }
 
@@ -542,27 +548,28 @@ body {
   text-align: center;
 }
 
-/* Character Info Sidebar Avatar */
+/* Character Info Sidebar Avatar - Brutalist */
 .character-info-header {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--border);
+  padding: 1rem;
+  background: #000000;
+  border: 1px solid var(--border);
   margin-bottom: 1rem;
 }
 
 .character-info-avatar {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  border-radius: 0;
   overflow: hidden;
-  background: var(--muted);
+  background: #000000;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 3px solid var(--border);
+  border: 1px solid var(--border);
 }
 
 .character-info-avatar img {
@@ -572,8 +579,11 @@ body {
 }
 
 .character-info-name {
-  font-size: 1.25rem;
+  font-family: var(--font-heading);
+  font-size: 1rem;
   font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
   text-align: center;
 }
 
@@ -645,11 +655,11 @@ body {
   position: relative;
 }
 
-/* Character Node Styles */
+/* Character Node Styles - Black with White Frame */
 .character-node {
-  background: var(--background);
-  border: 2px solid var(--border);
-  border-radius: 0.5rem;
+  background: #000000;
+  border: 1px solid var(--border);
+  border-radius: 0;
   padding: 0.75rem;
   cursor: pointer;
   display: flex;
@@ -661,8 +671,7 @@ body {
 }
 
 .character-node:hover {
-  border-color: var(--primary);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: var(--foreground);
 }
 
 .character-node-avatar {
@@ -670,11 +679,11 @@ body {
   height: 48px;
   border-radius: 50%;
   overflow: hidden;
-  background: var(--muted);
+  background: #000000;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid var(--border);
+  border: 1px solid var(--border);
 }
 
 .character-node-avatar img {
@@ -772,57 +781,71 @@ body {
   flex-shrink: 0;
 }
 
-/* Detail Panel Styles */
+/* Detail Panel Styles - Brutalist */
 .detail-panel {
   width: 100%;
   height: 100%;
-  background: var(--background);
+  background: #000000;
   border-left: 1px solid var(--border);
   padding: 1.5rem;
   overflow-y: auto;
 }
 
-/* Default Panel Content */
+/* Default Panel Content - Brutalist */
 .default-panel-content {
-  text-align: center;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
   padding-top: 1rem;
 }
 
 .default-panel-text {
+  grid-column: 1 / -1;
   color: var(--muted-foreground);
   font-size: 0.875rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: #000000;
+  border: 1px solid var(--border);
 }
 
 .default-panel-stats {
-  display: flex;
-  justify-content: space-around;
-  margin-bottom: 1.5rem;
+  display: contents;
 }
 
 .stat-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.25rem;
+  justify-content: center;
+  gap: 0.375rem;
+  padding: 1rem;
+  background: #000000;
+  border: 1px solid var(--border);
 }
 
 .stat-value {
+  font-family: var(--font-heading);
   font-size: 1.5rem;
-  font-weight: 600;
+  font-weight: 700;
+  color: var(--foreground);
 }
 
 .stat-label {
-  font-size: 0.75rem;
+  font-family: var(--font-ui);
+  font-size: 0.5625rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--muted-foreground);
 }
 
 .stat-item-scene .stat-value {
-  color: #14b8a6;
+  color: var(--foreground);
 }
 
 .stat-item-world .stat-value {
-  color: #8b5cf6;
+  color: var(--foreground);
 }
 
 .default-panel-connections {
@@ -831,8 +854,8 @@ body {
   align-items: center;
   gap: 0.25rem;
   padding: 1rem;
-  background: var(--muted);
-  border-radius: 0.5rem;
+  background: #000000;
+  border: 1px solid var(--border);
 }
 
 .detail-panel-header {
@@ -849,10 +872,14 @@ body {
 
 .detail-section {
   margin-bottom: 1rem;
+  padding: 1rem;
+  background: #000000;
+  border: 1px solid var(--border);
 }
 
 .detail-text {
-  font-size: 0.875rem;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
   color: var(--foreground);
   line-height: 1.6;
 }
@@ -867,30 +894,33 @@ body {
   flex: 1;
 }
 
-/* Tag List */
+/* Tag List - Brutalist */
 .tag-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.25rem;
+  gap: 0.375rem;
 }
 
 .tag {
-  background: var(--muted);
+  background: #000000;
   color: var(--foreground);
-  padding: 0.125rem 0.5rem;
-  border-radius: 9999px;
-  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--border);
+  font-family: var(--font-ui);
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
 }
 
-/* Relationship Preview */
+/* Relationship Preview - Brutalist */
 .relationship-preview {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
   padding: 1rem;
-  background: var(--muted);
-  border-radius: 0.5rem;
+  background: #000000;
+  border: 1px solid var(--border);
   margin-bottom: 1rem;
 }
 
@@ -1393,25 +1423,34 @@ body {
   padding-left: 0.5rem;
 }
 
-/* Default Panel */
+/* Default Panel - Brutalist */
 .default-panel {
   width: 100%;
   height: 100%;
-  background: var(--background);
-  border-left: 1px solid var(--border);
+  background: #000000;
   padding: 1.5rem;
 }
 
 .panel-title {
-  font-size: 1.125rem;
-  font-weight: 600;
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
 }
 
 .panel-hint {
-  font-size: 0.8rem;
+  grid-column: 1 / -1;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
   color: var(--muted-foreground);
-  margin-top: 1.5rem;
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: #000000;
+  border: 1px solid var(--border);
   line-height: 1.5;
 }
 
@@ -1949,12 +1988,15 @@ body {
   align-items: center;
   cursor: pointer;
   user-select: none;
-  padding: 0.25rem 0;
+  padding: 0.5rem 0.75rem;
+  background: #000000;
+  border: 1px solid var(--border);
+  margin-bottom: 0.5rem;
 }
 
 .subtaste-ref-toggle {
   font-size: 0.875rem;
-  color: var(--muted-foreground);
+  color: var(--foreground);
   font-weight: 600;
   width: 20px;
   text-align: center;
@@ -1964,43 +2006,41 @@ body {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-top: 0.375rem;
-  margin-bottom: 0.375rem;
+  margin-bottom: 0.5rem;
 }
 
 .subtaste-ref-tag {
-  font-family: monospace;
-  font-size: 0.7rem;
-  font-weight: 600;
-  background: var(--accent);
+  font-family: var(--font-ui);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  background: #000000;
   color: var(--foreground);
-  padding: 0.2rem 0.5rem;
-  border-radius: 0.25rem;
-  border: 1px solid var(--border);
+  padding: 0.375rem 0.625rem;
+  border: 1px solid var(--foreground);
 }
 
 .subtaste-ref-label {
+  font-family: var(--font-body);
   font-size: 0.75rem;
   color: var(--muted-foreground);
-  font-style: italic;
 }
 
 .subtaste-ref-body {
   display: flex;
   flex-direction: column;
   gap: 0;
-  background: var(--muted);
+  background: #000000;
   border: 1px solid var(--border);
-  border-radius: 0.375rem;
   overflow: hidden;
-  font-family: monospace;
+  font-family: var(--font-ui);
 }
 
 .subtaste-ref-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.375rem 0.625rem;
+  padding: 0.5rem 0.75rem;
   border-bottom: 1px solid var(--border);
 }
 
@@ -2009,26 +2049,28 @@ body {
 }
 
 .subtaste-ref-key {
-  font-size: 0.7rem;
-  font-weight: 600;
+  font-size: 0.5625rem;
+  font-weight: 700;
   color: var(--muted-foreground);
   text-transform: uppercase;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.08em;
   white-space: nowrap;
   flex-shrink: 0;
 }
 
 .subtaste-ref-val {
-  font-size: 0.7rem;
+  font-size: 0.75rem;
+  font-weight: 500;
   color: var(--foreground);
   text-align: right;
 }
 
 .subtaste-ref-dim {
   color: var(--muted-foreground);
-  font-size: 0.65rem;
+  font-size: 0.625rem;
 }
 
 .subtaste-ref-stress {
-  color: #ef4444;
+  color: var(--foreground);
+  opacity: 0.6;
 }
