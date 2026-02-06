@@ -141,6 +141,7 @@
   cursor: pointer;
   overflow: visible;
   z-index: 1;
+  text-align: center;
 }
 
 .card:hover {
