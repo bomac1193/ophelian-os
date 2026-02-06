@@ -261,14 +261,14 @@ export function SymbolLegend({ searchable = false }: SymbolLegendProps) {
             <div style={{
               padding: '1rem',
               backgroundColor: '#000000',
-              border: '1px solid var(--foreground)',
+              border: '1px solid var(--border)',
               cursor: 'pointer',
               transition: 'border-color 0.2s ease',
               minWidth: '140px',
               textAlign: 'center',
             }}
-            onMouseEnter={(e) => e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.4)'}
-            onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--foreground)'}
+            onMouseEnter={(e) => e.currentTarget.style.borderColor = 'var(--foreground)'}
+            onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--border)'}
             >
               <div style={{ fontSize: '2rem', fontWeight: 300, marginBottom: '0.25rem' }}>{imprint.symbol}</div>
               <div style={{ fontSize: '0.875rem', fontWeight: 700 }}>{subtaste?.glyph || imprint.label}</div>
@@ -285,7 +285,7 @@ export function SymbolLegend({ searchable = false }: SymbolLegendProps) {
             maxWidth: '1000px',
             margin: '0 auto 3rem',
             padding: '2rem',
-            border: '1px solid var(--foreground)',
+            border: '1px solid var(--border)',
             backgroundColor: '#000000',
           }}>
             {/* Title */}

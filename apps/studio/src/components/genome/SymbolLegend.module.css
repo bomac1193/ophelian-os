@@ -76,13 +76,13 @@
   gap: var(--space-md);
   padding: var(--space-lg);
   background: transparent;
-  border: 1px solid var(--foreground);
+  border: 1px solid var(--border);
   border-radius: 0;
   transition: border-color 0.2s ease;
 }
 
 .legendItem:hover {
-  border-color: rgba(255, 255, 255, 0.4);
+  border-color: var(--foreground);
 }
 
 .legendIcon {
@@ -97,7 +97,7 @@
   align-items: center;
   justify-content: center;
   background: transparent;
-  border: 1px solid var(--foreground);
+  border: 1px solid var(--border);
   border-radius: 0;
 }
 
@@ -134,7 +134,7 @@
 .card {
   position: relative;
   background: var(--background);
-  border: 1px solid var(--foreground);
+  border: 1px solid var(--border);
   border-radius: 0;
   padding: var(--space-lg);
   transition: border-color 0.2s ease, background 0.2s ease;
@@ -144,7 +144,7 @@
 }
 
 .card:hover {
-  border-color: rgba(255, 255, 255, 0.4);
+  border-color: var(--foreground);
   z-index: 9998;
 }
 
@@ -160,7 +160,7 @@
   display: flex;
   justify-content: center;
   padding: var(--space-md) 0;
-  border-bottom: 1px solid var(--foreground);
+  border-bottom: 1px solid var(--border);
 }
 
 /* Orisha Name & Title */
@@ -189,13 +189,13 @@
   gap: 6px;
   padding: var(--space-sm);
   background: #000000;
-  border: 1px solid var(--foreground);
+  border: 1px solid var(--border);
   border-radius: 0;
   transition: border-color 0.2s ease;
 }
 
 .keyInfo:hover {
-  border-color: rgba(255, 255, 255, 0.4);
+  border-color: var(--foreground);
 }
 
 .infoRow {
@@ -277,7 +277,7 @@
   margin-top: var(--space-3xl);
   padding: var(--space-3xl);
   background: transparent;
-  border: 1px solid var(--foreground);
+  border: 1px solid var(--border);
   border-radius: 0;
 }
 
@@ -300,13 +300,13 @@
 .guideSection {
   padding: var(--space-xl);
   background: transparent;
-  border: 1px solid var(--foreground);
+  border: 1px solid var(--border);
   border-radius: 0;
   transition: border-color 0.2s ease;
 }
 
 .guideSection:hover {
-  border-color: rgba(255, 255, 255, 0.4);
+  border-color: var(--foreground);
 }
 
 .guideSection h3 {

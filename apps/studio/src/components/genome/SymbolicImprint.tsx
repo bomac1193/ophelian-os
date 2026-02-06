@@ -29,18 +29,18 @@ export function SymbolicImprint({
     <div
       className="symbolic-imprint"
       onMouseEnter={(e) => {
-        e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.4)';
+        e.currentTarget.style.borderColor = 'var(--foreground)';
         onHover?.();
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.borderColor = 'var(--foreground)';
+        e.currentTarget.style.borderColor = 'var(--border)';
       }}
       onClick={onClick}
       style={{
         cursor: onClick ? 'pointer' : 'default',
         padding: '1.5rem',
         backgroundColor: '#000000',
-        border: '1px solid var(--foreground)',
+        border: '1px solid var(--border)',
         borderRadius: '0',
         transition: 'border-color 0.2s ease',
       }}
