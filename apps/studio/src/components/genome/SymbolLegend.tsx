@@ -8,7 +8,7 @@
 
 import React, { useState } from 'react';
 import type { OrishaName } from '@lcos/oripheon';
-import { getSymbolicImprint, ORISHA_DATA } from '@lcos/oripheon';
+import { getSymbolicImprint, ORISHA_DATA, SUBTASTE_DESIGNATIONS } from '@lcos/oripheon';
 import { EnhancedGatewayTooltip } from './EnhancedGatewayTooltip';
 import { SymbolicImprint } from './SymbolicImprint';
 import styles from './SymbolLegend.module.css';
@@ -33,12 +33,13 @@ interface SymbolCardProps {
 function SymbolCard({ orisha }: SymbolCardProps) {
   const imprint = getSymbolicImprint(orisha);
   const orishaData = ORISHA_DATA[orisha];
+  const subtaste = SUBTASTE_DESIGNATIONS[imprint.aestheticClass];
 
   return (
     <div className={styles.card}>
       <EnhancedGatewayTooltip
         orisha={orisha}
-        title={imprint.label}
+        title={subtaste?.glyph || imprint.label}
         keywords={imprint.keywords}
         essence={imprint.essence}
         creativePhase={imprint.creativePhase}
@@ -49,17 +50,17 @@ function SymbolCard({ orisha }: SymbolCardProps) {
             <SymbolicImprint
               symbol={imprint.symbol}
               primitive={imprint.primitive}
-              label={imprint.label}
+              label={subtaste?.glyph || imprint.label}
               aestheticClass={imprint.aestheticClass}
               onClick={() => {}}
             />
           </div>
 
-          {/* Orisha Name */}
-          <div className={styles.orishaName}>{orisha}</div>
+          {/* Glyph Name */}
+          <div className={styles.orishaName}>{subtaste?.glyph || imprint.label}</div>
 
-          {/* Title */}
-          <div className={styles.orishaTitle}>{orishaData.title}</div>
+          {/* Classification & Label */}
+          <div className={styles.orishaTitle}>{imprint.aestheticClass} · {subtaste?.label || ''}</div>
 
           {/* Key Info */}
           <div className={styles.keyInfo}>
@@ -255,6 +256,7 @@ export function SymbolLegend({ searchable = false }: SymbolLegendProps) {
         // Helper to render a node
         const PhaseNode = ({ orisha }: { orisha: OrishaName }) => {
           const imprint = getSymbolicImprint(orisha);
+          const subtaste = SUBTASTE_DESIGNATIONS[imprint.aestheticClass];
           return (
             <div style={{
               padding: '1rem',
@@ -262,15 +264,16 @@ export function SymbolLegend({ searchable = false }: SymbolLegendProps) {
               border: '1px solid var(--foreground)',
               cursor: 'pointer',
               transition: 'border-color 0.2s ease',
-              minWidth: '120px',
+              minWidth: '140px',
               textAlign: 'center',
             }}
             onMouseEnter={(e) => e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.4)'}
             onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--foreground)'}
             >
               <div style={{ fontSize: '2rem', fontWeight: 300, marginBottom: '0.25rem' }}>{imprint.symbol}</div>
-              <div style={{ fontSize: '0.875rem', fontWeight: 600 }}>{imprint.aestheticClass}</div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginTop: '0.25rem' }}>{imprint.label}</div>
+              <div style={{ fontSize: '0.875rem', fontWeight: 700 }}>{subtaste?.glyph || imprint.label}</div>
+              <div style={{ fontSize: '0.7rem', color: 'var(--muted-foreground)', marginTop: '0.25rem' }}>{imprint.aestheticClass}</div>
+              <div style={{ fontSize: '0.65rem', color: 'var(--muted-foreground)', marginTop: '0.25rem', opacity: 0.7 }}>{subtaste?.label || ''}</div>
             </div>
           );
         };

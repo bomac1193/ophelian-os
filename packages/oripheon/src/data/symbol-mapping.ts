@@ -20,16 +20,17 @@ export type MathSymbol = 'λ' | 'Σ' | 'Δ' | 'Ω' | 'Φ' | '∞' | 'Ψ' | 'Θ' 
 export type GeometricPrimitive = '⬡' | '●' | '▲' | '×' | '◆' | '◇' | '■' | '○' | '▶' | '+' | '≈';
 
 export type AestheticClass =
-  | 'L-0'  // Liminal/Paradox
-  | 'L-1'  // Chaotic/Threshold
-  | 'L-3'  // Industrial/Forge
-  | 'L-5'  // Predatory/Hunt
-  | 'L-6'  // Medicinal/Healing
-  | 'L-7'  // Fluid/Beauty
-  | 'L-8'  // Maternal/Nurture
-  | 'L-9'  // Regal/Sovereignty
-  | 'L-10' // Prophetic/Oracle
-  | 'L-11' // Pure/Creation';
+  | 'S-0'  // KETH - Standard-Bearer
+  | 'T-1'  // STRATA - System-Seer
+  | 'V-2'  // OMEN - Early Witness
+  | 'L-3'  // SILT - Patient Cultivator
+  | 'C-4'  // CULL - Essential Editor
+  | 'N-5'  // LIMN - Border Illuminator
+  | 'H-6'  // TOLL - Relentless Advocate
+  | 'P-7'  // VAULT - Living Archive
+  | 'D-8'  // WICK - Hollow Channel
+  | 'F-9'  // ANVIL - Manifestor
+  | 'R-10'; // SCHISM - Productive Fracture
 
 export interface SymbolicImprint {
   // Layer 1: What users see by default
@@ -56,8 +57,8 @@ export const SYMBOLIC_IMPRINTS: Record<OrishaName, SymbolicImprint> = {
   'Ògún': {
     symbol: 'λ',
     primitive: '⬡',
-    aestheticClass: 'L-3',
-    label: 'Architect',
+    aestheticClass: 'F-9',
+    label: 'ANVIL',
     keywords: ['Forge', 'Structure', 'Creation'],
     essence: 'Shapes raw material into form through will and craft',
     creativePhase: 'manifestation',
@@ -68,8 +69,8 @@ export const SYMBOLIC_IMPRINTS: Record<OrishaName, SymbolicImprint> = {
   'Ọ̀ṣun': {
     symbol: 'Σ',
     primitive: '≈',
-    aestheticClass: 'L-7',
-    label: 'Flow',
+    aestheticClass: 'N-5',
+    label: 'LIMN',
     keywords: ['Beauty', 'Attraction', 'Fluidity'],
     essence: 'Channels desire and beauty to create irresistible currents',
     creativePhase: 'flow',
@@ -80,8 +81,8 @@ export const SYMBOLIC_IMPRINTS: Record<OrishaName, SymbolicImprint> = {
   'Èṣù': {
     symbol: 'Δ',
     primitive: '×',
-    aestheticClass: 'L-1',
-    label: 'Threshold',
+    aestheticClass: 'V-2',
+    label: 'OMEN',
     keywords: ['Chaos', 'Change', 'Crossroads'],
     essence: 'Disrupts patterns to enable transformation and new possibilities',
     creativePhase: 'genesis',
@@ -92,8 +93,8 @@ export const SYMBOLIC_IMPRINTS: Record<OrishaName, SymbolicImprint> = {
   'Ṣàngó': {
     symbol: 'Ω',
     primitive: '■',
-    aestheticClass: 'L-9',
-    label: 'Sovereign',
+    aestheticClass: 'H-6',
+    label: 'TOLL',
     keywords: ['Justice', 'Thunder', 'Authority'],
     essence: 'Commands through presence and delivers swift judgment',
     creativePhase: 'vision',
@@ -104,8 +105,8 @@ export const SYMBOLIC_IMPRINTS: Record<OrishaName, SymbolicImprint> = {
   'Yemọja': {
     symbol: 'Φ',
     primitive: '●',
-    aestheticClass: 'L-8',
-    label: 'Harmonic',
+    aestheticClass: 'L-3',
+    label: 'SILT',
     keywords: ['Nurture', 'Depths', 'Mother'],
     essence: 'Holds space for all things to gestate and emerge in wholeness',
     creativePhase: 'flow',
@@ -116,8 +117,8 @@ export const SYMBOLIC_IMPRINTS: Record<OrishaName, SymbolicImprint> = {
   'Ọ̀rúnmìlà': {
     symbol: '∞',
     primitive: '◇',
-    aestheticClass: 'L-0',
-    label: 'Paradox',
+    aestheticClass: 'T-1',
+    label: 'STRATA',
     keywords: ['Fate', 'Divination', 'Wisdom'],
     essence: 'Sees all possible futures and guides through uncertainty',
     creativePhase: 'vision',
@@ -128,8 +129,8 @@ export const SYMBOLIC_IMPRINTS: Record<OrishaName, SymbolicImprint> = {
   'Obàtálá': {
     symbol: 'Θ',
     primitive: '○',
-    aestheticClass: 'L-11',
-    label: 'Void',
+    aestheticClass: 'S-0',
+    label: 'KETH',
     keywords: ['Purity', 'Creation', 'Wholeness'],
     essence: 'Manifests form from emptiness through perfect clarity',
     creativePhase: 'genesis',
@@ -140,8 +141,8 @@ export const SYMBOLIC_IMPRINTS: Record<OrishaName, SymbolicImprint> = {
   'Ọ̀ṣọ́ọ̀sì': {
     symbol: 'Ξ',
     primitive: '▶',
-    aestheticClass: 'L-5',
-    label: 'Hunter',
+    aestheticClass: 'C-4',
+    label: 'CULL',
     keywords: ['Precision', 'Wilderness', 'Focus'],
     essence: 'Tracks truth through complexity with unwavering aim',
     creativePhase: 'refinement',
@@ -152,8 +153,8 @@ export const SYMBOLIC_IMPRINTS: Record<OrishaName, SymbolicImprint> = {
   'Ọ̀sanyìn': {
     symbol: 'Π',
     primitive: '+',
-    aestheticClass: 'L-6',
-    label: 'Healer',
+    aestheticClass: 'P-7',
+    label: 'VAULT',
     keywords: ['Medicine', 'Cycles', 'Restoration'],
     essence: 'Restores balance through knowledge of natural rhythms',
     creativePhase: 'refinement',
@@ -164,8 +165,8 @@ export const SYMBOLIC_IMPRINTS: Record<OrishaName, SymbolicImprint> = {
   'Ọya': {
     symbol: 'Ψ',
     primitive: '▲',
-    aestheticClass: 'L-10',
-    label: 'Oracle',
+    aestheticClass: 'R-10',
+    label: 'SCHISM',
     keywords: ['Storm', 'Transformation', 'Death'],
     essence: 'Clears away what no longer serves to birth the new',
     creativePhase: 'genesis',
