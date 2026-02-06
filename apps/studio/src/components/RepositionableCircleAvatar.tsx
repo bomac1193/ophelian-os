@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 interface RepositionableCircleAvatarProps {
   src: string;
@@ -19,18 +19,19 @@ export function RepositionableCircleAvatar({
 }: RepositionableCircleAvatarProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
+
+  // State for UI
   const [isDragging, setIsDragging] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
+  const [currentZoom, setCurrentZoom] = useState(1);
+  const [currentPos, setCurrentPos] = useState({ x: 50, y: 50 });
 
-  // Store position in ref for fast updates during drag
-  const currentPosRef = useRef({ x: 50, y: 50 });
-  const savedPosRef = useRef({ x: 50, y: 50 });
-  const dragStartRef = useRef<{ x: number; y: number; posX: number; posY: number } | null>(null);
+  // Saved values
+  const [savedPos, setSavedPos] = useState({ x: 50, y: 50 });
+  const [savedZoom, setSavedZoom] = useState(1);
 
-  // Zoom state
-  const currentZoomRef = useRef(1);
-  const savedZoomRef = useRef(1);
-  const [zoomDisplay, setZoomDisplay] = useState(1);
+  // Drag tracking
+  const dragStart = useRef<{ mouseX: number; mouseY: number; posX: number; posY: number } | null>(null);
 
   // Parse position string like "50% 50% 1.5" into x, y, zoom
   const parsePosition = (pos: string): { x: number; y: number; zoom: number } => {
@@ -42,202 +43,103 @@ export function RepositionableCircleAvatar({
     };
   };
 
-  // Initialize position from prop
+  // Initialize from prop
   useEffect(() => {
     const parsed = parsePosition(position);
-    currentPosRef.current = { x: parsed.x, y: parsed.y };
-    savedPosRef.current = { x: parsed.x, y: parsed.y };
-    currentZoomRef.current = parsed.zoom;
-    savedZoomRef.current = parsed.zoom;
-    setZoomDisplay(parsed.zoom);
-    if (imgRef.current) {
-      imgRef.current.style.objectPosition = `${parsed.x}% ${parsed.y}%`;
-      imgRef.current.style.transform = `scale(${parsed.zoom})`;
-    }
+    setCurrentPos({ x: parsed.x, y: parsed.y });
+    setSavedPos({ x: parsed.x, y: parsed.y });
+    setCurrentZoom(parsed.zoom);
+    setSavedZoom(parsed.zoom);
     setHasChanges(false);
   }, [position]);
 
-  // Apply position and zoom directly to DOM for instant feedback
-  const applyPosition = useCallback((x: number, y: number, zoom?: number) => {
-    if (imgRef.current) {
-      imgRef.current.style.objectPosition = `${x}% ${y}%`;
-      if (zoom !== undefined) {
-        imgRef.current.style.transform = `scale(${zoom})`;
-      }
-    }
-  }, []);
+  // Check if there are unsaved changes
+  const checkChanges = (pos: { x: number; y: number }, zoom: number) => {
+    const changed =
+      Math.abs(pos.x - savedPos.x) > 0.5 ||
+      Math.abs(pos.y - savedPos.y) > 0.5 ||
+      Math.abs(zoom - savedZoom) > 0.05;
+    setHasChanges(changed);
+  };
 
-  // Handle mouse wheel for zoom (hold Shift for fine control)
-  const handleWheel = useCallback(
-    (e: React.WheelEvent) => {
-      if (disabled) return;
-      e.preventDefault();
+  // Mouse down - start drag
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (disabled) return;
+    e.preventDefault();
+    e.stopPropagation();
 
-      // Fine control with Shift key (0.02), normal is 0.1
-      const zoomSpeed = e.shiftKey ? 0.02 : 0.1;
-      const delta = e.deltaY > 0 ? -zoomSpeed : zoomSpeed;
-      const newZoom = Math.max(0.5, Math.min(3, currentZoomRef.current + delta));
+    dragStart.current = {
+      mouseX: e.clientX,
+      mouseY: e.clientY,
+      posX: currentPos.x,
+      posY: currentPos.y,
+    };
+    setIsDragging(true);
+  };
 
-      currentZoomRef.current = newZoom;
-      setZoomDisplay(newZoom);
-      applyPosition(currentPosRef.current.x, currentPosRef.current.y, newZoom);
-
-      const hasChanged =
-        Math.abs(currentZoomRef.current - savedZoomRef.current) > 0.05 ||
-        Math.abs(currentPosRef.current.x - savedPosRef.current.x) > 0.5 ||
-        Math.abs(currentPosRef.current.y - savedPosRef.current.y) > 0.5;
-      setHasChanges(hasChanged);
-    },
-    [disabled, applyPosition]
-  );
-
-  const handleMouseDown = useCallback(
-    (e: React.MouseEvent) => {
-      if (disabled) return;
-      e.preventDefault();
-      dragStartRef.current = {
-        x: e.clientX,
-        y: e.clientY,
-        posX: currentPosRef.current.x,
-        posY: currentPosRef.current.y,
-      };
-      setIsDragging(true);
-    },
-    [disabled]
-  );
-
-  const handleMouseMove = useCallback(
-    (e: MouseEvent) => {
-      if (!dragStartRef.current || !containerRef.current) return;
-
-      const rect = containerRef.current.getBoundingClientRect();
-
-      // Calculate delta as percentage of container size (scaled up for faster movement)
-      const sensitivity = 1.5;
-      const deltaX = ((e.clientX - dragStartRef.current.x) / rect.width) * 100 * sensitivity;
-      const deltaY = ((e.clientY - dragStartRef.current.y) / rect.height) * 100 * sensitivity;
-
-      // Invert the delta because we're moving the image, not the viewport
-      const newX = Math.max(0, Math.min(100, dragStartRef.current.posX - deltaX));
-      const newY = Math.max(0, Math.min(100, dragStartRef.current.posY - deltaY));
-
-      currentPosRef.current = { x: newX, y: newY };
-
-      // Direct DOM manipulation for instant feedback
-      applyPosition(newX, newY, currentZoomRef.current);
-
-      // Update hasChanges during drag for visual feedback
-      const hasChanged =
-        Math.abs(currentPosRef.current.x - savedPosRef.current.x) > 0.5 ||
-        Math.abs(currentPosRef.current.y - savedPosRef.current.y) > 0.5 ||
-        Math.abs(currentZoomRef.current - savedZoomRef.current) > 0.05;
-      setHasChanges(hasChanged);
-    },
-    [applyPosition]
-  );
-
-  const handleMouseUp = useCallback(() => {
-    if (dragStartRef.current) {
-      const hasChanged =
-        Math.abs(currentPosRef.current.x - savedPosRef.current.x) > 0.5 ||
-        Math.abs(currentPosRef.current.y - savedPosRef.current.y) > 0.5 ||
-        Math.abs(currentZoomRef.current - savedZoomRef.current) > 0.05;
-      setHasChanges(hasChanged);
-    }
-    setIsDragging(false);
-    dragStartRef.current = null;
-  }, []);
-
-  // Touch event handlers
-  const handleTouchStart = useCallback(
-    (e: React.TouchEvent) => {
-      if (disabled) return;
-      const touch = e.touches[0];
-      if (!touch) return;
-      dragStartRef.current = {
-        x: touch.clientX,
-        y: touch.clientY,
-        posX: currentPosRef.current.x,
-        posY: currentPosRef.current.y,
-      };
-      setIsDragging(true);
-    },
-    [disabled]
-  );
-
-  const handleTouchMove = useCallback(
-    (e: TouchEvent) => {
-      if (!dragStartRef.current || !containerRef.current) return;
-      e.preventDefault();
-
-      const touch = e.touches[0];
-      if (!touch) return;
-
-      const rect = containerRef.current.getBoundingClientRect();
-      const sensitivity = 1.5;
-
-      const deltaX = ((touch.clientX - dragStartRef.current.x) / rect.width) * 100 * sensitivity;
-      const deltaY = ((touch.clientY - dragStartRef.current.y) / rect.height) * 100 * sensitivity;
-
-      const newX = Math.max(0, Math.min(100, dragStartRef.current.posX - deltaX));
-      const newY = Math.max(0, Math.min(100, dragStartRef.current.posY - deltaY));
-
-      currentPosRef.current = { x: newX, y: newY };
-      applyPosition(newX, newY, currentZoomRef.current);
-
-      // Update hasChanges during drag for visual feedback
-      const hasChanged =
-        Math.abs(currentPosRef.current.x - savedPosRef.current.x) > 0.5 ||
-        Math.abs(currentPosRef.current.y - savedPosRef.current.y) > 0.5 ||
-        Math.abs(currentZoomRef.current - savedZoomRef.current) > 0.05;
-      setHasChanges(hasChanged);
-    },
-    [applyPosition]
-  );
-
-  const handleTouchEnd = useCallback(() => {
-    if (dragStartRef.current) {
-      const hasChanged =
-        Math.abs(currentPosRef.current.x - savedPosRef.current.x) > 0.5 ||
-        Math.abs(currentPosRef.current.y - savedPosRef.current.y) > 0.5 ||
-        Math.abs(currentZoomRef.current - savedZoomRef.current) > 0.05;
-      setHasChanges(hasChanged);
-    }
-    setIsDragging(false);
-    dragStartRef.current = null;
-  }, []);
-
-  // Add/remove global event listeners
+  // Global mouse move and mouse up
   useEffect(() => {
-    if (isDragging) {
-      window.addEventListener('mousemove', handleMouseMove);
-      window.addEventListener('mouseup', handleMouseUp);
-      window.addEventListener('touchmove', handleTouchMove, { passive: false });
-      window.addEventListener('touchend', handleTouchEnd);
-    }
+    if (!isDragging) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!dragStart.current || !containerRef.current) return;
+
+      e.preventDefault();
+
+      const rect = containerRef.current.getBoundingClientRect();
+      const sensitivity = 2;
+
+      const deltaX = ((e.clientX - dragStart.current.mouseX) / rect.width) * 100 * sensitivity;
+      const deltaY = ((e.clientY - dragStart.current.mouseY) / rect.height) * 100 * sensitivity;
+
+      // Invert because we're moving the image focal point
+      const newX = Math.max(0, Math.min(100, dragStart.current.posX - deltaX));
+      const newY = Math.max(0, Math.min(100, dragStart.current.posY - deltaY));
+
+      const newPos = { x: newX, y: newY };
+      setCurrentPos(newPos);
+      checkChanges(newPos, currentZoom);
+    };
+
+    const handleMouseUp = () => {
+      dragStart.current = null;
+      setIsDragging(false);
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseup', handleMouseUp);
-      window.removeEventListener('touchmove', handleTouchMove);
-      window.removeEventListener('touchend', handleTouchEnd);
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
     };
-  }, [isDragging, handleMouseMove, handleMouseUp, handleTouchMove, handleTouchEnd]);
+  }, [isDragging, currentZoom, savedPos, savedZoom]);
 
+  // Wheel zoom
+  const handleWheel = (e: React.WheelEvent) => {
+    if (disabled) return;
+    e.preventDefault();
+
+    const zoomSpeed = e.shiftKey ? 0.02 : 0.1;
+    const delta = e.deltaY > 0 ? -zoomSpeed : zoomSpeed;
+    const newZoom = Math.max(0.5, Math.min(3, currentZoom + delta));
+
+    setCurrentZoom(newZoom);
+    checkChanges(currentPos, newZoom);
+  };
+
+  // Save
   const handleSave = () => {
-    const pos = currentPosRef.current;
-    const zoom = currentZoomRef.current;
-    savedPosRef.current = { ...pos };
-    savedZoomRef.current = zoom;
-    onPositionChange(`${Math.round(pos.x)}% ${Math.round(pos.y)}% ${zoom.toFixed(2)}`);
+    setSavedPos({ ...currentPos });
+    setSavedZoom(currentZoom);
+    onPositionChange(`${Math.round(currentPos.x)}% ${Math.round(currentPos.y)}% ${currentZoom.toFixed(2)}`);
     setHasChanges(false);
   };
 
+  // Reset
   const handleReset = () => {
-    currentPosRef.current = { ...savedPosRef.current };
-    currentZoomRef.current = savedZoomRef.current;
-    setZoomDisplay(savedZoomRef.current);
-    applyPosition(savedPosRef.current.x, savedPosRef.current.y, savedZoomRef.current);
+    setCurrentPos({ ...savedPos });
+    setCurrentZoom(savedZoom);
     setHasChanges(false);
   };
 
@@ -247,7 +149,6 @@ export function RepositionableCircleAvatar({
         <div
           ref={containerRef}
           onMouseDown={handleMouseDown}
-          onTouchStart={handleTouchStart}
           onWheel={handleWheel}
           style={{
             width: `${size}px`,
@@ -255,10 +156,10 @@ export function RepositionableCircleAvatar({
             borderRadius: '50%',
             overflow: 'hidden',
             cursor: disabled ? 'default' : isDragging ? 'grabbing' : 'grab',
-            border: hasChanges ? '1px solid var(--foreground)' : '1px solid var(--border)',
+            border: hasChanges || isDragging ? '1px solid var(--foreground)' : '1px solid var(--border)',
             backgroundColor: 'var(--muted)',
             position: 'relative',
-            touchAction: 'none',
+            userSelect: 'none',
           }}
         >
           <img
@@ -270,11 +171,10 @@ export function RepositionableCircleAvatar({
               width: '100%',
               height: '100%',
               objectFit: 'cover',
-              objectPosition: `${currentPosRef.current.x}% ${currentPosRef.current.y}%`,
-              transform: `scale(${currentZoomRef.current})`,
+              objectPosition: `${currentPos.x}% ${currentPos.y}%`,
+              transform: `scale(${currentZoom})`,
               userSelect: 'none',
               pointerEvents: 'none',
-              willChange: 'object-position, transform',
             }}
           />
         </div>
@@ -287,7 +187,7 @@ export function RepositionableCircleAvatar({
               alignItems: 'center',
             }}
           >
-            {!hasChanges && (
+            {!hasChanges && !isDragging && (
               <div
                 style={{
                   color: 'var(--muted-foreground)',
@@ -302,7 +202,7 @@ export function RepositionableCircleAvatar({
                 Drag · Scroll · ⇧ Fine
               </div>
             )}
-            {hasChanges && (
+            {(hasChanges || isDragging) && (
               <div
                 style={{
                   color: 'var(--foreground)',
@@ -313,7 +213,7 @@ export function RepositionableCircleAvatar({
                   borderRadius: '0',
                 }}
               >
-                {Math.round(zoomDisplay * 100)}%
+                {Math.round(currentZoom * 100)}%
               </div>
             )}
           </div>
