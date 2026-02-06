@@ -90,33 +90,27 @@ function SymbolCard({ orisha }: SymbolCardProps) {
   );
 }
 
-// Tree of Life positions for each Sephira
-const SEPHIRA_POSITIONS: Record<string, { x: number; y: number; name: string }> = {
-  'Kether': { x: 50, y: 5, name: 'Crown' },
-  'Chokmah': { x: 75, y: 15, name: 'Wisdom' },
-  'Binah': { x: 25, y: 15, name: 'Understanding' },
-  'Daath': { x: 50, y: 25, name: 'Knowledge' },
-  'Chesed': { x: 75, y: 35, name: 'Mercy' },
-  'Geburah': { x: 25, y: 35, name: 'Severity' },
-  'Tiphareth': { x: 50, y: 45, name: 'Beauty' },
-  'Netzach': { x: 75, y: 60, name: 'Victory' },
-  'Hod': { x: 25, y: 60, name: 'Splendor' },
-  'Yesod': { x: 50, y: 75, name: 'Foundation' },
-  'Malkuth': { x: 50, y: 92, name: 'Kingdom' },
+// Creative Phase descriptions
+const CREATIVE_PHASES: Record<string, { label: string; description: string }> = {
+  'genesis': { label: 'Genesis', description: 'Origin point — where new patterns emerge from chaos' },
+  'vision': { label: 'Vision', description: 'Clarity forms — seeing what could be' },
+  'refinement': { label: 'Refinement', description: 'Honing the craft — precision and mastery' },
+  'manifestation': { label: 'Manifestation', description: 'Bringing form — will into reality' },
+  'flow': { label: 'Flow', description: 'Sustaining force — continuous creation' },
 };
 
-// Map Orisha to their Sephira
-const ORISHA_SEPHIRA: Record<OrishaName, string> = {
-  'Ọ̀rúnmìlà': 'Kether',
-  'Obàtálá': 'Kether',
-  'Ọya': 'Chokmah',
-  'Yemọja': 'Binah',
-  'Èṣù': 'Daath',
-  'Ògún': 'Geburah',
-  'Ṣàngó': 'Tiphareth',
-  'Ọ̀ṣun': 'Netzach',
-  'Ọ̀ṣọ́ọ̀sì': 'Hod',
-  'Ọ̀sanyìn': 'Yesod',
+// Map Orisha to their Creative Phase
+const ORISHA_PHASES: Record<OrishaName, string> = {
+  'Èṣù': 'genesis',
+  'Obàtálá': 'genesis',
+  'Ọya': 'genesis',
+  'Ṣàngó': 'vision',
+  'Ọ̀rúnmìlà': 'vision',
+  'Ọ̀ṣọ́ọ̀sì': 'refinement',
+  'Ọ̀sanyìn': 'refinement',
+  'Ògún': 'manifestation',
+  'Ọ̀ṣun': 'flow',
+  'Yemọja': 'flow',
 };
 
 interface SymbolLegendProps {
@@ -228,7 +222,7 @@ export function SymbolLegend({ searchable = false }: SymbolLegendProps) {
             transition: 'all 0.2s ease',
           }}
         >
-          Tree of Life
+          Creative Phases
         </button>
       </div>
 
@@ -256,44 +250,36 @@ export function SymbolLegend({ searchable = false }: SymbolLegendProps) {
         </>
       )}
 
-      {/* Tree of Life View - Clean Grid Layout */}
+      {/* Creative Phase Constellation View */}
       {viewMode === 'tree' && (() => {
         // Helper to render a node
-        const TreeNode = ({ orisha, sephira }: { orisha: OrishaName; sephira: string }) => {
+        const PhaseNode = ({ orisha }: { orisha: OrishaName }) => {
           const imprint = getSymbolicImprint(orisha);
           return (
-            <div style={{ textAlign: 'center' }}>
-              <div style={{
-                padding: '1rem',
-                backgroundColor: '#000000',
-                border: '1px solid var(--foreground)',
-                cursor: 'pointer',
-                transition: 'border-color 0.2s ease',
-                minWidth: '100px',
-              }}
-              onMouseEnter={(e) => e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.4)'}
-              onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--foreground)'}
-              >
-                <div style={{ fontSize: '2rem', fontWeight: 300, marginBottom: '0.25rem' }}>{imprint.symbol}</div>
-                <div style={{ fontSize: '0.875rem', fontWeight: 600 }}>{imprint.aestheticClass}</div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginTop: '0.25rem' }}>{imprint.label}</div>
-              </div>
-              <div style={{
-                fontSize: '0.625rem',
-                color: 'var(--muted-foreground)',
-                marginTop: '0.5rem',
-                textTransform: 'uppercase',
-                letterSpacing: '0.1em',
-              }}>
-                {sephira}
-              </div>
+            <div style={{
+              padding: '1rem',
+              backgroundColor: '#000000',
+              border: '1px solid var(--foreground)',
+              cursor: 'pointer',
+              transition: 'border-color 0.2s ease',
+              minWidth: '120px',
+              textAlign: 'center',
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.4)'}
+            onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--foreground)'}
+            >
+              <div style={{ fontSize: '2rem', fontWeight: 300, marginBottom: '0.25rem' }}>{imprint.symbol}</div>
+              <div style={{ fontSize: '0.875rem', fontWeight: 600 }}>{imprint.aestheticClass}</div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginTop: '0.25rem' }}>{imprint.label}</div>
             </div>
           );
         };
 
+        const phaseOrder = ['genesis', 'vision', 'refinement', 'manifestation', 'flow'];
+
         return (
           <div style={{
-            maxWidth: '900px',
+            maxWidth: '1000px',
             margin: '0 auto 3rem',
             padding: '2rem',
             border: '1px solid var(--foreground)',
@@ -306,84 +292,96 @@ export function SymbolLegend({ searchable = false }: SymbolLegendProps) {
               textTransform: 'uppercase',
               letterSpacing: '0.1em',
               color: 'var(--muted-foreground)',
-              marginBottom: '2rem',
+              marginBottom: '0.5rem',
               textAlign: 'center',
             }}>
-              Tree of Life - Kabbalistic Arrangement
+              Creative Phase Constellation
             </h3>
+            <p style={{
+              fontSize: '0.75rem',
+              color: 'var(--muted-foreground)',
+              textAlign: 'center',
+              marginBottom: '2rem',
+              opacity: 0.7,
+            }}>
+              The cycle of creation — from origin to sustaining force
+            </p>
 
-            {/* Row 1: Kether (Crown) - Two Orishas share this */}
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', marginBottom: '2rem' }}>
-              <TreeNode orisha="Ọ̀rúnmìlà" sephira="Kether" />
-              <TreeNode orisha="Obàtálá" sephira="Kether" />
+            {/* Phase Rows */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+              {phaseOrder.map((phase) => {
+                const phaseInfo = CREATIVE_PHASES[phase];
+                const orishasInPhase = ALL_ORISHAS.filter(o => ORISHA_PHASES[o] === phase);
+
+                return (
+                  <div key={phase} style={{
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: '2rem',
+                    padding: '1.5rem',
+                    borderBottom: phase !== 'flow' ? '1px solid var(--border)' : 'none',
+                  }}>
+                    {/* Phase Label */}
+                    <div style={{ minWidth: '140px', flexShrink: 0 }}>
+                      <div style={{
+                        fontSize: '0.875rem',
+                        fontWeight: 700,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.1em',
+                        marginBottom: '0.25rem',
+                      }}>
+                        {phaseInfo.label}
+                      </div>
+                      <div style={{
+                        fontSize: '0.7rem',
+                        color: 'var(--muted-foreground)',
+                        lineHeight: 1.4,
+                      }}>
+                        {phaseInfo.description}
+                      </div>
+                    </div>
+
+                    {/* Phase Nodes */}
+                    <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                      {orishasInPhase.map((orisha) => (
+                        <PhaseNode key={orisha} orisha={orisha} />
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
 
-            {/* Row 2: Chokmah & Binah (Supernal) */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', maxWidth: '600px', margin: '0 auto 2rem' }}>
-              <TreeNode orisha="Yemọja" sephira="Binah" />
-              <TreeNode orisha="Ọya" sephira="Chokmah" />
-            </div>
-
-            {/* Row 3: Daath (Knowledge/Abyss) */}
-            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '2rem' }}>
-              <TreeNode orisha="Èṣù" sephira="Daath" />
-            </div>
-
-            {/* Row 4: Geburah & Chesed */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', maxWidth: '600px', margin: '0 auto 2rem' }}>
-              <TreeNode orisha="Ògún" sephira="Geburah" />
-              <div style={{ width: '100px' }} /> {/* Spacer for Chesed - no Orisha assigned */}
-            </div>
-
-            {/* Row 5: Tiphareth (Beauty/Center) */}
-            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '2rem' }}>
-              <TreeNode orisha="Ṣàngó" sephira="Tiphareth" />
-            </div>
-
-            {/* Row 6: Hod & Netzach */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', maxWidth: '600px', margin: '0 auto 2rem' }}>
-              <TreeNode orisha="Ọ̀ṣọ́ọ̀sì" sephira="Hod" />
-              <TreeNode orisha="Ọ̀ṣun" sephira="Netzach" />
-            </div>
-
-            {/* Row 7: Yesod (Foundation) */}
-            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '2rem' }}>
-              <TreeNode orisha="Ọ̀sanyìn" sephira="Yesod" />
-            </div>
-
-            {/* Pillar Labels */}
+            {/* Flow Arrow Indicator */}
             <div style={{
               display: 'flex',
-              justifyContent: 'space-between',
-              maxWidth: '700px',
-              margin: '2rem auto 0',
-              padding: '1rem 0',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: '1rem',
+              marginTop: '2rem',
+              paddingTop: '1.5rem',
               borderTop: '1px solid var(--border)',
             }}>
-              <div style={{ textAlign: 'center', flex: 1 }}>
-                <div style={{ fontSize: '0.625rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--muted-foreground)' }}>
-                  Pillar of Severity
-                </div>
-                <div style={{ fontSize: '0.5rem', color: 'var(--muted-foreground)', marginTop: '0.25rem' }}>
-                  Binah · Geburah · Hod
-                </div>
-              </div>
-              <div style={{ textAlign: 'center', flex: 1 }}>
-                <div style={{ fontSize: '0.625rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--muted-foreground)' }}>
-                  Pillar of Balance
-                </div>
-                <div style={{ fontSize: '0.5rem', color: 'var(--muted-foreground)', marginTop: '0.25rem' }}>
-                  Kether · Daath · Tiphareth · Yesod
-                </div>
-              </div>
-              <div style={{ textAlign: 'center', flex: 1 }}>
-                <div style={{ fontSize: '0.625rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--muted-foreground)' }}>
-                  Pillar of Mercy
-                </div>
-                <div style={{ fontSize: '0.5rem', color: 'var(--muted-foreground)', marginTop: '0.25rem' }}>
-                  Chokmah · Chesed · Netzach
-                </div>
-              </div>
+              <span style={{ fontSize: '0.625rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--muted-foreground)' }}>
+                Genesis
+              </span>
+              <span style={{ color: 'var(--muted-foreground)' }}>→</span>
+              <span style={{ fontSize: '0.625rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--muted-foreground)' }}>
+                Vision
+              </span>
+              <span style={{ color: 'var(--muted-foreground)' }}>→</span>
+              <span style={{ fontSize: '0.625rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--muted-foreground)' }}>
+                Refinement
+              </span>
+              <span style={{ color: 'var(--muted-foreground)' }}>→</span>
+              <span style={{ fontSize: '0.625rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--muted-foreground)' }}>
+                Manifestation
+              </span>
+              <span style={{ color: 'var(--muted-foreground)' }}>→</span>
+              <span style={{ fontSize: '0.625rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--muted-foreground)' }}>
+                Flow
+              </span>
+              <span style={{ color: 'var(--muted-foreground)' }}>↻</span>
             </div>
           </div>
         );
@@ -413,8 +411,8 @@ export function SymbolLegend({ searchable = false }: SymbolLegendProps) {
             <h3>Layer 3: Depths</h3>
             <p>
               After creating 3 characters or spending 7 days in the system, unlock
-              Advanced View to see the complete mythology: full Orisha configurations,
-              Kabbalistic correspondences, and multi-modal signatures.
+              Advanced View to see the complete archetype data: full configurations,
+              sacred correspondences, and multi-modal signatures.
             </p>
           </div>
         </div>
