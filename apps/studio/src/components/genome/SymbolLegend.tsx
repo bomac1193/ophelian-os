@@ -168,7 +168,7 @@ export function SymbolLegend({ searchable = false }: SymbolLegendProps) {
           <div className={styles.legendIcon}>λ</div>
           <div className={styles.legendText}>
             <strong>Mathematical Symbol</strong>
-            <span>Represents the Orisha's core essence</span>
+            <span>Core essence expressed through notation</span>
           </div>
         </div>
         <div className={styles.legendItem}>
@@ -179,10 +179,10 @@ export function SymbolLegend({ searchable = false }: SymbolLegendProps) {
           </div>
         </div>
         <div className={styles.legendItem}>
-          <div className={styles.legendIcon}>L-3</div>
+          <div className={styles.legendIcon}>F-9</div>
           <div className={styles.legendText}>
-            <strong>Aesthetic Class</strong>
-            <span>L-0 to L-11, each with unique qualities</span>
+            <strong>Classification Code</strong>
+            <span>THE TWELVE: S, T, V, L, C, N, H, P, D, F, R</span>
           </div>
         </div>
       </div>
@@ -398,16 +398,17 @@ export function SymbolLegend({ searchable = false }: SymbolLegendProps) {
             <h3>Layer 1: Surface</h3>
             <p>
               Every character displays their imprint upfront: a mathematical symbol
-              paired with a geometric primitive, plus their L-class aesthetic classification.
-              This is your first clue to their creative archetype.
+              paired with a geometric primitive. The glyph name (ANVIL, OMEN, VAULT)
+              and classification code (F-9, V-2, P-7) reveal their creative archetype
+              within THE TWELVE pantheon.
             </p>
           </div>
           <div className={styles.guideSection}>
             <h3>Layer 2: Gateway</h3>
             <p>
               Hover over any symbol to reveal keywords and essence. Click to expand
-              and discover sacred correspondences, actionable insights, and deeper context
-              about the Orisha's creative energy.
+              and discover the archetype's creative mode, shadow tendencies, and
+              recognition patterns. Each glyph carries distinct creative energy.
             </p>
           </div>
           <div className={styles.guideSection}>
@@ -415,7 +416,7 @@ export function SymbolLegend({ searchable = false }: SymbolLegendProps) {
             <p>
               After creating 3 characters or spending 7 days in the system, unlock
               Advanced View to see the complete archetype data: full configurations,
-              sacred correspondences, and multi-modal signatures.
+              psychometric foundations, and multi-modal signatures.
             </p>
           </div>
         </div>
