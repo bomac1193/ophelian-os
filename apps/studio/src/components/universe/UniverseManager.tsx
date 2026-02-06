@@ -114,7 +114,7 @@ export function UniverseManager() {
             </button>
           </div>
           <button onClick={() => setIsCreateModalOpen(true)} className={styles.createButton}>
-            + Create Universe
+            Create Universe
           </button>
         </div>
       </div>

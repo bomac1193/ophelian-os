@@ -131,7 +131,7 @@ export function NewWorldModal({ isOpen, onClose, onCreate }: NewWorldModalProps)
                 style={{ width: '100%' }}
                 onClick={() => setShowTemplateSelector(true)}
               >
-                + Add Story Template
+                Add Story Template
               </button>
             ) : (
               <div style={{ border: '1px solid var(--border)', borderRadius: '8px', padding: '0.75rem' }}>

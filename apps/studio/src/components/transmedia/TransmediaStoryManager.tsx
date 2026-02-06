@@ -114,7 +114,7 @@ export function TransmediaStoryManager({ characterId, characterName }: Transmedi
           </p>
         </div>
         <button onClick={() => setIsCreateModalOpen(true)} className={styles.createButton}>
-          + Create Story
+          Create Story
         </button>
       </div>
 
