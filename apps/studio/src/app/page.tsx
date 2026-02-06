@@ -66,19 +66,6 @@ function CharacterCard({ character }: { character: Character }) {
             marginTop: '1rem',
             flexWrap: 'wrap',
           }}>
-            {classification && (
-              <span style={{
-                padding: '0.25rem 0.75rem',
-                border: '1px solid var(--foreground)',
-                borderRadius: '0',
-                fontSize: '0.75rem',
-                fontWeight: 500,
-                color: 'var(--foreground)',
-                backgroundColor: 'transparent',
-              }}>
-                {classification}
-              </span>
-            )}
             {archetype && (
               <span style={{
                 padding: '0.25rem 0.75rem',
@@ -90,6 +77,19 @@ function CharacterCard({ character }: { character: Character }) {
                 backgroundColor: 'transparent',
               }}>
                 {archetype}
+              </span>
+            )}
+            {classification && (
+              <span style={{
+                padding: '0.25rem 0.75rem',
+                border: '1px solid var(--foreground)',
+                borderRadius: '0',
+                fontSize: '0.75rem',
+                fontWeight: 500,
+                color: 'var(--foreground)',
+                backgroundColor: 'transparent',
+              }}>
+                {classification}
               </span>
             )}
           </div>
