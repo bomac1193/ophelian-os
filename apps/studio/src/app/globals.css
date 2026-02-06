@@ -150,10 +150,10 @@ body {
   font-family: var(--font-body);
   font-size: 14px;
   font-weight: 600;
-  background: var(--foreground);
+  background: #000000;
   border: none;
   border-radius: 0;
-  color: var(--background);
+  color: #FFFFFF;
   cursor: pointer;
   transition: all 0.2s ease;
   text-transform: none;
@@ -161,32 +161,32 @@ body {
 }
 
 .btn:hover:not(:disabled) {
-  background: var(--muted-foreground);
+  background: #1A1A1A;
 }
 
 .btn-primary {
-  background: var(--foreground);
+  background: #000000;
   border: none;
-  color: var(--background);
+  color: #FFFFFF;
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: var(--muted-foreground);
+  background: #1A1A1A;
 }
 
 .btn-secondary {
-  background: var(--foreground);
+  background: #000000;
   border: none;
-  color: var(--background);
+  color: #FFFFFF;
 }
 
 .btn-secondary:hover:not(:disabled) {
-  background: var(--muted-foreground);
+  background: #1A1A1A;
 }
 
 .btn-sm {
   padding: 0.5rem 1rem;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .btn:disabled {
@@ -1004,13 +1004,13 @@ body {
 
 /* Danger Button */
 .btn-danger {
-  background: var(--error);
+  background: #000000;
   border: none;
-  color: var(--background);
+  color: #DC143C;
 }
 
 .btn-danger:hover:not(:disabled) {
-  opacity: 0.8;
+  background: #1A1A1A;
 }
 
 /* Modal Actions */

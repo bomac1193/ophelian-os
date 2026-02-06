@@ -101,7 +101,7 @@
 }
 
 .removeButton:hover {
-  background: var(--muted-foreground);
+  background: #1A1A1A;
 }
 
 
@@ -121,7 +121,7 @@
 }
 
 .consentNote {
-  font-size: 13px;
+  font-size: 14px;
   color: #a8b2d1;
   margin: 0 0 16px 0;
   font-style: italic;
@@ -140,7 +140,7 @@
 }
 
 .fieldLabel {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   color: #ccd6f6;
 }
@@ -201,7 +201,7 @@
 }
 
 .generateButton {
-  background: var(--background);
+  background: #000000;
   border: none;
   border-radius: 0;
   font-family: var(--font-body);
@@ -316,7 +316,7 @@
 }
 
 .downloadButton:hover {
-  background: var(--muted-foreground);
+  background: #1A1A1A;
 }
 
 
@@ -330,7 +330,7 @@
 
 .infoText {
   margin: 0;
-  font-size: 13px;
+  font-size: 14px;
   color: #a8b2d1;
   text-align: center;
 }

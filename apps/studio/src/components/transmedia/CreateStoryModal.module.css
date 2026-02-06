@@ -40,7 +40,7 @@
 .title {
   font-size: 20px;
   font-weight: 600;
-  color: var(--foreground);
+  color: #FFFFFF;
   margin: 0;
 }
 
@@ -61,7 +61,7 @@
 }
 
 .closeButton:hover {
-  background: var(--muted-foreground);
+  background: #1A1A1A;
 }
 
 
@@ -87,7 +87,7 @@
 .label {
   font-size: 14px;
   font-weight: 600;
-  color: var(--foreground);
+  color: #FFFFFF;
 }
 
 .required {
@@ -100,7 +100,7 @@
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
-  color: var(--foreground);
+  color: #FFFFFF;
   font-size: 14px;
   font-family: inherit;
   transition: all 0.2s ease;
@@ -144,7 +144,7 @@
 }
 
 .optionCard:hover {
-  background: var(--muted-foreground);
+  background: #1A1A1A;
 }
 
 
@@ -160,9 +160,9 @@
 }
 
 .optionLabel {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
-  color: var(--foreground);
+  color: #FFFFFF;
   text-align: center;
 }
 
@@ -204,7 +204,7 @@
 }
 
 .submitButton {
-  background: var(--background);
+  background: #000000;
   border: none;
   border-radius: 0;
   font-family: var(--font-body);

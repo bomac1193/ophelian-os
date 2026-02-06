@@ -54,7 +54,7 @@
 }
 
 .providerNote {
-  font-size: 12px;
+  font-size: 14px;
   color: #8892b0;
   margin: 4px 0 8px 0;
   font-style: italic;
@@ -84,7 +84,7 @@
 }
 
 .providerButton.active {
-  background: var(--background);
+  background: #000000;
   border: none;
   border-radius: 0;
   font-family: var(--font-body);
@@ -136,14 +136,14 @@
 
 .controlLabel {
   display: block;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   color: #a8b2d1;
   margin-bottom: 6px;
 }
 
 .controlHint {
-  font-size: 11px;
+  font-size: 14px;
   color: #8892b0;
   margin: 4px 0 0 0;
   font-style: italic;
@@ -182,7 +182,7 @@
   appearance: none;
   width: 18px;
   height: 18px;
-  background: var(--background);
+  background: #000000;
   border-radius: 0;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -195,7 +195,7 @@
 .slider::-moz-range-thumb {
   width: 18px;
   height: 18px;
-  background: var(--background);
+  background: #000000;
   border-radius: 0;
   cursor: pointer;
   border: none;
@@ -207,7 +207,7 @@
 }
 
 .generateButton {
-  background: var(--background);
+  background: #000000;
   border: none;
   border-radius: 0;
   font-family: var(--font-body);
@@ -285,7 +285,7 @@
   border-radius: 6px;
   color: #64ffda;
   text-decoration: none;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   transition: all 0.2s ease;
 }
@@ -305,7 +305,7 @@
 
 .infoText {
   margin: 0;
-  font-size: 13px;
+  font-size: 14px;
   color: #a8b2d1;
   line-height: 1.6;
 }
@@ -315,6 +315,6 @@
   padding: 2px 6px;
   border-radius: 4px;
   font-family: 'Courier New', monospace;
-  font-size: 12px;
+  font-size: 14px;
   color: #64ffda;
 }

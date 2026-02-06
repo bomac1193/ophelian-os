@@ -14,7 +14,7 @@
 .title {
   font-size: 22px;
   font-weight: 600;
-  color: var(--foreground);
+  color: #FFFFFF;
   margin: 0 0 6px 0;
 }
 
@@ -44,7 +44,7 @@
   border: none;
   border-radius: 6px;
   color: var(--muted-foreground);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -55,7 +55,7 @@
 }
 
 .viewButton.active {
-  background: var(--background);
+  background: #000000;
   border: none;
   border-radius: 0;
   font-family: var(--font-body);
@@ -64,7 +64,7 @@
 
 
 .createButton {
-  background: var(--background);
+  background: #000000;
   border: none;
   border-radius: 0;
   font-family: var(--font-body);
@@ -77,7 +77,7 @@
 
 
 .createButton:hover {
-  background: var(--muted-foreground);
+  background: #1A1A1A;
 }
 
 
@@ -105,7 +105,7 @@
 .emptyTitle {
   font-size: 20px;
   font-weight: 600;
-  color: var(--foreground);
+  color: #FFFFFF;
   margin: 0 0 10px 0;
 }
 
@@ -117,7 +117,7 @@
 }
 
 .emptyButton {
-  background: var(--background);
+  background: #000000;
   border: none;
   border-radius: 0;
   font-family: var(--font-body);
@@ -130,7 +130,7 @@
 
 
 .emptyButton:hover {
-  background: var(--muted-foreground);
+  background: #1A1A1A;
 }
 
 

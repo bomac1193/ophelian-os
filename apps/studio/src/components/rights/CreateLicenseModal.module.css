@@ -33,7 +33,7 @@
 .title {
   font-size: 24px;
   font-weight: 700;
-  color: var(--foreground);
+  color: #FFFFFF;
   margin: 0;
 }
 
@@ -52,7 +52,7 @@
 
 .closeButton:hover {
   background: rgba(255, 255, 255, 0.1);
-  color: var(--foreground);
+  color: #FFFFFF;
 }
 
 .form {
@@ -71,14 +71,14 @@
 .label {
   font-size: 14px;
   font-weight: 600;
-  color: var(--foreground);
+  color: #FFFFFF;
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
 .hint {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 400;
   color: var(--muted-foreground);
   font-style: italic;
@@ -92,7 +92,7 @@
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
-  color: var(--foreground);
+  color: #FFFFFF;
   font-size: 14px;
   font-family: inherit;
   transition: all 0.2s ease;
@@ -147,12 +147,12 @@
 }
 
 .radioLabel strong {
-  color: var(--foreground);
+  color: #FFFFFF;
   font-size: 14px;
 }
 
 .radioHint {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--muted-foreground);
 }
 
@@ -167,7 +167,7 @@
   align-items: center;
   gap: 10px;
   font-size: 14px;
-  color: var(--foreground);
+  color: #FFFFFF;
   cursor: pointer;
 }
 
@@ -181,7 +181,7 @@
   margin-left: auto;
   padding: 4px 12px;
   border-radius: 12px;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
 }
 
@@ -208,7 +208,7 @@
 }
 
 .splitLabel {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--muted-foreground);
 }
 
@@ -217,7 +217,7 @@
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 6px;
-  color: var(--foreground);
+  color: #FFFFFF;
   font-size: 14px;
   text-align: center;
   font-weight: 600;
@@ -228,7 +228,7 @@
   right: 12px;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 12px;
+  font-size: 14px;
   color: var(--muted-foreground);
   pointer-events: none;
 }
@@ -255,7 +255,7 @@
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
-  color: var(--foreground);
+  color: #FFFFFF;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -272,7 +272,7 @@
 }
 
 .submitButton {
-  background: var(--background);
+  background: #000000;
   border: none;
   border-radius: 0;
   font-family: var(--font-body);

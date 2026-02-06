@@ -7,7 +7,7 @@
 }
 
 .card:hover {
-  background: var(--muted-foreground);
+  background: #1A1A1A;
 }
 
 
@@ -27,14 +27,14 @@
 .subjectType {
   font-size: 14px;
   font-weight: 600;
-  color: var(--foreground);
+  color: #FFFFFF;
 }
 
 .licenseType {
   display: inline-block;
   padding: 6px 12px;
   border-radius: 6px;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -85,7 +85,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .label {
@@ -93,7 +93,7 @@
 }
 
 .value {
-  color: var(--foreground);
+  color: #FFFFFF;
   font-weight: 500;
   font-family: monospace;
 }
@@ -101,7 +101,7 @@
 .sectionTitle {
   font-size: 14px;
   font-weight: 600;
-  color: var(--foreground);
+  color: #FFFFFF;
   margin: 0 0 12px 0;
 }
 
@@ -145,7 +145,7 @@
 }
 
 .permissionLabel {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--muted-foreground);
 }
 
@@ -180,7 +180,7 @@
 }
 
 .splitFill.voiceActor {
-  background: var(--background);
+  background: #000000;
   border: none;
   border-radius: 0;
   font-family: var(--font-body);
@@ -199,13 +199,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 12px;
+  font-size: 14px;
   color: var(--muted-foreground);
 }
 
 .splitValue {
   font-weight: 600;
-  color: var(--foreground);
+  color: #FFFFFF;
 }
 
 .terms {
@@ -214,7 +214,7 @@
 }
 
 .termsText {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--muted-foreground);
   line-height: 1.6;
   margin: 0;
@@ -229,7 +229,7 @@
 }
 
 .date {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--muted-foreground);
   font-style: italic;
 }
