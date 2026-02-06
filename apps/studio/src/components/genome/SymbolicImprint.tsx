@@ -43,9 +43,10 @@ export function SymbolicImprint({
         border: '1px solid var(--border)',
         borderRadius: '0',
         transition: 'border-color 0.2s ease',
+        textAlign: 'center',
       }}
     >
-      <div className="imprint-header" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+      <div className="imprint-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
         <span className="imprint-symbol" style={{ fontSize: '2rem', fontWeight: 300 }}>
           {symbol}
         </span>
@@ -61,7 +62,7 @@ export function SymbolicImprint({
                 <ul style={{ marginTop: '0.5rem', paddingLeft: '1.25rem', lineHeight: 1.6 }}>
                   <li><strong>{symbol}</strong> - Mathematical symbol representing the Orisha's essence</li>
                   <li><strong>{primitive}</strong> - Geometric primitive for visual recognition</li>
-                  <li><strong>{aestheticClass}</strong> - Aesthetic class (L-0 to L-11)</li>
+                  <li><strong>{aestheticClass}</strong> - Classification code</li>
                 </ul>
                 <p style={{ marginTop: '0.75rem', fontSize: '0.8rem', opacity: 0.8 }}>
                   Visit the <strong>Symbols</strong> page to learn about all archetypes.
@@ -76,7 +77,7 @@ export function SymbolicImprint({
         {symbol}-{label}
       </div>
       <div className="imprint-class" style={{ fontSize: '0.875rem', opacity: 0.6, marginTop: '0.125rem' }}>
-        Classification: {aestheticClass}
+        {aestheticClass}
       </div>
     </div>
   );
