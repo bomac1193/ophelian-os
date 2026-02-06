@@ -32,6 +32,7 @@ export async function contentRoutes(fastify: FastifyInstance): Promise<void> {
         character: character as any, // Type coercion for Prisma -> shared types
         platform: body.platform as Platform,
         intent: body.intent,
+        genomeData: body.genomeData as any, // Pass genome data if provided
       });
 
       // Create content item

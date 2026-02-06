@@ -35,13 +35,13 @@ interface CharacterTimelineProps {
 }
 
 const EVENT_ICONS: Record<EventType, string> = {
-  creation: '✨',
-  arc_start: '📖',
-  arc_end: '🏁',
-  relationship: '🤝',
-  transformation: '🦋',
-  milestone: '⭐',
-  content_published: '📱',
+  creation: '',
+  arc_start: '',
+  arc_end: '',
+  relationship: '',
+  transformation: '',
+  milestone: '',
+  content_published: '',
 };
 
 const EVENT_COLORS: Record<EventType, string> = {
@@ -91,7 +91,6 @@ export function CharacterTimeline({
           <p className={styles.subtitle}>Evolution Timeline</p>
         </div>
         <div className={styles.empty}>
-          <span className={styles.emptyIcon}>📖</span>
           <p className={styles.emptyText}>
             No events yet. The story begins here.
           </p>

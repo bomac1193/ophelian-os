@@ -104,7 +104,7 @@ export function AvatarGenerator({
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h3 className={styles.title}>🎨 Avatar Generator</h3>
+        <h3 className={styles.title}>Avatar Generator</h3>
         <p className={styles.subtitle}>
           Create a consent-tracked avatar for {characterName}
         </p>
@@ -260,12 +260,12 @@ export function AvatarGenerator({
             disabled={isGenerating || !imageFile || !agreedToConsent}
             className={styles.generateButton}
           >
-            {isGenerating ? 'Generating...' : '✨ Generate Avatar'}
+            {isGenerating ? 'Generating...' : 'Generate Avatar'}
           </button>
         </>
       ) : (
         <div className={styles.result}>
-          <h4 className={styles.resultTitle}>✅ Avatar Generated</h4>
+          <h4 className={styles.resultTitle}>Avatar Generated</h4>
 
           <div className={styles.avatarDisplay}>
             <img src={generatedAvatar.outputUrl} alt="Generated Avatar" className={styles.avatarImage} />

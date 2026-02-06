@@ -244,7 +244,7 @@ const HERITAGE_LABEL_TO_KEY: Record<string, string> = {
 // ============================================================================
 
 // Dynamic import since charenome.ts uses @/ path aliases — we'll call it directly
-import { generateCharenomePreview, generateSampleTweet } from '../lib/charenome.js';
+import { generateCharenomePreview, generateSampleTweet as _generateSampleTweet } from '../lib/charenome.js';
 
 // ============================================================================
 // STRESS TEST
@@ -264,7 +264,7 @@ interface TestResult {
 }
 
 function validateAlignment(char: LCOSGeneratedCharacter): TestResult {
-  const preview = generateCharenomePreview(char);
+  const preview = generateCharenomePreview(char as any);
   const failures: string[] = [];
 
   const heritage = char.heritage?.toLowerCase() || 'yoruba';
@@ -501,8 +501,8 @@ console.log(`\nDISTRIBUTION ANALYSIS:`);
 
 const orishaDist: Record<string, number> = {};
 const sephiraDist: Record<string, number> = {};
-const trajectoryDist: Record<string, number> = {};
-const energyDist: Record<string, number> = {};
+const _trajectoryDist: Record<string, number> = {};
+const _energyDist: Record<string, number> = {};
 
 for (const r of results) {
   orishaDist[r.orisha] = (orishaDist[r.orisha] || 0) + 1;
@@ -529,7 +529,7 @@ const spotChecks = results
 
 for (const r of spotChecks) {
   const char = generateLCOSCharacter({ seed: r.seed });
-  const preview = generateCharenomePreview(char);
+  const preview = generateCharenomePreview(char as any);
   console.log(`\n  "${char.name}" (seed=${r.seed})`);
   console.log(`    ${char.heritage} ${char.order.name} · ${char.arcana.archetype} (${char.arcana.system})`);
   console.log(`    → ${preview.orisha} · ${preview.sephira} · ${preview.trajectory}`);

@@ -120,7 +120,6 @@ export function TransmediaStoryManager({ characterId, characterName }: Transmedi
 
       {stories.length === 0 ? (
         <div className={styles.emptyState}>
-          <div className={styles.emptyIcon}>📖</div>
           <h4 className={styles.emptyTitle}>No transmedia stories yet</h4>
           <p className={styles.emptyText}>
             Create stories that adapt across multiple platforms and media types

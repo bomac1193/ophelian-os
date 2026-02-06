@@ -17,15 +17,15 @@ interface CreateRelationshipModalProps {
 }
 
 const RELATIONSHIP_TYPES: { value: RelationshipType; label: string; icon: string; description: string }[] = [
-  { value: 'FRIEND', label: 'Friend', icon: '🤝', description: 'A friendly, supportive relationship' },
-  { value: 'RIVAL', label: 'Rival', icon: '⚔️', description: 'Competitive or antagonistic relationship' },
-  { value: 'MENTOR', label: 'Mentor', icon: '🎓', description: 'Guiding or teaching relationship' },
-  { value: 'STUDENT', label: 'Student', icon: '📚', description: 'Learning or being guided' },
-  { value: 'FAMILY', label: 'Family', icon: '👨‍👩‍👧‍👦', description: 'Family bond or kinship' },
-  { value: 'ROMANTIC', label: 'Romantic', icon: '💕', description: 'Romantic or intimate relationship' },
-  { value: 'ENEMY', label: 'Enemy', icon: '⚡', description: 'Hostile or adversarial relationship' },
-  { value: 'ALLY', label: 'Ally', icon: '🛡️', description: 'Strategic alliance or partnership' },
-  { value: 'NEUTRAL', label: 'Neutral', icon: '⚪', description: 'Neutral or undefined relationship' },
+  { value: 'FRIEND', label: 'Friend', icon: '', description: 'A friendly, supportive relationship' },
+  { value: 'RIVAL', label: 'Rival', icon: '', description: 'Competitive or antagonistic relationship' },
+  { value: 'MENTOR', label: 'Mentor', icon: '', description: 'Guiding or teaching relationship' },
+  { value: 'STUDENT', label: 'Student', icon: '', description: 'Learning or being guided' },
+  { value: 'FAMILY', label: 'Family', icon: '', description: 'Family bond or kinship' },
+  { value: 'ROMANTIC', label: 'Romantic', icon: '', description: 'Romantic or intimate relationship' },
+  { value: 'ENEMY', label: 'Enemy', icon: '', description: 'Hostile or adversarial relationship' },
+  { value: 'ALLY', label: 'Ally', icon: '', description: 'Strategic alliance or partnership' },
+  { value: 'NEUTRAL', label: 'Neutral', icon: '', description: 'Neutral or undefined relationship' },
 ];
 
 export function CreateRelationshipModal({

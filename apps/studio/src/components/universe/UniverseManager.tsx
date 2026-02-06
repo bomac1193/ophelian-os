@@ -121,7 +121,6 @@ export function UniverseManager() {
 
       {universes.length === 0 ? (
         <div className={styles.emptyState}>
-          <div className={styles.emptyIcon}>🌌</div>
           <h4 className={styles.emptyTitle}>
             {viewMode === 'my' ? 'No universes yet' : 'No public universes available'}
           </h4>

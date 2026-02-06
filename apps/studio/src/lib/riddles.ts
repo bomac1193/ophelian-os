@@ -8,7 +8,7 @@
  * - Symbolic attributes
  */
 
-import type { OrishaName, SephiraName } from './imprint-api';
+import type { OrishaName, SephiraName } from '@lcos/oripheon';
 
 export type RiddleType = 'sacred_number' | 'camino' | 'sephira' | 'element' | 'color_count';
 export type DifficultyLevel = 'easy' | 'medium' | 'hard';

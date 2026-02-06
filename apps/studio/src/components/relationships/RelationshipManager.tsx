@@ -160,7 +160,6 @@ export function RelationshipManager({ characterId, characterName }: Relationship
         <>
           {relationships.length === 0 ? (
             <div className={styles.emptyState}>
-              <div className={styles.emptyIcon}>🤝</div>
               <h4 className={styles.emptyTitle}>No relationships yet</h4>
               <p className={styles.emptyText}>
                 Create relationships to enable multi-character stories and interactions

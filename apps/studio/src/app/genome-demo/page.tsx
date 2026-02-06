@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { GenomeDisplay } from '@/components/genome';
 import { getSurfaceView, getGatewayHint, getDepthsView, hasAdvancedViewAccess } from '@lcos/oripheon';
-import { getImprint } from '@/lib/imprint-api';
 import { useRouter } from 'next/navigation';
 
 export default function GenomeDemoPage() {

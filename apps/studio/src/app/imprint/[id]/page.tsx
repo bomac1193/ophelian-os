@@ -998,7 +998,7 @@ export default function ImprintDetailPage() {
             borderRadius: '12px',
             marginBottom: '1.5rem'
           }}>
-            <h3 style={{ margin: '0 0 1rem', fontSize: '1.1rem' }}>🚀 Social Publishing</h3>
+            <h3 style={{ margin: '0 0 1rem', fontSize: '1.1rem' }}>Social Publishing</h3>
             <div style={{ display: 'grid', gap: '1rem' }}>
               <div>
                 <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500 }}>Content to Publish</label>
@@ -1064,13 +1064,13 @@ export default function ImprintDetailPage() {
 
                     const result = await response.json();
                     if (result.success) {
-                      alert(`✅ Published to ${result.publishedTo.join(', ')}!\n\nCheck SLAYT response for details.`);
+                      alert(`Published to ${result.publishedTo.join(', ')}!\n\nCheck SLAYT response for details.`);
                       console.log('SLAYT Response:', result.slaytResponse);
                     } else {
-                      alert(`❌ Error: ${result.error}\n\n${result.message || ''}`);
+                      alert(`Error: ${result.error}\n\n${result.message || ''}`);
                     }
                   } catch (error) {
-                    alert(`❌ Failed to publish: ${error instanceof Error ? error.message : 'Unknown error'}`);
+                    alert(`Failed to publish: ${error instanceof Error ? error.message : 'Unknown error'}`);
                   }
                 }}
                 style={{
@@ -1087,7 +1087,7 @@ export default function ImprintDetailPage() {
                 onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}
                 onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
               >
-                📤 Publish to Social Media
+                Publish to Social Media
               </button>
             </div>
           </div>
@@ -1098,7 +1098,7 @@ export default function ImprintDetailPage() {
             border: '1px solid rgba(100, 255, 218, 0.2)',
             borderRadius: '8px'
           }}>
-            <h4 style={{ margin: '0 0 0.5rem', fontSize: '0.9rem', color: '#64ffda' }}>✨ Character-Authentic Adaptation</h4>
+            <h4 style={{ margin: '0 0 0.5rem', fontSize: '0.9rem', color: '#64ffda' }}>Character-Authentic Adaptation</h4>
             <ul style={{ margin: 0, paddingLeft: '1.25rem', fontSize: '0.875rem', color: 'var(--muted-foreground)' }}>
               <li>Auto-generates hashtags from {genome.name}'s personality traits</li>
               <li>Adapts content for each platform's format and character limits</li>

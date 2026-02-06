@@ -113,7 +113,6 @@ export function MerchManager({ characterId, characterName, visualSignature }: Me
 
       {products.length === 0 ? (
         <div className={styles.emptyState}>
-          <div className={styles.emptyIcon}>👕</div>
           <h4 className={styles.emptyTitle}>No merchandise yet</h4>
           <p className={styles.emptyText}>
             Create merchandise products featuring {characterName}. Designs are automatically generated

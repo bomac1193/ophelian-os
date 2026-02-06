@@ -18,12 +18,12 @@ interface CreateMerchModalProps {
 }
 
 const PRODUCT_TYPES: { value: MerchProductType; label: string; icon: string; basePrice: number }[] = [
-  { value: 'T_SHIRT', label: 'T-Shirt', icon: '👕', basePrice: 2500 },
-  { value: 'HOODIE', label: 'Hoodie', icon: '🧥', basePrice: 4500 },
-  { value: 'MUG', label: 'Mug', icon: '☕', basePrice: 1500 },
-  { value: 'POSTER', label: 'Poster', icon: '🖼️', basePrice: 2000 },
-  { value: 'STICKER', label: 'Sticker', icon: '✨', basePrice: 500 },
-  { value: 'PHONE_CASE', label: 'Phone Case', icon: '📱', basePrice: 2000 },
+  { value: 'T_SHIRT', label: 'T-Shirt', icon: '', basePrice: 2500 },
+  { value: 'HOODIE', label: 'Hoodie', icon: '', basePrice: 4500 },
+  { value: 'MUG', label: 'Mug', icon: '', basePrice: 1500 },
+  { value: 'POSTER', label: 'Poster', icon: '', basePrice: 2000 },
+  { value: 'STICKER', label: 'Sticker', icon: '', basePrice: 500 },
+  { value: 'PHONE_CASE', label: 'Phone Case', icon: '', basePrice: 2000 },
 ];
 
 export function CreateMerchModal({

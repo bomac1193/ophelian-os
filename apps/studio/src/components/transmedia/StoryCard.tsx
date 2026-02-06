@@ -136,16 +136,16 @@ function getPlatformIcon(platform: string): string {
     NEWSLETTER: '📧',
     YOUTUBE: '📹',
   };
-  return icons[platform] || '📱';
+  return icons[platform] || '';
 }
 
 function getMediaIcon(type: string): string {
   const icons: Record<string, string> = {
     TEXT: '📄',
     AUDIO: '🔊',
-    VISUAL: '🖼️',
+    VISUAL: '',
     VIDEO: '🎬',
     INTERACTIVE: '🎮',
   };
-  return icons[type] || '📱';
+  return icons[type] || '';
 }

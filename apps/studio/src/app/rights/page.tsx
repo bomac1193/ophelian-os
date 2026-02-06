@@ -24,7 +24,7 @@ export default function RightsPage() {
     <div className={styles.page}>
       <div className={styles.header}>
         <div className={styles.headerContent}>
-          <h1 className={styles.title}>⚖️ Rights Management</h1>
+          <h1 className={styles.title}>Rights Management</h1>
           <p className={styles.subtitle}>
             License your voice IP, track usage, and manage royalty splits
           </p>
@@ -36,7 +36,7 @@ export default function RightsPage() {
       </div>
 
       <div className={styles.infoCard}>
-        <h3 className={styles.infoTitle}>🎯 How It Works</h3>
+        <h3 className={styles.infoTitle}>How It Works</h3>
         <ul className={styles.infoList}>
           <li>
             <strong>Voice Actors:</strong> Clone your voice in Chromox, create a license, set your royalty terms

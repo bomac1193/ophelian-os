@@ -166,7 +166,7 @@ export function EnhancedGatewayTooltip({
 
               {/* Actionable Insight */}
               <div className={styles.insight}>
-                <div className={styles.insightIcon}>⚡</div>
+                <div className={styles.insightIcon}></div>
                 <div className={styles.insightText}>
                   {enhancedHint.actionableInsight}
                 </div>

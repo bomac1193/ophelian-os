@@ -88,7 +88,7 @@ export function ContentSuggester({
             onClick={() => onSelectTopic(topic)}
             className={styles.suggestionCard}
           >
-            <span className={styles.suggestionIcon}>✨</span>
+            <span className={styles.suggestionIcon}></span>
             <span className={styles.suggestionText}>{topic}</span>
             <span className={styles.suggestionArrow}>→</span>
           </button>

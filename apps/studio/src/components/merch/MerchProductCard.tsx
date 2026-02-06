@@ -36,16 +36,7 @@ export function MerchProductCard({ product }: MerchProductCardProps) {
       <div className={styles.imageContainer}>
         <div className={styles.placeholderImage}>
           <span className={styles.productIcon}>
-            {product.productType === 'T_SHIRT' && '👕'}
-            {product.productType === 'HOODIE' && '🧥'}
-            {product.productType === 'MUG' && '☕'}
-            {product.productType === 'POSTER' && '🖼️'}
-            {product.productType === 'STICKER' && '✨'}
-            {product.productType === 'PHONE_CASE' && '📱'}
-            {product.productType === 'TOTE_BAG' && '👜'}
-            {product.productType === 'NOTEBOOK' && '📓'}
-            {product.productType === 'PILLOW' && '🛋️'}
-            {product.productType === 'CANVAS_PRINT' && '🎨'}
+            {PRODUCT_TYPE_LABELS[product.productType]}
           </span>
         </div>
         <span className={styles.productTypeBadge}>

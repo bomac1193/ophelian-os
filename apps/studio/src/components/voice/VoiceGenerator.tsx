@@ -250,7 +250,7 @@ export function VoiceGenerator({
       {/* Audio Result */}
       {audioResult && (
         <div className={styles.result}>
-          <h4 className={styles.resultTitle}>✅ Audio Generated</h4>
+          <h4 className={styles.resultTitle}>Audio Generated</h4>
           <div className={styles.audioInfo}>
             <p>Provider: {audioResult.provider}</p>
             {audioResult.meta?.renderId && (

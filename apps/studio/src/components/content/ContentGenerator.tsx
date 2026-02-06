@@ -125,7 +125,7 @@ export function ContentGenerator({
         <h3 className={styles.title}>Generate Content</h3>
         {hasGenomeData && (
           <div className={styles.genomeBadge}>
-            <span className={styles.genomeBadgeIcon}>✨</span>
+            <span className={styles.genomeBadgeIcon}></span>
             <span className={styles.genomeBadgeText}>Genome-Driven</span>
           </div>
         )}
@@ -203,7 +203,7 @@ export function ContentGenerator({
           {/* Error Display */}
           {error && (
             <div className={styles.error}>
-              <span className={styles.errorIcon}>❌</span>
+              <span className={styles.errorIcon}></span>
               <span className={styles.errorText}>{error}</span>
             </div>
           )}
@@ -241,7 +241,7 @@ export function ContentGenerator({
           {hasGenomeData && (
             <div className={styles.resultGenome}>
               <div className={styles.resultGenomeTitle}>
-                ✨ Influenced by {characterName}'s Genome
+                Influenced by {characterName}'s Genome
               </div>
               <div className={styles.resultGenomeDetails}>
                 {generatedContent.genomeInfluence.orisha} · {generatedContent.genomeInfluence.sephira} · {generatedContent.genomeInfluence.lClass}

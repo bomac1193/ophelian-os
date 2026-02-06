@@ -19,7 +19,7 @@ interface CreateStoryModalProps {
 const MEDIA_TYPES = [
   { value: 'TEXT', label: 'Text', icon: '📄' },
   { value: 'AUDIO', label: 'Audio', icon: '🔊' },
-  { value: 'VISUAL', label: 'Visual', icon: '🖼️' },
+  { value: 'VISUAL', label: 'Visual', icon: '' },
   { value: 'VIDEO', label: 'Video', icon: '🎬' },
   { value: 'INTERACTIVE', label: 'Interactive', icon: '🎮' },
 ];

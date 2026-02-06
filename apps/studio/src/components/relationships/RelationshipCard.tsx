@@ -17,15 +17,15 @@ interface RelationshipCardProps {
 }
 
 const RELATIONSHIP_ICONS: Record<string, string> = {
-  FRIEND: '🤝',
-  RIVAL: '⚔️',
-  MENTOR: '🎓',
-  STUDENT: '📚',
-  FAMILY: '👨‍👩‍👧‍👦',
-  ROMANTIC: '💕',
-  ENEMY: '⚡',
-  ALLY: '🛡️',
-  NEUTRAL: '⚪',
+  FRIEND: '',
+  RIVAL: '',
+  MENTOR: '',
+  STUDENT: '',
+  FAMILY: '',
+  ROMANTIC: '',
+  ENEMY: '',
+  ALLY: '',
+  NEUTRAL: '',
 };
 
 const RELATIONSHIP_COLORS: Record<string, string> = {

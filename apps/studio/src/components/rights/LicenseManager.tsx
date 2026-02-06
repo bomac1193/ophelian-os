@@ -95,7 +95,6 @@ export function LicenseManager() {
 
       {licenses.length === 0 ? (
         <div className={styles.emptyState}>
-          <div className={styles.emptyIcon}>⚖️</div>
           <h3 className={styles.emptyTitle}>No licenses yet</h3>
           <p className={styles.emptyText}>
             Create your first license to start monetizing your voice IP
