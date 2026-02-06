@@ -118,7 +118,7 @@ export function RelationshipManager({ characterId, characterName }: Relationship
   if (error) {
     return (
       <div className={styles.errorContainer}>
-        <p>⚠️ {error}</p>
+        <p>{error}</p>
         <button onClick={fetchRelationships} className={styles.retryButton}>
           Retry
         </button>
@@ -141,13 +141,13 @@ export function RelationshipManager({ characterId, characterName }: Relationship
               className={`${styles.viewButton} ${viewMode === 'list' ? styles.active : ''}`}
               onClick={() => setViewMode('list')}
             >
-              📋 List
+              List
             </button>
             <button
               className={`${styles.viewButton} ${viewMode === 'network' ? styles.active : ''}`}
               onClick={() => setViewMode('network')}
             >
-              🕸️ Network
+              Network
             </button>
           </div>
           <button onClick={handleCreateRelationship} className={styles.createButton}>

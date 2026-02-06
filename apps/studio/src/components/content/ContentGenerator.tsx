@@ -133,7 +133,6 @@ export function ContentGenerator({
 
       {!hasGenomeData && (
         <div className={styles.warning}>
-          <span className={styles.warningIcon}>⚠️</span>
           <span className={styles.warningText}>
             No genome data available. Content will use basic personality system.
           </span>

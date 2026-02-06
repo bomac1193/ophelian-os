@@ -1,0 +1,582 @@
+/* Ethical Certification - Brutalist Minimalism */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.loading {
+  padding: 3rem;
+  text-align: center;
+  background: #000000;
+  border: 1px solid var(--border);
+  color: var(--muted-foreground);
+  font-family: var(--font-body);
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background: #000000;
+  border: 1px solid var(--border);
+}
+
+.headerInfo {
+  flex: 1;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--foreground);
+  letter-spacing: -0.01em;
+}
+
+.subtitle {
+  margin: 0.25rem 0 0;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  color: var(--muted-foreground);
+}
+
+/* Badge */
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: #000000;
+  border: 2px solid var(--border);
+}
+
+.badgeUncertified {
+  border-color: var(--muted-foreground);
+}
+
+.badgeBasic {
+  border-color: var(--border);
+}
+
+.badgeVerified {
+  border-color: var(--foreground);
+}
+
+.badgePremium {
+  border-color: var(--foreground);
+  background: var(--foreground);
+}
+
+.badgePremium .badgeIcon,
+.badgePremium .badgeLabel,
+.badgePremium .badgeDescription {
+  color: var(--background);
+}
+
+.badgeIcon {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid currentColor;
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--foreground);
+}
+
+.badgeInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.badgeLabel {
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--foreground);
+}
+
+.badgeDescription {
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  color: var(--muted-foreground);
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 0.25rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0;
+}
+
+.tab {
+  padding: 0.75rem 1.5rem;
+  background: #000000;
+  border: 1px solid var(--border);
+  border-bottom: none;
+  color: var(--muted-foreground);
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: -1px;
+}
+
+.tab:hover {
+  color: var(--foreground);
+}
+
+.tabActive {
+  background: var(--foreground);
+  border-color: var(--foreground);
+  color: var(--background);
+}
+
+/* Content */
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Sections */
+.section {
+  padding: 1.25rem;
+  background: #000000;
+  border: 1px solid var(--border);
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.sectionTitle {
+  margin: 0 0 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--foreground);
+}
+
+.sectionHeader .sectionTitle {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+/* Overall Score */
+.overallScore {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 2rem;
+}
+
+.overallScoreValue {
+  font-family: var(--font-heading);
+  font-size: 4rem;
+  font-weight: 700;
+  color: var(--foreground);
+  line-height: 1;
+}
+
+.overallScoreLabel {
+  font-family: var(--font-body);
+  font-size: 1.5rem;
+  color: var(--muted-foreground);
+}
+
+/* Scores Grid */
+.scoresGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.scoreGauge {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.scoreHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.scoreLabel {
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+.scoreValue {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+
+.scoreTrack {
+  height: 6px;
+  background: var(--border);
+}
+
+.scoreFill {
+  height: 100%;
+  background: var(--foreground);
+  transition: width 0.5s ease;
+}
+
+/* Audit Grid */
+.auditGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.auditCard {
+  padding: 1rem;
+  background: #000000;
+  border: 1px solid var(--border);
+  text-align: center;
+}
+
+.auditLabel {
+  font-family: var(--font-ui);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  margin-bottom: 0.5rem;
+}
+
+.auditValue {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+/* Actions Grid */
+.actionsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.75rem;
+}
+
+.actionButton {
+  padding: 0.75rem 1rem;
+  background: #000000;
+  border: 1px solid var(--border);
+  color: var(--foreground);
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.actionButton:hover {
+  border-color: var(--foreground);
+}
+
+.addButton {
+  padding: 0.5rem 1rem;
+  background: var(--foreground);
+  border: 1px solid var(--foreground);
+  color: var(--background);
+  font-family: var(--font-ui);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.addButton:hover {
+  opacity: 0.9;
+}
+
+/* Consents Grid */
+.consentsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.consentCard {
+  padding: 1rem;
+  background: #000000;
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.consentHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.consentType {
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--foreground);
+}
+
+.consentStatus {
+  padding: 0.25rem 0.5rem;
+  border: 1px solid;
+  font-family: var(--font-ui);
+  font-size: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.consentDetails {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+
+.consentField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.consentFieldLabel {
+  font-family: var(--font-ui);
+  font-size: 0.5625rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+.consentFieldValue {
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  color: var(--foreground);
+}
+
+.consentScope {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.scopeChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.scopeChip {
+  padding: 0.25rem 0.5rem;
+  background: #000000;
+  border: 1px solid var(--border);
+  font-family: var(--font-ui);
+  font-size: 0.625rem;
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+.consentHash {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.hashValue {
+  font-family: monospace;
+  font-size: 0.6875rem;
+  color: var(--muted-foreground);
+}
+
+/* Summary Grid */
+.summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.summaryCard {
+  padding: 1rem;
+  background: #000000;
+  border: 1px solid var(--border);
+  text-align: center;
+}
+
+.summaryValue {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--foreground);
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+
+.summaryLabel {
+  font-family: var(--font-ui);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+/* Audit History */
+.auditHistory {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.auditEntry {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  background: #000000;
+  border: 1px solid var(--border);
+}
+
+.auditEntryDate {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  min-width: 80px;
+}
+
+.auditEntryDetails {
+  flex: 1;
+}
+
+.auditEntryTitle {
+  font-family: var(--font-ui);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--foreground);
+  margin-bottom: 0.25rem;
+}
+
+.auditEntryResult {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+
+.auditEntryStatus {
+  padding: 0.25rem 0.75rem;
+  border: 1px solid var(--foreground);
+  font-family: var(--font-ui);
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--foreground);
+  align-self: flex-start;
+}
+
+/* Checklist */
+.checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.checklistItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.checkbox {
+  width: 1.25rem;
+  height: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--muted-foreground);
+}
+
+.checkbox.checked {
+  background: var(--foreground);
+  border-color: var(--foreground);
+  color: var(--background);
+}
+
+.checklistLabel {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  color: var(--foreground);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .header {
+    flex-direction: column;
+  }
+
+  .badge {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .auditGrid,
+  .summaryGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .auditEntry {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .auditEntryStatus {
+    align-self: flex-start;
+  }
+}

@@ -1,21 +1,20 @@
+/* Merch Product Card - Brutalist Minimalism */
+
 .card {
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
+  background: #000000;
+  border: 1px solid var(--border);
+  border-radius: 0;
   overflow: hidden;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .card:hover {
-  background: #1A1A1A;
+  border-color: var(--foreground);
 }
-
 
 .imageContainer {
   background: #000000;
-  border: none;
-  border-radius: 0;
-  font-family: var(--font-body);
+  border-bottom: 1px solid var(--border);
   position: relative;
   width: 100%;
   height: 200px;
@@ -23,7 +22,6 @@
   align-items: center;
   justify-content: center;
 }
-
 
 .placeholderImage {
   width: 100%;
@@ -34,7 +32,8 @@
 }
 
 .productIcon {
-  font-size: 80px;
+  font-size: 64px;
+  opacity: 0.5;
 }
 
 .productTypeBadge {
@@ -42,14 +41,14 @@
   top: 12px;
   right: 12px;
   padding: 6px 12px;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(10px);
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #ffffff;
+  background: var(--foreground);
+  border-radius: 0;
+  font-family: var(--font-ui);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  color: var(--background);
 }
 
 .content {
@@ -60,13 +59,15 @@
 }
 
 .title {
+  font-family: var(--font-heading);
   font-size: 18px;
   font-weight: 600;
-  color: #FFFFFF;
+  color: var(--foreground);
   margin: 0;
 }
 
 .description {
+  font-family: var(--font-body);
   font-size: 14px;
   color: var(--muted-foreground);
   line-height: 1.5;
@@ -78,17 +79,19 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
 }
 
 .price {
+  font-family: var(--font-heading);
   font-size: 22px;
   font-weight: 700;
-  color: #667eea;
+  color: var(--foreground);
 }
 
 .variants {
+  font-family: var(--font-body);
   font-size: 14px;
   color: var(--muted-foreground);
 }
@@ -106,16 +109,22 @@
 }
 
 .statLabel {
+  font-family: var(--font-ui);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--muted-foreground);
 }
 
 .statValue {
-  color: #FFFFFF;
+  font-family: var(--font-body);
+  color: var(--foreground);
   font-weight: 500;
 }
 
 .statValueHighlight {
-  color: #64ffda;
+  color: #22c55e;
   font-weight: 700;
 }
 
@@ -127,9 +136,14 @@
 
 .tag {
   padding: 4px 8px;
-  background: rgba(102, 126, 234, 0.1);
-  border-radius: 4px;
-  font-size: 14px;
+  background: #000000;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  font-family: var(--font-ui);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
   color: var(--muted-foreground);
 }
 
@@ -143,34 +157,35 @@
 .editButton {
   flex: 1;
   padding: 10px;
-  border: none;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 600;
+  border: 1px solid;
+  border-radius: 0;
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .viewButton {
-  background: #000000;
-  border: none;
-  border-radius: 0;
-  font-family: var(--font-body);
-  color: #ffffff;
+  background: var(--foreground);
+  border-color: var(--foreground);
+  color: var(--background);
 }
-
 
 .viewButton:hover {
-  background: #1A1A1A;
+  background: var(--muted-foreground);
+  border-color: var(--muted-foreground);
 }
 
-
 .editButton {
-  background: rgba(255, 255, 255, 0.05);
-  color: #FFFFFF;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #000000;
+  border-color: var(--border);
+  color: var(--muted-foreground);
 }
 
 .editButton:hover {
-  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--foreground);
+  color: var(--foreground);
 }

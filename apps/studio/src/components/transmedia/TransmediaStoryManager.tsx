@@ -96,7 +96,7 @@ export function TransmediaStoryManager({ characterId, characterName }: Transmedi
   if (error) {
     return (
       <div className={styles.errorContainer}>
-        <p>⚠️ {error}</p>
+        <p>{error}</p>
         <button onClick={fetchStories} className={styles.retryButton}>
           Retry
         </button>

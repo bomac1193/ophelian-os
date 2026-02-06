@@ -1,4 +1,5 @@
-/* Fade in animation for unlocked state */
+/* Genome Puzzle Unlock - Brutalist Minimalism */
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -35,30 +36,31 @@
 
 .inputField {
   transition: all 0.2s ease;
+  border-radius: 0 !important;
 }
 
 .inputField:focus {
-  transform: scale(1.01);
-  box-shadow: 0 0 0 2px var(--primary);
+  border-color: var(--foreground) !important;
 }
 
 .submitButton {
   transition: all 0.2s ease;
   position: relative;
   overflow: hidden;
+  border-radius: 0 !important;
 }
 
 .submitButton:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  opacity: 0.9;
 }
 
 .submitButton:active {
-  transform: translateY(0);
+  opacity: 0.8;
 }
 
 .errorMessage {
   animation: shake 0.4s ease;
+  border-radius: 0 !important;
 }
 
 @keyframes shake {
@@ -69,6 +71,7 @@
 
 .hintBox {
   animation: slideDown 0.3s ease-out;
+  border-radius: 0 !important;
 }
 
 .detailsContainer {
@@ -76,23 +79,7 @@
   overflow: hidden;
 }
 
-/* Shimmer effect for unlock button */
+/* Override shimmer effect */
 .submitButton::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.2),
-    transparent
-  );
-  transition: left 0.5s;
-}
-
-.submitButton:hover::before {
-  left: 100%;
+  display: none;
 }

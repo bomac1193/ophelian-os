@@ -1,0 +1,1 @@
+export { PsychometricDashboard } from './PsychometricDashboard';

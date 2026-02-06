@@ -1,8 +1,10 @@
+/* Avatar Generator - Brutalist Minimalism */
+
 .container {
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-  border-radius: 16px;
+  background: #000000;
+  border: 1px solid var(--border);
+  border-radius: 0;
   padding: 24px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 .header {
@@ -10,15 +12,18 @@
 }
 
 .title {
-  font-size: 24px;
-  font-weight: 700;
-  color: #ffffff;
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--foreground);
   margin: 0 0 8px 0;
+  letter-spacing: -0.01em;
 }
 
 .subtitle {
+  font-family: var(--font-body);
   font-size: 14px;
-  color: #a8b2d1;
+  color: var(--muted-foreground);
   margin: 0;
 }
 
@@ -28,9 +33,12 @@
 
 .label {
   display: block;
-  font-size: 14px;
-  font-weight: 600;
-  color: #ccd6f6;
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--foreground);
   margin-bottom: 8px;
 }
 
@@ -45,19 +53,18 @@
 .uploadLabel {
   width: 100%;
   height: 250px;
-  border: 2px dashed rgba(100, 255, 218, 0.3);
-  border-radius: 12px;
+  border: 1px dashed var(--border);
+  border-radius: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s ease;
-  background: rgba(100, 255, 218, 0.03);
+  transition: border-color 0.2s ease;
+  background: #000000;
 }
 
 .uploadLabel:hover {
-  border-color: #64ffda;
-  background: rgba(100, 255, 218, 0.08);
+  border-color: var(--foreground);
 }
 
 .fileInput {
@@ -65,9 +72,12 @@
 }
 
 .uploadPrompt {
-  font-size: 16px;
-  color: #64ffda;
-  font-weight: 500;
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--foreground);
 }
 
 .preview {
@@ -79,50 +89,53 @@
 .previewImage {
   width: 100%;
   height: auto;
-  border-radius: 12px;
-  border: 2px solid rgba(100, 255, 218, 0.3);
+  border-radius: 0;
+  border: 1px solid var(--border);
 }
 
 .removeButton {
   position: absolute;
   top: -12px;
   right: -12px;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: #ff6b6b;
-  border: none;
-  color: #ffffff;
-  font-size: 24px;
+  width: 32px;
+  height: 32px;
+  border-radius: 0;
+  background: var(--foreground);
+  border: 1px solid var(--foreground);
+  color: var(--background);
+  font-size: 18px;
   line-height: 1;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
   transition: all 0.2s ease;
 }
 
 .removeButton:hover {
-  background: #1A1A1A;
+  background: var(--muted-foreground);
+  border-color: var(--muted-foreground);
 }
 
-
 .consentSection {
-  background: rgba(100, 255, 218, 0.05);
-  border: 1px solid rgba(100, 255, 218, 0.2);
-  border-radius: 12px;
+  background: #000000;
+  border: 1px solid var(--border);
+  border-radius: 0;
   padding: 20px;
   margin-bottom: 24px;
 }
 
 .sectionTitle {
-  font-size: 16px;
-  font-weight: 600;
-  color: #64ffda;
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--foreground);
   margin: 0 0 8px 0;
 }
 
 .consentNote {
+  font-family: var(--font-body);
   font-size: 14px;
-  color: #a8b2d1;
+  color: var(--muted-foreground);
   margin: 0 0 16px 0;
   font-style: italic;
 }
@@ -140,34 +153,36 @@
 }
 
 .fieldLabel {
-  font-size: 14px;
-  font-weight: 500;
-  color: #ccd6f6;
+  font-family: var(--font-ui);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
 }
 
 .input,
 .select {
   padding: 10px 14px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  color: #ffffff;
+  background: #000000;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  color: var(--foreground);
+  font-family: var(--font-body);
   font-size: 14px;
-  font-family: inherit;
-  transition: all 0.2s ease;
+  transition: border-color 0.2s ease;
 }
 
 .input:focus,
 .select:focus {
   outline: none;
-  border-color: #64ffda;
-  background: rgba(100, 255, 218, 0.05);
+  border-color: var(--foreground);
 }
 
 .consentBox {
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
+  background: #000000;
+  border: 1px solid var(--border);
+  border-radius: 0;
   padding: 16px;
   margin-bottom: 20px;
 }
@@ -176,8 +191,9 @@
   display: flex;
   align-items: flex-start;
   gap: 12px;
+  font-family: var(--font-body);
   font-size: 14px;
-  color: #ccd6f6;
+  color: var(--muted-foreground);
   line-height: 1.6;
   cursor: pointer;
 }
@@ -188,35 +204,39 @@
   width: 18px;
   height: 18px;
   flex-shrink: 0;
+  accent-color: var(--foreground);
 }
 
 .error {
-  background: rgba(255, 107, 107, 0.1);
-  border: 1px solid rgba(255, 107, 107, 0.3);
-  border-radius: 8px;
+  background: #000000;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  border-radius: 0;
   padding: 12px 16px;
-  color: #ff6b6b;
+  color: rgba(239, 68, 68, 0.95);
+  font-family: var(--font-body);
   font-size: 14px;
   margin-bottom: 16px;
 }
 
 .generateButton {
-  background: #000000;
-  border: none;
+  background: var(--foreground);
+  border: 1px solid var(--foreground);
   border-radius: 0;
-  font-family: var(--font-body);
   width: 100%;
   padding: 16px 32px;
-  color: #ffffff;
-  font-size: 16px;
+  color: var(--background);
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
   font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-
 .generateButton:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  background: var(--muted-foreground);
+  border-color: var(--muted-foreground);
 }
 
 .generateButton:disabled {
@@ -232,9 +252,12 @@
 }
 
 .resultTitle {
-  font-size: 18px;
-  font-weight: 600;
-  color: #64ffda;
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--foreground);
   margin: 0;
 }
 
@@ -242,15 +265,16 @@
   display: flex;
   justify-content: center;
   padding: 20px;
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 12px;
+  background: #000000;
+  border: 1px solid var(--border);
+  border-radius: 0;
 }
 
 .avatarImage {
   max-width: 100%;
   max-height: 500px;
-  border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border-radius: 0;
+  border: 1px solid var(--border);
 }
 
 .resultInfo {
@@ -258,9 +282,9 @@
   flex-direction: column;
   gap: 12px;
   padding: 16px;
-  background: rgba(100, 255, 218, 0.05);
-  border: 1px solid rgba(100, 255, 218, 0.2);
-  border-radius: 12px;
+  background: #000000;
+  border: 1px solid var(--border);
+  border-radius: 0;
 }
 
 .infoItem {
@@ -271,14 +295,19 @@
 }
 
 .infoLabel {
-  color: #a8b2d1;
-  font-weight: 500;
+  font-family: var(--font-ui);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
 }
 
 .infoValue {
-  color: #ccd6f6;
-  font-weight: 600;
   font-family: monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--foreground);
 }
 
 .actions {
@@ -290,9 +319,12 @@
 .downloadButton {
   flex: 1;
   padding: 12px 24px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
+  border-radius: 0;
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   text-align: center;
   text-decoration: none;
   cursor: pointer;
@@ -300,38 +332,40 @@
 }
 
 .newButton {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #ccd6f6;
+  background: #000000;
+  border: 1px solid var(--border);
+  color: var(--muted-foreground);
 }
 
 .newButton:hover {
-  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--foreground);
+  color: var(--foreground);
 }
 
 .downloadButton {
-  background: linear-gradient(135deg, #64ffda 0%, #4facfe 100%);
-  border: none;
-  color: #1a1a2e;
+  background: var(--foreground);
+  border: 1px solid var(--foreground);
+  color: var(--background);
 }
 
 .downloadButton:hover {
-  background: #1A1A1A;
+  background: var(--muted-foreground);
+  border-color: var(--muted-foreground);
 }
-
 
 .infoBanner {
   margin-top: 20px;
   padding: 12px;
-  background: rgba(100, 255, 218, 0.05);
-  border: 1px solid rgba(100, 255, 218, 0.2);
-  border-radius: 8px;
+  background: #000000;
+  border: 1px solid var(--border);
+  border-radius: 0;
 }
 
 .infoText {
   margin: 0;
+  font-family: var(--font-body);
   font-size: 14px;
-  color: #a8b2d1;
+  color: var(--muted-foreground);
   text-align: center;
 }
 

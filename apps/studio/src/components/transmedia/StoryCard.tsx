@@ -126,26 +126,10 @@ export function StoryCard({ story, onDelete, onGenerateBeats }: StoryCardProps) 
   );
 }
 
-function getPlatformIcon(platform: string): string {
-  const icons: Record<string, string> = {
-    TWITTER: '🐦',
-    INSTAGRAM: '📷',
-    TIKTOK: '🎵',
-    PODCAST: '🎙️',
-    BLOG: '📝',
-    NEWSLETTER: '📧',
-    YOUTUBE: '📹',
-  };
-  return icons[platform] || '';
+function getPlatformIcon(_platform: string): string {
+  return '';
 }
 
-function getMediaIcon(type: string): string {
-  const icons: Record<string, string> = {
-    TEXT: '📄',
-    AUDIO: '🔊',
-    VISUAL: '',
-    VIDEO: '🎬',
-    INTERACTIVE: '🎮',
-  };
-  return icons[type] || '';
+function getMediaIcon(_type: string): string {
+  return '';
 }

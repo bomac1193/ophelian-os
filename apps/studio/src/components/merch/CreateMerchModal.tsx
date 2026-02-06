@@ -168,7 +168,7 @@ export function CreateMerchModal({
           </div>
 
           <div className={styles.revenueInfo}>
-            <h4>💰 Revenue Split</h4>
+            <h4>Revenue Split</h4>
             <div className={styles.revenueSplit}>
               <div className={styles.revenueItem}>
                 <span>You earn:</span>

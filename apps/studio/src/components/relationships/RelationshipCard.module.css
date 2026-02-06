@@ -1,9 +1,11 @@
+/* Relationship Card - Brutalist Minimalism */
+
 .card {
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
+  background: #000000;
+  border: 1px solid var(--border);
+  border-radius: 0;
   padding: 20px;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   position: relative;
   overflow: hidden;
 }
@@ -14,15 +16,13 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 3px;
-  background: var(--relationship-color, #667eea);
-  opacity: 0.8;
+  height: 2px;
+  background: var(--relationship-color, var(--foreground));
 }
 
 .card:hover {
-  background: #1A1A1A;
+  border-color: var(--foreground);
 }
-
 
 .header {
   display: flex;
@@ -43,19 +43,20 @@
 }
 
 .typeName {
+  font-family: var(--font-heading);
   font-size: 16px;
   font-weight: 600;
-  color: #FFFFFF;
+  color: var(--foreground);
   text-transform: capitalize;
 }
 
 .deleteButton {
   width: 32px;
   height: 32px;
-  background: rgba(255, 107, 107, 0.1);
-  border: 1px solid rgba(255, 107, 107, 0.2);
-  border-radius: 6px;
-  color: #ff6b6b;
+  background: transparent;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  border-radius: 0;
+  color: rgba(239, 68, 68, 0.95);
   font-size: 24px;
   line-height: 1;
   cursor: pointer;
@@ -66,9 +67,9 @@
 }
 
 .deleteButton:hover {
-  background: #1A1A1A;
+  border-color: rgba(239, 68, 68, 0.8);
+  background: rgba(239, 68, 68, 0.1);
 }
-
 
 .content {
   display: flex;
@@ -81,38 +82,45 @@
   align-items: center;
   gap: 8px;
   padding: 10px;
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 8px;
+  background: #000000;
+  border: 1px solid var(--border);
+  border-radius: 0;
 }
 
 .characterLabel {
-  font-size: 14px;
+  font-family: var(--font-ui);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--muted-foreground);
-  font-weight: 500;
 }
 
 .characterId {
+  font-family: monospace;
   font-size: 14px;
-  color: #FFFFFF;
+  color: var(--foreground);
   font-weight: 600;
-  font-family: 'JetBrains Mono', monospace;
 }
 
 .description {
+  font-family: var(--font-body);
   font-size: 14px;
   line-height: 1.6;
   color: var(--muted-foreground);
   margin: 0;
   padding: 12px;
-  background: rgba(255, 255, 255, 0.02);
-  border-radius: 8px;
-  border-left: 3px solid var(--relationship-color, #667eea);
+  background: #000000;
+  border-radius: 0;
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--relationship-color, var(--foreground));
 }
 
 .strengthSection {
   padding: 16px;
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 10px;
+  background: #000000;
+  border: 1px solid var(--border);
+  border-radius: 0;
 }
 
 .strengthHeader {
@@ -123,19 +131,20 @@
 }
 
 .strengthLabel {
-  font-size: 14px;
+  font-family: var(--font-ui);
+  font-size: 0.625rem;
   font-weight: 600;
-  color: var(--muted-foreground);
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  color: var(--muted-foreground);
 }
 
 .editButton {
   width: 28px;
   height: 28px;
-  background: rgba(102, 126, 234, 0.1);
-  border: 1px solid rgba(102, 126, 234, 0.2);
-  border-radius: 6px;
+  background: #000000;
+  border: 1px solid var(--border);
+  border-radius: 0;
   font-size: 14px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -145,27 +154,23 @@
 }
 
 .editButton:hover {
-  background: #1A1A1A;
+  border-color: var(--foreground);
 }
-
 
 .strengthBar {
   width: 100%;
-  height: 12px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 6px;
+  height: 8px;
+  background: var(--border);
+  border-radius: 0;
   overflow: hidden;
   margin-bottom: 10px;
 }
 
 .strengthFill {
-  background: #000000;
-  border: none;
-  border-radius: 0;
-  font-family: var(--font-body);
+  background: var(--foreground);
   height: 100%;
+  transition: width 0.3s ease;
 }
-
 
 .strengthInfo {
   display: flex;
@@ -174,12 +179,14 @@
 }
 
 .strengthPercentage {
+  font-family: var(--font-heading);
   font-size: 16px;
   font-weight: 700;
-  color: var(--relationship-color, #667eea);
+  color: var(--foreground);
 }
 
 .strengthText {
+  font-family: var(--font-body);
   font-size: 14px;
   font-weight: 500;
   color: var(--muted-foreground);
@@ -193,9 +200,9 @@
 
 .slider {
   width: 100%;
-  height: 8px;
-  border-radius: 4px;
-  background: rgba(255, 255, 255, 0.1);
+  height: 4px;
+  border-radius: 0;
+  background: var(--border);
   outline: none;
   appearance: none;
   -webkit-appearance: none;
@@ -204,38 +211,37 @@
 .slider::-webkit-slider-thumb {
   appearance: none;
   -webkit-appearance: none;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: var(--relationship-color, #667eea);
+  width: 16px;
+  height: 16px;
+  border-radius: 0;
+  background: var(--foreground);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .slider::-webkit-slider-thumb:hover {
-  transform: scale(1.2);
-  box-shadow: 0 0 0 8px rgba(102, 126, 234, 0.1);
+  background: var(--muted-foreground);
 }
 
 .slider::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: var(--relationship-color, #667eea);
+  width: 16px;
+  height: 16px;
+  border-radius: 0;
+  background: var(--foreground);
   cursor: pointer;
   border: none;
   transition: all 0.2s ease;
 }
 
 .slider::-moz-range-thumb:hover {
-  transform: scale(1.2);
-  box-shadow: 0 0 0 8px rgba(102, 126, 234, 0.1);
+  background: var(--muted-foreground);
 }
 
 .strengthValue {
+  font-family: var(--font-heading);
   font-size: 18px;
   font-weight: 700;
-  color: var(--relationship-color, #667eea);
+  color: var(--foreground);
   text-align: center;
 }
 
@@ -248,51 +254,53 @@
 .cancelButton {
   flex: 1;
   padding: 8px 16px;
-  border: none;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 600;
+  border: 1px solid;
+  border-radius: 0;
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .saveButton {
-  background: #000000;
-  border: none;
-  border-radius: 0;
-  font-family: var(--font-body);
-  color: #ffffff;
+  background: var(--foreground);
+  border-color: var(--foreground);
+  color: var(--background);
 }
-
 
 .saveButton:hover {
-  background: #1A1A1A;
+  background: var(--muted-foreground);
+  border-color: var(--muted-foreground);
 }
 
-
 .cancelButton {
-  background: rgba(255, 255, 255, 0.05);
+  background: #000000;
+  border-color: var(--border);
   color: var(--muted-foreground);
-  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .cancelButton:hover {
-  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--foreground);
+  color: var(--foreground);
 }
 
 .history {
   padding: 16px;
-  background: rgba(255, 255, 255, 0.02);
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: #000000;
+  border: 1px solid var(--border);
+  border-radius: 0;
 }
 
 .historyTitle {
-  font-size: 14px;
+  font-family: var(--font-ui);
+  font-size: 0.625rem;
   font-weight: 600;
-  color: var(--muted-foreground);
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  color: var(--muted-foreground);
   margin: 0 0 12px 0;
 }
 
@@ -307,34 +315,39 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px 12px;
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 6px;
+  background: #000000;
+  border: 1px solid var(--border);
+  border-radius: 0;
   gap: 12px;
 }
 
 .eventText {
+  font-family: var(--font-body);
   font-size: 14px;
-  color: #FFFFFF;
+  color: var(--foreground);
   flex: 1;
 }
 
 .eventImpact {
-  font-size: 14px;
+  font-family: var(--font-ui);
+  font-size: 12px;
   font-weight: 700;
   padding: 4px 8px;
-  border-radius: 4px;
+  border-radius: 0;
   min-width: 40px;
   text-align: center;
 }
 
 .eventImpact.positive {
-  color: #4ade80;
-  background: rgba(74, 222, 128, 0.1);
+  color: #22c55e;
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.3);
 }
 
 .eventImpact.negative {
-  color: #ff6b6b;
-  background: rgba(255, 107, 107, 0.1);
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
 @media (max-width: 768px) {

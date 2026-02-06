@@ -49,7 +49,6 @@ export function ContentSuggester({
           <h4 className={styles.title}>Content Suggestions</h4>
         </div>
         <div className={styles.noGenome}>
-          <span className={styles.noGenomeIcon}>💭</span>
           <p className={styles.noGenomeText}>
             No genome data available. Content suggestions require Orisha and Sephira information.
           </p>
@@ -96,7 +95,6 @@ export function ContentSuggester({
       </div>
 
       <div className={styles.hint}>
-        <span className={styles.hintIcon}>💡</span>
         <span className={styles.hintText}>
           Click any topic to auto-fill your content intent
         </span>

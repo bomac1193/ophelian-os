@@ -17,21 +17,21 @@ interface CreateStoryModalProps {
 }
 
 const MEDIA_TYPES = [
-  { value: 'TEXT', label: 'Text', icon: '📄' },
-  { value: 'AUDIO', label: 'Audio', icon: '🔊' },
+  { value: 'TEXT', label: 'Text', icon: '' },
+  { value: 'AUDIO', label: 'Audio', icon: '' },
   { value: 'VISUAL', label: 'Visual', icon: '' },
-  { value: 'VIDEO', label: 'Video', icon: '🎬' },
-  { value: 'INTERACTIVE', label: 'Interactive', icon: '🎮' },
+  { value: 'VIDEO', label: 'Video', icon: '' },
+  { value: 'INTERACTIVE', label: 'Interactive', icon: '' },
 ];
 
 const PLATFORMS = [
-  { value: 'TWITTER', label: 'Twitter', icon: '🐦' },
-  { value: 'INSTAGRAM', label: 'Instagram', icon: '📷' },
-  { value: 'TIKTOK', label: 'TikTok', icon: '🎵' },
-  { value: 'PODCAST', label: 'Podcast', icon: '🎙️' },
-  { value: 'BLOG', label: 'Blog', icon: '📝' },
-  { value: 'NEWSLETTER', label: 'Newsletter', icon: '📧' },
-  { value: 'YOUTUBE', label: 'YouTube', icon: '📹' },
+  { value: 'TWITTER', label: 'Twitter', icon: '' },
+  { value: 'INSTAGRAM', label: 'Instagram', icon: '' },
+  { value: 'TIKTOK', label: 'TikTok', icon: '' },
+  { value: 'PODCAST', label: 'Podcast', icon: '' },
+  { value: 'BLOG', label: 'Blog', icon: '' },
+  { value: 'NEWSLETTER', label: 'Newsletter', icon: '' },
+  { value: 'YOUTUBE', label: 'YouTube', icon: '' },
 ];
 
 export function CreateStoryModal({

@@ -95,7 +95,7 @@ export function VoiceGenerator({
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h3 className={styles.title}>🎤 Voice Synthesis</h3>
+        <h3 className={styles.title}>Voice Synthesis</h3>
         <p className={styles.subtitle}>Generate audio as {characterName} using local Chromox</p>
       </div>
 
@@ -130,7 +130,7 @@ export function VoiceGenerator({
 
       {/* Chromox Style Controls */}
       <div className={styles.advancedSection}>
-        <h4 className={styles.sectionTitle}>🎚️ Voice Controls</h4>
+        <h4 className={styles.sectionTitle}>Voice Controls</h4>
 
         <div className={styles.controlGroup}>
           <div className={styles.control}>
@@ -237,13 +237,13 @@ export function VoiceGenerator({
         onClick={handleGenerate}
         disabled={isGenerating || !text.trim()}
       >
-        {isGenerating ? 'Generating...' : '🎵 Generate Voice'}
+        {isGenerating ? 'Generating...' : 'Generate Voice'}
       </button>
 
       {/* Error Display */}
       {error && (
         <div className={styles.error}>
-          ⚠️ {error}
+          {error}
         </div>
       )}
 
@@ -271,7 +271,7 @@ export function VoiceGenerator({
             rel="noopener noreferrer"
             className={styles.downloadLink}
           >
-            📥 Open in new tab
+            Open in New Tab
           </a>
         </div>
       )}
@@ -279,7 +279,7 @@ export function VoiceGenerator({
       {/* Info Banner */}
       <div className={styles.infoBanner}>
         <p className={styles.infoText}>
-          ℹ️ Make sure Chromox backend is running: <code>cd ~/chromox/backend && npm run dev</code>
+          Make sure Chromox backend is running: <code>cd ~/chromox/backend && npm run dev</code>
         </p>
       </div>
     </div>

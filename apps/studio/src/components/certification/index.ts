@@ -1,0 +1,1 @@
+export { EthicalCertification } from './EthicalCertification';

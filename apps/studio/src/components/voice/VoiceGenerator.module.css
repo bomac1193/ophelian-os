@@ -1,8 +1,10 @@
+/* Voice Generator - Brutalist Minimalism */
+
 .container {
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-  border-radius: 16px;
+  background: #000000;
+  border: 1px solid var(--border);
+  border-radius: 0;
   padding: 24px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 .header {
@@ -10,15 +12,18 @@
 }
 
 .title {
-  font-size: 24px;
-  font-weight: 700;
-  color: #ffffff;
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--foreground);
   margin: 0 0 8px 0;
+  letter-spacing: -0.01em;
 }
 
 .subtitle {
+  font-family: var(--font-body);
   font-size: 14px;
-  color: #a8b2d1;
+  color: var(--muted-foreground);
   margin: 0;
 }
 
@@ -28,34 +33,37 @@
 
 .label {
   display: block;
-  font-size: 14px;
-  font-weight: 600;
-  color: #ccd6f6;
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--foreground);
   margin-bottom: 8px;
 }
 
 .textarea {
   width: 100%;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
+  background: #000000;
+  border: 1px solid var(--border);
+  border-radius: 0;
   padding: 12px;
-  color: #ffffff;
+  color: var(--foreground);
+  font-family: var(--font-body);
   font-size: 14px;
-  font-family: inherit;
   resize: vertical;
-  transition: all 0.2s ease;
+  transition: border-color 0.2s ease;
 }
 
 .textarea:focus {
   outline: none;
-  border-color: #64ffda;
-  background: rgba(100, 255, 218, 0.05);
+  border-color: var(--foreground);
 }
 
 .providerNote {
+  font-family: var(--font-body);
   font-size: 14px;
-  color: #8892b0;
+  color: var(--muted-foreground);
   margin: 4px 0 8px 0;
   font-style: italic;
 }
@@ -68,49 +76,52 @@
 .providerButton {
   flex: 1;
   padding: 12px 24px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  color: #a8b2d1;
-  font-size: 14px;
-  font-weight: 600;
+  background: #000000;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  color: var(--muted-foreground);
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .providerButton:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.2);
+  border-color: var(--foreground);
+  color: var(--foreground);
 }
 
 .providerButton.active {
-  background: #000000;
-  border: none;
-  border-radius: 0;
-  font-family: var(--font-body);
-  border-color: #667eea;
-  color: #ffffff;
+  background: var(--foreground);
+  border-color: var(--foreground);
+  color: var(--background);
 }
 
-
 .advancedSection {
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 12px;
+  background: #000000;
+  border: 1px solid var(--border);
+  border-radius: 0;
   padding: 20px;
   margin-bottom: 20px;
 }
 
 .sectionTitle {
-  font-size: 16px;
-  font-weight: 600;
-  color: #64ffda;
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--foreground);
   margin: 0 0 16px 0;
 }
 
 .controlGroup {
   margin-bottom: 20px;
   padding-bottom: 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--border);
 }
 
 .controlGroup:last-child {
@@ -120,9 +131,12 @@
 }
 
 .groupTitle {
-  font-size: 14px;
-  font-weight: 600;
-  color: #ccd6f6;
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--foreground);
   margin: 0 0 12px 0;
 }
 
@@ -136,42 +150,46 @@
 
 .controlLabel {
   display: block;
-  font-size: 14px;
-  font-weight: 500;
-  color: #a8b2d1;
+  font-family: var(--font-ui);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
   margin-bottom: 6px;
 }
 
 .controlHint {
-  font-size: 14px;
-  color: #8892b0;
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--muted-foreground);
   margin: 4px 0 0 0;
   font-style: italic;
 }
 
 .select {
   width: 100%;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 6px;
+  background: #000000;
+  border: 1px solid var(--border);
+  border-radius: 0;
   padding: 8px 12px;
-  color: #ffffff;
+  color: var(--foreground);
+  font-family: var(--font-body);
   font-size: 14px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: border-color 0.2s ease;
 }
 
 .select:focus {
   outline: none;
-  border-color: #64ffda;
-  background: rgba(100, 255, 218, 0.05);
+  border-color: var(--foreground);
 }
 
 .slider {
   width: 100%;
-  height: 6px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 3px;
+  height: 4px;
+  background: var(--border);
+  border-radius: 0;
   outline: none;
   -webkit-appearance: none;
   appearance: none;
@@ -180,22 +198,22 @@
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 18px;
-  height: 18px;
-  background: #000000;
+  width: 16px;
+  height: 16px;
+  background: var(--foreground);
   border-radius: 0;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .slider::-webkit-slider-thumb:hover {
-  
+  background: var(--muted-foreground);
 }
 
 .slider::-moz-range-thumb {
-  width: 18px;
-  height: 18px;
-  background: #000000;
+  width: 16px;
+  height: 16px;
+  background: var(--foreground);
   border-radius: 0;
   cursor: pointer;
   border: none;
@@ -203,26 +221,28 @@
 }
 
 .slider::-moz-range-thumb:hover {
-  
+  background: var(--muted-foreground);
 }
 
 .generateButton {
-  background: #000000;
-  border: none;
+  background: var(--foreground);
+  border: 1px solid var(--foreground);
   border-radius: 0;
-  font-family: var(--font-body);
   width: 100%;
   padding: 16px 32px;
-  color: #ffffff;
-  font-size: 16px;
+  color: var(--background);
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
   font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-
 .generateButton:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  background: var(--muted-foreground);
+  border-color: var(--muted-foreground);
 }
 
 .generateButton:disabled {
@@ -231,27 +251,31 @@
 }
 
 .error {
-  background: rgba(255, 68, 68, 0.1);
-  border: 1px solid rgba(255, 68, 68, 0.3);
-  border-radius: 8px;
+  background: #000000;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  border-radius: 0;
   padding: 12px 16px;
-  color: #ff6b6b;
+  color: rgba(239, 68, 68, 0.95);
+  font-family: var(--font-body);
   font-size: 14px;
   margin-top: 16px;
 }
 
 .result {
-  background: rgba(100, 255, 218, 0.05);
-  border: 1px solid rgba(100, 255, 218, 0.2);
-  border-radius: 12px;
+  background: #000000;
+  border: 1px solid var(--border);
+  border-radius: 0;
   padding: 20px;
   margin-top: 20px;
 }
 
 .resultTitle {
-  font-size: 16px;
-  font-weight: 600;
-  color: #64ffda;
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--foreground);
   margin: 0 0 12px 0;
 }
 
@@ -261,8 +285,9 @@
 
 .audioInfo p {
   margin: 4px 0;
+  font-family: var(--font-body);
   font-size: 14px;
-  color: #a8b2d1;
+  color: var(--muted-foreground);
 }
 
 .audioPlayer {
@@ -272,49 +297,52 @@
 }
 
 .audioPlayer::-webkit-media-controls-panel {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 8px;
+  background: #000000;
+  border-radius: 0;
 }
 
 .downloadLink {
   display: inline-block;
   margin-top: 12px;
   padding: 8px 16px;
-  background: rgba(100, 255, 218, 0.1);
-  border: 1px solid rgba(100, 255, 218, 0.3);
-  border-radius: 6px;
-  color: #64ffda;
+  background: #000000;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  color: var(--foreground);
   text-decoration: none;
-  font-size: 14px;
-  font-weight: 500;
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   transition: all 0.2s ease;
 }
 
 .downloadLink:hover {
-  background: rgba(100, 255, 218, 0.2);
-  border-color: #64ffda;
+  border-color: var(--foreground);
 }
 
 .infoBanner {
-  background: rgba(100, 255, 218, 0.05);
-  border: 1px solid rgba(100, 255, 218, 0.2);
-  border-radius: 8px;
+  background: #000000;
+  border: 1px solid var(--border);
+  border-radius: 0;
   padding: 12px 16px;
   margin-top: 20px;
 }
 
 .infoText {
   margin: 0;
+  font-family: var(--font-body);
   font-size: 14px;
-  color: #a8b2d1;
+  color: var(--muted-foreground);
   line-height: 1.6;
 }
 
 .infoText code {
-  background: rgba(255, 255, 255, 0.1);
+  background: #1a1a1a;
   padding: 2px 6px;
-  border-radius: 4px;
-  font-family: 'Courier New', monospace;
-  font-size: 14px;
-  color: #64ffda;
+  border-radius: 0;
+  font-family: monospace;
+  font-size: 13px;
+  color: var(--foreground);
 }

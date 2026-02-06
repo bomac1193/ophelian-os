@@ -138,7 +138,7 @@ export function AvatarGenerator({
                     className={styles.fileInput}
                   />
                   <div className={styles.uploadPrompt}>
-                    📸 Click to upload image
+                    Click to Upload Image
                   </div>
                 </label>
               )}
@@ -147,7 +147,7 @@ export function AvatarGenerator({
 
           {/* Consent Form */}
           <div className={styles.consentSection}>
-            <h4 className={styles.sectionTitle}>📋 Consent Information</h4>
+            <h4 className={styles.sectionTitle}>Consent Information</h4>
             <p className={styles.consentNote}>
               Required for ethical AI and provenance tracking
             </p>
@@ -181,7 +181,7 @@ export function AvatarGenerator({
 
           {/* Style Options */}
           <div className={styles.section}>
-            <h4 className={styles.sectionTitle}>🎭 Style Options</h4>
+            <h4 className={styles.sectionTitle}>Style Options</h4>
 
             <div className={styles.formGrid}>
               <div className={styles.field}>
@@ -250,7 +250,7 @@ export function AvatarGenerator({
           {/* Error */}
           {error && (
             <div className={styles.error}>
-              ⚠️ {error}
+              {error}
             </div>
           )}
 
@@ -304,7 +304,7 @@ export function AvatarGenerator({
               rel="noopener noreferrer"
               className={styles.downloadButton}
             >
-              📥 Download Avatar
+              Download Avatar
             </a>
           </div>
         </div>
@@ -312,7 +312,7 @@ export function AvatarGenerator({
 
       <div className={styles.infoBanner}>
         <p className={styles.infoText}>
-          ℹ️ Powered by Sembla - consent-first avatar generation with zero commission
+          Powered by Sembla - consent-first avatar generation with zero commission
         </p>
       </div>
     </div>

@@ -68,7 +68,7 @@ export function MerchManager({ characterId, characterName, visualSignature }: Me
   if (error) {
     return (
       <div className={styles.errorContainer}>
-        <p>⚠️ {error}</p>
+        <p>{error}</p>
         <button onClick={fetchProducts} className={styles.retryButton}>
           Retry
         </button>

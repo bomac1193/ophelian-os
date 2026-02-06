@@ -160,9 +160,9 @@ export function GenomePuzzleUnlock({ genome, onUnlock, isUnlocked }: GenomePuzzl
         className={styles.unlockedState}
         style={{
           padding: '1rem',
-          backgroundColor: 'var(--muted)',
+          backgroundColor: '#000000',
           border: '1px solid var(--border)',
-          borderRadius: '8px',
+          borderRadius: '0',
           marginBottom: '1rem',
           textAlign: 'center',
           fontSize: '0.875rem',
@@ -179,9 +179,9 @@ export function GenomePuzzleUnlock({ genome, onUnlock, isUnlocked }: GenomePuzzl
       className={styles.puzzleContainer}
       style={{
         padding: '1.5rem',
-        backgroundColor: 'var(--card)',
-        border: '2px solid var(--border)',
-        borderRadius: '12px',
+        backgroundColor: '#000000',
+        border: '1px solid var(--border)',
+        borderRadius: '0',
         marginBottom: '1rem',
       }}
     >
@@ -222,9 +222,9 @@ export function GenomePuzzleUnlock({ genome, onUnlock, isUnlocked }: GenomePuzzl
             style={{
               width: '100%',
               padding: '0.75rem',
-              borderRadius: '6px',
+              borderRadius: '0',
               border: `1px solid ${error ? 'var(--destructive)' : 'var(--border)'}`,
-              backgroundColor: 'var(--background)',
+              backgroundColor: '#000000',
               color: 'var(--foreground)',
               fontSize: '0.875rem',
               outline: 'none',
@@ -240,7 +240,7 @@ export function GenomePuzzleUnlock({ genome, onUnlock, isUnlocked }: GenomePuzzl
               padding: '0.5rem',
               backgroundColor: 'var(--destructive)',
               color: 'white',
-              borderRadius: '6px',
+              borderRadius: '0',
               fontSize: '0.8rem',
               marginBottom: '0.75rem',
               opacity: 0.9,
@@ -255,13 +255,14 @@ export function GenomePuzzleUnlock({ genome, onUnlock, isUnlocked }: GenomePuzzl
             className={styles.hintBox}
             style={{
               padding: '0.75rem',
-              backgroundColor: 'var(--muted)',
-              borderRadius: '6px',
+              backgroundColor: '#000000',
+              borderRadius: '0',
               fontSize: '0.8rem',
               marginBottom: '0.75rem',
               fontStyle: 'italic',
               color: 'var(--muted-foreground)',
-              borderLeft: '3px solid var(--primary)',
+              border: '1px solid var(--border)',
+              borderLeft: '3px solid var(--foreground)',
             }}
           >
             <div style={{ fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.25rem', opacity: 0.7 }}>
@@ -278,13 +279,15 @@ export function GenomePuzzleUnlock({ genome, onUnlock, isUnlocked }: GenomePuzzl
             style={{
               flex: 1,
               padding: '0.75rem 1.5rem',
-              borderRadius: '6px',
-              border: 'none',
-              backgroundColor: 'var(--primary)',
-              color: 'white',
+              borderRadius: '0',
+              border: '1px solid var(--foreground)',
+              backgroundColor: 'var(--foreground)',
+              color: 'var(--background)',
               cursor: 'pointer',
-              fontSize: '0.875rem',
-              fontWeight: 600,
+              fontSize: '0.75rem',
+              fontWeight: 700,
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em',
             }}
           >
             Unlock Mysteries
@@ -296,12 +299,15 @@ export function GenomePuzzleUnlock({ genome, onUnlock, isUnlocked }: GenomePuzzl
               onClick={() => setShowHint(true)}
               style={{
                 padding: '0.75rem 1rem',
-                borderRadius: '6px',
+                borderRadius: '0',
                 border: '1px solid var(--border)',
-                backgroundColor: 'transparent',
+                backgroundColor: '#000000',
                 color: 'var(--foreground)',
                 cursor: 'pointer',
-                fontSize: '0.875rem',
+                fontSize: '0.75rem',
+                fontWeight: 600,
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
               }}
             >
               Seek Hint

@@ -21,6 +21,8 @@ import { AvatarGenerator } from '../../../components/avatar/AvatarGenerator';
 import { RelationshipManager } from '../../../components/relationships/RelationshipManager';
 import { TransmediaStoryManager } from '../../../components/transmedia/TransmediaStoryManager';
 import { MerchManager } from '../../../components/merch/MerchManager';
+import { PsychometricDashboard } from '../../../components/analytics';
+import { EthicalCertification } from '../../../components/certification';
 import { getSurfaceView, getGatewayHint, getDepthsView } from '@lcos/oripheon';
 import { refreshUserProgress } from '../../../lib/user-progress';
 import { generateMockTimeline, getCharacterAge } from '../../../lib/timeline-utils';
@@ -38,7 +40,7 @@ export default function ImprintDetailPage() {
   const [systemPrompt, setSystemPrompt] = useState<ImprintSystemPrompt | null>(null);
   const [promptLoading, setPromptLoading] = useState(false);
   const [promptStyle, setPromptStyle] = useState<'concise' | 'detailed' | 'poetic'>('detailed');
-  const [activeTab, setActiveTab] = useState<'overview' | 'multimodal' | 'narrative' | 'prompt' | 'content' | 'timeline' | 'voice' | 'avatar' | 'relationships' | 'stories' | 'merch' | 'social'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'multimodal' | 'narrative' | 'prompt' | 'content' | 'timeline' | 'voice' | 'avatar' | 'relationships' | 'stories' | 'merch' | 'social' | 'analytics' | 'certification'>('overview');
   const [mysteriesUnlocked, setMysteriesUnlocked] = useState(false);
   const [hasAdvancedAccess, setHasAdvancedAccess] = useState(false);
   const [suggestedIntent, setSuggestedIntent] = useState<string>('');
@@ -149,7 +151,7 @@ export default function ImprintDetailPage() {
             padding: '1rem',
             backgroundColor: 'var(--destructive)',
             color: 'white',
-            borderRadius: '8px',
+            borderRadius: '0',
             marginBottom: '1rem',
           }}
         >
@@ -194,7 +196,7 @@ export default function ImprintDetailPage() {
               outline: 'none',
               cursor: 'text',
               padding: '0.25rem',
-              borderRadius: '4px',
+              borderRadius: '0',
             }}
           >
             {genome.name}
@@ -211,11 +213,14 @@ export default function ImprintDetailPage() {
             onChange={(e) => setPromptStyle(e.target.value as 'concise' | 'detailed' | 'poetic')}
             style={{
               padding: '0.5rem',
-              borderRadius: '6px',
+              borderRadius: '0',
               border: '1px solid var(--border)',
-              backgroundColor: 'var(--background)',
+              backgroundColor: '#000000',
               color: 'var(--foreground)',
-              fontSize: '0.875rem',
+              fontSize: '0.75rem',
+              fontWeight: 600,
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em',
             }}
           >
             <option value="concise">Concise</option>
@@ -227,12 +232,15 @@ export default function ImprintDetailPage() {
             onClick={() => handleExport('json')}
             style={{
               padding: '0.5rem 1rem',
-              borderRadius: '6px',
+              borderRadius: '0',
               border: '1px solid var(--border)',
-              backgroundColor: 'transparent',
+              backgroundColor: '#000000',
               color: 'var(--foreground)',
               cursor: 'pointer',
-              fontSize: '0.875rem',
+              fontSize: '0.75rem',
+              fontWeight: 600,
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em',
             }}
           >
             Export JSON
@@ -242,12 +250,15 @@ export default function ImprintDetailPage() {
             onClick={() => handleExport('system-prompt')}
             style={{
               padding: '0.5rem 1rem',
-              borderRadius: '6px',
+              borderRadius: '0',
               border: '1px solid var(--border)',
-              backgroundColor: 'transparent',
+              backgroundColor: '#000000',
               color: 'var(--foreground)',
               cursor: 'pointer',
-              fontSize: '0.875rem',
+              fontSize: '0.75rem',
+              fontWeight: 600,
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em',
             }}
           >
             Export Prompt
@@ -257,12 +268,15 @@ export default function ImprintDetailPage() {
             onClick={handleDelete}
             style={{
               padding: '0.5rem 1rem',
-              borderRadius: '6px',
+              borderRadius: '0',
               border: '1px solid var(--destructive)',
-              backgroundColor: 'transparent',
+              backgroundColor: '#000000',
               color: 'var(--destructive)',
               cursor: 'pointer',
-              fontSize: '0.875rem',
+              fontSize: '0.75rem',
+              fontWeight: 600,
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em',
             }}
           >
             Delete
@@ -277,7 +291,7 @@ export default function ImprintDetailPage() {
             padding: '1rem',
             backgroundColor: 'var(--destructive)',
             color: 'white',
-            borderRadius: '8px',
+            borderRadius: '0',
             marginBottom: '1rem',
           }}
         >
@@ -289,30 +303,33 @@ export default function ImprintDetailPage() {
       <div
         style={{
           display: 'flex',
-          gap: '0.5rem',
+          gap: '0.25rem',
           marginBottom: '1.5rem',
           borderBottom: '1px solid var(--border)',
           paddingBottom: '0.5rem',
+          flexWrap: 'wrap',
         }}
       >
-        {(['overview', 'timeline', 'multimodal', 'narrative', 'prompt', 'content', 'voice', 'avatar', 'relationships', 'stories', 'merch', 'social'] as const).map((tab) => (
+        {(['overview', 'timeline', 'multimodal', 'narrative', 'prompt', 'content', 'voice', 'avatar', 'relationships', 'stories', 'merch', 'social', 'analytics', 'certification'] as const).map((tab) => (
           <button
             key={tab}
             type="button"
             onClick={() => setActiveTab(tab)}
             style={{
               padding: '0.5rem 1rem',
-              borderRadius: '6px 6px 0 0',
-              border: 'none',
-              backgroundColor: activeTab === tab ? 'var(--primary)' : 'transparent',
-              color: activeTab === tab ? 'white' : 'var(--foreground)',
+              borderRadius: '0',
+              border: activeTab === tab ? '1px solid var(--foreground)' : '1px solid var(--border)',
+              backgroundColor: activeTab === tab ? 'var(--foreground)' : '#000000',
+              color: activeTab === tab ? 'var(--background)' : 'var(--foreground)',
               cursor: 'pointer',
-              fontSize: '0.875rem',
-              fontWeight: activeTab === tab ? 600 : 400,
-              textTransform: 'capitalize',
+              fontSize: '0.75rem',
+              fontWeight: 600,
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em',
+              transition: 'all 0.2s ease',
             }}
           >
-            {tab === 'multimodal' ? 'Multi-Modal' : tab === 'prompt' ? 'System Prompt' : tab}
+            {tab === 'multimodal' ? 'Multi-Modal' : tab === 'prompt' ? 'System Prompt' : tab === 'certification' ? 'Ethics' : tab}
           </button>
         ))}
       </div>
@@ -375,8 +392,8 @@ export default function ImprintDetailPage() {
           <div
             style={{
               padding: '1.5rem',
-              backgroundColor: 'var(--card)',
-              borderRadius: '12px',
+              backgroundColor: '#000000',
+              borderRadius: '0',
               border: '1px solid var(--border)',
             }}
           >
@@ -406,8 +423,9 @@ export default function ImprintDetailPage() {
                       key={inf.orisha}
                       style={{
                         padding: '0.25rem 0.5rem',
-                        borderRadius: '12px',
-                        backgroundColor: 'var(--muted)',
+                        borderRadius: '0',
+                        backgroundColor: '#000000',
+                        border: '1px solid var(--border)',
                         fontSize: '0.8rem',
                       }}
                     >
@@ -423,8 +441,8 @@ export default function ImprintDetailPage() {
           <div
             style={{
               padding: '1.5rem',
-              backgroundColor: 'var(--card)',
-              borderRadius: '12px',
+              backgroundColor: '#000000',
+              borderRadius: '0',
               border: '1px solid var(--border)',
             }}
           >
@@ -469,8 +487,8 @@ export default function ImprintDetailPage() {
           <div
             style={{
               padding: '1.5rem',
-              backgroundColor: 'var(--card)',
-              borderRadius: '12px',
+              backgroundColor: '#000000',
+              borderRadius: '0',
               border: '1px solid var(--border)',
             }}
           >
@@ -545,8 +563,9 @@ export default function ImprintDetailPage() {
                       key={arch}
                       style={{
                         padding: '0.25rem 0.5rem',
-                        borderRadius: '12px',
-                        backgroundColor: 'var(--muted)',
+                        borderRadius: '0',
+                        backgroundColor: '#000000',
+                        border: '1px solid var(--border)',
                         fontSize: '0.75rem',
                       }}
                     >
@@ -562,8 +581,8 @@ export default function ImprintDetailPage() {
           <div
             style={{
               padding: '1.5rem',
-              backgroundColor: 'var(--card)',
-              borderRadius: '12px',
+              backgroundColor: '#000000',
+              borderRadius: '0',
               border: '1px solid var(--border)',
             }}
           >
@@ -591,7 +610,7 @@ export default function ImprintDetailPage() {
                       key={t}
                       style={{
                         padding: '0.25rem 0.5rem',
-                        borderRadius: '12px',
+                        borderRadius: '0',
                         backgroundColor: 'var(--destructive)',
                         color: 'white',
                         fontSize: '0.75rem',
@@ -614,8 +633,9 @@ export default function ImprintDetailPage() {
                       key={v}
                       style={{
                         padding: '0.25rem 0.5rem',
-                        borderRadius: '12px',
-                        backgroundColor: 'var(--primary-muted)',
+                        borderRadius: '0',
+                        backgroundColor: '#000000',
+                        border: '1px solid var(--border)',
                         fontSize: '0.75rem',
                       }}
                     >
@@ -654,20 +674,21 @@ export default function ImprintDetailPage() {
           <div
             style={{
               padding: '1.5rem',
-              backgroundColor: 'var(--card)',
-              borderRadius: '12px',
+              backgroundColor: '#000000',
+              borderRadius: '0',
               border: '1px solid var(--border)',
             }}
           >
-            <h3 style={{ margin: '0 0 1rem', fontSize: '1.1rem' }}>Core Values</h3>
+            <h3 style={{ margin: '0 0 1rem', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--muted-foreground)' }}>Core Values</h3>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
               {genome.narrativeIdentity.coreValues.map((v) => (
                 <span
                   key={v}
                   style={{
                     padding: '0.375rem 0.75rem',
-                    borderRadius: '12px',
-                    backgroundColor: 'var(--muted)',
+                    borderRadius: '0',
+                    backgroundColor: '#000000',
+                    border: '1px solid var(--border)',
                     fontSize: '0.875rem',
                   }}
                 >
@@ -680,12 +701,12 @@ export default function ImprintDetailPage() {
           <div
             style={{
               padding: '1.5rem',
-              backgroundColor: 'var(--card)',
-              borderRadius: '12px',
+              backgroundColor: '#000000',
+              borderRadius: '0',
               border: '1px solid var(--border)',
             }}
           >
-            <h3 style={{ margin: '0 0 1rem', fontSize: '1.1rem' }}>Central Conflicts</h3>
+            <h3 style={{ margin: '0 0 1rem', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--muted-foreground)' }}>Central Conflicts</h3>
             <ul style={{ margin: 0, paddingLeft: '1.25rem' }}>
               {genome.narrativeIdentity.centralConflicts.map((c, i) => (
                 <li key={i} style={{ marginBottom: '0.5rem' }}>
@@ -698,20 +719,21 @@ export default function ImprintDetailPage() {
           <div
             style={{
               padding: '1.5rem',
-              backgroundColor: 'var(--card)',
-              borderRadius: '12px',
+              backgroundColor: '#000000',
+              borderRadius: '0',
               border: '1px solid var(--border)',
             }}
           >
-            <h3 style={{ margin: '0 0 1rem', fontSize: '1.1rem' }}>Recurring Themes</h3>
+            <h3 style={{ margin: '0 0 1rem', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--muted-foreground)' }}>Recurring Themes</h3>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
               {genome.narrativeIdentity.recurringThemes.map((t) => (
                 <span
                   key={t}
                   style={{
                     padding: '0.375rem 0.75rem',
-                    borderRadius: '12px',
-                    backgroundColor: 'var(--muted)',
+                    borderRadius: '0',
+                    backgroundColor: '#000000',
+                    border: '1px solid var(--border)',
                     fontSize: '0.875rem',
                   }}
                 >
@@ -724,12 +746,12 @@ export default function ImprintDetailPage() {
           <div
             style={{
               padding: '1.5rem',
-              backgroundColor: 'var(--card)',
-              borderRadius: '12px',
+              backgroundColor: '#000000',
+              borderRadius: '0',
               border: '1px solid var(--border)',
             }}
           >
-            <h3 style={{ margin: '0 0 1rem', fontSize: '1.1rem' }}>Telos (Purpose)</h3>
+            <h3 style={{ margin: '0 0 1rem', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--muted-foreground)' }}>Telos (Purpose)</h3>
             <p style={{ margin: 0, lineHeight: 1.6 }}>{genome.narrativeIdentity.telos}</p>
           </div>
 
@@ -737,21 +759,22 @@ export default function ImprintDetailPage() {
             <div
               style={{
                 padding: '1.5rem',
-                backgroundColor: 'var(--card)',
-                borderRadius: '12px',
+                backgroundColor: '#000000',
+                borderRadius: '0',
                 border: '1px solid var(--border)',
                 gridColumn: '1 / -1',
               }}
             >
-              <h3 style={{ margin: '0 0 1rem', fontSize: '1.1rem' }}>Relational Patterns</h3>
+              <h3 style={{ margin: '0 0 1rem', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--muted-foreground)' }}>Relational Patterns</h3>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '0.75rem' }}>
                 {genome.narrativeIdentity.relationalPatterns.map((rp, i) => (
                   <div
                     key={i}
                     style={{
                       padding: '0.75rem',
-                      backgroundColor: 'var(--muted)',
-                      borderRadius: '8px',
+                      backgroundColor: '#000000',
+                      borderRadius: '0',
+                      border: '1px solid var(--border)',
                     }}
                   >
                     <div style={{ fontWeight: 600, marginBottom: '0.25rem' }}>{rp.archetype}</div>
@@ -771,9 +794,12 @@ export default function ImprintDetailPage() {
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
+              padding: '1rem',
+              backgroundColor: '#000000',
+              border: '1px solid var(--border)',
             }}
           >
-            <p style={{ margin: 0, color: 'var(--muted-foreground)' }}>
+            <p style={{ margin: 0, color: 'var(--muted-foreground)', fontSize: '0.875rem' }}>
               Generate an AI system prompt from this imprint configuration.
             </p>
             <button
@@ -782,12 +808,15 @@ export default function ImprintDetailPage() {
               disabled={promptLoading}
               style={{
                 padding: '0.5rem 1rem',
-                borderRadius: '6px',
-                border: 'none',
-                backgroundColor: 'var(--primary)',
-                color: 'white',
+                borderRadius: '0',
+                border: '1px solid var(--foreground)',
+                backgroundColor: 'var(--foreground)',
+                color: 'var(--background)',
                 cursor: promptLoading ? 'not-allowed' : 'pointer',
-                fontSize: '0.875rem',
+                fontSize: '0.75rem',
+                fontWeight: 600,
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
               }}
             >
               {promptLoading ? 'Generating...' : 'Generate Prompt'}
@@ -798,20 +827,20 @@ export default function ImprintDetailPage() {
             <div
               style={{
                 padding: '1.5rem',
-                backgroundColor: 'var(--card)',
-                borderRadius: '12px',
+                backgroundColor: '#000000',
+                borderRadius: '0',
                 border: '1px solid var(--border)',
               }}
             >
               <div style={{ marginBottom: '1rem' }}>
-                <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginBottom: '0.25rem' }}>
+                <div style={{ fontSize: '0.7rem', color: 'var(--muted-foreground)', marginBottom: '0.25rem', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600 }}>
                   Character Name
                 </div>
                 <div style={{ fontWeight: 600 }}>{systemPrompt.characterName}</div>
               </div>
 
               <div style={{ marginBottom: '1rem' }}>
-                <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginBottom: '0.5rem' }}>
+                <div style={{ fontSize: '0.7rem', color: 'var(--muted-foreground)', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600 }}>
                   Trait Summary
                 </div>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.25rem' }}>
@@ -820,8 +849,9 @@ export default function ImprintDetailPage() {
                       key={t}
                       style={{
                         padding: '0.25rem 0.5rem',
-                        borderRadius: '12px',
-                        backgroundColor: 'var(--muted)',
+                        borderRadius: '0',
+                        backgroundColor: '#000000',
+                        border: '1px solid var(--border)',
                         fontSize: '0.8rem',
                       }}
                     >
@@ -832,14 +862,15 @@ export default function ImprintDetailPage() {
               </div>
 
               <div style={{ marginBottom: '1rem' }}>
-                <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginBottom: '0.5rem' }}>
+                <div style={{ fontSize: '0.7rem', color: 'var(--muted-foreground)', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600 }}>
                   System Prompt
                 </div>
                 <pre
                   style={{
                     padding: '1rem',
-                    backgroundColor: 'var(--muted)',
-                    borderRadius: '8px',
+                    backgroundColor: '#000000',
+                    borderRadius: '0',
+                    border: '1px solid var(--border)',
                     fontSize: '0.85rem',
                     whiteSpace: 'pre-wrap',
                     wordBreak: 'break-word',
@@ -857,12 +888,15 @@ export default function ImprintDetailPage() {
                 onClick={() => navigator.clipboard.writeText(systemPrompt.prompt)}
                 style={{
                   padding: '0.5rem 1rem',
-                  borderRadius: '6px',
-                  border: '1px solid var(--border)',
-                  backgroundColor: 'transparent',
+                  borderRadius: '0',
+                  border: '1px solid var(--foreground)',
+                  backgroundColor: '#000000',
                   color: 'var(--foreground)',
                   cursor: 'pointer',
-                  fontSize: '0.875rem',
+                  fontSize: '0.75rem',
+                  fontWeight: 600,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
                 }}
               >
                 Copy to Clipboard
@@ -876,8 +910,9 @@ export default function ImprintDetailPage() {
                 padding: '3rem',
                 textAlign: 'center',
                 color: 'var(--muted-foreground)',
-                backgroundColor: 'var(--muted)',
-                borderRadius: '12px',
+                backgroundColor: '#000000',
+                borderRadius: '0',
+                border: '1px solid var(--border)',
               }}
             >
               Click &quot;Generate Prompt&quot; to create an AI system prompt from this imprint.
@@ -1003,15 +1038,15 @@ export default function ImprintDetailPage() {
 
           <div style={{
             padding: '1.5rem',
-            background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%)',
-            border: '1px solid rgba(102, 126, 234, 0.2)',
-            borderRadius: '12px',
+            background: '#000000',
+            border: '1px solid var(--border)',
+            borderRadius: '0',
             marginBottom: '1.5rem'
           }}>
-            <h3 style={{ margin: '0 0 1rem', fontSize: '1.1rem' }}>Social Publishing</h3>
+            <h3 style={{ margin: '0 0 1rem', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--foreground)' }}>Social Publishing</h3>
             <div style={{ display: 'grid', gap: '1rem' }}>
               <div>
-                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500 }}>Content to Publish</label>
+                <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.6875rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--muted-foreground)' }}>Content to Publish</label>
                 <textarea
                   id="social-content"
                   placeholder={`Share ${genome.name}'s story, thoughts, or updates...`}
@@ -1019,9 +1054,9 @@ export default function ImprintDetailPage() {
                   style={{
                     width: '100%',
                     padding: '0.75rem',
-                    borderRadius: '8px',
+                    borderRadius: '0',
                     border: '1px solid var(--border)',
-                    backgroundColor: 'var(--background)',
+                    backgroundColor: '#000000',
                     color: 'var(--foreground)',
                     fontSize: '0.875rem',
                     fontFamily: 'inherit',
@@ -1031,12 +1066,12 @@ export default function ImprintDetailPage() {
               </div>
 
               <div>
-                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500 }}>Platforms</label>
+                <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.6875rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--muted-foreground)' }}>Platforms</label>
                 <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
                   {['Twitter', 'Instagram', 'TikTok'].map(platform => (
-                    <label key={platform} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
-                      <input type="checkbox" defaultChecked style={{ cursor: 'pointer' }} />
-                      <span>{platform}</span>
+                    <label key={platform} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', padding: '0.5rem 0.75rem', border: '1px solid var(--border)', background: '#000000' }}>
+                      <input type="checkbox" defaultChecked style={{ cursor: 'pointer', accentColor: 'var(--foreground)' }} />
+                      <span style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{platform}</span>
                     </label>
                   ))}
                 </div>
@@ -1085,17 +1120,17 @@ export default function ImprintDetailPage() {
                 }}
                 style={{
                   padding: '0.75rem 1.5rem',
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '8px',
-                  fontSize: '1rem',
-                  fontWeight: 600,
+                  background: 'var(--foreground)',
+                  color: 'var(--background)',
+                  border: '1px solid var(--foreground)',
+                  borderRadius: '0',
+                  fontSize: '0.75rem',
+                  fontWeight: 700,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.08em',
                   cursor: 'pointer',
-                  transition: 'transform 0.2s'
+                  transition: 'all 0.2s ease'
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}
-                onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
               >
                 Publish to Social Media
               </button>
@@ -1104,11 +1139,11 @@ export default function ImprintDetailPage() {
 
           <div style={{
             padding: '1rem',
-            background: 'rgba(100, 255, 218, 0.05)',
-            border: '1px solid rgba(100, 255, 218, 0.2)',
-            borderRadius: '8px'
+            background: '#000000',
+            border: '1px solid var(--border)',
+            borderRadius: '0'
           }}>
-            <h4 style={{ margin: '0 0 0.5rem', fontSize: '0.9rem', color: '#64ffda' }}>Character-Authentic Adaptation</h4>
+            <h4 style={{ margin: '0 0 0.5rem', fontSize: '0.6875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--foreground)' }}>Character-Authentic Adaptation</h4>
             <ul style={{ margin: 0, paddingLeft: '1.25rem', fontSize: '0.875rem', color: 'var(--muted-foreground)' }}>
               <li>Auto-generates hashtags from {genome.name}'s personality traits</li>
               <li>Adapts content for each platform's format and character limits</li>
@@ -1117,6 +1152,36 @@ export default function ImprintDetailPage() {
               <li>Adds character attribution and orisha energy references</li>
             </ul>
           </div>
+        </div>
+      )}
+
+      {activeTab === 'analytics' && (
+        <div>
+          <p style={{ margin: '0 0 1.5rem', color: 'var(--muted-foreground)' }}>
+            Deep psychometric analysis of {genome.name}'s personality profile, cognitive functions, and engagement patterns.
+          </p>
+          <PsychometricDashboard
+            characterId={id}
+            characterName={genome.name}
+            orisha={genome.orishaConfiguration.headOrisha}
+            sephira={genome.kabbalisticPosition.primarySephira}
+            trajectory={genome.psychologicalState.trajectory}
+            hotCoolAxis={genome.psychologicalState.hotCoolAxis}
+            activeArchetypes={genome.psychologicalState.activeArchetypes}
+          />
+        </div>
+      )}
+
+      {activeTab === 'certification' && (
+        <div>
+          <p style={{ margin: '0 0 1.5rem', color: 'var(--muted-foreground)' }}>
+            Track ethical AI compliance, consent records, and certification status for {genome.name}.
+          </p>
+          <EthicalCertification
+            characterId={id}
+            characterName={genome.name}
+            createdAt={genome.createdAt}
+          />
         </div>
       )}
 
@@ -1132,8 +1197,9 @@ export default function ImprintDetailPage() {
                 key={tag}
                 style={{
                   padding: '0.25rem 0.5rem',
-                  borderRadius: '12px',
-                  backgroundColor: 'var(--muted)',
+                  borderRadius: '0',
+                  backgroundColor: '#000000',
+                  border: '1px solid var(--border)',
                   fontSize: '0.8rem',
                 }}
               >

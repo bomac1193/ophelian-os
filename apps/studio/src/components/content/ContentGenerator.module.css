@@ -1,12 +1,13 @@
+/* Content Generator - Brutalist Minimalism */
+
 .container {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
   padding: 1.5rem;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  backdrop-filter: blur(10px);
+  background: #000000;
+  border: 1px solid var(--border);
+  border-radius: 0;
 }
 
 /* Header */
@@ -18,10 +19,12 @@
 }
 
 .title {
+  font-family: var(--font-heading);
   font-size: 1.25rem;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.95);
+  color: var(--foreground);
   margin: 0;
+  letter-spacing: -0.01em;
 }
 
 .genomeBadge {
@@ -29,10 +32,14 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.375rem 0.75rem;
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(236, 72, 153, 0.2));
-  border: 1px solid rgba(139, 92, 246, 0.3);
-  border-radius: 20px;
-  font-size: 0.875rem;
+  background: #000000;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .genomeBadgeIcon {
@@ -40,8 +47,7 @@
 }
 
 .genomeBadgeText {
-  color: rgba(255, 255, 255, 0.9);
-  font-weight: 500;
+  color: var(--foreground);
 }
 
 /* Warning */
@@ -50,9 +56,9 @@
   align-items: center;
   gap: 0.75rem;
   padding: 0.75rem 1rem;
-  background: rgba(251, 191, 36, 0.1);
-  border: 1px solid rgba(251, 191, 36, 0.3);
-  border-radius: 8px;
+  background: #000000;
+  border: 1px solid rgba(251, 191, 36, 0.4);
+  border-radius: 0;
 }
 
 .warningIcon {
@@ -62,6 +68,7 @@
 
 .warningText {
   color: rgba(251, 191, 36, 0.95);
+  font-family: var(--font-body);
   font-size: 0.875rem;
   line-height: 1.5;
 }
@@ -83,15 +90,21 @@
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.9);
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--foreground);
 }
 
 .labelHint {
+  font-family: var(--font-body);
   font-size: 0.75rem;
   font-weight: 400;
-  color: rgba(255, 255, 255, 0.5);
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--muted-foreground);
 }
 
 /* Platform Selection */
@@ -103,66 +116,68 @@
 
 .platformButton {
   padding: 0.625rem 1.25rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 0.875rem;
-  font-weight: 500;
+  background: #000000;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  color: var(--muted-foreground);
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .platformButton:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.2);
-  color: rgba(255, 255, 255, 0.9);
+  border-color: var(--foreground);
+  color: var(--foreground);
 }
 
 .platformButtonActive {
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(236, 72, 153, 0.3));
-  border-color: rgba(139, 92, 246, 0.5);
-  color: rgba(255, 255, 255, 0.95);
+  background: var(--foreground);
+  border-color: var(--foreground);
+  color: var(--background);
 }
 
 /* Textarea */
 .textarea {
   padding: 0.75rem;
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  color: rgba(255, 255, 255, 0.95);
+  background: #000000;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  color: var(--foreground);
+  font-family: var(--font-body);
   font-size: 0.875rem;
-  font-family: inherit;
   line-height: 1.6;
   resize: vertical;
-  transition: all 0.2s ease;
+  transition: border-color 0.2s ease;
 }
 
 .textarea:focus {
   outline: none;
-  border-color: rgba(139, 92, 246, 0.5);
-  background: rgba(0, 0, 0, 0.4);
+  border-color: var(--foreground);
 }
 
 .textarea::placeholder {
-  color: rgba(255, 255, 255, 0.3);
+  color: var(--muted-foreground);
 }
 
 /* Genome Preview */
 .genomePreview {
   padding: 1rem;
-  background: rgba(139, 92, 246, 0.05);
-  border: 1px solid rgba(139, 92, 246, 0.2);
-  border-radius: 8px;
+  background: #000000;
+  border: 1px solid var(--border);
+  border-radius: 0;
 }
 
 .genomePreviewTitle {
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: rgba(139, 92, 246, 0.9);
+  color: var(--foreground);
   margin-bottom: 0.75rem;
 }
 
@@ -179,14 +194,19 @@
 }
 
 .genomePreviewLabel {
-  font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.5);
+  font-family: var(--font-ui);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
 }
 
 .genomePreviewValue {
+  font-family: var(--font-body);
   font-size: 0.875rem;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.95);
+  color: var(--foreground);
 }
 
 /* Error */
@@ -195,9 +215,9 @@
   align-items: center;
   gap: 0.75rem;
   padding: 0.75rem 1rem;
-  background: rgba(239, 68, 68, 0.1);
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  border-radius: 8px;
+  background: #000000;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  border-radius: 0;
 }
 
 .errorIcon {
@@ -207,6 +227,7 @@
 
 .errorText {
   color: rgba(239, 68, 68, 0.95);
+  font-family: var(--font-body);
   font-size: 0.875rem;
   line-height: 1.5;
 }
@@ -218,20 +239,22 @@
   justify-content: center;
   gap: 0.5rem;
   padding: 0.875rem 1.5rem;
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.8), rgba(236, 72, 153, 0.8));
-  border: none;
-  border-radius: 8px;
-  color: white;
-  font-size: 0.875rem;
-  font-weight: 600;
+  background: var(--foreground);
+  border: 1px solid var(--foreground);
+  border-radius: 0;
+  color: var(--background);
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .generateButton:hover:not(:disabled) {
-  background: linear-gradient(135deg, rgba(139, 92, 246, 1), rgba(236, 72, 153, 1));
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+  background: var(--muted-foreground);
+  border-color: var(--muted-foreground);
 }
 
 .generateButton:disabled {
@@ -242,8 +265,8 @@
 .spinner {
   width: 1rem;
   height: 1rem;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-top-color: white;
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  border-top-color: var(--background);
   border-radius: 50%;
   animation: spin 0.6s linear infinite;
 }
@@ -260,9 +283,9 @@
   flex-direction: column;
   gap: 1rem;
   padding: 1.5rem;
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
+  background: #000000;
+  border: 1px solid var(--border);
+  border-radius: 0;
 }
 
 .resultHeader {
@@ -273,27 +296,34 @@
 }
 
 .resultTitle {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.7);
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
 }
 
 .resultPlatform {
   padding: 0.25rem 0.625rem;
-  background: rgba(139, 92, 246, 0.2);
-  border: 1px solid rgba(139, 92, 246, 0.3);
-  border-radius: 4px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: rgba(139, 92, 246, 0.95);
+  background: #000000;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  font-family: var(--font-ui);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--foreground);
 }
 
 .resultContent {
   padding: 1rem;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 6px;
-  color: rgba(255, 255, 255, 0.95);
+  background: #000000;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  color: var(--foreground);
+  font-family: var(--font-body);
   font-size: 0.9375rem;
   line-height: 1.7;
   white-space: pre-wrap;
@@ -303,21 +333,25 @@
 /* Result Genome Indicator */
 .resultGenome {
   padding: 0.75rem 1rem;
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(236, 72, 153, 0.1));
-  border: 1px solid rgba(139, 92, 246, 0.2);
-  border-radius: 6px;
+  background: #000000;
+  border: 1px solid var(--border);
+  border-radius: 0;
 }
 
 .resultGenomeTitle {
-  font-size: 0.8125rem;
-  font-weight: 600;
-  color: rgba(236, 72, 153, 0.95);
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--foreground);
   margin-bottom: 0.375rem;
 }
 
 .resultGenomeDetails {
+  font-family: var(--font-body);
   font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--muted-foreground);
 }
 
 /* Action Buttons */
@@ -331,35 +365,36 @@
 .resetButton {
   padding: 0.625rem 1.25rem;
   border: 1px solid;
-  border-radius: 6px;
-  font-size: 0.875rem;
-  font-weight: 500;
+  border-radius: 0;
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .copyButton {
-  background: rgba(139, 92, 246, 0.2);
-  border-color: rgba(139, 92, 246, 0.4);
-  color: rgba(139, 92, 246, 0.95);
+  background: var(--foreground);
+  border-color: var(--foreground);
+  color: var(--background);
 }
 
 .copyButton:hover {
-  background: rgba(139, 92, 246, 0.3);
-  border-color: rgba(139, 92, 246, 0.6);
-  color: white;
+  background: var(--muted-foreground);
+  border-color: var(--muted-foreground);
 }
 
 .resetButton {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.2);
-  color: rgba(255, 255, 255, 0.7);
+  background: #000000;
+  border-color: var(--border);
+  color: var(--muted-foreground);
 }
 
 .resetButton:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.3);
-  color: rgba(255, 255, 255, 0.95);
+  border-color: var(--foreground);
+  color: var(--foreground);
 }
 
 /* Responsive */

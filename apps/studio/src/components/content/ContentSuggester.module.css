@@ -1,12 +1,13 @@
+/* Content Suggester - Brutalist Minimalism */
+
 .container {
   display: flex;
   flex-direction: column;
   gap: 1rem;
   padding: 1.25rem;
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.05), rgba(236, 72, 153, 0.05));
-  border: 1px solid rgba(139, 92, 246, 0.2);
-  border-radius: 12px;
-  backdrop-filter: blur(10px);
+  background: #000000;
+  border: 1px solid var(--border);
+  border-radius: 0;
 }
 
 /* Header */
@@ -19,15 +20,18 @@
 
 .title {
   margin: 0;
+  font-family: var(--font-heading);
   font-size: 1rem;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.95);
+  color: var(--foreground);
+  letter-spacing: -0.01em;
 }
 
 .subtitle {
   margin: 0.25rem 0 0;
+  font-family: var(--font-body);
   font-size: 0.8125rem;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--muted-foreground);
 }
 
 .refreshButton {
@@ -37,18 +41,16 @@
   width: 2rem;
   height: 2rem;
   padding: 0;
-  background: rgba(139, 92, 246, 0.2);
-  border: 1px solid rgba(139, 92, 246, 0.3);
-  border-radius: 6px;
-  color: rgba(139, 92, 246, 0.95);
+  background: #000000;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  color: var(--foreground);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .refreshButton:hover:not(:disabled) {
-  background: rgba(139, 92, 246, 0.3);
-  border-color: rgba(139, 92, 246, 0.5);
-  transform: translateY(-1px);
+  border-color: var(--foreground);
 }
 
 .refreshButton:disabled {
@@ -87,10 +89,11 @@
   align-items: center;
   gap: 0.75rem;
   padding: 0.875rem 1rem;
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  color: rgba(255, 255, 255, 0.9);
+  background: #000000;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  color: var(--foreground);
+  font-family: var(--font-body);
   font-size: 0.875rem;
   text-align: left;
   cursor: pointer;
@@ -98,9 +101,7 @@
 }
 
 .suggestionCard:hover {
-  background: rgba(139, 92, 246, 0.15);
-  border-color: rgba(139, 92, 246, 0.4);
-  transform: translateX(4px);
+  border-color: var(--foreground);
 }
 
 .suggestionIcon {
@@ -119,6 +120,7 @@
   opacity: 0;
   transition: opacity 0.2s ease;
   flex-shrink: 0;
+  color: var(--muted-foreground);
 }
 
 .suggestionCard:hover .suggestionArrow {
@@ -131,10 +133,15 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.625rem 0.875rem;
-  background: rgba(139, 92, 246, 0.1);
-  border-radius: 6px;
-  font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.6);
+  background: #000000;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
 }
 
 .hintIcon {
@@ -154,6 +161,8 @@
   gap: 0.75rem;
   padding: 2rem 1rem;
   text-align: center;
+  background: #000000;
+  border: 1px solid var(--border);
 }
 
 .noGenomeIcon {
@@ -163,8 +172,9 @@
 
 .noGenomeText {
   margin: 0;
+  font-family: var(--font-body);
   font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--muted-foreground);
   line-height: 1.5;
   max-width: 300px;
 }

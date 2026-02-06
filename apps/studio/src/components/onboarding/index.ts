@@ -1,0 +1,1 @@
+export { SlaytQuiz } from './SlaytQuiz';
