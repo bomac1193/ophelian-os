@@ -1,6 +1,7 @@
 'use client';
 
-import { StoryTemplate, temperatureColors, energySymbols } from '@/lib/story-templates';
+import { StoryTemplate, energySymbols } from '@/lib/story-templates';
+import styles from './StoryTemplateCard.module.css';
 
 interface StoryTemplateCardProps {
   template: StoryTemplate;
@@ -15,37 +16,18 @@ export function StoryTemplateCard({
   compact,
   onClick,
 }: StoryTemplateCardProps) {
-  const tempColor = temperatureColors[template.temperature];
   const energySymbol = energySymbols[template.primaryEnergy];
 
   if (compact) {
     return (
       <div
         onClick={onClick}
-        style={{
-          padding: '0.75rem',
-          backgroundColor: selected ? 'var(--primary)' : 'var(--card)',
-          borderRadius: '8px',
-          border: `2px solid ${selected ? 'var(--primary)' : 'var(--border)'}`,
-          cursor: onClick ? 'pointer' : 'default',
-          transition: 'all 0.2s ease',
-        }}
+        className={`${styles.card} ${styles.cardCompact} ${selected ? styles.cardSelected : ''}`}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <span
-            style={{
-              width: '8px',
-              height: '8px',
-              borderRadius: '50%',
-              backgroundColor: tempColor.bg,
-            }}
-          />
-          <span style={{ fontWeight: 600, color: selected ? 'white' : 'var(--foreground)' }}>
-            {template.name}
-          </span>
-          <span style={{ fontSize: '0.75rem', opacity: 0.7, color: selected ? 'white' : 'var(--muted-foreground)' }}>
-            {energySymbol}
-          </span>
+        <div className={styles.compactContent}>
+          <span className={styles.compactDot} />
+          <span className={styles.compactTitle}>{template.name}</span>
+          <span className={styles.compactSymbol}>{energySymbol}</span>
         </div>
       </div>
     );
@@ -54,104 +36,41 @@ export function StoryTemplateCard({
   return (
     <div
       onClick={onClick}
-      style={{
-        padding: '1.25rem',
-        backgroundColor: selected ? `${tempColor.bg}15` : 'var(--card)',
-        borderRadius: '12px',
-        border: `2px solid ${selected ? tempColor.bg : 'var(--border)'}`,
-        cursor: onClick ? 'pointer' : 'default',
-        transition: 'all 0.2s ease',
-      }}
+      className={`${styles.card} ${selected ? styles.cardSelected : ''}`}
     >
       {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.75rem' }}>
-        <div>
-          <h3 style={{ margin: '0 0 0.25rem', fontSize: '1.1rem', fontWeight: 600 }}>
-            {template.name}
-          </h3>
-          <p style={{ margin: 0, fontSize: '0.9rem', fontStyle: 'italic', color: 'var(--muted-foreground)' }}>
-            "{template.question}"
-          </p>
+      <div className={styles.header}>
+        <div className={styles.headerContent}>
+          <h3 className={styles.title}>{template.name}</h3>
+          <p className={styles.question}>"{template.question}"</p>
         </div>
-        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+        <div className={styles.badges}>
           {/* Temperature badge */}
-          <span
-            style={{
-              padding: '0.25rem 0.5rem',
-              borderRadius: '12px',
-              backgroundColor: tempColor.bg,
-              color: tempColor.text,
-              fontSize: '0.7rem',
-              fontWeight: 500,
-              textTransform: 'capitalize',
-            }}
-          >
+          <span className={styles.tempBadge}>
             {template.temperature}
           </span>
           {/* Energy symbol */}
-          <span
-            style={{
-              width: '24px',
-              height: '24px',
-              borderRadius: '50%',
-              backgroundColor: 'var(--muted)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '0.9rem',
-            }}
-            title={template.primaryEnergy}
-          >
+          <span className={styles.energyIcon} title={template.primaryEnergy}>
             {energySymbol}
           </span>
         </div>
       </div>
 
-      {/* Motion */}
-      <div style={{ marginBottom: '0.75rem' }}>
-        <span
-          style={{
-            padding: '0.25rem 0.5rem',
-            borderRadius: '6px',
-            backgroundColor: 'var(--muted)',
-            fontSize: '0.75rem',
-          }}
-        >
-          {template.motion}
-        </span>
-      </div>
-
       {/* Description */}
-      <p
-        style={{
-          margin: '0 0 0.75rem',
-          fontSize: '0.85rem',
-          lineHeight: 1.5,
-          color: 'var(--muted-foreground)',
-          display: '-webkit-box',
-          WebkitLineClamp: 3,
-          WebkitBoxOrient: 'vertical',
-          overflow: 'hidden',
-        }}
-      >
+      <p className={styles.description}>
         {template.description}
       </p>
 
-      {/* Phases preview */}
-      <div style={{ display: 'flex', gap: '0.25rem', marginTop: '0.5rem' }}>
-        {template.phases.map((phase, i) => (
-          <div
-            key={i}
-            style={{
-              flex: 1,
-              height: '4px',
-              borderRadius: '2px',
-              backgroundColor: tempColor.bg,
-              opacity: 0.3 + (i * 0.15),
-            }}
-            title={phase.name}
-          />
-        ))}
+      {/* Meta */}
+      <div className={styles.meta}>
+        <div className={styles.metaItem}>
+          <div className={styles.metaLabel}>Motion</div>
+          <div className={styles.metaValue}>{template.motion}</div>
+        </div>
+        <div className={styles.metaItem}>
+          <div className={styles.metaLabel}>Phases</div>
+          <div className={styles.metaValue}>{template.phases.length}</div>
+        </div>
       </div>
     </div>
   );

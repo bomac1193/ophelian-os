@@ -68,7 +68,7 @@ export default function StoryTemplatesPage() {
           marginBottom: '2rem',
           padding: '1rem',
           backgroundColor: 'var(--card)',
-          borderRadius: '12px',
+          borderRadius: '0',
           border: '1px solid var(--border)',
         }}
       >
@@ -90,7 +90,7 @@ export default function StoryTemplatesPage() {
                   onClick={() => setTemperatureFilter(filter)}
                   style={{
                     padding: '0.375rem 0.875rem',
-                    borderRadius: '8px',
+                    borderRadius: '0',
                     border: 'none',
                     backgroundColor: isActive ? colors.bg : 'var(--muted)',
                     color: isActive ? colors.text : 'var(--foreground)',
@@ -124,7 +124,7 @@ export default function StoryTemplatesPage() {
                   onClick={() => setEnergyFilter(filter)}
                   style={{
                     padding: '0.375rem 0.875rem',
-                    borderRadius: '8px',
+                    borderRadius: '0',
                     border: 'none',
                     backgroundColor: isActive ? 'var(--primary)' : 'var(--muted)',
                     color: isActive ? 'white' : 'var(--foreground)',
@@ -171,7 +171,7 @@ export default function StoryTemplatesPage() {
                       style={{
                         width: '12px',
                         height: '12px',
-                        borderRadius: '50%',
+                        borderRadius: '0',
                         backgroundColor: temperatureColors.hot.bg,
                       }}
                     />
@@ -219,7 +219,7 @@ export default function StoryTemplatesPage() {
                       style={{
                         width: '12px',
                         height: '12px',
-                        borderRadius: '50%',
+                        borderRadius: '0',
                         backgroundColor: temperatureColors.cool.bg,
                       }}
                     />
@@ -267,7 +267,7 @@ export default function StoryTemplatesPage() {
                       style={{
                         width: '12px',
                         height: '12px',
-                        borderRadius: '50%',
+                        borderRadius: '0',
                         backgroundColor: temperatureColors.crossroads.bg,
                       }}
                     />
