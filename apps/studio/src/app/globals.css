@@ -1,54 +1,61 @@
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;0,6..96,700;1,6..96,400&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@400;500;600;700;800&display=swap');
 
 :root {
-  /* Typography */
-  --font-heading: 'Syne', 'Space Grotesk', system-ui, sans-serif;
-  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  /* Typography - High Fashion Minimalism */
+  --font-display: 'Bodoni Moda', 'Didot', 'Playfair Display', serif;
+  --font-heading: 'Cormorant Garamond', 'Garamond', 'Georgia', serif;
+  --font-ui: 'Outfit', 'Futura', 'Century Gothic', sans-serif;
+  --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
 
-  /* Original Colors */
-  --background: #ffffff;
-  --foreground: #171717;
-  --border: #e5e5e5;
-  --muted: #f5f5f5;
+  /* Spacing System (8px base) */
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+
+  /* Brutalist Monochrome Palette */
+  --pure-black: #000000;
+  --rich-black: #0A0A0A;
+  --charcoal: #1A1A1A;
+  --smoke: #F8F8F8;
+  --pure-white: #FFFFFF;
+
+  /* Accent Colors (Strategic Use Only) */
+  --accent-gold: #D4AF37;
+  --accent-silver: #C0C0C0;
+  --accent-red: #DC143C;
+
+  /* Semantic Colors (Muted) */
+  --success: #2D7A3E;
+  --warning: #8B6914;
+  --error: #8B2635;
+
+  /* Light Mode Palette */
+  --background: #FFFFFF;
+  --foreground: #000000;
+  --border: #E5E5E5;
+  --muted: #F8F8F8;
   --muted-foreground: #737373;
-  --primary: #0a0a0a;
-  --primary-foreground: #fafafa;
-  --accent: #f4f4f5;
-  --accent-foreground: #18181b;
-  --success: #22c55e;
-  --warning: #f59e0b;
-  --error: #ef4444;
-
-  /* Brand Colors - Sembla/Disney Aesthetic */
-  --color-platinum: #E8E6E3;
-  --color-obsidian: #0A0A0B;
-  --color-pearl: #F5F5F4;
-  --color-violet: #8B5CF6;
-  --color-rose: #F4C2C2;
-  --color-mint: #6EE7B7;
-
-  /* Gradients */
-  --gradient-primary: linear-gradient(135deg, #8B5CF6 0%, #EC4899 50%, #F59E0B 100%);
-  --gradient-subtle: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
-  --gradient-card: linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, rgba(236, 72, 153, 0.05) 100%);
-}
+  --primary: #000000;
+  --primary-foreground: #FFFFFF;
+  --accent: #000000;
+  --accent-foreground: #FFFFFF;
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-    --border: #262626;
-    --muted: #171717;
-    --muted-foreground: #a3a3a3;
-    --primary: #fafafa;
-    --primary-foreground: #0a0a0a;
-    --accent: #27272a;
-    --accent-foreground: #fafafa;
-
-    /* Dark mode adjustments for brand colors */
-    --color-platinum: #2A2A2A;
-    --color-obsidian: #F5F5F4;
-    --color-pearl: #1A1A1A;
+    /* Dark Mode: Inverted Brutalism */
+    --background: #000000;
+    --foreground: #FFFFFF;
+    --border: #1A1A1A;
+    --muted: #0A0A0A;
+    --muted-foreground: #A3A3A3;
+    --primary: #FFFFFF;
+    --primary-foreground: #000000;
+    --accent: #FFFFFF;
+    --accent-foreground: #000000;
   }
 }
 
