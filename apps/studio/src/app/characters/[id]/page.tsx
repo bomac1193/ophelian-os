@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
@@ -48,6 +48,16 @@ export default function CharacterDetailPage() {
   const [editingTagIndex, setEditingTagIndex] = useState<number | null>(null);
   const [editedTag, setEditedTag] = useState('');
   const [savingTag, setSavingTag] = useState(false);
+
+  // Editable bio state
+  const [isEditingBio, setIsEditingBio] = useState(false);
+  const [editedBio, setEditedBio] = useState('');
+  const [savingBio, setSavingBio] = useState(false);
+
+  // Editable aliases state
+  const [editingAliasIndex, setEditingAliasIndex] = useState<number | null>(null);
+  const [editedAlias, setEditedAlias] = useState('');
+  const [savingAlias, setSavingAlias] = useState(false);
 
   const loadData = async () => {
     try {
@@ -150,18 +160,21 @@ export default function CharacterDetailPage() {
     }
   };
 
-  // Compute preview bio with name replaced (live preview while editing)
-  const previewBio = (() => {
+  // Compute preview bio with name replaced (live preview while editing name)
+  const previewBio = useMemo(() => {
+    // If editing bio directly, show the edited bio
+    if (isEditingBio) return editedBio;
+
     if (!character?.bio) return '';
     if (!isEditingName || !editedName.trim()) return character.bio;
-    // Replace old name with new name in bio (case-insensitive, whole word)
+    // Replace old name with new name in bio (case-insensitive)
     const escapedName = character.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     const regex = new RegExp(escapedName, 'gi');
     return character.bio.replace(regex, editedName.trim());
-  })();
+  }, [character?.bio, character?.name, isEditingName, editedName, isEditingBio, editedBio]);
 
   const handleNameSave = async () => {
-    if (!editedName.trim() || editedName === character?.name) {
+    if (!character || !editedName.trim() || editedName === character.name) {
       setIsEditingName(false);
       return;
     }
@@ -250,6 +263,90 @@ export default function CharacterDetailPage() {
       setError(err instanceof Error ? err.message : 'Failed to add tag');
     } finally {
       setSavingTag(false);
+    }
+  };
+
+  // Bio editing handlers
+  const handleBioEdit = () => {
+    if (character) {
+      setEditedBio(character.bio || '');
+      setIsEditingBio(true);
+    }
+  };
+
+  const handleBioSave = async () => {
+    if (!character) return;
+
+    setSavingBio(true);
+    try {
+      const updated = await updateCharacter(characterId, { bio: editedBio });
+      setCharacter(updated);
+      setIsEditingBio(false);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to update bio');
+    } finally {
+      setSavingBio(false);
+    }
+  };
+
+  const handleBioCancel = () => {
+    setIsEditingBio(false);
+    setEditedBio('');
+  };
+
+  // Alias editing handlers
+  const handleAliasEdit = (index: number) => {
+    if (character) {
+      setEditedAlias(character.aliases[index]);
+      setEditingAliasIndex(index);
+    }
+  };
+
+  const handleAliasSave = async () => {
+    if (!character || editingAliasIndex === null) return;
+
+    const newAliases = [...character.aliases];
+    if (editedAlias.trim()) {
+      newAliases[editingAliasIndex] = editedAlias.trim();
+    } else {
+      // Remove alias if empty
+      newAliases.splice(editingAliasIndex, 1);
+    }
+
+    setSavingAlias(true);
+    try {
+      const updated = await updateCharacter(characterId, { aliases: newAliases });
+      setCharacter(updated);
+      setEditingAliasIndex(null);
+      setEditedAlias('');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to update alias');
+    } finally {
+      setSavingAlias(false);
+    }
+  };
+
+  const handleAliasCancel = () => {
+    setEditingAliasIndex(null);
+    setEditedAlias('');
+  };
+
+  const handleAddAlias = async () => {
+    if (!character) return;
+    const newAlias = 'new-alias';
+    const newAliases = [...character.aliases, newAlias];
+
+    setSavingAlias(true);
+    try {
+      const updated = await updateCharacter(characterId, { aliases: newAliases });
+      setCharacter(updated);
+      // Start editing the new alias immediately
+      setEditedAlias(newAlias);
+      setEditingAliasIndex(newAliases.length - 1);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to add alias');
+    } finally {
+      setSavingAlias(false);
     }
   };
 
@@ -615,9 +712,73 @@ export default function CharacterDetailPage() {
                 </div>
               )}
 
-              <p className="card-description" style={{ textAlign: 'center' }}>
-                {previewBio || 'No bio provided'}
-              </p>
+              {isEditingBio ? (
+                <div style={{ width: '100%' }}>
+                  <textarea
+                    value={editedBio}
+                    onChange={(e) => setEditedBio(e.target.value)}
+                    style={{
+                      width: '100%',
+                      minHeight: '100px',
+                      padding: '0.5rem',
+                      fontSize: '0.875rem',
+                      border: '1px solid var(--foreground)',
+                      borderRadius: '0',
+                      background: '#000000',
+                      color: 'var(--foreground)',
+                      outline: 'none',
+                      resize: 'vertical',
+                      fontFamily: 'inherit',
+                    }}
+                  />
+                  <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem', justifyContent: 'center' }}>
+                    <button
+                      onClick={handleBioSave}
+                      disabled={savingBio}
+                      style={{
+                        padding: '0.25rem 0.75rem',
+                        fontSize: '0.75rem',
+                        border: '1px solid var(--foreground)',
+                        borderRadius: '0',
+                        background: 'transparent',
+                        color: 'var(--foreground)',
+                        cursor: 'pointer',
+                        transition: 'border-color 0.2s ease',
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.4)'}
+                      onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--foreground)'}
+                    >
+                      {savingBio ? '...' : 'Save'}
+                    </button>
+                    <button
+                      onClick={handleBioCancel}
+                      style={{
+                        padding: '0.25rem 0.75rem',
+                        fontSize: '0.75rem',
+                        border: '1px solid var(--muted-foreground)',
+                        borderRadius: '0',
+                        background: 'transparent',
+                        color: 'var(--muted-foreground)',
+                        cursor: 'pointer',
+                        transition: 'border-color 0.2s ease',
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.4)'}
+                      onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--muted-foreground)'}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <p
+                  className="card-description"
+                  style={{ textAlign: 'center', cursor: 'pointer' }}
+                  onClick={handleBioEdit}
+                  title="Click to edit bio"
+                >
+                  {previewBio || 'No bio provided - click to add'}
+                </p>
+              )}
             </div>
 
             {/* Avatar Management */}
@@ -644,14 +805,120 @@ export default function CharacterDetailPage() {
             </div>
 
             <div>
-              {character.aliases.length > 0 && (
-                <div className="mt-4">
+              {/* Aliases Section - Editable like Persona Tags */}
+              <div className="mt-4">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
                   <strong style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)' }}>
                     ALIASES
                   </strong>
-                  <p style={{ fontSize: '0.875rem' }}>{character.aliases.join(', ')}</p>
+                  <button
+                    onClick={handleAddAlias}
+                    disabled={savingAlias}
+                    title="Add alias"
+                    style={{
+                      width: '1.25rem',
+                      height: '1.25rem',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '0.875rem',
+                      color: 'var(--muted-foreground)',
+                      border: '1px solid var(--muted-foreground)',
+                      borderRadius: '0',
+                      background: 'transparent',
+                      cursor: 'pointer',
+                      transition: 'border-color 0.2s ease',
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.borderColor = 'var(--foreground)'}
+                    onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--muted-foreground)'}
+                  >
+                    +
+                  </button>
                 </div>
-              )}
+                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                  {character.aliases.map((alias, index) => (
+                    editingAliasIndex === index ? (
+                      <div key={index} style={{ display: 'flex', gap: '0.25rem' }}>
+                        <input
+                          type="text"
+                          value={editedAlias}
+                          onChange={(e) => setEditedAlias(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') handleAliasSave();
+                            if (e.key === 'Escape') handleAliasCancel();
+                          }}
+                          autoFocus
+                          style={{
+                            padding: '0.25rem 0.5rem',
+                            fontSize: '0.75rem',
+                            border: '1px solid var(--foreground)',
+                            borderRadius: '0',
+                            background: '#000000',
+                            color: 'var(--foreground)',
+                            outline: 'none',
+                            width: '100px',
+                          }}
+                        />
+                        <button
+                          onClick={handleAliasSave}
+                          disabled={savingAlias}
+                          style={{
+                            padding: '0.25rem 0.5rem',
+                            fontSize: '0.625rem',
+                            border: '1px solid var(--foreground)',
+                            borderRadius: '0',
+                            background: 'transparent',
+                            color: 'var(--foreground)',
+                            cursor: 'pointer',
+                          }}
+                        >
+                          {savingAlias ? '...' : 'Save'}
+                        </button>
+                        <button
+                          onClick={handleAliasCancel}
+                          style={{
+                            padding: '0.25rem 0.5rem',
+                            fontSize: '0.625rem',
+                            border: '1px solid var(--muted-foreground)',
+                            borderRadius: '0',
+                            background: 'transparent',
+                            color: 'var(--muted-foreground)',
+                            cursor: 'pointer',
+                          }}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        key={index}
+                        onClick={() => handleAliasEdit(index)}
+                        title="Click to edit"
+                        style={{
+                          padding: '0.25rem 0.75rem',
+                          fontSize: '0.75rem',
+                          fontWeight: 500,
+                          color: 'var(--foreground)',
+                          backgroundColor: '#000000',
+                          border: '1px solid var(--foreground)',
+                          borderRadius: '0',
+                          cursor: 'pointer',
+                          transition: 'border-color 0.2s ease',
+                        }}
+                        onMouseEnter={(e) => e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.4)'}
+                        onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--foreground)'}
+                      >
+                        {alias}
+                      </button>
+                    )
+                  ))}
+                  {character.aliases.length === 0 && (
+                    <span style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)' }}>
+                      No aliases
+                    </span>
+                  )}
+                </div>
+              </div>
 
               <div className="mt-4">
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>

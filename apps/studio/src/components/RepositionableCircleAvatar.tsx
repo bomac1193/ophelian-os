@@ -22,7 +22,7 @@ export function RepositionableCircleAvatar({
   // State for UI
   const [isDragging, setIsDragging] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [hasChanges, setHasChanges] = useState(false);
+  const [_hasChanges, setHasChanges] = useState(false);
   const [currentZoom, setCurrentZoom] = useState(1);
   const [currentPos, setCurrentPos] = useState({ x: 50, y: 50 });
 
