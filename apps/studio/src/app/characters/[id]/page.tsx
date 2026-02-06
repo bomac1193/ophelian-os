@@ -269,26 +269,30 @@ export default function CharacterDetailPage() {
   return (
     <div className="page-container">
       <div className="page-header">
-        <div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <Link
             href="/"
+            title="Back to Characters"
             style={{
               color: 'var(--foreground)',
-              fontSize: '0.875rem',
-              padding: '0.5rem 1rem',
+              fontSize: '1rem',
+              width: '2rem',
+              height: '2rem',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
               border: '1px solid var(--foreground)',
               borderRadius: '0',
               textDecoration: 'none',
-              display: 'inline-block',
               transition: 'border-color 0.2s ease',
             }}
-            onMouseEnter={(e) => e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.6)'}
+            onMouseEnter={(e) => e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.4)'}
             onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--foreground)'}
           >
-            &larr; Back to Characters
+            ←
           </Link>
           {isEditingName ? (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.5rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <input
                 type="text"
                 className="input"
@@ -302,38 +306,58 @@ export default function CharacterDetailPage() {
                 style={{ fontSize: '1.5rem', fontWeight: 'bold', padding: '0.25rem 0.5rem' }}
               />
               <button
-                className="btn btn-primary btn-sm"
                 onClick={handleNameSave}
                 disabled={savingName}
-                style={{ background: 'var(--success)', borderColor: 'var(--success)' }}
+                style={{
+                  color: 'var(--foreground)',
+                  fontSize: '0.875rem',
+                  padding: '0.25rem 0.75rem',
+                  border: '1px solid var(--foreground)',
+                  borderRadius: '0',
+                  background: 'transparent',
+                  cursor: 'pointer',
+                }}
               >
                 {savingName ? '...' : 'Save'}
               </button>
-              <button className="btn btn-secondary btn-sm" onClick={handleNameCancel}>
+              <button
+                onClick={handleNameCancel}
+                style={{
+                  color: 'var(--muted-foreground)',
+                  fontSize: '0.875rem',
+                  padding: '0.25rem 0.75rem',
+                  border: '1px solid var(--muted-foreground)',
+                  borderRadius: '0',
+                  background: 'transparent',
+                  cursor: 'pointer',
+                }}
+              >
                 Cancel
               </button>
             </div>
           ) : (
             <h1
               className="page-title"
-              style={{ marginTop: '0.5rem', cursor: 'pointer' }}
+              style={{ margin: 0, cursor: 'pointer' }}
               onClick={handleNameEdit}
               title="Click to edit name"
             >
               {character.name}
-              <span style={{ marginLeft: '0.5rem', fontSize: '0.875rem', color: 'var(--muted-foreground)' }}>
-                (edit)
-              </span>
             </h1>
           )}
         </div>
         <button
           onClick={handleDelete}
           disabled={deleting}
+          title={deleting ? 'Deleting...' : 'Delete Character'}
           style={{
             color: 'var(--error)',
-            fontSize: '0.875rem',
-            padding: '0.5rem 1rem',
+            fontSize: '1rem',
+            width: '2rem',
+            height: '2rem',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
             border: '1px solid var(--error)',
             borderRadius: '0',
             background: 'transparent',
@@ -341,11 +365,11 @@ export default function CharacterDetailPage() {
             transition: 'border-color 0.2s ease',
           }}
           onMouseEnter={(e) => {
-            if (!deleting) e.currentTarget.style.borderColor = 'rgba(255, 107, 107, 0.6)';
+            if (!deleting) e.currentTarget.style.borderColor = 'rgba(255, 107, 107, 0.4)';
           }}
           onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--error)'}
         >
-          {deleting ? 'Deleting...' : 'Delete Character'}
+          {deleting ? '...' : '×'}
         </button>
       </div>
 
