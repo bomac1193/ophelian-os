@@ -577,7 +577,7 @@ export default function CharacterDetailPage() {
               {character.avatarUrl ? (
                 <RepositionableCircleAvatar
                   src={character.avatarUrl}
-                  position={character.avatarPosition || '50% 50%'}
+                  position={character.avatarPosition || '50% 50% 1'}
                   onPositionChange={handleAvatarPositionChange}
                   size={120}
                   disabled={avatarUpdating}
