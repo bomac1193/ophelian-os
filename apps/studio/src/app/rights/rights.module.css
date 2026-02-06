@@ -64,8 +64,7 @@
 
 .infoCard {
   background: transparent;
-  border: 1px solid var(--border);
-  border-top: 2px solid var(--foreground);
+  border: 1px solid var(--foreground);
   border-radius: 0;
   padding: var(--space-2xl);
   margin-bottom: 64px;

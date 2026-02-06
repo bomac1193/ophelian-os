@@ -29,10 +29,6 @@ export default function RightsPage() {
             License your voice IP, track usage, and manage royalty splits
           </p>
         </div>
-        <div className={styles.headerBadge}>
-          <span className={styles.badgeLabel}>Blue Ocean</span>
-          <span className={styles.badgeText}>IP Marketplace Foundation</span>
-        </div>
       </div>
 
       <div className={styles.infoCard}>
