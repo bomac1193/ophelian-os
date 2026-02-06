@@ -20,8 +20,19 @@ function getSubtaste(character: Character): { glyph: string; code: string; label
   return { glyph: subtaste.glyph, code: subtaste.code, label: subtaste.label };
 }
 
+// Parse avatar position string "50% 50% 1.5" into position and zoom
+function parseAvatarPosition(position: string | null | undefined): { objectPosition: string; zoom: number } {
+  if (!position) return { objectPosition: '50% 50%', zoom: 1 };
+  const parts = position.split(' ');
+  const x = parts[0] || '50%';
+  const y = parts[1] || '50%';
+  const zoom = parts[2] ? parseFloat(parts[2]) : 1;
+  return { objectPosition: `${x} ${y}`, zoom: isNaN(zoom) ? 1 : zoom };
+}
+
 function CharacterCard({ character }: { character: Character }) {
   const subtaste = getSubtaste(character);
+  const { objectPosition, zoom } = parseAvatarPosition(character.avatarPosition);
 
   return (
     <Link
@@ -30,7 +41,7 @@ function CharacterCard({ character }: { character: Character }) {
     >
       <div className="card character-card" style={{ cursor: 'pointer' }}>
         <div className="character-card-header">
-          <div className="character-avatar-circle">
+          <div className="character-avatar-circle" style={{ overflow: 'hidden' }}>
             {character.avatarUrl ? (
               <img
                 src={character.avatarUrl}
@@ -39,7 +50,8 @@ function CharacterCard({ character }: { character: Character }) {
                   width: '100%',
                   height: '100%',
                   objectFit: 'cover',
-                  objectPosition: character.avatarPosition || '50% 50%',
+                  objectPosition: objectPosition,
+                  transform: `scale(${zoom})`,
                 }}
               />
             ) : (
