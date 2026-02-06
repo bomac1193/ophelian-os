@@ -92,8 +92,8 @@ export default function StoryTemplatesPage() {
                     padding: '0.375rem 0.875rem',
                     borderRadius: '0',
                     border: 'none',
-                    backgroundColor: isActive ? colors.bg : 'var(--muted)',
-                    color: isActive ? colors.text : 'var(--foreground)',
+                    backgroundColor: isActive ? '#8B5CF6' : 'var(--muted)',
+                    color: isActive ? '#FFFFFF' : 'var(--foreground)',
                     fontSize: '0.8rem',
                     cursor: 'pointer',
                     textTransform: 'capitalize',
@@ -126,8 +126,8 @@ export default function StoryTemplatesPage() {
                     padding: '0.375rem 0.875rem',
                     borderRadius: '0',
                     border: 'none',
-                    backgroundColor: isActive ? 'var(--primary)' : 'var(--muted)',
-                    color: isActive ? 'white' : 'var(--foreground)',
+                    backgroundColor: isActive ? '#8B5CF6' : 'var(--muted)',
+                    color: isActive ? '#FFFFFF' : 'var(--foreground)',
                     fontSize: '0.8rem',
                     cursor: 'pointer',
                     fontWeight: isActive ? 500 : 400,
@@ -185,7 +185,7 @@ export default function StoryTemplatesPage() {
                       display: 'grid',
                       gridTemplateColumns: selectedTemplate
                         ? '1fr'
-                        : 'repeat(auto-fill, minmax(320px, 1fr))',
+                        : 'repeat(auto-fill, minmax(280px, 320px))',
                       gap: '1rem',
                     }}
                   >
@@ -233,7 +233,7 @@ export default function StoryTemplatesPage() {
                       display: 'grid',
                       gridTemplateColumns: selectedTemplate
                         ? '1fr'
-                        : 'repeat(auto-fill, minmax(320px, 1fr))',
+                        : 'repeat(auto-fill, minmax(280px, 320px))',
                       gap: '1rem',
                     }}
                   >
@@ -281,7 +281,7 @@ export default function StoryTemplatesPage() {
                       display: 'grid',
                       gridTemplateColumns: selectedTemplate
                         ? '1fr'
-                        : 'repeat(auto-fill, minmax(320px, 1fr))',
+                        : 'repeat(auto-fill, minmax(280px, 320px))',
                       gap: '1rem',
                     }}
                   >
@@ -305,7 +305,7 @@ export default function StoryTemplatesPage() {
                 display: 'grid',
                 gridTemplateColumns: selectedTemplate
                   ? '1fr'
-                  : 'repeat(auto-fill, minmax(320px, 1fr))',
+                  : 'repeat(auto-fill, minmax(280px, 320px))',
                 gap: '1rem',
               }}
             >

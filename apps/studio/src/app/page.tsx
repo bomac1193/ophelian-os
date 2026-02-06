@@ -29,7 +29,7 @@ export default function CharactersPage() {
   }, []);
 
   return (
-    <div>
+    <div className="page-container">
       <div className="page-header">
         <h1 className="page-title">Characters</h1>
         <button className="btn btn-secondary" onClick={() => setShowModal(true)}>

@@ -39,9 +39,15 @@
 }
 
 .featureCard {
-  padding: 0;
-  background: transparent;
-  border: none;
+  padding: var(--space-lg);
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 0;
+  transition: border-color 0.2s ease;
+}
+
+.featureCard:hover {
+  border-color: var(--foreground);
 }
 
 .featureTitle {

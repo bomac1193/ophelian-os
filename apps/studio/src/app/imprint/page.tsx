@@ -143,7 +143,7 @@ export default function ImprintLibraryPage() {
   };
 
   return (
-    <div className="container" style={{ padding: '2rem' }}>
+    <div className="page-container">
       {/* Header */}
       <div className="page-header">
         <div>
@@ -176,7 +176,7 @@ export default function ImprintLibraryPage() {
             padding: '0.75rem 1rem',
             backgroundColor: 'var(--card)',
             border: '1px solid var(--border)',
-            borderRadius: '8px',
+            borderRadius: '0',
             marginBottom: '1rem',
             fontSize: '0.875rem',
             color: 'var(--foreground)',
@@ -209,13 +209,13 @@ export default function ImprintLibraryPage() {
           flexWrap: 'wrap',
           marginBottom: '1.5rem',
           padding: '1rem',
-          backgroundColor: 'var(--card)',
-          borderRadius: '12px',
-          border: '1px solid var(--border)',
+          backgroundColor: '#000000',
+          borderRadius: '0',
+          border: '1px solid rgba(255, 255, 255, 0.2)',
         }}
       >
         <div style={{ flex: '1 1 150px', minWidth: '150px' }}>
-          <label style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', display: 'block', marginBottom: '0.25rem' }}>
+          <label style={{ fontSize: '0.75rem', color: 'rgba(255, 255, 255, 0.6)', display: 'block', marginBottom: '0.25rem' }}>
             Orisha
           </label>
           <select
@@ -224,10 +224,10 @@ export default function ImprintLibraryPage() {
             style={{
               width: '100%',
               padding: '0.5rem',
-              borderRadius: '6px',
-              border: '1px solid var(--border)',
-              backgroundColor: 'var(--background)',
-              color: 'var(--foreground)',
+              borderRadius: '0',
+              border: '1px solid rgba(255, 255, 255, 0.3)',
+              backgroundColor: '#000000',
+              color: '#FFFFFF',
               fontSize: '0.875rem',
             }}
           >
@@ -241,7 +241,7 @@ export default function ImprintLibraryPage() {
         </div>
 
         <div style={{ flex: '1 1 150px', minWidth: '150px' }}>
-          <label style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', display: 'block', marginBottom: '0.25rem' }}>
+          <label style={{ fontSize: '0.75rem', color: 'rgba(255, 255, 255, 0.6)', display: 'block', marginBottom: '0.25rem' }}>
             Sephira
           </label>
           <select
@@ -250,10 +250,10 @@ export default function ImprintLibraryPage() {
             style={{
               width: '100%',
               padding: '0.5rem',
-              borderRadius: '6px',
-              border: '1px solid var(--border)',
-              backgroundColor: 'var(--background)',
-              color: 'var(--foreground)',
+              borderRadius: '0',
+              border: '1px solid rgba(255, 255, 255, 0.3)',
+              backgroundColor: '#000000',
+              color: '#FFFFFF',
               fontSize: '0.875rem',
             }}
           >
@@ -267,7 +267,7 @@ export default function ImprintLibraryPage() {
         </div>
 
         <div style={{ flex: '1 1 150px', minWidth: '150px' }}>
-          <label style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', display: 'block', marginBottom: '0.25rem' }}>
+          <label style={{ fontSize: '0.75rem', color: 'rgba(255, 255, 255, 0.6)', display: 'block', marginBottom: '0.25rem' }}>
             Trajectory
           </label>
           <select
@@ -276,10 +276,10 @@ export default function ImprintLibraryPage() {
             style={{
               width: '100%',
               padding: '0.5rem',
-              borderRadius: '6px',
-              border: '1px solid var(--border)',
-              backgroundColor: 'var(--background)',
-              color: 'var(--foreground)',
+              borderRadius: '0',
+              border: '1px solid rgba(255, 255, 255, 0.3)',
+              backgroundColor: '#000000',
+              color: '#FFFFFF',
               fontSize: '0.875rem',
             }}
           >
@@ -293,7 +293,7 @@ export default function ImprintLibraryPage() {
         </div>
 
         <div style={{ flex: '1 1 150px', minWidth: '150px' }}>
-          <label style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', display: 'block', marginBottom: '0.25rem' }}>
+          <label style={{ fontSize: '0.75rem', color: 'rgba(255, 255, 255, 0.6)', display: 'block', marginBottom: '0.25rem' }}>
             Tag
           </label>
           <input
@@ -304,10 +304,10 @@ export default function ImprintLibraryPage() {
             style={{
               width: '100%',
               padding: '0.5rem',
-              borderRadius: '6px',
-              border: '1px solid var(--border)',
-              backgroundColor: 'var(--background)',
-              color: 'var(--foreground)',
+              borderRadius: '0',
+              border: '1px solid rgba(255, 255, 255, 0.3)',
+              backgroundColor: '#000000',
+              color: '#FFFFFF',
               fontSize: '0.875rem',
             }}
           />
@@ -320,10 +320,10 @@ export default function ImprintLibraryPage() {
             style={{
               alignSelf: 'flex-end',
               padding: '0.5rem 1rem',
-              borderRadius: '6px',
-              border: '1px solid var(--border)',
+              borderRadius: '0',
+              border: '1px solid rgba(255, 255, 255, 0.3)',
               backgroundColor: 'transparent',
-              color: 'var(--foreground)',
+              color: '#FFFFFF',
               cursor: 'pointer',
               fontSize: '0.875rem',
             }}
@@ -340,7 +340,7 @@ export default function ImprintLibraryPage() {
             padding: '1rem',
             backgroundColor: 'var(--destructive)',
             color: 'white',
-            borderRadius: '8px',
+            borderRadius: '0',
             marginBottom: '1rem',
           }}
         >
@@ -369,7 +369,7 @@ export default function ImprintLibraryPage() {
             textAlign: 'center',
             color: 'var(--muted-foreground)',
             backgroundColor: 'var(--muted)',
-            borderRadius: '12px',
+            borderRadius: '0',
           }}
         >
           <p style={{ margin: '0 0 1rem', fontSize: '1.1rem' }}>No imprints found.</p>
@@ -452,7 +452,7 @@ export default function ImprintLibraryPage() {
                 padding: '0.75rem 1rem',
                 backgroundColor: 'var(--card)',
                 border: `1px solid ${isComplete ? 'var(--border)' : 'var(--destructive, #c44)'}`,
-                borderRadius: '8px',
+                borderRadius: '0',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
@@ -473,7 +473,7 @@ export default function ImprintLibraryPage() {
                         marginTop: '0.5rem',
                         padding: '0.25rem 0.5rem',
                         backgroundColor: 'var(--muted)',
-                        borderRadius: '4px',
+                        borderRadius: '0',
                         fontSize: '0.7rem',
                         display: 'flex',
                         alignItems: 'center',

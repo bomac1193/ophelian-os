@@ -31,7 +31,7 @@ export default function LedgerPage() {
   };
 
   return (
-    <div>
+    <div className="page-container">
       <div className="page-header">
         <h1 className="page-title">Ledger Settlement</h1>
       </div>
@@ -41,10 +41,16 @@ export default function LedgerPage() {
         <div className="flex gap-4 mt-4 items-center">
           <input
             type="month"
-            className="input"
-            style={{ width: 'auto' }}
             value={month}
             onChange={(e) => setMonth(e.target.value)}
+            style={{
+              padding: '0.5rem 1rem',
+              border: '1px solid var(--border)',
+              borderRadius: '0',
+              backgroundColor: 'var(--background)',
+              color: 'var(--foreground)',
+              fontSize: '0.875rem',
+            }}
           />
           <button className="btn btn-secondary" onClick={handleFetchSettlement} disabled={loading}>
             {loading ? 'Loading...' : 'Fetch Settlement'}

@@ -1,0 +1,213 @@
+/* Sidebar - Brutalist Minimalism */
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 240px;
+  background: #000000;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  transition: width 0.2s ease;
+}
+
+.sidebar.collapsed {
+  width: 64px;
+}
+
+/* Brand */
+.brand {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.brandText {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: #FFFFFF;
+}
+
+.collapseBtn {
+  width: 24px;
+  height: 24px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.collapseBtn:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #FFFFFF;
+}
+
+.collapsed .collapseBtn {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.collapsed .brand {
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px 12px;
+}
+
+/* Navigation */
+.nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 0;
+}
+
+.group {
+  margin-bottom: 24px;
+}
+
+.groupTitle {
+  display: block;
+  padding: 0 20px;
+  margin-bottom: 8px;
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.groupItems {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 20px;
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.collapsed .navLink {
+  justify-content: center;
+  padding: 10px 12px;
+}
+
+.navLink:hover {
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.navLink.active {
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.08);
+  border-left: 2px solid #FFFFFF;
+}
+
+.collapsed .navLink.active {
+  border-left: none;
+  border-bottom: 2px solid #FFFFFF;
+}
+
+.navIcon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0;
+  flex-shrink: 0;
+}
+
+.navLink.active .navIcon {
+  background: #FFFFFF;
+  color: #000000;
+  border-color: #FFFFFF;
+}
+
+.navLabel {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+/* Footer */
+.footer {
+  padding: 16px 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footerText {
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 64px;
+  }
+
+  .brandText {
+    font-size: 18px;
+  }
+
+  .brand {
+    flex-direction: column;
+    gap: 12px;
+    padding: 20px 12px;
+  }
+
+  .groupTitle {
+    display: none;
+  }
+
+  .navLink {
+    justify-content: center;
+    padding: 10px 12px;
+  }
+
+  .navLabel {
+    display: none;
+  }
+
+  .navLink.active {
+    border-left: none;
+    border-bottom: 2px solid #FFFFFF;
+  }
+
+  .footer {
+    display: none;
+  }
+
+  .collapseBtn {
+    display: none;
+  }
+}

@@ -6,13 +6,11 @@
   border: 1px solid var(--border);
   border-radius: 0;
   cursor: pointer;
-  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.2s ease, transform 0.2s ease;
 }
 
 .card:hover {
   border-color: var(--foreground);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
 .cardSelected {
@@ -26,8 +24,7 @@
 }
 
 .cardCompact:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-color: var(--foreground);
 }
 
 .header {
@@ -66,15 +63,28 @@
 
 .tempBadge {
   padding: 6px 12px;
-  background: transparent;
-  border: 1px solid var(--border);
+  border: none;
   border-radius: 0;
   font-family: var(--font-ui);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--foreground);
+}
+
+.tempBadgeHot {
+  background: #DC143C;
+  color: #FFFFFF;
+}
+
+.tempBadgeCool {
+  background: #3B82F6;
+  color: #FFFFFF;
+}
+
+.tempBadgeCrossroads {
+  background: #8B5CF6;
+  color: #FFFFFF;
 }
 
 .energyIcon {

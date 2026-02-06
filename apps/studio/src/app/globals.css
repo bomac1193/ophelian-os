@@ -99,7 +99,7 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  font-family: var(--font-body);
   line-height: 1.5;
 }
 
@@ -109,26 +109,38 @@ body {
   padding: 0 1rem;
 }
 
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.5rem 0;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 2rem;
+/* Main Content - Offset for Sidebar */
+.main-content {
+  margin-left: 240px;
+  min-height: 100vh;
+  transition: margin-left 0.2s ease;
 }
 
-.page-title {
-  font-size: 1.5rem;
-  font-weight: 600;
+.sidebar-collapsed .main-content {
+  margin-left: 64px;
+}
+
+.sidebar-collapsed .world-page {
+  left: 64px;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 64px;
+  }
 }
 
 .card {
   background: var(--background);
   border: 1px solid var(--border);
-  border-radius: 0.5rem;
+  border-radius: 0;
   padding: 1.5rem;
   margin-bottom: 1rem;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.card:hover {
+  border-color: var(--foreground);
 }
 
 .card-title {
@@ -363,70 +375,7 @@ body {
   color: var(--muted-foreground);
 }
 
-.nav {
-  display: flex;
-  align-items: center;
-  gap: 0;
-  padding: 0 1.5rem;
-  height: 52px;
-  background: #000000;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  position: relative;
-  z-index: 100;
-}
-
-.nav-brand {
-  font-family: var(--font-ui);
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: #ffffff;
-  margin-right: 2.5rem;
-}
-
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 0;
-  height: 100%;
-}
-
-.nav-link {
-  position: relative;
-  display: flex;
-  align-items: center;
-  height: 100%;
-  padding: 0 1.25rem;
-  color: rgba(255, 255, 255, 0.6);
-  text-decoration: none;
-  font-family: var(--font-ui);
-  font-weight: 500;
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  transition: color 0.2s ease, background 0.2s ease;
-}
-
-.nav-link:hover {
-  color: rgba(255, 255, 255, 0.85);
-  background: rgba(255, 255, 255, 0.04);
-}
-
-.nav-link.active {
-  color: #ffffff;
-}
-
-.nav-link.active::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 1rem;
-  right: 1rem;
-  height: 2px;
-  background: linear-gradient(90deg, #14b8a6, #8b5cf6);
-  border-radius: 2px 2px 0 0;
-}
+/* Old top navigation removed - now using sidebar */
 
 .empty-state {
   text-align: center;
@@ -443,8 +392,9 @@ body {
 }
 
 /* Page Layout */
-.page-content {
-  padding: 2rem;
+.page-content,
+.page-container {
+  padding: var(--space-2xl) var(--space-xl);
   max-width: 1400px;
   margin: 0 auto;
 }
@@ -453,18 +403,22 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 2rem;
+  margin-bottom: var(--space-2xl);
 }
 
 .page-title {
-  font-family: 'Futura', 'Futura PT', 'Century Gothic', sans-serif;
-  font-size: 1.75rem;
-  font-weight: 600;
-  margin-bottom: 0.25rem;
+  font-family: var(--font-display);
+  font-size: 48px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: var(--foreground);
+  margin-bottom: 8px;
 }
 
 .page-subtitle {
-  font-size: 0.875rem;
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
   color: var(--muted-foreground);
 }
 
@@ -478,14 +432,14 @@ body {
 .entity-card {
   background: var(--background);
   border: 1px solid var(--border);
-  border-radius: 0.75rem;
+  border-radius: 0;
   padding: 1.25rem;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.2s ease, background 0.2s ease;
 }
 
 .entity-card:hover {
-  border-color: var(--primary);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-color: var(--foreground);
+  background: var(--muted);
 }
 
 .entity-card-header {
@@ -648,14 +602,20 @@ body {
 /* World Page Styles - Full width override */
 .world-page {
   position: fixed;
-  top: 52px;
-  left: 0;
+  top: 0;
+  left: 240px;
   right: 0;
   bottom: 0;
   display: flex;
   flex-direction: row;
-  font-family: 'Avenir', 'Avenir Next', 'Helvetica Neue', sans-serif;
+  font-family: var(--font-body);
   background: var(--background);
+}
+
+@media (max-width: 768px) {
+  .world-page {
+    left: 64px;
+  }
 }
 
 .world-page h1,
@@ -667,7 +627,7 @@ body {
 .world-page .detail-panel-title,
 .world-page .modal-title,
 .world-page .btn {
-  font-family: 'Futura', 'Futura PT', 'Century Gothic', sans-serif;
+  font-family: var(--font-display);
 }
 
 .world-canvas {

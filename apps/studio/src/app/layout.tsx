@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { Navigation } from '@/components/Navigation';
+import { Sidebar } from '@/components/Sidebar';
 
 export const metadata: Metadata = {
   title: 'Living Character OS - Studio',
@@ -15,8 +15,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Navigation />
-        <main className="container">{children}</main>
+        <Sidebar />
+        <main className="main-content">{children}</main>
       </body>
     </html>
   );

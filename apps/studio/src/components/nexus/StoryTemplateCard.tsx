@@ -46,7 +46,11 @@ export function StoryTemplateCard({
         </div>
         <div className={styles.badges}>
           {/* Temperature badge */}
-          <span className={styles.tempBadge}>
+          <span className={`${styles.tempBadge} ${
+            template.temperature === 'hot' ? styles.tempBadgeHot :
+            template.temperature === 'cool' ? styles.tempBadgeCool :
+            styles.tempBadgeCrossroads
+          }`}>
             {template.temperature}
           </span>
           {/* Energy symbol */}
