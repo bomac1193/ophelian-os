@@ -150,6 +150,14 @@ export default function CharacterDetailPage() {
     }
   };
 
+  // Get preview bio with name replaced (for live preview while editing)
+  const getPreviewBio = () => {
+    if (!character?.bio || !isEditingName || !editedName.trim()) return character?.bio || '';
+    // Replace old name with new name in bio (case-insensitive)
+    const regex = new RegExp(character.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+    return character.bio.replace(regex, editedName.trim());
+  };
+
   const handleNameSave = async () => {
     if (!editedName.trim() || editedName === character?.name) {
       setIsEditingName(false);
@@ -158,7 +166,18 @@ export default function CharacterDetailPage() {
 
     setSavingName(true);
     try {
-      const updated = await updateCharacter(characterId, { name: editedName.trim() });
+      // Update bio to replace old name with new name
+      const newBio = character?.bio
+        ? character.bio.replace(
+            new RegExp(character.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'),
+            editedName.trim()
+          )
+        : '';
+
+      const updated = await updateCharacter(characterId, {
+        name: editedName.trim(),
+        bio: newBio,
+      });
       setCharacter(updated);
       setIsEditingName(false);
     } catch (err) {
@@ -591,7 +610,7 @@ export default function CharacterDetailPage() {
               )}
 
               <p className="card-description" style={{ textAlign: 'center' }}>
-                {character.bio || 'No bio provided'}
+                {isEditingName ? (getPreviewBio() || 'No bio provided') : (character.bio || 'No bio provided')}
               </p>
             </div>
 
