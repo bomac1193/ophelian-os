@@ -256,119 +256,138 @@ export function SymbolLegend({ searchable = false }: SymbolLegendProps) {
         </>
       )}
 
-      {/* Tree of Life View */}
-      {viewMode === 'tree' && (
-        <div style={{
-          position: 'relative',
-          width: '100%',
-          maxWidth: '800px',
-          height: '700px',
-          margin: '0 auto 3rem',
-          border: '1px solid var(--foreground)',
-          backgroundColor: '#000000',
-        }}>
-          {/* Tree of Life title */}
-          <div style={{
-            position: 'absolute',
-            top: '1rem',
-            left: '1rem',
-            fontSize: '0.75rem',
-            fontWeight: 600,
-            textTransform: 'uppercase',
-            letterSpacing: '0.1em',
-            color: 'var(--muted-foreground)',
-          }}>
-            Tree of Life - Kabbalistic Arrangement
-          </div>
-
-          {/* Render each Orisha at its Sephira position */}
-          {ALL_ORISHAS.map((orisha) => {
-            const sephira = ORISHA_SEPHIRA[orisha];
-            const position = SEPHIRA_POSITIONS[sephira];
-            if (!position) return null;
-
-            const imprint = getSymbolicImprint(orisha);
-
-            // For Kether, offset second orisha
-            const isSecondKether = orisha === 'Obàtálá' && sephira === 'Kether';
-            const offsetX = isSecondKether ? 8 : 0;
-
-            return (
-              <div
-                key={orisha}
-                style={{
-                  position: 'absolute',
-                  left: `${position.x + offsetX}%`,
-                  top: `${position.y}%`,
-                  transform: 'translate(-50%, -50%)',
-                  textAlign: 'center',
-                }}
+      {/* Tree of Life View - Clean Grid Layout */}
+      {viewMode === 'tree' && (() => {
+        // Helper to render a node
+        const TreeNode = ({ orisha, sephira }: { orisha: OrishaName; sephira: string }) => {
+          const imprint = getSymbolicImprint(orisha);
+          return (
+            <div style={{ textAlign: 'center' }}>
+              <div style={{
+                padding: '1rem',
+                backgroundColor: '#000000',
+                border: '1px solid var(--foreground)',
+                cursor: 'pointer',
+                transition: 'border-color 0.2s ease',
+                minWidth: '100px',
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.4)'}
+              onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--foreground)'}
               >
-                <EnhancedGatewayTooltip
-                  orisha={orisha}
-                  title={imprint.label}
-                  keywords={imprint.keywords}
-                  essence={imprint.essence}
-                  creativePhase={imprint.creativePhase}
-                >
-                  <div style={{
-                    padding: '0.5rem',
-                    backgroundColor: '#000000',
-                    border: '1px solid var(--foreground)',
-                    cursor: 'pointer',
-                    transition: 'border-color 0.2s ease',
-                    minWidth: '80px',
-                  }}
-                  onMouseEnter={(e) => e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.4)'}
-                  onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--foreground)'}
-                  >
-                    <div style={{ fontSize: '1.5rem', fontWeight: 300 }}>{imprint.symbol}</div>
-                    <div style={{ fontSize: '0.7rem', fontWeight: 600, marginTop: '0.25rem' }}>{imprint.aestheticClass}</div>
-                    <div style={{ fontSize: '0.6rem', color: 'var(--muted-foreground)', marginTop: '0.125rem' }}>{imprint.label}</div>
-                  </div>
-                </EnhancedGatewayTooltip>
-                {/* Sephira name below */}
-                <div style={{
-                  fontSize: '0.55rem',
-                  color: 'var(--muted-foreground)',
-                  marginTop: '0.25rem',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.05em',
-                }}>
-                  {sephira}
+                <div style={{ fontSize: '2rem', fontWeight: 300, marginBottom: '0.25rem' }}>{imprint.symbol}</div>
+                <div style={{ fontSize: '0.875rem', fontWeight: 600 }}>{imprint.aestheticClass}</div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginTop: '0.25rem' }}>{imprint.label}</div>
+              </div>
+              <div style={{
+                fontSize: '0.625rem',
+                color: 'var(--muted-foreground)',
+                marginTop: '0.5rem',
+                textTransform: 'uppercase',
+                letterSpacing: '0.1em',
+              }}>
+                {sephira}
+              </div>
+            </div>
+          );
+        };
+
+        return (
+          <div style={{
+            maxWidth: '900px',
+            margin: '0 auto 3rem',
+            padding: '2rem',
+            border: '1px solid var(--foreground)',
+            backgroundColor: '#000000',
+          }}>
+            {/* Title */}
+            <h3 style={{
+              fontSize: '0.875rem',
+              fontWeight: 600,
+              textTransform: 'uppercase',
+              letterSpacing: '0.1em',
+              color: 'var(--muted-foreground)',
+              marginBottom: '2rem',
+              textAlign: 'center',
+            }}>
+              Tree of Life - Kabbalistic Arrangement
+            </h3>
+
+            {/* Row 1: Kether (Crown) - Two Orishas share this */}
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', marginBottom: '2rem' }}>
+              <TreeNode orisha="Ọ̀rúnmìlà" sephira="Kether" />
+              <TreeNode orisha="Obàtálá" sephira="Kether" />
+            </div>
+
+            {/* Row 2: Chokmah & Binah (Supernal) */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', maxWidth: '600px', margin: '0 auto 2rem' }}>
+              <TreeNode orisha="Yemọja" sephira="Binah" />
+              <TreeNode orisha="Ọya" sephira="Chokmah" />
+            </div>
+
+            {/* Row 3: Daath (Knowledge/Abyss) */}
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '2rem' }}>
+              <TreeNode orisha="Èṣù" sephira="Daath" />
+            </div>
+
+            {/* Row 4: Geburah & Chesed */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', maxWidth: '600px', margin: '0 auto 2rem' }}>
+              <TreeNode orisha="Ògún" sephira="Geburah" />
+              <div style={{ width: '100px' }} /> {/* Spacer for Chesed - no Orisha assigned */}
+            </div>
+
+            {/* Row 5: Tiphareth (Beauty/Center) */}
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '2rem' }}>
+              <TreeNode orisha="Ṣàngó" sephira="Tiphareth" />
+            </div>
+
+            {/* Row 6: Hod & Netzach */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', maxWidth: '600px', margin: '0 auto 2rem' }}>
+              <TreeNode orisha="Ọ̀ṣọ́ọ̀sì" sephira="Hod" />
+              <TreeNode orisha="Ọ̀ṣun" sephira="Netzach" />
+            </div>
+
+            {/* Row 7: Yesod (Foundation) */}
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '2rem' }}>
+              <TreeNode orisha="Ọ̀sanyìn" sephira="Yesod" />
+            </div>
+
+            {/* Pillar Labels */}
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              maxWidth: '700px',
+              margin: '2rem auto 0',
+              padding: '1rem 0',
+              borderTop: '1px solid var(--border)',
+            }}>
+              <div style={{ textAlign: 'center', flex: 1 }}>
+                <div style={{ fontSize: '0.625rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--muted-foreground)' }}>
+                  Pillar of Severity
+                </div>
+                <div style={{ fontSize: '0.5rem', color: 'var(--muted-foreground)', marginTop: '0.25rem' }}>
+                  Binah · Geburah · Hod
                 </div>
               </div>
-            );
-          })}
-
-          {/* Connection lines would go here - simplified for now */}
-          <svg style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            pointerEvents: 'none',
-            opacity: 0.2,
-          }}>
-            {/* Simplified path connections */}
-            <line x1="50%" y1="8%" x2="75%" y2="18%" stroke="var(--foreground)" strokeWidth="1" />
-            <line x1="50%" y1="8%" x2="25%" y2="18%" stroke="var(--foreground)" strokeWidth="1" />
-            <line x1="75%" y1="18%" x2="50%" y2="28%" stroke="var(--foreground)" strokeWidth="1" />
-            <line x1="25%" y1="18%" x2="50%" y2="28%" stroke="var(--foreground)" strokeWidth="1" />
-            <line x1="50%" y1="28%" x2="50%" y2="48%" stroke="var(--foreground)" strokeWidth="1" />
-            <line x1="75%" y1="18%" x2="75%" y2="38%" stroke="var(--foreground)" strokeWidth="1" />
-            <line x1="25%" y1="18%" x2="25%" y2="38%" stroke="var(--foreground)" strokeWidth="1" />
-            <line x1="75%" y1="38%" x2="50%" y2="48%" stroke="var(--foreground)" strokeWidth="1" />
-            <line x1="25%" y1="38%" x2="50%" y2="48%" stroke="var(--foreground)" strokeWidth="1" />
-            <line x1="50%" y1="48%" x2="75%" y2="63%" stroke="var(--foreground)" strokeWidth="1" />
-            <line x1="50%" y1="48%" x2="25%" y2="63%" stroke="var(--foreground)" strokeWidth="1" />
-            <line x1="75%" y1="63%" x2="50%" y2="78%" stroke="var(--foreground)" strokeWidth="1" />
-            <line x1="25%" y1="63%" x2="50%" y2="78%" stroke="var(--foreground)" strokeWidth="1" />
-            <line x1="50%" y1="78%" x2="50%" y2="95%" stroke="var(--foreground)" strokeWidth="1" />
-          </svg>
-        </div>
-      )}
+              <div style={{ textAlign: 'center', flex: 1 }}>
+                <div style={{ fontSize: '0.625rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--muted-foreground)' }}>
+                  Pillar of Balance
+                </div>
+                <div style={{ fontSize: '0.5rem', color: 'var(--muted-foreground)', marginTop: '0.25rem' }}>
+                  Kether · Daath · Tiphareth · Yesod
+                </div>
+              </div>
+              <div style={{ textAlign: 'center', flex: 1 }}>
+                <div style={{ fontSize: '0.625rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--muted-foreground)' }}>
+                  Pillar of Mercy
+                </div>
+                <div style={{ fontSize: '0.5rem', color: 'var(--muted-foreground)', marginTop: '0.25rem' }}>
+                  Chokmah · Chesed · Netzach
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
 
       {/* Usage Guide */}
       <div className={styles.usageGuide}>
