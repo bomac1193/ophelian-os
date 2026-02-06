@@ -716,10 +716,22 @@ export default function CharacterDetailPage() {
                 <div style={{ width: '100%' }}>
                   <textarea
                     value={editedBio}
-                    onChange={(e) => setEditedBio(e.target.value)}
+                    onChange={(e) => {
+                      setEditedBio(e.target.value);
+                      // Auto-resize textarea to fit content
+                      e.target.style.height = 'auto';
+                      e.target.style.height = e.target.scrollHeight + 'px';
+                    }}
+                    ref={(el) => {
+                      // Initial auto-resize on mount
+                      if (el) {
+                        el.style.height = 'auto';
+                        el.style.height = el.scrollHeight + 'px';
+                      }
+                    }}
                     style={{
                       width: '100%',
-                      minHeight: '100px',
+                      minHeight: '80px',
                       padding: '0.5rem',
                       fontSize: '0.875rem',
                       border: '1px solid var(--foreground)',
@@ -727,8 +739,9 @@ export default function CharacterDetailPage() {
                       background: '#000000',
                       color: 'var(--foreground)',
                       outline: 'none',
-                      resize: 'vertical',
+                      resize: 'none',
                       fontFamily: 'inherit',
+                      overflow: 'hidden',
                     }}
                   />
                   <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem', justifyContent: 'center' }}>
