@@ -27,29 +27,68 @@ export function RepositionableCircleAvatar({
   const savedPosRef = useRef({ x: 50, y: 50 });
   const dragStartRef = useRef<{ x: number; y: number; posX: number; posY: number } | null>(null);
 
-  // Parse position string like "50% 50%" into x, y numbers
-  const parsePosition = (pos: string): { x: number; y: number } => {
+  // Zoom state
+  const currentZoomRef = useRef(1);
+  const savedZoomRef = useRef(1);
+  const [zoomDisplay, setZoomDisplay] = useState(1);
+
+  // Parse position string like "50% 50% 1.5" into x, y, zoom
+  const parsePosition = (pos: string): { x: number; y: number; zoom: number } => {
     const parts = pos.split(' ').map((p) => parseFloat(p.replace('%', '')));
-    return { x: parts[0] ?? 50, y: parts[1] ?? 50 };
+    return {
+      x: parts[0] ?? 50,
+      y: parts[1] ?? 50,
+      zoom: parts[2] ?? 1
+    };
   };
 
   // Initialize position from prop
   useEffect(() => {
     const parsed = parsePosition(position);
-    currentPosRef.current = parsed;
-    savedPosRef.current = parsed;
+    currentPosRef.current = { x: parsed.x, y: parsed.y };
+    savedPosRef.current = { x: parsed.x, y: parsed.y };
+    currentZoomRef.current = parsed.zoom;
+    savedZoomRef.current = parsed.zoom;
+    setZoomDisplay(parsed.zoom);
     if (imgRef.current) {
       imgRef.current.style.objectPosition = `${parsed.x}% ${parsed.y}%`;
+      imgRef.current.style.transform = `scale(${parsed.zoom})`;
     }
     setHasChanges(false);
   }, [position]);
 
-  // Apply position directly to DOM for instant feedback
-  const applyPosition = useCallback((x: number, y: number) => {
+  // Apply position and zoom directly to DOM for instant feedback
+  const applyPosition = useCallback((x: number, y: number, zoom?: number) => {
     if (imgRef.current) {
       imgRef.current.style.objectPosition = `${x}% ${y}%`;
+      if (zoom !== undefined) {
+        imgRef.current.style.transform = `scale(${zoom})`;
+      }
     }
   }, []);
+
+  // Handle mouse wheel for zoom
+  const handleWheel = useCallback(
+    (e: React.WheelEvent) => {
+      if (disabled) return;
+      e.preventDefault();
+
+      const zoomSpeed = 0.1;
+      const delta = e.deltaY > 0 ? -zoomSpeed : zoomSpeed;
+      const newZoom = Math.max(0.5, Math.min(3, currentZoomRef.current + delta));
+
+      currentZoomRef.current = newZoom;
+      setZoomDisplay(newZoom);
+      applyPosition(currentPosRef.current.x, currentPosRef.current.y, newZoom);
+
+      const hasChanged =
+        Math.abs(currentZoomRef.current - savedZoomRef.current) > 0.05 ||
+        Math.abs(currentPosRef.current.x - savedPosRef.current.x) > 0.5 ||
+        Math.abs(currentPosRef.current.y - savedPosRef.current.y) > 0.5;
+      setHasChanges(hasChanged);
+    },
+    [disabled, applyPosition]
+  );
 
   const handleMouseDown = useCallback(
     (e: React.MouseEvent) => {
@@ -170,14 +209,18 @@ export function RepositionableCircleAvatar({
 
   const handleSave = () => {
     const pos = currentPosRef.current;
+    const zoom = currentZoomRef.current;
     savedPosRef.current = { ...pos };
-    onPositionChange(`${Math.round(pos.x)}% ${Math.round(pos.y)}%`);
+    savedZoomRef.current = zoom;
+    onPositionChange(`${Math.round(pos.x)}% ${Math.round(pos.y)}% ${zoom.toFixed(2)}`);
     setHasChanges(false);
   };
 
   const handleReset = () => {
     currentPosRef.current = { ...savedPosRef.current };
-    applyPosition(savedPosRef.current.x, savedPosRef.current.y);
+    currentZoomRef.current = savedZoomRef.current;
+    setZoomDisplay(savedZoomRef.current);
+    applyPosition(savedPosRef.current.x, savedPosRef.current.y, savedZoomRef.current);
     setHasChanges(false);
   };
 
@@ -188,6 +231,7 @@ export function RepositionableCircleAvatar({
           ref={containerRef}
           onMouseDown={handleMouseDown}
           onTouchStart={handleTouchStart}
+          onWheel={handleWheel}
           style={{
             width: `${size}px`,
             height: `${size}px`,
@@ -210,25 +254,51 @@ export function RepositionableCircleAvatar({
               height: '100%',
               objectFit: 'cover',
               objectPosition: `${currentPosRef.current.x}% ${currentPosRef.current.y}%`,
+              transform: `scale(${currentZoomRef.current})`,
               userSelect: 'none',
               pointerEvents: 'none',
-              willChange: 'object-position',
+              willChange: 'object-position, transform',
             }}
           />
         </div>
-        {!disabled && !hasChanges && (
+        {!disabled && (
           <div
             style={{
-              color: 'var(--muted-foreground)',
-              fontSize: '10px',
-              fontWeight: 500,
-              letterSpacing: '0.05em',
-              textTransform: 'uppercase',
-              writingMode: 'vertical-rl',
-              textOrientation: 'mixed',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '0.5rem',
+              alignItems: 'center',
             }}
           >
-            Drag to reposition
+            {!hasChanges && (
+              <div
+                style={{
+                  color: 'var(--muted-foreground)',
+                  fontSize: '9px',
+                  fontWeight: 500,
+                  letterSpacing: '0.05em',
+                  textTransform: 'uppercase',
+                  writingMode: 'vertical-rl',
+                  textOrientation: 'mixed',
+                }}
+              >
+                Drag · Scroll to zoom
+              </div>
+            )}
+            {hasChanges && (
+              <div
+                style={{
+                  color: 'var(--foreground)',
+                  fontSize: '10px',
+                  fontWeight: 500,
+                  padding: '0.25rem 0.5rem',
+                  border: '1px solid var(--border)',
+                  borderRadius: '0',
+                }}
+              >
+                {Math.round(zoomDisplay * 100)}%
+              </div>
+            )}
           </div>
         )}
       </div>
