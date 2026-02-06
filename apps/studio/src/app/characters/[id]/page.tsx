@@ -150,13 +150,15 @@ export default function CharacterDetailPage() {
     }
   };
 
-  // Get preview bio with name replaced (for live preview while editing)
-  const getPreviewBio = () => {
-    if (!character?.bio || !isEditingName || !editedName.trim()) return character?.bio || '';
-    // Replace old name with new name in bio (case-insensitive)
-    const regex = new RegExp(character.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+  // Compute preview bio with name replaced (live preview while editing)
+  const previewBio = (() => {
+    if (!character?.bio) return '';
+    if (!isEditingName || !editedName.trim()) return character.bio;
+    // Replace old name with new name in bio (case-insensitive, whole word)
+    const escapedName = character.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(escapedName, 'gi');
     return character.bio.replace(regex, editedName.trim());
-  };
+  })();
 
   const handleNameSave = async () => {
     if (!editedName.trim() || editedName === character?.name) {
@@ -166,17 +168,21 @@ export default function CharacterDetailPage() {
 
     setSavingName(true);
     try {
-      // Update bio to replace old name with new name
-      const newBio = character?.bio
-        ? character.bio.replace(
-            new RegExp(character.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'),
-            editedName.trim()
-          )
+      // Create regex to replace old name with new name (case-insensitive)
+      const escapedOldName = character.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const nameRegex = new RegExp(escapedOldName, 'gi');
+      const newName = editedName.trim();
+
+      // Update bio and systemPrompt to replace old name with new name
+      const newBio = character?.bio ? character.bio.replace(nameRegex, newName) : '';
+      const newSystemPrompt = character?.systemPrompt
+        ? character.systemPrompt.replace(nameRegex, newName)
         : '';
 
       const updated = await updateCharacter(characterId, {
-        name: editedName.trim(),
+        name: newName,
         bio: newBio,
+        systemPrompt: newSystemPrompt,
       });
       setCharacter(updated);
       setIsEditingName(false);
@@ -610,7 +616,7 @@ export default function CharacterDetailPage() {
               )}
 
               <p className="card-description" style={{ textAlign: 'center' }}>
-                {isEditingName ? (getPreviewBio() || 'No bio provided') : (character.bio || 'No bio provided')}
+                {previewBio || 'No bio provided'}
               </p>
             </div>
 
