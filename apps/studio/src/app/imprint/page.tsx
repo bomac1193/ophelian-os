@@ -472,13 +472,18 @@ export default function ImprintLibraryPage() {
                       <div style={{
                         marginTop: '0.5rem',
                         padding: '0.25rem 0.5rem',
-                        backgroundColor: 'var(--muted)',
+                        backgroundColor: '#000000',
+                        border: '1px solid var(--foreground)',
                         borderRadius: '0',
                         fontSize: '0.7rem',
                         display: 'flex',
                         alignItems: 'center',
                         gap: '0.5rem',
-                      }}>
+                        transition: 'border-color 0.2s ease',
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.4)'}
+                      onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--foreground)'}
+                      >
                         <span style={{ fontSize: '1rem' }}>{surface.imprint.symbol}</span>
                         <span style={{ opacity: 0.7 }}>{surface.imprint.primitive}</span>
                         <span style={{ fontWeight: 600 }}>{surface.imprint.label}</span>

@@ -201,22 +201,20 @@ export const GenomeDisplay = React.memo(function GenomeDisplay({ genome, orisha,
             style={{
               width: '100%',
               padding: '0.75rem',
-              backgroundColor: 'rgba(139, 92, 246, 0.1)',
-              border: '1px solid rgba(139, 92, 246, 0.3)',
-              borderRadius: '4px',
-              color: '#c4b5fd',
+              backgroundColor: '#000000',
+              border: '1px solid var(--foreground)',
+              borderRadius: '0',
+              color: 'var(--foreground)',
               fontSize: '0.875rem',
               fontWeight: 500,
               cursor: 'pointer',
-              transition: 'all 0.2s ease',
+              transition: 'border-color 0.2s ease',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = 'rgba(139, 92, 246, 0.15)';
-              e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.5)';
+              e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.4)';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = 'rgba(139, 92, 246, 0.1)';
-              e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+              e.currentTarget.style.borderColor = 'var(--foreground)';
             }}
           >
             Show Full Archetype Data

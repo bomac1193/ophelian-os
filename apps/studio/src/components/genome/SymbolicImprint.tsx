@@ -28,9 +28,22 @@ export function SymbolicImprint({
   return (
     <div
       className="symbolic-imprint"
-      onMouseEnter={onHover}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.4)';
+        onHover?.();
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.borderColor = 'var(--foreground)';
+      }}
       onClick={onClick}
-      style={{ cursor: onClick ? 'pointer' : 'default' }}
+      style={{
+        cursor: onClick ? 'pointer' : 'default',
+        padding: '1.5rem',
+        backgroundColor: '#000000',
+        border: '1px solid var(--foreground)',
+        borderRadius: '0',
+        transition: 'border-color 0.2s ease',
+      }}
     >
       <div className="imprint-header" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
         <span className="imprint-symbol" style={{ fontSize: '2rem', fontWeight: 300 }}>
