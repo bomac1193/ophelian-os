@@ -1,0 +1,235 @@
+/* Globes - Brutalist Minimalism */
+
+.page {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: var(--space-3xl) var(--space-2xl) 160px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 64px;
+  gap: var(--space-lg);
+}
+
+.headerContent {
+  max-width: 720px;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 72px;
+  font-weight: 400;
+  line-height: 1.0;
+  color: var(--foreground);
+  margin: 0 0 var(--space-sm) 0;
+  letter-spacing: -0.03em;
+}
+
+.subtitle {
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--muted-foreground);
+  margin: 0;
+}
+
+.createButton {
+  padding: 18px var(--space-lg);
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: var(--foreground);
+  border: none;
+  border-radius: 0;
+  color: var(--background);
+  cursor: pointer;
+  transition: background 0.2s ease;
+  white-space: nowrap;
+}
+
+.createButton:hover {
+  background: var(--muted-foreground);
+}
+
+.emptyState {
+  text-align: center;
+  padding: var(--space-3xl) var(--space-2xl);
+}
+
+.emptyState p {
+  font-family: var(--font-body);
+  font-size: 16px;
+  color: var(--muted-foreground);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--space-2xl);
+}
+
+.card {
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.card:hover {
+  border-color: var(--foreground);
+  transform: translateY(-4px);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-lg);
+  border-bottom: 1px solid var(--border);
+  background: var(--muted);
+}
+
+.cardIcon {
+  font-family: var(--font-ui);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--foreground);
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 0;
+}
+
+.cardBadge {
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  padding: 6px 12px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 0;
+}
+
+.cardContent {
+  padding: var(--space-lg);
+  flex: 1;
+}
+
+.cardTitle {
+  font-family: var(--font-heading);
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--foreground);
+  margin: 0 0 var(--space-md) 0;
+  letter-spacing: -0.01em;
+}
+
+.cardDescription {
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--muted-foreground);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.cardActions {
+  display: flex;
+  gap: 1px;
+  background: var(--border);
+  border-top: 1px solid var(--border);
+}
+
+.actionButton {
+  flex: 1;
+  padding: var(--space-md);
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--background);
+  border: none;
+  border-radius: 0;
+  color: var(--foreground);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.actionButton:hover {
+  background: var(--muted);
+}
+
+.actionButton.danger {
+  color: var(--error);
+}
+
+.actionButton.danger:hover {
+  background: rgba(220, 38, 38, 0.1);
+}
+
+/* Responsive - Laptop */
+@media (max-width: 1280px) {
+  .page {
+    padding: var(--space-2xl) var(--space-xl) 120px;
+  }
+
+  .title {
+    font-size: 64px;
+  }
+}
+
+/* Responsive - Tablet */
+@media (max-width: 1024px) {
+  .page {
+    padding: var(--space-2xl) var(--space-lg) 96px;
+  }
+
+  .header {
+    margin-bottom: 48px;
+  }
+
+  .title {
+    font-size: 56px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+  }
+}
+
+/* Responsive - Mobile */
+@media (max-width: 768px) {
+  .page {
+    padding: var(--space-xl) var(--space-md) 80px;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .title {
+    font-size: 48px;
+  }
+
+  .createButton {
+    width: 100%;
+  }
+}

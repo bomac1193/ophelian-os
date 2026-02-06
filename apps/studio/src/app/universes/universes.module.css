@@ -1,86 +1,124 @@
+/* Universes - Brutalist Minimalism */
+
 .page {
-  min-height: 100vh;
-  padding: 2rem;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: var(--space-3xl) var(--space-2xl) 160px;
 }
 
 .hero {
-  text-align: center;
-  margin-bottom: 3rem;
-  padding: 3rem 2rem;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 96px;
+  max-width: 720px;
 }
 
 .heroTitle {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin: 0 0 1rem 0;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-family: var(--font-display);
+  font-size: 72px;
+  font-weight: 400;
+  line-height: 1.0;
+  color: var(--foreground);
+  margin: 0 0 var(--space-md) 0;
+  letter-spacing: -0.03em;
 }
 
 .heroDescription {
-  font-size: 1.125rem;
-  color: var(--muted-foreground);
-  max-width: 700px;
-  margin: 0 auto;
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 400;
   line-height: 1.6;
+  color: var(--muted-foreground);
+  margin: 0;
+  max-width: 480px;
 }
 
 .features {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  margin-bottom: 3rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-2xl);
+  margin-bottom: 120px;
 }
 
 .featureCard {
-  padding: 2rem;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  text-align: center;
-  transition: all 0.3s ease;
-}
-
-.featureCard:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.2);
-  border-color: rgba(102, 126, 234, 0.3);
-}
-
-.featureIcon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
+  padding: 0;
+  background: transparent;
+  border: none;
 }
 
 .featureTitle {
-  font-size: 1.25rem;
+  font-family: var(--font-heading);
+  font-size: 28px;
   font-weight: 600;
-  margin: 0 0 0.5rem 0;
+  line-height: 1.2;
   color: var(--foreground);
+  margin: 0 0 var(--space-md) 0;
+  letter-spacing: -0.01em;
 }
 
 .featureText {
-  font-size: 0.875rem;
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.6;
   color: var(--muted-foreground);
   margin: 0;
-  line-height: 1.5;
 }
 
-@media (max-width: 768px) {
-  .heroTitle {
-    font-size: 2rem;
+/* Responsive - Laptop */
+@media (max-width: 1280px) {
+  .page {
+    padding: var(--space-2xl) var(--space-xl) 120px;
   }
 
-  .heroDescription {
-    font-size: 1rem;
+  .heroTitle {
+    font-size: 64px;
+  }
+}
+
+/* Responsive - Tablet */
+@media (max-width: 1024px) {
+  .page {
+    padding: var(--space-2xl) var(--space-lg) 96px;
+  }
+
+  .hero {
+    margin-bottom: 64px;
+  }
+
+  .heroTitle {
+    font-size: 56px;
   }
 
   .features {
     grid-template-columns: 1fr;
+    gap: var(--space-xl);
+    margin-bottom: 96px;
+  }
+
+  .featureTitle {
+    font-size: 24px;
+  }
+}
+
+/* Responsive - Mobile */
+@media (max-width: 768px) {
+  .page {
+    padding: var(--space-xl) var(--space-md) 80px;
+  }
+
+  .hero {
+    margin-bottom: 48px;
+  }
+
+  .heroTitle {
+    font-size: 48px;
+  }
+
+  .features {
+    gap: var(--space-lg);
+    margin-bottom: 64px;
+  }
+
+  .featureTitle {
+    font-size: 22px;
   }
 }

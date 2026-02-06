@@ -10,6 +10,7 @@ import {
   type CreateWorldInput,
   type UpdateWorldInput,
 } from '@/lib/api';
+import styles from './globes.module.css';
 
 export default function GlobesPage() {
   const [globes, setGlobes] = useState<World[]>([]);
@@ -84,7 +85,7 @@ export default function GlobesPage() {
   };
 
   const getTypeIcon = (type: string) => {
-    return type === 'story' ? '\u2756' : '\u2B22';
+    return type === 'story' ? '✦' : '◆';
   };
 
   if (loading) {
@@ -92,42 +93,50 @@ export default function GlobesPage() {
   }
 
   return (
-    <div className="page-content">
-      <div className="page-header">
-        <div>
-          <h1 className="page-title">Globes</h1>
-          <p className="page-subtitle">Worlds and realms in your universe</p>
+    <div className={styles.page}>
+      <div className={styles.header}>
+        <div className={styles.headerContent}>
+          <h1 className={styles.title}>Globes</h1>
+          <p className={styles.subtitle}>Worlds and realms in your universe</p>
         </div>
-        <button className="btn btn-secondary" onClick={() => openModal()}>
+        <button className={styles.createButton} onClick={() => openModal()}>
           New Globe
         </button>
       </div>
 
       {globes.length === 0 ? (
-        <div className="empty-state">
+        <div className={styles.emptyState}>
           <p>No globes yet. Create your first globe to get started.</p>
         </div>
       ) : (
-        <div className="entity-grid">
+        <div className={styles.grid}>
           {globes.map((globe) => (
-            <div key={globe.id} className="entity-card globe-card">
-              <div className="entity-card-header">
-                <div className="entity-card-icon globe-icon">
+            <div key={globe.id} className={styles.card}>
+              <div className={styles.cardHeader}>
+                <div className={styles.cardIcon}>
                   {getTypeIcon(globe.type)}
                 </div>
-                <div className="entity-card-meta">
-                  <span className="entity-type-badge globe-badge">{globe.type}</span>
-                </div>
+                <span className={styles.cardBadge}>{globe.type}</span>
               </div>
-              <h3 className="entity-card-title">{globe.name}</h3>
-              {globe.description && (
-                <p className="entity-card-description">{globe.description}</p>
-              )}
-              <div className="entity-card-actions">
-                <button className="btn btn-sm btn-secondary" onClick={() => openModal(globe)}>
+
+              <div className={styles.cardContent}>
+                <h3 className={styles.cardTitle}>{globe.name}</h3>
+                {globe.description && (
+                  <p className={styles.cardDescription}>{globe.description}</p>
+                )}
+              </div>
+
+              <div className={styles.cardActions}>
+                <button
+                  className={styles.actionButton}
+                  onClick={() => openModal(globe)}
+                >
                   Edit
                 </button>
-                <button className="btn btn-sm btn-danger" onClick={() => handleDelete(globe.id)}>
+                <button
+                  className={`${styles.actionButton} ${styles.danger}`}
+                  onClick={() => handleDelete(globe.id)}
+                >
                   Delete
                 </button>
               </div>
