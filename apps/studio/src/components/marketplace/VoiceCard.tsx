@@ -1,6 +1,7 @@
 /**
  * Voice Card Component
  * Displays a voice listing in the marketplace
+ * Design: Circular profile, brutalist minimalism
  */
 
 'use client';
@@ -23,12 +24,31 @@ export function VoiceCard({ voice, onLicense }: VoiceCardProps) {
     return '★'.repeat(Math.floor(rating)) + '☆'.repeat(5 - Math.floor(rating));
   };
 
+  // Get initials for avatar
+  const getInitials = (name: string) => {
+    return name
+      .split(' ')
+      .map(n => n[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
+  };
+
   return (
     <div className={styles.card}>
+      {/* Circular Profile Header */}
+      <div className={styles.profileHeader}>
+        <div className={styles.avatarCircle}>
+          <span className={styles.avatarInitials}>
+            {getInitials(voice.actorName)}
+          </span>
+        </div>
+      </div>
+
       <div className={styles.header}>
         <div className={styles.nameSection}>
           <h3 className={styles.voiceName}>{voice.name}</h3>
-          <p className={styles.actorName}>by {voice.actorName}</p>
+          <p className={styles.actorName}>{voice.actorName}</p>
         </div>
         <div className={styles.rating}>
           <span className={styles.stars}>{renderStars(voice.rating)}</span>
@@ -51,6 +71,7 @@ export function VoiceCard({ voice, onLicense }: VoiceCardProps) {
           <span className={styles.statValue}>{voice.stats.totalLicenses}</span>
           <span className={styles.statLabel}>Licenses</span>
         </div>
+        <div className={styles.statDivider}></div>
         <div className={styles.statItem}>
           <span className={styles.statValue}>{voice.stats.usageCount.toLocaleString()}</span>
           <span className={styles.statLabel}>Uses</span>
@@ -59,18 +80,18 @@ export function VoiceCard({ voice, onLicense }: VoiceCardProps) {
 
       <div className={styles.pricing}>
         <div className={styles.priceSection}>
-          <h4 className={styles.priceTitle}>Licensing Options</h4>
+          <h4 className={styles.priceTitle}>Licensing</h4>
           <div className={styles.priceOptions}>
             <div className={styles.priceOption}>
-              <span className={styles.priceLabel}>Exclusive</span>
+              <span className={styles.priceLabel}>EXCLUSIVE</span>
               <span className={styles.priceValue}>{formatPrice(voice.pricing.exclusive)}</span>
             </div>
             <div className={styles.priceOption}>
-              <span className={styles.priceLabel}>Per Use</span>
+              <span className={styles.priceLabel}>PER USE</span>
               <span className={styles.priceValue}>{formatPrice(voice.pricing.nonExclusive)}</span>
             </div>
             <div className={styles.priceOption}>
-              <span className={styles.priceLabel}>Rev Share</span>
+              <span className={styles.priceLabel}>REV SHARE</span>
               <span className={styles.priceValue}>
                 {voice.pricing.revShare.voiceActor}/{voice.pricing.revShare.creator}/{voice.pricing.revShare.platform}
               </span>
@@ -97,7 +118,7 @@ export function VoiceCard({ voice, onLicense }: VoiceCardProps) {
         onClick={onLicense}
         disabled={!voice.available}
       >
-        {voice.available ? '🎤 License This Voice' : '❌ Not Available'}
+        {voice.available ? 'LICENSE VOICE' : 'NOT AVAILABLE'}
       </button>
     </div>
   );
