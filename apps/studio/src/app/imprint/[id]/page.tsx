@@ -38,7 +38,7 @@ export default function ImprintDetailPage() {
   const [systemPrompt, setSystemPrompt] = useState<ImprintSystemPrompt | null>(null);
   const [promptLoading, setPromptLoading] = useState(false);
   const [promptStyle, setPromptStyle] = useState<'concise' | 'detailed' | 'poetic'>('detailed');
-  const [activeTab, setActiveTab] = useState<'overview' | 'multimodal' | 'narrative' | 'prompt' | 'content' | 'timeline' | 'voice' | 'avatar' | 'relationships' | 'stories' | 'merch'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'multimodal' | 'narrative' | 'prompt' | 'content' | 'timeline' | 'voice' | 'avatar' | 'relationships' | 'stories' | 'merch' | 'social'>('overview');
   const [mysteriesUnlocked, setMysteriesUnlocked] = useState(false);
   const [hasAdvancedAccess, setHasAdvancedAccess] = useState(false);
   const [suggestedIntent, setSuggestedIntent] = useState<string>('');
@@ -295,7 +295,7 @@ export default function ImprintDetailPage() {
           paddingBottom: '0.5rem',
         }}
       >
-        {(['overview', 'timeline', 'multimodal', 'narrative', 'prompt', 'content', 'voice', 'avatar', 'relationships', 'stories', 'merch'] as const).map((tab) => (
+        {(['overview', 'timeline', 'multimodal', 'narrative', 'prompt', 'content', 'voice', 'avatar', 'relationships', 'stories', 'merch', 'social'] as const).map((tab) => (
           <button
             key={tab}
             type="button"
@@ -982,6 +982,131 @@ export default function ImprintDetailPage() {
             characterName={genome.name}
             visualSignature={(genome as any).multiModalSignature?.visual}
           />
+        </div>
+      )}
+
+      {activeTab === 'social' && (
+        <div>
+          <p style={{ margin: '0 0 1.5rem', color: 'var(--muted-foreground)' }}>
+            Publish {genome.name}'s content across social media platforms. SLAYT automatically adapts content using character genome for platform-specific formatting, hashtags, and attribution.
+          </p>
+
+          <div style={{
+            padding: '1.5rem',
+            background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%)',
+            border: '1px solid rgba(102, 126, 234, 0.2)',
+            borderRadius: '12px',
+            marginBottom: '1.5rem'
+          }}>
+            <h3 style={{ margin: '0 0 1rem', fontSize: '1.1rem' }}>🚀 Social Publishing</h3>
+            <div style={{ display: 'grid', gap: '1rem' }}>
+              <div>
+                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500 }}>Content to Publish</label>
+                <textarea
+                  id="social-content"
+                  placeholder={`Share ${genome.name}'s story, thoughts, or updates...`}
+                  rows={4}
+                  style={{
+                    width: '100%',
+                    padding: '0.75rem',
+                    borderRadius: '8px',
+                    border: '1px solid var(--border)',
+                    backgroundColor: 'var(--background)',
+                    color: 'var(--foreground)',
+                    fontSize: '0.875rem',
+                    fontFamily: 'inherit',
+                    resize: 'vertical'
+                  }}
+                />
+              </div>
+
+              <div>
+                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500 }}>Platforms</label>
+                <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+                  {['Twitter', 'Instagram', 'TikTok'].map(platform => (
+                    <label key={platform} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+                      <input type="checkbox" defaultChecked style={{ cursor: 'pointer' }} />
+                      <span>{platform}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={async () => {
+                  const content = (document.getElementById('social-content') as HTMLTextAreaElement)?.value;
+                  if (!content) {
+                    alert('Please enter content to publish');
+                    return;
+                  }
+
+                  try {
+                    const response = await fetch('/api/social/publish', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({
+                        characterId: id,
+                        characterName: genome.name,
+                        genome: {
+                          visual: (genome as any).multiModalSignature?.visual,
+                          orisha: genome.personality?.orisha,
+                          sephira: genome.personality?.sephira,
+                          traits: genome.personality?.traits || []
+                        },
+                        content: {
+                          type: 'story',
+                          text: content,
+                        },
+                        platforms: ['TWITTER', 'INSTAGRAM', 'TIKTOK']
+                      })
+                    });
+
+                    const result = await response.json();
+                    if (result.success) {
+                      alert(`✅ Published to ${result.publishedTo.join(', ')}!\n\nCheck SLAYT response for details.`);
+                      console.log('SLAYT Response:', result.slaytResponse);
+                    } else {
+                      alert(`❌ Error: ${result.error}\n\n${result.message || ''}`);
+                    }
+                  } catch (error) {
+                    alert(`❌ Failed to publish: ${error instanceof Error ? error.message : 'Unknown error'}`);
+                  }
+                }}
+                style={{
+                  padding: '0.75rem 1.5rem',
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '8px',
+                  fontSize: '1rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  transition: 'transform 0.2s'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}
+                onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+              >
+                📤 Publish to Social Media
+              </button>
+            </div>
+          </div>
+
+          <div style={{
+            padding: '1rem',
+            background: 'rgba(100, 255, 218, 0.05)',
+            border: '1px solid rgba(100, 255, 218, 0.2)',
+            borderRadius: '8px'
+          }}>
+            <h4 style={{ margin: '0 0 0.5rem', fontSize: '0.9rem', color: '#64ffda' }}>✨ Character-Authentic Adaptation</h4>
+            <ul style={{ margin: 0, paddingLeft: '1.25rem', fontSize: '0.875rem', color: 'var(--muted-foreground)' }}>
+              <li>Auto-generates hashtags from {genome.name}'s personality traits</li>
+              <li>Adapts content for each platform's format and character limits</li>
+              <li>Creates Twitter threads for long content</li>
+              <li>Generates TikTok video scripts</li>
+              <li>Adds character attribution and orisha energy references</li>
+            </ul>
+          </div>
         </div>
       )}
 
