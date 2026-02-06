@@ -124,7 +124,14 @@ export function RepositionableCircleAvatar({
       currentPosRef.current = { x: newX, y: newY };
 
       // Direct DOM manipulation for instant feedback
-      applyPosition(newX, newY);
+      applyPosition(newX, newY, currentZoomRef.current);
+
+      // Update hasChanges during drag for visual feedback
+      const hasChanged =
+        Math.abs(currentPosRef.current.x - savedPosRef.current.x) > 0.5 ||
+        Math.abs(currentPosRef.current.y - savedPosRef.current.y) > 0.5 ||
+        Math.abs(currentZoomRef.current - savedZoomRef.current) > 0.05;
+      setHasChanges(hasChanged);
     },
     [applyPosition]
   );
@@ -133,7 +140,8 @@ export function RepositionableCircleAvatar({
     if (dragStartRef.current) {
       const hasChanged =
         Math.abs(currentPosRef.current.x - savedPosRef.current.x) > 0.5 ||
-        Math.abs(currentPosRef.current.y - savedPosRef.current.y) > 0.5;
+        Math.abs(currentPosRef.current.y - savedPosRef.current.y) > 0.5 ||
+        Math.abs(currentZoomRef.current - savedZoomRef.current) > 0.05;
       setHasChanges(hasChanged);
     }
     setIsDragging(false);
@@ -175,7 +183,14 @@ export function RepositionableCircleAvatar({
       const newY = Math.max(0, Math.min(100, dragStartRef.current.posY - deltaY));
 
       currentPosRef.current = { x: newX, y: newY };
-      applyPosition(newX, newY);
+      applyPosition(newX, newY, currentZoomRef.current);
+
+      // Update hasChanges during drag for visual feedback
+      const hasChanged =
+        Math.abs(currentPosRef.current.x - savedPosRef.current.x) > 0.5 ||
+        Math.abs(currentPosRef.current.y - savedPosRef.current.y) > 0.5 ||
+        Math.abs(currentZoomRef.current - savedZoomRef.current) > 0.05;
+      setHasChanges(hasChanged);
     },
     [applyPosition]
   );
@@ -184,7 +199,8 @@ export function RepositionableCircleAvatar({
     if (dragStartRef.current) {
       const hasChanged =
         Math.abs(currentPosRef.current.x - savedPosRef.current.x) > 0.5 ||
-        Math.abs(currentPosRef.current.y - savedPosRef.current.y) > 0.5;
+        Math.abs(currentPosRef.current.y - savedPosRef.current.y) > 0.5 ||
+        Math.abs(currentZoomRef.current - savedZoomRef.current) > 0.05;
       setHasChanges(hasChanged);
     }
     setIsDragging(false);
