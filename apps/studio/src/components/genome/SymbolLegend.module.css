@@ -188,9 +188,14 @@
   flex-direction: column;
   gap: 6px;
   padding: var(--space-sm);
-  background: var(--muted);
-  border: 1px solid var(--border);
+  background: #000000;
+  border: 1px solid var(--foreground);
   border-radius: 0;
+  transition: border-color 0.2s ease;
+}
+
+.keyInfo:hover {
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
 .infoRow {
