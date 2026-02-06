@@ -12,21 +12,16 @@ function isRelic(character: Character) {
   return !!(gen?.relics && gen.relics.length > 0);
 }
 
-// Helper to get classification code (e.g., "X-4") from character's subtaste data
-function getClassification(character: Character): string | null {
+// Helper to get subtaste data from character
+function getSubtaste(character: Character): { glyph: string; code: string; label: string } | null {
   const ts = character.timelineState as Record<string, any>;
-  return ts?.oripheon?.generated?.subtaste?.code || null;
-}
-
-// Helper to get archetype label (e.g., "Cull") from character's subtaste data
-function getArchetype(character: Character): string | null {
-  const ts = character.timelineState as Record<string, any>;
-  return ts?.oripheon?.generated?.subtaste?.label || null;
+  const subtaste = ts?.oripheon?.generated?.subtaste;
+  if (!subtaste?.glyph || !subtaste?.code || !subtaste?.label) return null;
+  return { glyph: subtaste.glyph, code: subtaste.code, label: subtaste.label };
 }
 
 function CharacterCard({ character }: { character: Character }) {
-  const archetype = getArchetype(character);
-  const classification = getClassification(character);
+  const subtaste = getSubtaste(character);
 
   return (
     <Link
@@ -59,39 +54,46 @@ function CharacterCard({ character }: { character: Character }) {
           {character.bio?.slice(0, 100) || 'No bio'}
           {character.bio && character.bio.length > 100 ? '...' : ''}
         </p>
-        {(archetype || classification) && (
+        {subtaste && (
           <div style={{
             display: 'flex',
             gap: '0.5rem',
             marginTop: '1rem',
             flexWrap: 'wrap',
           }}>
-            {archetype && (
-              <span style={{
-                padding: '0.25rem 0.75rem',
-                border: '1px solid var(--foreground)',
-                borderRadius: '0',
-                fontSize: '0.75rem',
-                fontWeight: 500,
-                color: 'var(--foreground)',
-                backgroundColor: 'transparent',
-              }}>
-                {archetype}
-              </span>
-            )}
-            {classification && (
-              <span style={{
-                padding: '0.25rem 0.75rem',
-                border: '1px solid var(--foreground)',
-                borderRadius: '0',
-                fontSize: '0.75rem',
-                fontWeight: 500,
-                color: 'var(--foreground)',
-                backgroundColor: 'transparent',
-              }}>
-                {classification}
-              </span>
-            )}
+            <span style={{
+              padding: '0.25rem 0.75rem',
+              border: '1px solid var(--foreground)',
+              borderRadius: '0',
+              fontSize: '0.75rem',
+              fontWeight: 500,
+              color: 'var(--foreground)',
+              backgroundColor: 'transparent',
+            }}>
+              {subtaste.glyph}
+            </span>
+            <span style={{
+              padding: '0.25rem 0.75rem',
+              border: '1px solid var(--foreground)',
+              borderRadius: '0',
+              fontSize: '0.75rem',
+              fontWeight: 500,
+              color: 'var(--foreground)',
+              backgroundColor: 'transparent',
+            }}>
+              {subtaste.code}
+            </span>
+            <span style={{
+              padding: '0.25rem 0.75rem',
+              border: '1px solid var(--foreground)',
+              borderRadius: '0',
+              fontSize: '0.75rem',
+              fontWeight: 500,
+              color: 'var(--foreground)',
+              backgroundColor: 'transparent',
+            }}>
+              {subtaste.label}
+            </span>
           </div>
         )}
       </div>
