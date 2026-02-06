@@ -47,13 +47,7 @@ function WorldNodeComponent({ data }: NodeProps<WorldNodeData>) {
         className={`world-node ${isConnectSource ? 'world-node-connecting' : ''} ${shiftHeld ? 'world-node-shift' : ''}`}
         onClick={() => onClick(world)}
       >
-        <div className="world-node-icon">
-          {world.imageUrl ? (
-            <img src={world.imageUrl} alt={world.name} />
-          ) : (
-            <span className="world-node-type-icon">{getTypeIcon(world.type)}</span>
-          )}
-        </div>
+        <span className="world-node-type-icon">{getTypeIcon(world.type)}</span>
         <div className="world-node-content">
           <div className="world-node-name">{world.name}</div>
           <div className="world-node-type">{world.type}</div>

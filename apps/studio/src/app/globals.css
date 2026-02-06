@@ -1082,38 +1082,31 @@ body {
   border: 2px solid var(--background) !important;
 }
 
-/* World Node Styles */
+/* World Node Styles - Circle Globe */
 .world-node {
   background: var(--background);
-  border: 2px solid #8b5cf6;
-  border-radius: 8px;
-  padding: 1rem 1.25rem;
+  border: 2px solid var(--foreground);
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
   cursor: pointer;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0.75rem;
-  min-width: 140px;
+  justify-content: center;
+  gap: 0.25rem;
   transition: all 0.15s ease;
-  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
+  padding: 0.5rem;
+  text-align: center;
 }
 
 .world-node:hover {
-  border-color: #7c3aed;
-  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
+  border-color: var(--foreground);
+  box-shadow: 0 0 0 2px var(--foreground);
 }
 
 .world-node-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  overflow: hidden;
-  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
+  display: none;
 }
 
 .world-node-icon img {
@@ -1123,35 +1116,44 @@ body {
 }
 
 .world-node-type-icon {
-  font-size: 1.5rem;
-  color: white;
+  font-size: 1.25rem;
+  color: var(--foreground);
+  display: block;
 }
 
 .world-node-content {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 0.125rem;
 }
 
 .world-node-name {
-  font-size: 0.875rem;
+  font-family: var(--font-ui);
+  font-size: 0.625rem;
   font-weight: 600;
-  max-width: 100px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  max-width: 80px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  color: var(--foreground);
 }
 
 .world-node-type {
-  font-size: 0.625rem;
-  color: #8b5cf6;
-  text-transform: capitalize;
+  font-family: var(--font-ui);
+  font-size: 0.5rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
 }
 
 .world-node-handle {
   width: 8px !important;
   height: 8px !important;
-  background: #8b5cf6 !important;
+  background: var(--foreground) !important;
   border: 2px solid var(--background) !important;
 }
 
