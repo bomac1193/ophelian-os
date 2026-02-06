@@ -203,36 +203,88 @@ export default function CharacterDetailPage() {
   };
 
   if (loading) {
-    return <div className="loading">Loading...</div>;
+    return (
+      <div className="page-container">
+        <div className="loading">Loading...</div>
+      </div>
+    );
   }
 
   if (error) {
     return (
-      <div className="card" style={{ borderColor: 'var(--error)' }}>
-        <p style={{ color: 'var(--error)' }}>{error}</p>
-        <button className="btn btn-secondary mt-4" onClick={loadData}>
-          Retry
-        </button>
+      <div className="page-container">
+        <div className="card" style={{ borderColor: 'var(--error)' }}>
+          <p style={{ color: 'var(--error)' }}>{error}</p>
+          <button
+            onClick={loadData}
+            style={{
+              marginTop: '1rem',
+              color: 'var(--foreground)',
+              fontSize: '0.875rem',
+              padding: '0.5rem 1rem',
+              border: '1px solid var(--foreground)',
+              borderRadius: '0',
+              background: 'transparent',
+              cursor: 'pointer',
+              transition: 'border-color 0.2s ease',
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.6)'}
+            onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--foreground)'}
+          >
+            Retry
+          </button>
+        </div>
       </div>
     );
   }
 
   if (!character) {
     return (
-      <div className="empty-state">
-        <p>Character not found</p>
-        <Link href="/" className="btn btn-primary mt-4">
-          Back to Characters
-        </Link>
+      <div className="page-container">
+        <div className="empty-state">
+          <p>Character not found</p>
+          <Link
+            href="/"
+            style={{
+              marginTop: '1rem',
+              color: 'var(--foreground)',
+              fontSize: '0.875rem',
+              padding: '0.5rem 1rem',
+              border: '1px solid var(--foreground)',
+              borderRadius: '0',
+              textDecoration: 'none',
+              display: 'inline-block',
+              transition: 'border-color 0.2s ease',
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.6)'}
+            onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--foreground)'}
+          >
+            Back to Characters
+          </Link>
+        </div>
       </div>
     );
   }
 
   return (
-    <div>
+    <div className="page-container">
       <div className="page-header">
         <div>
-          <Link href="/" style={{ color: 'var(--muted-foreground)', fontSize: '0.875rem' }}>
+          <Link
+            href="/"
+            style={{
+              color: 'var(--foreground)',
+              fontSize: '0.875rem',
+              padding: '0.5rem 1rem',
+              border: '1px solid var(--foreground)',
+              borderRadius: '0',
+              textDecoration: 'none',
+              display: 'inline-block',
+              transition: 'border-color 0.2s ease',
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.6)'}
+            onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--foreground)'}
+          >
             &larr; Back to Characters
           </Link>
           {isEditingName ? (
@@ -276,10 +328,22 @@ export default function CharacterDetailPage() {
           )}
         </div>
         <button
-          className="btn btn-secondary"
           onClick={handleDelete}
           disabled={deleting}
-          style={{ color: 'var(--error)' }}
+          style={{
+            color: 'var(--error)',
+            fontSize: '0.875rem',
+            padding: '0.5rem 1rem',
+            border: '1px solid var(--error)',
+            borderRadius: '0',
+            background: 'transparent',
+            cursor: deleting ? 'not-allowed' : 'pointer',
+            transition: 'border-color 0.2s ease',
+          }}
+          onMouseEnter={(e) => {
+            if (!deleting) e.currentTarget.style.borderColor = 'rgba(255, 107, 107, 0.6)';
+          }}
+          onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--error)'}
         >
           {deleting ? 'Deleting...' : 'Delete Character'}
         </button>
