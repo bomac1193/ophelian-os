@@ -125,8 +125,8 @@
 /* Grid */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: var(--space-2xl);
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--space-lg);
   margin-bottom: var(--space-3xl);
 }
 
@@ -136,7 +136,7 @@
   background: var(--background);
   border: 1px solid var(--border);
   border-radius: 0;
-  padding: var(--space-xl);
+  padding: var(--space-lg);
   transition: border-color 0.2s ease, transform 0.2s ease;
   cursor: pointer;
   overflow: visible;
@@ -144,7 +144,7 @@
 }
 
 .card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-2px);
   border-color: var(--foreground);
   z-index: 9998;
 }
@@ -152,7 +152,7 @@
 .cardContent {
   display: flex;
   flex-direction: column;
-  gap: var(--space-md);
+  gap: var(--space-sm);
   overflow: visible;
 }
 
@@ -160,14 +160,14 @@
 .symbolDisplay {
   display: flex;
   justify-content: center;
-  padding: var(--space-lg) 0;
+  padding: var(--space-md) 0;
   border-bottom: 1px solid var(--border);
 }
 
 /* Orisha Name & Title */
 .orishaName {
   font-family: var(--font-heading);
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 600;
   text-align: center;
   color: var(--foreground);
@@ -176,19 +176,19 @@
 
 .orishaTitle {
   font-family: var(--font-body);
-  font-size: 14px;
+  font-size: 13px;
   font-style: italic;
   text-align: center;
   color: var(--muted-foreground);
-  margin-top: -8px;
+  margin-top: -4px;
 }
 
 /* Key Info */
 .keyInfo {
   display: flex;
   flex-direction: column;
-  gap: var(--space-sm);
-  padding: var(--space-md);
+  gap: 6px;
+  padding: var(--space-sm);
   background: var(--muted);
   border: 1px solid var(--border);
   border-radius: 0;
@@ -217,14 +217,14 @@
 /* Color Palette */
 .colorPalette {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   justify-content: center;
-  padding-top: var(--space-sm);
+  padding-top: 8px;
 }
 
 .colorSwatch {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   border-radius: 0;
   border: 1px solid var(--border);
   transition: transform 0.2s ease;
