@@ -22,26 +22,24 @@ export default function MarketplacePage() {
 
   return (
     <div className={styles.page}>
-      {/* Hero - Brutalist Editorial */}
+      {/* Hero - Ruler/Magician Energy */}
       <div className={styles.hero}>
         <div className={styles.heroLabel}>
-          INDUSTRY-FIRST IP MARKETPLACE
+          THE VOICE MARKETPLACE
         </div>
 
         <h1 className={styles.heroTitle}>
-          Professional Voice Talent
+          Professional Talent
         </h1>
 
         <p className={styles.heroSubtitle}>
-          For AI Characters
+          Licensed for Characters
         </p>
 
         <div className={styles.heroDivider}></div>
 
         <p className={styles.heroDescription}>
-          License studio-grade voices from professional actors.
-          <br />
-          Fair compensation. Ethical AI. Transparent revenue sharing.
+          Studio-grade voices. Ethical licensing. Fair compensation.
         </p>
       </div>
 
