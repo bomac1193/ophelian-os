@@ -18,10 +18,10 @@ export function RepositionableCircleAvatar({
   disabled = false,
 }: RepositionableCircleAvatarProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const imgRef = useRef<HTMLImageElement>(null);
 
   // State for UI
   const [isDragging, setIsDragging] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
   const [currentZoom, setCurrentZoom] = useState(1);
   const [currentPos, setCurrentPos] = useState({ x: 50, y: 50 });
@@ -30,8 +30,11 @@ export function RepositionableCircleAvatar({
   const [savedPos, setSavedPos] = useState({ x: 50, y: 50 });
   const [savedZoom, setSavedZoom] = useState(1);
 
-  // Drag tracking
-  const dragStart = useRef<{ mouseX: number; mouseY: number; posX: number; posY: number } | null>(null);
+  // Drag tracking - store initial mouse position and image position
+  const dragStartMouseX = useRef(0);
+  const dragStartMouseY = useRef(0);
+  const dragStartPosX = useRef(0);
+  const dragStartPosY = useRef(0);
 
   // Parse position string like "50% 50% 1.5" into x, y, zoom
   const parsePosition = (pos: string): { x: number; y: number; zoom: number } => {
@@ -51,15 +54,31 @@ export function RepositionableCircleAvatar({
     setCurrentZoom(parsed.zoom);
     setSavedZoom(parsed.zoom);
     setHasChanges(false);
+    setIsEditing(false);
   }, [position]);
 
+  // Lock page scroll when editing
+  useEffect(() => {
+    if (isEditing) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isEditing]);
+
   // Check if there are unsaved changes
-  const checkChanges = (pos: { x: number; y: number }, zoom: number) => {
+  const checkChanges = (posX: number, posY: number, zoom: number) => {
     const changed =
-      Math.abs(pos.x - savedPos.x) > 0.5 ||
-      Math.abs(pos.y - savedPos.y) > 0.5 ||
+      Math.abs(posX - savedPos.x) > 0.5 ||
+      Math.abs(posY - savedPos.y) > 0.5 ||
       Math.abs(zoom - savedZoom) > 0.05;
     setHasChanges(changed);
+    if (changed) {
+      setIsEditing(true);
+    }
   };
 
   // Mouse down - start drag
@@ -68,64 +87,73 @@ export function RepositionableCircleAvatar({
     e.preventDefault();
     e.stopPropagation();
 
-    dragStart.current = {
-      mouseX: e.clientX,
-      mouseY: e.clientY,
-      posX: currentPos.x,
-      posY: currentPos.y,
-    };
+    dragStartMouseX.current = e.clientX;
+    dragStartMouseY.current = e.clientY;
+    dragStartPosX.current = currentPos.x;
+    dragStartPosY.current = currentPos.y;
+
     setIsDragging(true);
+    setIsEditing(true);
   };
 
-  // Global mouse move and mouse up
+  // Global mouse move
   useEffect(() => {
     if (!isDragging) return;
 
     const handleMouseMove = (e: MouseEvent) => {
-      if (!dragStart.current || !containerRef.current) return;
+      if (!containerRef.current) return;
 
       e.preventDefault();
+      e.stopPropagation();
 
       const rect = containerRef.current.getBoundingClientRect();
       const sensitivity = 2;
 
-      const deltaX = ((e.clientX - dragStart.current.mouseX) / rect.width) * 100 * sensitivity;
-      const deltaY = ((e.clientY - dragStart.current.mouseY) / rect.height) * 100 * sensitivity;
+      // Calculate how much the mouse moved
+      const mouseDeltaX = e.clientX - dragStartMouseX.current;
+      const mouseDeltaY = e.clientY - dragStartMouseY.current;
 
-      // Invert because we're moving the image focal point
-      const newX = Math.max(0, Math.min(100, dragStart.current.posX - deltaX));
-      const newY = Math.max(0, Math.min(100, dragStart.current.posY - deltaY));
+      // Convert to percentage of container and apply sensitivity
+      const percentDeltaX = (mouseDeltaX / rect.width) * 100 * sensitivity;
+      const percentDeltaY = (mouseDeltaY / rect.height) * 100 * sensitivity;
 
-      const newPos = { x: newX, y: newY };
-      setCurrentPos(newPos);
-      checkChanges(newPos, currentZoom);
+      // Invert and add to starting position (moving mouse right moves image left, showing right side)
+      const newX = Math.max(0, Math.min(100, dragStartPosX.current - percentDeltaX));
+      const newY = Math.max(0, Math.min(100, dragStartPosY.current - percentDeltaY));
+
+      setCurrentPos({ x: newX, y: newY });
+      checkChanges(newX, newY, currentZoom);
     };
 
-    const handleMouseUp = () => {
-      dragStart.current = null;
+    const handleMouseUp = (e: MouseEvent) => {
+      e.preventDefault();
       setIsDragging(false);
     };
 
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
+    // Use capture phase to ensure we get events
+    document.addEventListener('mousemove', handleMouseMove, true);
+    document.addEventListener('mouseup', handleMouseUp, true);
 
     return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('mousemove', handleMouseMove, true);
+      document.removeEventListener('mouseup', handleMouseUp, true);
     };
-  }, [isDragging, currentZoom, savedPos, savedZoom]);
+  }, [isDragging, currentZoom, savedPos.x, savedPos.y, savedZoom]);
 
   // Wheel zoom
   const handleWheel = (e: React.WheelEvent) => {
     if (disabled) return;
     e.preventDefault();
+    e.stopPropagation();
+
+    setIsEditing(true);
 
     const zoomSpeed = e.shiftKey ? 0.02 : 0.1;
     const delta = e.deltaY > 0 ? -zoomSpeed : zoomSpeed;
     const newZoom = Math.max(0.5, Math.min(3, currentZoom + delta));
 
     setCurrentZoom(newZoom);
-    checkChanges(currentPos, newZoom);
+    checkChanges(currentPos.x, currentPos.y, newZoom);
   };
 
   // Save
@@ -134,6 +162,7 @@ export function RepositionableCircleAvatar({
     setSavedZoom(currentZoom);
     onPositionChange(`${Math.round(currentPos.x)}% ${Math.round(currentPos.y)}% ${currentZoom.toFixed(2)}`);
     setHasChanges(false);
+    setIsEditing(false);
   };
 
   // Reset
@@ -141,6 +170,7 @@ export function RepositionableCircleAvatar({
     setCurrentPos({ ...savedPos });
     setCurrentZoom(savedZoom);
     setHasChanges(false);
+    setIsEditing(false);
   };
 
   return (
@@ -156,14 +186,14 @@ export function RepositionableCircleAvatar({
             borderRadius: '50%',
             overflow: 'hidden',
             cursor: disabled ? 'default' : isDragging ? 'grabbing' : 'grab',
-            border: hasChanges || isDragging ? '1px solid var(--foreground)' : '1px solid var(--border)',
+            border: isEditing ? '2px solid var(--foreground)' : '1px solid var(--border)',
             backgroundColor: 'var(--muted)',
             position: 'relative',
             userSelect: 'none',
+            touchAction: 'none',
           }}
         >
           <img
-            ref={imgRef}
             src={src}
             alt="Avatar"
             draggable={false}
@@ -187,7 +217,7 @@ export function RepositionableCircleAvatar({
               alignItems: 'center',
             }}
           >
-            {!hasChanges && !isDragging && (
+            {!isEditing && (
               <div
                 style={{
                   color: 'var(--muted-foreground)',
@@ -202,7 +232,7 @@ export function RepositionableCircleAvatar({
                 Drag · Scroll · ⇧ Fine
               </div>
             )}
-            {(hasChanges || isDragging) && (
+            {isEditing && (
               <div
                 style={{
                   color: 'var(--foreground)',
@@ -220,7 +250,7 @@ export function RepositionableCircleAvatar({
         )}
       </div>
 
-      {hasChanges && (
+      {isEditing && (
         <div style={{ display: 'flex', gap: '0.5rem' }}>
           <button
             type="button"
@@ -258,7 +288,7 @@ export function RepositionableCircleAvatar({
             onMouseEnter={(e) => e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.4)'}
             onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--muted-foreground)'}
           >
-            Reset
+            Cancel
           </button>
         </div>
       )}
