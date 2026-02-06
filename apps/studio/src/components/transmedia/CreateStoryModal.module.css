@@ -61,10 +61,10 @@
 }
 
 .closeButton:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--foreground);
-  transform: scale(1.05);
+  background: var(--foreground);
+  color: var(--background);
 }
+
 
 .form {
   padding: 28px;
@@ -145,10 +145,10 @@
 }
 
 .optionCard:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(102, 126, 234, 0.3);
-  transform: translateY(-2px);
+  background: var(--foreground);
+  color: var(--background);
 }
+
 
 .optionCard.selected {
   background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
@@ -206,9 +206,14 @@
 }
 
 .submitButton {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--background);
+  border: 1px solid var(--foreground);
+  border: none;
+  border-radius: 0;
+  font-family: var(--font-body);
   color: #ffffff;
 }
+
 
 .submitButton:hover:not(:disabled) {
   transform: translateY(-2px);

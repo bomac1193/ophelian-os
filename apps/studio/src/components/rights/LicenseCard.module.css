@@ -7,10 +7,10 @@
 }
 
 .card:hover {
-  border-color: rgba(100, 255, 218, 0.3);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-  transform: translateY(-2px);
+  background: var(--foreground);
+  color: var(--background);
 }
+
 
 .header {
   display: flex;
@@ -181,8 +181,13 @@
 }
 
 .splitFill.voiceActor {
-  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  background: var(--background);
+  border: 1px solid var(--foreground);
+  border: none;
+  border-radius: 0;
+  font-family: var(--font-body);
 }
+
 
 .splitFill.creator {
   background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%);

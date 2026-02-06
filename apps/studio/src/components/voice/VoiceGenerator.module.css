@@ -84,10 +84,15 @@
 }
 
 .providerButton.active {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--background);
+  border: 1px solid var(--foreground);
+  border: none;
+  border-radius: 0;
+  font-family: var(--font-body);
   border-color: #667eea;
   color: #ffffff;
 }
+
 
 .advancedSection {
   background: rgba(0, 0, 0, 0.2);
@@ -178,43 +183,46 @@
   appearance: none;
   width: 18px;
   height: 18px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 50%;
+  background: var(--background);
+  border: 1px solid var(--foreground);
+  border-radius: 0;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .slider::-webkit-slider-thumb:hover {
-  transform: scale(1.2);
+  
 }
 
 .slider::-moz-range-thumb {
   width: 18px;
   height: 18px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 50%;
+  background: var(--background);
+  border: 1px solid var(--foreground);
+  border-radius: 0;
   cursor: pointer;
   border: none;
   transition: all 0.2s ease;
 }
 
 .slider::-moz-range-thumb:hover {
-  transform: scale(1.2);
+  
 }
 
 .generateButton {
+  background: var(--background);
+  border: 1px solid var(--foreground);
+  border: none;
+  border-radius: 0;
+  font-family: var(--font-body);
   width: 100%;
   padding: 16px 32px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border: none;
-  border-radius: 8px;
   color: #ffffff;
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
 }
+
 
 .generateButton:hover:not(:disabled) {
   transform: translateY(-2px);

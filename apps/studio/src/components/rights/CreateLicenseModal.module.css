@@ -272,17 +272,19 @@
 }
 
 .submitButton {
+  background: var(--background);
+  border: 1px solid var(--foreground);
+  border: none;
+  border-radius: 0;
+  font-family: var(--font-body);
   flex: 1;
   padding: 12px 24px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border: none;
-  border-radius: 8px;
   color: #ffffff;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
 }
+
 
 .submitButton:hover:not(:disabled) {
   transform: translateY(-2px);

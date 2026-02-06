@@ -56,26 +56,34 @@
 }
 
 .viewButton.active {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--background);
+  border: 1px solid var(--foreground);
+  border: none;
+  border-radius: 0;
+  font-family: var(--font-body);
   color: #ffffff;
 }
 
+
 .createButton {
-  padding: 10px 20px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--background);
+  border: 1px solid var(--foreground);
   border: none;
-  border-radius: 8px;
+  border-radius: 0;
+  font-family: var(--font-body);
+  padding: 10px 20px;
   color: #ffffff;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
 }
 
+
 .createButton:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  background: var(--foreground);
+  color: var(--background);
 }
+
 
 .universeGrid {
   display: grid;
@@ -113,21 +121,24 @@
 }
 
 .emptyButton {
-  padding: 12px 28px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--background);
+  border: 1px solid var(--foreground);
   border: none;
-  border-radius: 8px;
+  border-radius: 0;
+  font-family: var(--font-body);
+  padding: 12px 28px;
   color: #ffffff;
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
 }
 
+
 .emptyButton:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+  background: var(--foreground);
+  color: var(--background);
 }
+
 
 .loadingContainer {
   display: flex;
