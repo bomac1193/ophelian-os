@@ -101,8 +101,7 @@
 }
 
 .removeButton:hover {
-  background: var(--foreground);
-  color: var(--background);
+  background: var(--muted-foreground);
 }
 
 
@@ -203,7 +202,6 @@
 
 .generateButton {
   background: var(--background);
-  border: 1px solid var(--foreground);
   border: none;
   border-radius: 0;
   font-family: var(--font-body);
@@ -318,8 +316,7 @@
 }
 
 .downloadButton:hover {
-  background: var(--foreground);
-  color: var(--background);
+  background: var(--muted-foreground);
 }
 
 

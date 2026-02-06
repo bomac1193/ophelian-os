@@ -20,8 +20,7 @@
 }
 
 .card:hover {
-  background: var(--foreground);
-  color: var(--background);
+  background: var(--muted-foreground);
 }
 
 
@@ -67,8 +66,7 @@
 }
 
 .deleteButton:hover {
-  background: var(--foreground);
-  color: var(--background);
+  background: var(--muted-foreground);
 }
 
 
@@ -147,8 +145,7 @@
 }
 
 .editButton:hover {
-  background: var(--foreground);
-  color: var(--background);
+  background: var(--muted-foreground);
 }
 
 
@@ -163,7 +160,6 @@
 
 .strengthFill {
   background: var(--background);
-  border: 1px solid var(--foreground);
   border: none;
   border-radius: 0;
   font-family: var(--font-body);
@@ -262,7 +258,6 @@
 
 .saveButton {
   background: var(--background);
-  border: 1px solid var(--foreground);
   border: none;
   border-radius: 0;
   font-family: var(--font-body);
@@ -271,8 +266,7 @@
 
 
 .saveButton:hover {
-  background: var(--foreground);
-  color: var(--background);
+  background: var(--muted-foreground);
 }
 
 

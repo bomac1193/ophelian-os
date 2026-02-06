@@ -89,7 +89,7 @@ export function LicenseManager() {
       <div className={styles.header}>
         <h2 className={styles.title}>Your Licenses</h2>
         <button onClick={handleCreateLicense} className={styles.createButton}>
-          + Create License
+          Create License
         </button>
       </div>
 

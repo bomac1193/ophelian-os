@@ -150,10 +150,10 @@ body {
   font-family: var(--font-body);
   font-size: 14px;
   font-weight: 600;
-  background: var(--background);
-  border: 1px solid var(--foreground);
+  background: var(--foreground);
+  border: none;
   border-radius: 0;
-  color: var(--foreground);
+  color: var(--background);
   cursor: pointer;
   transition: all 0.2s ease;
   text-transform: none;
@@ -161,30 +161,27 @@ body {
 }
 
 .btn:hover:not(:disabled) {
-  background: var(--foreground);
-  color: var(--background);
+  background: var(--muted-foreground);
 }
 
 .btn-primary {
   background: var(--foreground);
-  border: 1px solid var(--foreground);
+  border: none;
   color: var(--background);
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--muted-foreground);
 }
 
 .btn-secondary {
-  background: var(--background);
-  border: 1px solid var(--foreground);
-  color: var(--foreground);
+  background: var(--foreground);
+  border: none;
+  color: var(--background);
 }
 
 .btn-secondary:hover:not(:disabled) {
-  background: var(--foreground);
-  color: var(--background);
+  background: var(--muted-foreground);
 }
 
 .btn-sm {
@@ -1007,14 +1004,13 @@ body {
 
 /* Danger Button */
 .btn-danger {
-  background: var(--background);
-  border: 1px solid var(--error);
-  color: var(--error);
+  background: var(--error);
+  border: none;
+  color: var(--background);
 }
 
 .btn-danger:hover:not(:disabled) {
-  background: var(--error);
-  color: var(--background);
+  opacity: 0.8;
 }
 
 /* Modal Actions */

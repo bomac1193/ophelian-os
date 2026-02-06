@@ -86,7 +86,7 @@ export function MerchManager({ characterId, characterName, visualSignature }: Me
           </p>
         </div>
         <button onClick={() => setIsCreateModalOpen(true)} className={styles.createButton}>
-          + Create Product
+          Create Product
         </button>
       </div>
 

@@ -7,14 +7,12 @@
 }
 
 .card:hover {
-  background: var(--foreground);
-  color: var(--background);
+  background: var(--muted-foreground);
 }
 
 
 .imageContainer {
   background: var(--background);
-  border: 1px solid var(--foreground);
   border: none;
   border-radius: 0;
   font-family: var(--font-body);
@@ -155,7 +153,6 @@
 
 .viewButton {
   background: var(--background);
-  border: 1px solid var(--foreground);
   border: none;
   border-radius: 0;
   font-family: var(--font-body);
@@ -164,8 +161,7 @@
 
 
 .viewButton:hover {
-  background: var(--foreground);
-  color: var(--background);
+  background: var(--muted-foreground);
 }
 
 

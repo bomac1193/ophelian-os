@@ -85,7 +85,6 @@
 
 .providerButton.active {
   background: var(--background);
-  border: 1px solid var(--foreground);
   border: none;
   border-radius: 0;
   font-family: var(--font-body);
@@ -184,7 +183,6 @@
   width: 18px;
   height: 18px;
   background: var(--background);
-  border: 1px solid var(--foreground);
   border-radius: 0;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -198,7 +196,6 @@
   width: 18px;
   height: 18px;
   background: var(--background);
-  border: 1px solid var(--foreground);
   border-radius: 0;
   cursor: pointer;
   border: none;
@@ -211,7 +208,6 @@
 
 .generateButton {
   background: var(--background);
-  border: 1px solid var(--foreground);
   border: none;
   border-radius: 0;
   font-family: var(--font-body);

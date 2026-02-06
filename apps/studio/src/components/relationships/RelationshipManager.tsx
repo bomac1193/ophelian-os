@@ -151,7 +151,7 @@ export function RelationshipManager({ characterId, characterName }: Relationship
             </button>
           </div>
           <button onClick={handleCreateRelationship} className={styles.createButton}>
-            + Add Relationship
+            Add Relationship
           </button>
         </div>
       </div>
