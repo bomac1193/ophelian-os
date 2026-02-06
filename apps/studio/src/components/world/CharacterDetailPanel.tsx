@@ -187,149 +187,55 @@ export function CharacterDetailPanel({ character, onClose, onRefresh }: Characte
         </div>
       )}
 
-      {/* I Ching Hexagram - Brutalist Module */}
+      {/* I Ching Hexagram - Compact Brutalist Module */}
       {hexagram && (
-        <div className="detail-section">
-          <label className="label">I Ching State</label>
-          <div style={{
-            display: 'flex',
-            gap: '1rem',
-            marginTop: '0.5rem',
-            padding: '1rem',
-            background: '#000000',
-            border: '1px solid var(--border)',
-          }}>
-            {/* Present Hexagram */}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
-              <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '3px',
-                alignItems: 'center',
-                padding: '0.75rem',
-                border: '1px solid var(--border)',
-              }}>
+        <div className="detail-section" style={{ padding: '0.75rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            {/* Present Hexagram - Compact */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.25rem' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', padding: '0.375rem', border: '1px solid var(--border)' }}>
                 {[...hexagram.presentHexagram.lines].reverse().map((yang, i) => (
                   <div key={i} style={{
-                    width: '32px',
-                    height: '4px',
+                    width: '20px',
+                    height: '3px',
                     background: yang ? 'var(--foreground)' : 'transparent',
-                    borderLeft: yang ? 'none' : '12px solid var(--foreground)',
-                    borderRight: yang ? 'none' : '12px solid var(--foreground)',
+                    borderLeft: yang ? 'none' : '7px solid var(--foreground)',
+                    borderRight: yang ? 'none' : '7px solid var(--foreground)',
                   }} />
                 ))}
               </div>
-              <div style={{
-                fontFamily: 'var(--font-ui)',
-                fontSize: '0.5rem',
-                fontWeight: 700,
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-                color: 'var(--muted-foreground)',
-              }}>
-                Present
-              </div>
+              <div style={{ fontFamily: 'var(--font-ui)', fontSize: '0.5rem', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase', color: 'var(--muted-foreground)' }}>Now</div>
             </div>
 
-            {/* Transformation Arrow */}
+            {/* Arrow + Transforming */}
             {hexagram.transformingHexagram && (
-              <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '0.25rem',
-              }}>
-                <div style={{ fontSize: '1.25rem', color: 'var(--foreground)' }}>→</div>
-                <div style={{
-                  fontFamily: 'var(--font-ui)',
-                  fontSize: '0.5rem',
-                  fontWeight: 600,
-                  letterSpacing: '0.05em',
-                  textTransform: 'uppercase',
-                  color: 'var(--muted-foreground)',
-                }}>
-                  {hexagram.movingLines.length > 0 ? `${hexagram.movingLines.length} moving` : 'static'}
+              <>
+                <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)' }}>&rarr;</div>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.25rem', opacity: 0.6 }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', padding: '0.375rem', border: '1px solid var(--border)' }}>
+                    {[...hexagram.transformingHexagram.lines].reverse().map((yang, i) => (
+                      <div key={i} style={{
+                        width: '20px',
+                        height: '3px',
+                        background: yang ? 'var(--foreground)' : 'transparent',
+                        borderLeft: yang ? 'none' : '7px solid var(--foreground)',
+                        borderRight: yang ? 'none' : '7px solid var(--foreground)',
+                      }} />
+                    ))}
+                  </div>
+                  <div style={{ fontFamily: 'var(--font-ui)', fontSize: '0.5rem', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase', color: 'var(--muted-foreground)' }}>Next</div>
                 </div>
-              </div>
+              </>
             )}
 
-            {/* Transforming Hexagram */}
-            {hexagram.transformingHexagram && (
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
-                <div style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '3px',
-                  alignItems: 'center',
-                  padding: '0.75rem',
-                  border: '1px solid var(--border)',
-                  opacity: 0.6,
-                }}>
-                  {[...hexagram.transformingHexagram.lines].reverse().map((yang, i) => (
-                    <div key={i} style={{
-                      width: '32px',
-                      height: '4px',
-                      background: yang ? 'var(--foreground)' : 'transparent',
-                      borderLeft: yang ? 'none' : '12px solid var(--foreground)',
-                      borderRight: yang ? 'none' : '12px solid var(--foreground)',
-                    }} />
-                  ))}
-                </div>
-                <div style={{
-                  fontFamily: 'var(--font-ui)',
-                  fontSize: '0.5rem',
-                  fontWeight: 700,
-                  letterSpacing: '0.08em',
-                  textTransform: 'uppercase',
-                  color: 'var(--muted-foreground)',
-                }}>
-                  Becoming
-                </div>
-              </div>
-            )}
-
-            {/* Hexagram Info */}
-            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.375rem' }}>
-              <div style={{
-                fontFamily: 'var(--font-heading)',
-                fontSize: '0.875rem',
-                fontWeight: 600,
-                color: 'var(--foreground)',
-              }}>
-                <span style={{ marginRight: '0.375rem' }}>{hexagram.presentHexagram.chinese}</span>
-                #{hexagram.presentHexagram.number}
-              </div>
-              <div style={{
-                fontFamily: 'var(--font-ui)',
-                fontSize: '0.6875rem',
-                fontWeight: 600,
-                letterSpacing: '0.03em',
-                textTransform: 'uppercase',
-                color: 'var(--foreground)',
-              }}>
-                {hexagram.presentHexagram.name}
-              </div>
-              <div style={{
-                fontFamily: 'var(--font-body)',
-                fontSize: '0.6875rem',
-                color: 'var(--muted-foreground)',
-                lineHeight: 1.4,
-              }}>
-                {hexagram.presentHexagram.image}
+            {/* Info - Compact */}
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ fontFamily: 'var(--font-heading)', fontSize: '0.75rem', fontWeight: 600, color: 'var(--foreground)' }}>
+                {hexagram.presentHexagram.chinese} #{hexagram.presentHexagram.number} {hexagram.presentHexagram.name}
               </div>
               {hexagram.transformingHexagram && (
-                <div style={{
-                  marginTop: '0.25rem',
-                  paddingTop: '0.375rem',
-                  borderTop: '1px solid var(--border)',
-                  fontFamily: 'var(--font-ui)',
-                  fontSize: '0.5625rem',
-                  fontWeight: 500,
-                  letterSpacing: '0.05em',
-                  color: 'var(--muted-foreground)',
-                }}>
-                  → {hexagram.transformingHexagram.chinese} {hexagram.transformingHexagram.name}
+                <div style={{ fontFamily: 'var(--font-ui)', fontSize: '0.5rem', color: 'var(--muted-foreground)', marginTop: '0.25rem' }}>
+                  &rarr; {hexagram.transformingHexagram.chinese} {hexagram.transformingHexagram.name}
                 </div>
               )}
             </div>
