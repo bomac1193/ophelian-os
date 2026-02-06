@@ -66,9 +66,9 @@ export const GenomeDisplay = React.memo(function GenomeDisplay({ genome, orisha,
 
   return (
     <div className="genome-display" style={{
-      backgroundColor: '#0a0a0a',
-      border: '1px solid rgba(255, 255, 255, 0.1)',
-      borderRadius: '8px',
+      backgroundColor: '#000000',
+      border: '1px solid var(--foreground)',
+      borderRadius: '0',
       padding: '2rem',
     }}>
       {/* Header */}
@@ -113,9 +113,9 @@ export const GenomeDisplay = React.memo(function GenomeDisplay({ genome, orisha,
 
       {/* State Profile */}
       <div style={{
-        backgroundColor: 'rgba(255, 255, 255, 0.02)',
-        border: '1px solid rgba(255, 255, 255, 0.05)',
-        borderRadius: '4px',
+        backgroundColor: '#000000',
+        border: '1px solid var(--foreground)',
+        borderRadius: '0',
         padding: '1.5rem',
         marginBottom: '2rem',
       }}>
