@@ -67,13 +67,14 @@ export function RepositionableCircleAvatar({
     }
   }, []);
 
-  // Handle mouse wheel for zoom
+  // Handle mouse wheel for zoom (hold Shift for fine control)
   const handleWheel = useCallback(
     (e: React.WheelEvent) => {
       if (disabled) return;
       e.preventDefault();
 
-      const zoomSpeed = 0.1;
+      // Fine control with Shift key (0.02), normal is 0.1
+      const zoomSpeed = e.shiftKey ? 0.02 : 0.1;
       const delta = e.deltaY > 0 ? -zoomSpeed : zoomSpeed;
       const newZoom = Math.max(0.5, Math.min(3, currentZoomRef.current + delta));
 
@@ -282,7 +283,7 @@ export function RepositionableCircleAvatar({
                   textOrientation: 'mixed',
                 }}
               >
-                Drag · Scroll to zoom
+                Drag · Scroll · ⇧ Fine
               </div>
             )}
             {hasChanges && (
