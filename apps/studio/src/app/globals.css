@@ -361,22 +361,20 @@ body {
   gap: 0;
   padding: 0 1.5rem;
   height: 52px;
-  background: linear-gradient(180deg, #0a0a0a 0%, #111111 100%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+  background: #000000;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   position: relative;
   z-index: 100;
 }
 
 .nav-brand {
-  font-family: 'Futura', 'Futura PT', 'Century Gothic', sans-serif;
+  font-family: var(--font-ui);
   font-size: 0.7rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: #ffffff;
   margin-right: 2.5rem;
-  opacity: 0.9;
 }
 
 .nav-links {
@@ -392,9 +390,9 @@ body {
   align-items: center;
   height: 100%;
   padding: 0 1.25rem;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.6);
   text-decoration: none;
-  font-family: 'Futura', 'Futura PT', 'Century Gothic', sans-serif;
+  font-family: var(--font-ui);
   font-weight: 500;
   font-size: 0.75rem;
   letter-spacing: 0.08em;
