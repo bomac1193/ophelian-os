@@ -5,7 +5,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { CreateRelationshipSchema } from '@lcos/shared';
-import type { Relationship, CreateRelationshipInput } from '@lcos/shared';
+import type { Relationship as _Relationship, CreateRelationshipInput } from '@lcos/shared';
 import { relationships } from '../../../../lib/relationship-storage';
 
 export async function GET(

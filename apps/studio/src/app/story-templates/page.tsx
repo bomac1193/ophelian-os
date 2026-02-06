@@ -80,7 +80,7 @@ export default function StoryTemplatesPage() {
           <div style={{ display: 'flex', gap: '0.25rem' }}>
             {(['all', 'hot', 'cool', 'crossroads'] as FilterType[]).map((filter) => {
               const isActive = temperatureFilter === filter;
-              const colors =
+              const _colors =
                 filter === 'all'
                   ? { bg: 'var(--primary)', text: 'white' }
                   : temperatureColors[filter as 'hot' | 'cool' | 'crossroads'];

@@ -10,7 +10,7 @@ const CHROMOX_URL = process.env.CHROMOX_URL || 'http://localhost:4414';
 
 // Map Boveda character to Chromox persona ID
 // TODO: Create a proper mapping system in the database
-function getPersonaIdForCharacter(characterId: string): string {
+function getPersonaIdForCharacter(_characterId: string): string {
   // For now, use a default persona or allow configuration
   return process.env.DEFAULT_CHROMOX_PERSONA_ID || 'default-persona';
 }

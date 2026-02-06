@@ -13,7 +13,7 @@ import {
   type ImprintSystemPrompt,
 } from '../../../lib/imprint-api';
 import { TreeOfLifeVisualization, MultiModalPreview } from '../../../components/imprint';
-import { GenomeDisplay, GenomePuzzleUnlock } from '../../../components/genome';
+import { GenomeDisplay, GenomePuzzleUnlock, ArchetypeDynamics } from '../../../components/genome';
 import { ContentGenerator, ContentSuggester } from '../../../components/content';
 import { CharacterTimeline } from '../../../components/timeline';
 import { VoiceGenerator } from '../../../components/voice/VoiceGenerator';
@@ -626,6 +626,16 @@ export default function ImprintDetailPage() {
               </div>
             )}
           </div>
+
+          {/* Archetype Dynamics - Growth/Stress Arrows + Shadow */}
+          {(() => {
+            const surface = getSurfaceView(genome as any);
+            return (
+              <div style={{ gridColumn: '1 / -1' }}>
+                <ArchetypeDynamics aestheticClass={surface.classification} />
+              </div>
+            );
+          })()}
             </div>
           )}
         </>

@@ -18,6 +18,8 @@ import {
 import { ImageUpload } from '@/components/ImageUpload';
 import { DraggableAvatar } from '@/components/DraggableAvatar';
 import { RepositionableCircleAvatar } from '@/components/RepositionableCircleAvatar';
+import { ArchetypeDynamics } from '@/components/genome';
+import { SUBTASTE_DESIGNATIONS, getSymbolicImprint, type OrishaName } from '@lcos/oripheon';
 
 export default function CharacterDetailPage() {
   const params = useParams();
@@ -28,6 +30,7 @@ export default function CharacterDetailPage() {
   const [contentItems, setContentItems] = useState<ContentItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [proMode, setProMode] = useState(false);
 
   // Generate form state
   const [platform, setPlatform] = useState<'X' | 'TIKTOK' | 'INSTAGRAM'>('X');
@@ -1055,6 +1058,71 @@ export default function CharacterDetailPage() {
                   <p style={{ fontSize: '0.875rem' }}>{character.currentArc}</p>
                 </div>
               )}
+
+              {/* Pro Mode Toggle */}
+              {(() => {
+                // Try to get archetype data from timelineState
+                const ts = character.timelineState as Record<string, any>;
+                const gen = ts?.oripheon?.generated;
+                const arcana = gen?.arcana;
+                const subtaste = gen?.subtaste;
+
+                // Get aesthetic class from subtaste or derive from orisha
+                let aestheticClass: string | null = null;
+
+                if (subtaste?.code) {
+                  aestheticClass = subtaste.code;
+                } else if (arcana?.archetype) {
+                  // Try to look up from archetype
+                  const orishaName = arcana.archetype as OrishaName;
+                  try {
+                    const imprint = getSymbolicImprint(orishaName);
+                    aestheticClass = imprint?.aestheticClass || null;
+                  } catch {
+                    // Not a valid orisha name
+                  }
+                }
+
+                if (!aestheticClass && !SUBTASTE_DESIGNATIONS[aestheticClass || '']) {
+                  return null;
+                }
+
+                return (
+                  <div className="mt-4" style={{ paddingTop: '1rem', borderTop: '1px solid var(--border)' }}>
+                    {/* Pro Mode Toggle Button */}
+                    <button
+                      onClick={() => setProMode(!proMode)}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        width: '100%',
+                        padding: '0.5rem 0.75rem',
+                        backgroundColor: proMode ? 'var(--foreground)' : '#000000',
+                        color: proMode ? 'var(--background)' : 'var(--foreground)',
+                        border: '1px solid var(--foreground)',
+                        borderRadius: '0',
+                        cursor: 'pointer',
+                        fontSize: '0.75rem',
+                        fontWeight: 600,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.08em',
+                        transition: 'all 0.2s ease',
+                      }}
+                    >
+                      <span>Pro Mode</span>
+                      <span>{proMode ? 'ON' : 'OFF'}</span>
+                    </button>
+
+                    {/* Pro Mode Content - Archetype Dynamics */}
+                    {proMode && aestheticClass && (
+                      <div style={{ marginTop: '1rem' }}>
+                        <ArchetypeDynamics aestheticClass={aestheticClass} />
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
             </div>
           </div>
         </div>

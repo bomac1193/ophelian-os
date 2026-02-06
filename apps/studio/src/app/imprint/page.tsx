@@ -7,7 +7,7 @@ import { getCharacters, syncAllOripheonData, syncOripheonData, type Character } 
 import { ImprintSummaryCard } from '../../components/imprint';
 import { AdvancedViewProgress } from '../../components/genome';
 import { refreshUserProgress, type UserProgress } from '../../lib/user-progress';
-import { getSurfaceView } from '@lcos/oripheon';
+import { getSurfaceView, SUBTASTE_ARROWS, SUBTASTE_DESIGNATIONS } from '@lcos/oripheon';
 
 type FilterKey = 'orisha' | 'sephira' | 'trajectory' | 'tag';
 
@@ -516,6 +516,50 @@ export default function ImprintLibraryPage() {
                     {gen.hexagram?.presentHexagram ? ` \u00b7 ${gen.hexagram.presentHexagram.chinese} #${gen.hexagram.presentHexagram.number}` : ''}
                   </div>
                 )}
+
+                {/* Growth/Stress Arrows */}
+                {gen?.subtaste?.code && SUBTASTE_ARROWS[gen.subtaste.code] && (() => {
+                  const arrows = SUBTASTE_ARROWS[gen.subtaste.code];
+                  const growthSubtaste = SUBTASTE_DESIGNATIONS[arrows.growth];
+                  const stressSubtaste = SUBTASTE_DESIGNATIONS[arrows.stress];
+                  return (
+                    <div style={{
+                      display: 'flex',
+                      gap: '0.5rem',
+                      marginTop: '0.5rem',
+                      fontSize: '0.65rem',
+                    }}>
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '3px',
+                          padding: '2px 6px',
+                          backgroundColor: '#000000',
+                          border: '1px solid var(--border)',
+                        }}
+                        title={`Growth → ${growthSubtaste?.label || arrows.growth}`}
+                      >
+                        <span style={{ color: '#22c55e' }}>↗</span>
+                        <span style={{ fontWeight: 600, color: 'var(--foreground)' }}>{growthSubtaste?.glyph || arrows.growth}</span>
+                      </div>
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '3px',
+                          padding: '2px 6px',
+                          backgroundColor: '#000000',
+                          border: '1px solid var(--border)',
+                        }}
+                        title={`Stress → ${stressSubtaste?.label || arrows.stress}`}
+                      >
+                        <span style={{ color: '#ef4444' }}>↘</span>
+                        <span style={{ fontWeight: 600, color: 'var(--foreground)' }}>{stressSubtaste?.glyph || arrows.stress}</span>
+                      </div>
+                    </div>
+                  );
+                })()}
               </div>
               {!isComplete && (
                 <button

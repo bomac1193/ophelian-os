@@ -244,6 +244,49 @@
   border-color: var(--foreground);
 }
 
+/* Dynamics Row - Growth/Stress Arrows */
+.dynamicsRow {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-lg);
+  padding-top: var(--space-md);
+  margin-top: var(--space-sm);
+  border-top: 1px solid var(--border);
+}
+
+.dynamicsArrow {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  background: #000000;
+  border: 1px solid var(--border);
+  font-family: var(--font-ui);
+  font-size: 11px;
+  cursor: help;
+  transition: border-color 0.2s ease;
+}
+
+.dynamicsArrow:hover {
+  border-color: var(--foreground);
+}
+
+.arrowUp {
+  color: #22c55e;
+  font-size: 14px;
+}
+
+.arrowDown {
+  color: #ef4444;
+  font-size: 14px;
+}
+
+.arrowTarget {
+  font-weight: 700;
+  color: var(--foreground);
+  letter-spacing: 0.03em;
+}
+
 /* No Results */
 .noResults {
   text-align: center;

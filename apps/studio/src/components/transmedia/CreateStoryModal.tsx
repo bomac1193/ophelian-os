@@ -36,7 +36,7 @@ const PLATFORMS = [
 
 export function CreateStoryModal({
   characterId,
-  characterName,
+  characterName: _characterName,
   onClose,
   onSuccess,
 }: CreateStoryModalProps) {

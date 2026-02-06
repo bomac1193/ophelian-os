@@ -4,7 +4,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import type { TransmediaStory } from '@lcos/shared';
+import type { TransmediaStory as _TransmediaStory } from '@lcos/shared';
 import { transmediaStories } from '../../../../lib/transmedia-storage';
 
 export async function GET(

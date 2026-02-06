@@ -11,6 +11,7 @@ import React, { useState, lazy, Suspense, useMemo } from 'react';
 import type { OrishaName } from '@lcos/oripheon';
 import { SymbolicImprint, MarkerList } from './SymbolicImprint';
 import { EnhancedGatewayTooltip } from './EnhancedGatewayTooltip';
+import { ArchetypeDynamics } from './ArchetypeDynamics';
 
 // Lazy load AdvancedView - only loads when user clicks "Show Full Archetype Data"
 const AdvancedView = lazy(() => import('./AdvancedView').then(module => ({ default: module.AdvancedView })));
@@ -196,6 +197,11 @@ export const GenomeDisplay = React.memo(function GenomeDisplay({ genome, orisha,
       {/* Layer 3: Advanced View Toggle */}
       {hasAdvancedAccess && depths && (
         <div style={{ marginTop: '2rem', paddingTop: '2rem', borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}>
+          {/* Archetype Dynamics - Growth/Stress Arrows + Shadow */}
+          <div style={{ marginBottom: '1.5rem' }}>
+            <ArchetypeDynamics aestheticClass={surface.classification} />
+          </div>
+
           <button
             onClick={() => setShowAdvanced(true)}
             style={{

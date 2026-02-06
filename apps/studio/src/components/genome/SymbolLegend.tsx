@@ -8,7 +8,7 @@
 
 import React, { useState } from 'react';
 import type { OrishaName } from '@lcos/oripheon';
-import { getSymbolicImprint, ORISHA_DATA, SUBTASTE_DESIGNATIONS } from '@lcos/oripheon';
+import { getSymbolicImprint, ORISHA_DATA, SUBTASTE_DESIGNATIONS, SUBTASTE_ARROWS } from '@lcos/oripheon';
 import { EnhancedGatewayTooltip } from './EnhancedGatewayTooltip';
 import { SymbolicImprint } from './SymbolicImprint';
 import styles from './SymbolLegend.module.css';
@@ -85,6 +85,26 @@ function SymbolCard({ orisha }: SymbolCardProps) {
               />
             ))}
           </div>
+
+          {/* Growth/Stress Arrows */}
+          {(() => {
+            const arrows = SUBTASTE_ARROWS[imprint.aestheticClass];
+            if (!arrows) return null;
+            const growthSubtaste = SUBTASTE_DESIGNATIONS[arrows.growth];
+            const stressSubtaste = SUBTASTE_DESIGNATIONS[arrows.stress];
+            return (
+              <div className={styles.dynamicsRow}>
+                <div className={styles.dynamicsArrow} title={`Growth → ${growthSubtaste?.label || arrows.growth}`}>
+                  <span className={styles.arrowUp}>↗</span>
+                  <span className={styles.arrowTarget}>{growthSubtaste?.glyph || arrows.growth}</span>
+                </div>
+                <div className={styles.dynamicsArrow} title={`Stress → ${stressSubtaste?.label || arrows.stress}`}>
+                  <span className={styles.arrowDown}>↘</span>
+                  <span className={styles.arrowTarget}>{stressSubtaste?.glyph || arrows.stress}</span>
+                </div>
+              </div>
+            );
+          })()}
         </div>
       </EnhancedGatewayTooltip>
     </div>
