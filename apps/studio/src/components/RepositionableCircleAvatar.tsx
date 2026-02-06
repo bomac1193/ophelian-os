@@ -107,15 +107,16 @@ export function RepositionableCircleAvatar({
       e.stopPropagation();
 
       const rect = containerRef.current.getBoundingClientRect();
-      const sensitivity = 2;
+      const sensitivityX = 1; // Slower horizontal movement
+      const sensitivityY = 2; // Normal vertical movement
 
       // Calculate how much the mouse moved
       const mouseDeltaX = e.clientX - dragStartMouseX.current;
       const mouseDeltaY = e.clientY - dragStartMouseY.current;
 
-      // Convert to percentage of container and apply sensitivity
-      const percentDeltaX = (mouseDeltaX / rect.width) * 100 * sensitivity;
-      const percentDeltaY = (mouseDeltaY / rect.height) * 100 * sensitivity;
+      // Convert to percentage of container and apply sensitivity (different for X and Y)
+      const percentDeltaX = (mouseDeltaX / rect.width) * 100 * sensitivityX;
+      const percentDeltaY = (mouseDeltaY / rect.height) * 100 * sensitivityY;
 
       // Invert and add to starting position (moving mouse right moves image left, showing right side)
       const newX = Math.max(0, Math.min(100, dragStartPosX.current - percentDeltaX));
