@@ -1,17 +1,19 @@
 # Brand Typography
 
-## Current Setup
+## Default Pairing
 
 | Role | Font |
 |------|------|
-| Display/Headers/UI | **Söhne** |
-| Body | **Spectral** |
+| Display/Headers | **Söhne** |
+| Body/UI | **Inter** |
+
+Clean, systematic, prioritizes structure over warmth. Ruler-dominant.
 
 ---
 
 ## Typography Options
 
-### Option A: Trust and Neutrality
+### Option A: Trust and Neutrality (DEFAULT)
 
 | Role | Font | Character |
 |------|------|-----------|
