@@ -78,7 +78,7 @@ export function CharacterDetailPanel({ character, onClose, onRefresh }: Characte
         <div className="character-info-name">{character.name}</div>
         {character.aliases.length > 0 && (
           <div style={{ fontFamily: 'var(--font-ui)', fontSize: '0.625rem', color: 'var(--muted-foreground)', letterSpacing: '0.03em', marginTop: '0.375rem' }}>
-            <span style={{ textTransform: 'uppercase', fontWeight: 600, marginRight: '0.5rem' }}>Alias</span>
+            <span style={{ textTransform: 'uppercase', fontWeight: 600, marginRight: '0.5rem' }}>Aliases</span>
             {character.aliases.join(' · ')}
           </div>
         )}
