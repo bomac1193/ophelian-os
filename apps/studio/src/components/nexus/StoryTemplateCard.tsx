@@ -51,7 +51,7 @@ export function StoryTemplateCard({
             template.temperature === 'cool' ? styles.tempBadgeCool :
             styles.tempBadgeCrossroads
           }`}>
-            {template.temperature}
+            {template.temperature === 'crossroads' ? '✕' : template.temperature}
           </span>
           {/* Energy symbol */}
           <span className={styles.energyIcon} title={template.primaryEnergy}>
