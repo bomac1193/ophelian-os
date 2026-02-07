@@ -101,10 +101,13 @@ export function CharacterDetailPanel({ character, onClose, onRefresh }: Characte
             <span className="subtaste-ref-toggle">{showSubtaste ? '\u2212' : '+'}</span>
           </div>
 
-          {/* Designation tag */}
-          <div style={{ marginTop: '0.5rem', marginBottom: '1rem' }}>
+          {/* Designation tags */}
+          <div style={{ marginTop: '0.5rem', marginBottom: '1rem', display: 'flex', gap: '0.375rem' }}>
             <span style={{ fontFamily: 'var(--font-ui)', fontSize: '0.625rem', fontWeight: 600, padding: '0.25rem 0.5rem', border: '1px solid var(--border)', background: '#000' }}>
-              {subtasteInfo.subtaste} {subtasteInfo.label?.toUpperCase()}
+              {subtasteInfo.subtaste}
+            </span>
+            <span style={{ fontFamily: 'var(--font-ui)', fontSize: '0.625rem', fontWeight: 600, padding: '0.25rem 0.5rem', border: '1px solid var(--border)', background: '#000' }}>
+              {subtasteInfo.label?.toUpperCase()}
             </span>
           </div>
 
