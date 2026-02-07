@@ -51,60 +51,60 @@ This means:
 
 Constructed technonyms: post-colonial, non-mythic, functional — designed to feel ancestral without referencing specific religious or linguistic sources.
 
-## THE TWELVE — FINAL LOCKED (CANON)
+## THE TWELVE — FINAL STRESS-TESTED (CANON)
 
-| Symbol | Glyph | Code | True Name | Pronunciation | Function |
-|--------|-------|------|-----------|---------------|----------|
-| λ | ANVIL | F-9 | **K̄ALØN** | KAH-luhn | Ignition |
-| Ψ | SCHISM | R-10 | **TΞχRA** | ZAI-khra | Division |
-| Θ | KETH | S-0 | **KĔṮU** | KEH-too | Witness |
-| Δ | OMEN | V-2 | **ØMÆRA** | uh-MAE-rah | Translation |
-| ∞ | STRATA | T-1 | **LŌRχE** | LOHR-kheh | Recursion |
-| Ξ | CULL | C-4 | **ΞDŌN** | ZAI-dohn | Interruption |
-| Φ | SILT | L-3 | **Dū·ṂȺ** | DOO-mah | Transport |
-| Ω | TOLL | H-6 | **ȺBŌLT** | uh-BOH-lt | Amplification |
-| Σ | LIMN | N-5 | **LIMŊ** | LIM-ng | Binding |
-| Π | VAULT | P-7 | **ȺRVŌ** | AR-voh | Dampening |
-| Γ | WICK | D-8 | **RŌχ** | Rox | Shadow |
-| α | VOID | NULL | **SÆ** | saeh | Anchor |
+| Symbol | Glyph Spec | Code | Name | Pronunciation | Function |
+|--------|------------|------|------|---------------|----------|
+| λ | Two vertical lines converging into one; short horizontal bar at convergence point | F-9 | **K̄ALØN** | KAH-luhn | Ignition |
+| Ψ | Vertical line cleanly split by a diagonal break; ends do not reconnect | R-10 | **TΞχRA** | ZAI-khra | Division |
+| Θ | Two parallel vertical lines; single dot slightly offset forward between them | S-0 | **KĔṮU** | KEH-too | Witness |
+| Δ | Curved line enters a circle; exits as a straight line | V-2 | **ØMÆRA** | uh-MAE-rah | Translation |
+| ∞ | Two horizontal loops; lower loop thinner and partially broken | T-1 | **LŌRχE** | LOHR-kheh | Recursion |
+| Ξ | Three parallel horizontal lines; middle line truncated shorter | C-4 | **ΞDŌN** | ZAI-dohn | Interruption |
+| Φ | Lower half filled field; upper half empty; uneven dividing line | L-3 | **Dū·ṂȺ** | DOO-mah | Transport |
+| Ω | Closed enclosure; weighted dot placed just outside one corner | H-6 | **ȺBŌLT** | uh-BOH-lt | Amplification |
+| Σ | Angular outline with one deliberate open edge | N-5 | **LIMŊ** | LIM-ng | Binding |
+| Π | Square enclosure; inner diagonal stopping short of center | P-7 | **ȺRVŌ** | AR-voh | Dampening |
+| Γ | Single horizontal line with a dot at one end only | D-8 | **RŌχ** | Rox | Shadow |
+| α | Single dot, no enclosure, no line | NULL | **SÆ** | saeh | Anchor |
 
 ### Quick Reference
 
-| Code | Symbol | True Name | Glyph |
-|------|--------|-----------|-------|
-| F-9 | λ | K̄ALØN | ANVIL |
-| R-10 | Ψ | TΞχRA | SCHISM |
-| S-0 | Θ | KĔṮU | KETH |
-| V-2 | Δ | ØMÆRA | OMEN |
-| T-1 | ∞ | LŌRχE | STRATA |
-| C-4 | Ξ | ΞDŌN | CULL |
-| L-3 | Φ | Dū·ṂȺ | SILT |
-| H-6 | Ω | ȺBŌLT | TOLL |
-| N-5 | Σ | LIMŊ | LIMN |
-| P-7 | Π | ȺRVŌ | VAULT |
-| D-8 | Γ | RŌχ | WICK |
-| NULL | α | SÆ | VOID |
+| Code | Symbol | Name | Say It |
+|------|--------|------|--------|
+| F-9 | λ | K̄ALØN | KAH-luhn |
+| R-10 | Ψ | TΞχRA | ZAI-khra |
+| S-0 | Θ | KĔṮU | KEH-too |
+| V-2 | Δ | ØMÆRA | uh-MAE-rah |
+| T-1 | ∞ | LŌRχE | LOHR-kheh |
+| C-4 | Ξ | ΞDŌN | ZAI-dohn |
+| L-3 | Φ | Dū·ṂȺ | DOO-mah |
+| H-6 | Ω | ȺBŌLT | uh-BOH-lt |
+| N-5 | Σ | LIMŊ | LIM-ng |
+| P-7 | Π | ȺRVŌ | AR-voh |
+| D-8 | Γ | RŌχ | Rox |
+| NULL | α | SÆ | saeh |
 
 ### Deep Layers (Reference Only)
 
 The following are **not** the basis for mapping. They exist underneath — inherited from the original system architecture. Consult if useful. Ignore if not.
 
-| True Name | Orisha (Layer 3) | Glyph | Code |
-|-----------|------------------|-------|------|
-| K̄ALØN | Ògún | ANVIL | F-9 |
-| TΞχRA | Ọya | SCHISM | R-10 |
-| KĔṮU | Obàtálá | KETH | S-0 |
-| ØMÆRA | Èṣù | OMEN | V-2 |
-| LŌRχE | Ọ̀rúnmìlà | STRATA | T-1 |
-| ΞDŌN | Ọ̀ṣọ́ọ̀sì | CULL | C-4 |
-| Dū·ṂȺ | Yemọja | SILT | L-3 |
-| ȺBŌLT | Ṣàngó | TOLL | H-6 |
-| LIMŊ | Ọ̀ṣun | LIMN | N-5 |
-| ȺRVŌ | Ọ̀sanyìn | VAULT | P-7 |
-| RŌχ | Olókun | WICK | D-8 |
-| SÆ | Babalú-Ayé | VOID | NULL |
+| Name | Orisha (Layer 3) | Symbol | Code |
+|------|------------------|--------|------|
+| K̄ALØN | Ògún | λ | F-9 |
+| TΞχRA | Ọya | Ψ | R-10 |
+| KĔṮU | Obàtálá | Θ | S-0 |
+| ØMÆRA | Èṣù | Δ | V-2 |
+| LŌRχE | Ọ̀rúnmìlà | ∞ | T-1 |
+| ΞDŌN | Ọ̀ṣọ́ọ̀sì | Ξ | C-4 |
+| Dū·ṂȺ | Yemọja | Φ | L-3 |
+| ȺBŌLT | Ṣàngó | Ω | H-6 |
+| LIMŊ | Ọ̀ṣun | Σ | N-5 |
+| ȺRVŌ | Ọ̀sanyìn | Π | P-7 |
+| RŌχ | Olókun | Γ | D-8 |
+| SÆ | Babalú-Ayé | α | NULL |
 
-*The Orisha layer exists. It informed the original design. But the True Names now stand on their own.*
+*The Orisha layer exists. It informed the original design. But the Names now stand on their own.*
 
 ### Diacritic Grammar
 
@@ -257,7 +257,7 @@ The result should feel:
 
 ### Genesis Phase (Fire/Creation)
 
-#### λ F-9 ANVIL — K̄ALØN (KAH-luhn) — Ògún
+#### λ F-9 K̄ALØN (KAH-luhn) — Ògún
 **Function:** Ignition
 **Domain:** Forge, structure, iron, creation through will
 
@@ -279,7 +279,7 @@ The result should feel:
 
 ---
 
-#### Ψ R-10 SCHISM — TΞχRA (ZAI-khra) — Ọya
+#### Ψ R-10 TΞχRA (ZAI-khra) — Ọya
 **Function:** Division
 **Domain:** Storm, transformation, death, clearing
 
@@ -304,7 +304,7 @@ The result should feel:
 
 ### Vision Phase (Wood/Scouting)
 
-#### Θ S-0 KETH — KĔṮU (KEH-too) — Obàtálá
+#### Θ S-0 KĔṮU (KEH-too) — Obàtálá
 **Function:** Witness
 **Domain:** Purity, creation from void, wholeness, standard
 
@@ -326,7 +326,7 @@ The result should feel:
 
 ---
 
-#### Δ V-2 OMEN — ØMÆRA (uh-MAE-rah) — Èṣù
+#### Δ V-2 ØMÆRA (uh-MAE-rah) — Èṣù
 **Function:** Translation
 **Domain:** Crossroads, chaos, change, trickster, messenger
 
@@ -351,7 +351,7 @@ The result should feel:
 
 ### Refinement Phase (Metal/Editing)
 
-#### ∞ T-1 STRATA — LŌRχE (LOHR-kheh) — Ọ̀rúnmìlà
+#### ∞ T-1 LŌRχE (LOHR-kheh) — Ọ̀rúnmìlà
 **Function:** Recursion
 **Domain:** Fate, divination, wisdom, seeing layers
 
@@ -375,7 +375,7 @@ The result should feel:
 
 ---
 
-#### Ξ C-4 CULL — ΞDŌN (ZAI-dohn) — Ọ̀ṣọ́ọ̀sì
+#### Ξ C-4 ΞDŌN (ZAI-dohn) — Ọ̀ṣọ́ọ̀sì
 **Function:** Interruption
 **Domain:** Precision, hunting, focus, essential editing
 
@@ -400,7 +400,7 @@ The result should feel:
 
 ### Manifestation Phase (Earth/Driving)
 
-#### Φ L-3 SILT — Dū·ṂȺ (DOO-mah) — Yemọja
+#### Φ L-3 Dū·ṂȺ (DOO-mah) — Yemọja
 **Function:** Transport
 **Domain:** Nurture, ocean depths, mother, gestation
 
@@ -423,7 +423,7 @@ The result should feel:
 
 ---
 
-#### Ω H-6 TOLL — ȺBŌLT (uh-BOH-lt) — Ṣàngó
+#### Ω H-6 ȺBŌLT (uh-BOH-lt) — Ṣàngó
 **Function:** Amplification
 **Domain:** Justice, thunder, authority, advocacy
 
@@ -448,7 +448,7 @@ The result should feel:
 
 ### Flow Phase (Water/Channeling)
 
-#### Σ N-5 LIMN — LIMŊ (LIM-ng) — Ọ̀ṣun
+#### Σ N-5 LIMŊ (LIM-ng) — Ọ̀ṣun
 **Function:** Binding
 **Domain:** Beauty, attraction, river, fluidity, borders
 
@@ -471,7 +471,7 @@ The result should feel:
 
 ---
 
-#### Π P-7 VAULT — ȺRVŌ (AR-voh) — Ọ̀sanyìn
+#### Π P-7 ȺRVŌ (AR-voh) — Ọ̀sanyìn
 **Function:** Dampening
 **Domain:** Medicine, cycles, herbs, restoration, archive
 
@@ -494,7 +494,7 @@ The result should feel:
 
 ---
 
-#### Γ D-8 WICK — RŌχ (Rox) — Olókun
+#### Γ D-8 RŌχ (Rox) — Olókun
 **Function:** Shadow
 **Domain:** Deep ocean, secrets, unconscious, channel
 
@@ -518,7 +518,7 @@ The result should feel:
 
 ---
 
-#### α NULL VOID — SÆ (saeh) — Babalú-Ayé
+#### α NULL SÆ (saeh) — Babalú-Ayé
 **Function:** Anchor
 **Domain:** Wounds, healing, transformation through suffering
 
@@ -580,18 +580,18 @@ The result should feel:
 ### File Structure
 ```
 /public/glyphs/
-  anvil.svg
-  schism.svg
-  keth.svg
-  omen.svg
-  strata.svg
-  cull.svg
-  silt.svg
-  toll.svg
-  limn.svg
-  vault.svg
-  wick.svg
-  void.svg
+  kalon.svg      # K̄ALØN (F-9)
+  tekra.svg      # TΞχRA (R-10)
+  ketu.svg       # KĔṮU (S-0)
+  omaera.svg     # ØMÆRA (V-2)
+  lorke.svg      # LŌRχE (T-1)
+  zaedon.svg     # ΞDŌN (C-4)
+  duma.svg       # Dū·ṂȺ (L-3)
+  abolt.svg      # ȺBŌLT (H-6)
+  limng.svg      # LIMŊ (N-5)
+  arvo.svg       # ȺRVŌ (P-7)
+  rox.svg        # RŌχ (D-8)
+  sae.svg        # SÆ (NULL)
 ```
 
 ### Component Updates Needed
@@ -611,7 +611,10 @@ The result should feel:
 
 | Date | Glyph | Notes |
 |------|-------|-------|
-| | | |
+| 2026-02-07 | ALL | Replaced old glyph names (ANVIL, SCHISM, KETH, OMEN, STRATA, CULL, SILT, TOLL, LIMN, VAULT, WICK, VOID) with True Names (K̄ALØN, TΞχRA, KĔṮU, ØMÆRA, LŌRχE, ΞDŌN, Dū·ṂȺ, ȺBŌLT, LIMŊ, ȺRVŌ, RŌχ, SÆ) throughout document |
+| 2026-02-07 | ALL | Updated file structure to use ASCII-safe filenames derived from True Names |
+| 2026-02-07 | ALL | Finalized stress-tested canon table with glyph specs, pronunciations, and functions |
+| 2026-02-07 | ALL | Adopted Operative Mapping philosophy — meaning emerges through use, not doctrine |
 
 ---
 
