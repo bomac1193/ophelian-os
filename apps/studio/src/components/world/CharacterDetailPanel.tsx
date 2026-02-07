@@ -76,20 +76,12 @@ export function CharacterDetailPanel({ character, onClose, onRefresh }: Characte
           )}
         </div>
         <div className="character-info-name">{character.name}</div>
-      </div>
-
-      {character.aliases.length > 0 && (
-        <div className="detail-section">
-          <label className="label">Aliases</label>
-          <div className="tag-list">
-            {character.aliases.map((alias, i) => (
-              <span key={i} className="tag">
-                {alias}
-              </span>
-            ))}
+        {character.aliases.length > 0 && (
+          <div style={{ fontFamily: 'var(--font-ui)', fontSize: '0.625rem', color: 'var(--muted-foreground)', letterSpacing: '0.03em' }}>
+            {character.aliases.join(' · ')}
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
       {/* Bóveda Profile */}
       {subtasteInfo && (
