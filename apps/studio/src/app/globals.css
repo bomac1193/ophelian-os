@@ -2034,9 +2034,9 @@ body {
 
 .subtaste-ref-row {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.5rem 0.75rem;
+  gap: 1rem;
+  align-items: baseline;
+  padding: 0.375rem 0;
   border-bottom: 1px solid var(--border);
 }
 
@@ -2045,20 +2045,22 @@ body {
 }
 
 .subtaste-ref-key {
-  font-size: 0.5625rem;
+  font-size: 0.5rem;
   font-weight: 700;
   color: var(--muted-foreground);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   white-space: nowrap;
   flex-shrink: 0;
+  min-width: 5.5rem;
 }
 
 .subtaste-ref-val {
-  font-size: 0.75rem;
+  font-size: 0.625rem;
   font-weight: 500;
   color: var(--foreground);
-  text-align: right;
+  flex: 1;
+  line-height: 1.4;
 }
 
 .subtaste-ref-dim {
