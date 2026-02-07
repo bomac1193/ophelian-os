@@ -135,7 +135,7 @@ export function VoiceMarketplace() {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h2 className={styles.title}>The Voices</h2>
+        <h2 className={styles.title}>Voices</h2>
         <div className={styles.filters}>
           <button
             className={`${styles.filterButton} ${filter === 'all' ? styles.active : ''}`}
