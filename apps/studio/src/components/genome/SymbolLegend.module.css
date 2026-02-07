@@ -125,7 +125,7 @@
 /* Grid */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: var(--space-lg);
   margin-bottom: var(--space-3xl);
 }
@@ -142,6 +142,9 @@
   overflow: visible;
   z-index: 1;
   text-align: center;
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
 }
 
 .card:hover {
@@ -398,7 +401,7 @@
   }
 
   .grid {
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: var(--space-xl);
   }
 
@@ -430,7 +433,7 @@
   }
 
   .grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: var(--space-lg);
   }
 

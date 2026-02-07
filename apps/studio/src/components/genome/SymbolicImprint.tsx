@@ -47,11 +47,8 @@ export function SymbolicImprint({
       }}
     >
       <div className="imprint-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-        <span className="imprint-symbol" style={{ fontSize: '2rem', fontWeight: 300 }}>
+        <span className="imprint-symbol" style={{ fontSize: '2.5rem', fontWeight: 300 }}>
           {symbol}
-        </span>
-        <span className="imprint-primitive" style={{ fontSize: '1.5rem', opacity: 0.7 }}>
-          {primitive}
         </span>
         {showHelp && (
           <HelpIcon
@@ -74,7 +71,7 @@ export function SymbolicImprint({
         )}
       </div>
       <div className="imprint-label" style={{ fontSize: '1.25rem', fontWeight: 500, marginTop: '0.25rem' }}>
-        {symbol}-{label}
+        {label}
       </div>
       <div className="imprint-class" style={{ fontSize: '0.875rem', opacity: 0.6, marginTop: '0.125rem' }}>
         {aestheticClass}
