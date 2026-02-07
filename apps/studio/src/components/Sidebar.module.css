@@ -27,12 +27,37 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+.brandGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .brandText {
   font-family: var(--font-display);
   font-size: 18px;
   font-weight: 400;
   letter-spacing: -0.02em;
   color: #FFFFFF;
+}
+
+.brandToggle {
+  width: 18px;
+  height: 18px;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+  padding: 0;
+}
+
+.brandToggle:hover {
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .collapseBtn {

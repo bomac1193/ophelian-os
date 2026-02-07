@@ -65,9 +65,7 @@ export function Sidebar() {
     router.push('/');
   };
 
-  const cycleBrand = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const cycleBrand = () => {
     setBrandIndex((prev) => (prev + 1) % BRAND_NAMES.length);
   };
 
@@ -84,9 +82,21 @@ export function Sidebar() {
     <aside className={`${styles.sidebar} ${collapsed ? styles.collapsed : ''}`}>
       {/* Brand */}
       <div className={styles.brand}>
-        <span className={styles.brandText} onClick={handleBrandClick} onContextMenu={cycleBrand} style={{ cursor: 'pointer' }} title="Click to go home, right-click to cycle names">
-          {collapsed ? brandInitial : currentBrand}
-        </span>
+        <div className={styles.brandGroup}>
+          <span className={styles.brandText} onClick={handleBrandClick} style={{ cursor: 'pointer' }} title="Click to go home">
+            {collapsed ? brandInitial : currentBrand}
+          </span>
+          {!collapsed && (
+            <button
+              className={styles.brandToggle}
+              onClick={cycleBrand}
+              aria-label="Cycle brand names"
+              title="Switch name"
+            >
+              ↻
+            </button>
+          )}
+        </div>
         <button
           className={styles.collapseBtn}
           onClick={() => setCollapsed(!collapsed)}
