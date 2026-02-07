@@ -4,16 +4,16 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 const navLinks = [
-  { href: '/', label: 'Characters' },
+  { href: '/', label: 'Operators' },
   { href: '/imprint', label: 'Imprint' },
   { href: '/genome-legend', label: 'Symbols' },
-  { href: '/marketplace', label: 'Marketplace' },
+  { href: '/marketplace', label: 'Threshold' },
   { href: '/rights', label: 'Rights' },
   { href: '/universes', label: 'Universes' },
   { href: '/scenes', label: 'Scenes' },
-  { href: '/globes', label: 'Globes' },
+  { href: '/globes', label: 'Regions' },
   { href: '/nexus', label: 'Nexus' },
-  { href: '/story-templates', label: 'Story Arcs' },
+  { href: '/story-templates', label: 'Trajectories' },
   { href: '/ledger', label: 'Ledger' },
 ];
 

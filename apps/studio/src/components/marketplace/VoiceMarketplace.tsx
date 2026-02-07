@@ -135,7 +135,7 @@ export function VoiceMarketplace() {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h2 className={styles.title}>Available Voices</h2>
+        <h2 className={styles.title}>The Vessels</h2>
         <div className={styles.filters}>
           <button
             className={`${styles.filterButton} ${filter === 'all' ? styles.active : ''}`}
@@ -158,19 +158,19 @@ export function VoiceMarketplace() {
       <div className={styles.stats}>
         <div className={styles.stat}>
           <span className={styles.statValue}>{voices.length}</span>
-          <span className={styles.statLabel}>Professional Voices</span>
+          <span className={styles.statLabel}>Bound Vessels</span>
         </div>
         <div className={styles.stat}>
           <span className={styles.statValue}>
             {voices.reduce((sum, v) => sum + v.stats.totalLicenses, 0)}
           </span>
-          <span className={styles.statLabel}>Total Licenses</span>
+          <span className={styles.statLabel}>Active Covenants</span>
         </div>
         <div className={styles.stat}>
           <span className={styles.statValue}>
             {voices.reduce((sum, v) => sum + v.stats.usageCount, 0).toLocaleString()}
           </span>
-          <span className={styles.statLabel}>Voice Syntheses</span>
+          <span className={styles.statLabel}>Channelings</span>
         </div>
       </div>
 
@@ -186,7 +186,7 @@ export function VoiceMarketplace() {
 
       {filteredVoices.length === 0 && (
         <div className={styles.emptyState}>
-          <p>No voices match the selected filter</p>
+          <p>No vessels answer this calling</p>
         </div>
       )}
 

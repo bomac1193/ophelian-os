@@ -52,11 +52,12 @@ export default function StoryTemplatesPage() {
   return (
     <div className="page-container">
       <div className="page-header">
-        <h1 className="page-title">Story Templates</h1>
-        <p className="page-subtitle">
-          Universal narrative arcs derived from pre-colonial African sources and validated through
-          post-colonial literature.
-        </p>
+        <div>
+          <h1 className="page-title">Trajectories</h1>
+          <p className="page-subtitle">
+            Structured paths through scenes, ranging from linear sequences to branching and emergent flows.
+          </p>
+        </div>
       </div>
 
       {/* Filters */}

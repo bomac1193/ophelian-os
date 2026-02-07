@@ -143,13 +143,13 @@ export default function CharactersPage() {
   return (
     <div className="page-container">
       <div className="page-header">
-        <h1 className="page-title">Characters</h1>
+        <h1 className="page-title">Operators</h1>
         <button className="btn btn-secondary" onClick={() => setShowModal(true)}>
           New Character
         </button>
       </div>
 
-      {loading && <div className="loading">Loading characters...</div>}
+      {loading && <div className="loading">Loading operators...</div>}
 
       {error && (
         <div className="card" style={{ borderColor: 'var(--error)' }}>
@@ -162,7 +162,7 @@ export default function CharactersPage() {
 
       {!loading && !error && characters.length === 0 && (
         <div className="empty-state">
-          <p>No characters yet. Create your first character to get started.</p>
+          <p>No operators yet. Create your first operator to get started.</p>
         </div>
       )}
 
@@ -175,7 +175,7 @@ export default function CharactersPage() {
             marginBottom: '1rem',
             color: 'var(--foreground)',
           }}>
-            Characters
+            Operators
           </h2>
           <div className="grid grid-cols-2">
             {regularCharacters.map((character) => (

@@ -61,6 +61,25 @@
   max-width: 480px;
 }
 
+.heroDescription + .heroDescription {
+  margin-top: var(--space-sm);
+}
+
+/* Section Header */
+.sectionHeader {
+  margin-bottom: var(--space-2xl);
+}
+
+.sectionTitle {
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  margin: 0;
+}
+
 /* Stats - Brutalist Grid */
 .stats {
   display: grid;
@@ -105,7 +124,7 @@
 /* Features - Minimal Cards */
 .features {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: var(--space-2xl);
   margin-bottom: 120px;
 }
@@ -133,6 +152,32 @@
   line-height: 1.6;
   color: var(--muted-foreground);
   margin: 0;
+}
+
+.featureText + .featureText {
+  margin-top: var(--space-sm);
+}
+
+.featureList {
+  list-style: none;
+  padding: 0;
+  margin: var(--space-sm) 0;
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--muted-foreground);
+  line-height: 1.8;
+}
+
+.featureList li {
+  padding-left: 1rem;
+  position: relative;
+}
+
+.featureList li::before {
+  content: '·';
+  position: absolute;
+  left: 0;
+  color: var(--foreground);
 }
 
 /* Responsive - Laptop */
@@ -188,7 +233,7 @@
   }
 
   .features {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: var(--space-xl);
     margin-bottom: 96px;
   }
@@ -240,6 +285,7 @@
   }
 
   .features {
+    grid-template-columns: 1fr;
     gap: var(--space-lg);
     margin-bottom: 64px;
   }

@@ -20,7 +20,7 @@ const navGroups: NavGroup[] = [
   {
     title: 'Create',
     items: [
-      { href: '/', label: 'Characters', icon: 'C' },
+      { href: '/', label: 'Operators', icon: 'O' },
       { href: '/imprint', label: 'Imprint', icon: 'I' },
     ],
   },
@@ -29,21 +29,21 @@ const navGroups: NavGroup[] = [
     items: [
       { href: '/universes', label: 'Universes', icon: 'U' },
       { href: '/scenes', label: 'Scenes', icon: 'S' },
-      { href: '/globes', label: 'Globes', icon: 'G' },
+      { href: '/globes', label: 'Regions', icon: 'R' },
     ],
   },
   {
     title: 'Story',
     items: [
       { href: '/nexus', label: 'Nexus', icon: 'N' },
-      { href: '/story-templates', label: 'Story Arcs', icon: 'A' },
+      { href: '/story-templates', label: 'Trajectories', icon: 'T' },
       { href: '/genome-legend', label: 'Symbols', icon: '◊' },
     ],
   },
   {
     title: 'Business',
     items: [
-      { href: '/marketplace', label: 'Ayizan', icon: 'A' },
+      { href: '/marketplace', label: 'Threshold', icon: 'T' },
       { href: '/rights', label: 'Rights', icon: 'R' },
       { href: '/ledger', label: 'Ledger', icon: 'L' },
     ],

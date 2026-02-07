@@ -69,29 +69,29 @@ export function VoiceCard({ voice, onLicense }: VoiceCardProps) {
       <div className={styles.stats}>
         <div className={styles.statItem}>
           <span className={styles.statValue}>{voice.stats.totalLicenses}</span>
-          <span className={styles.statLabel}>Licenses</span>
+          <span className={styles.statLabel}>Covenants</span>
         </div>
         <div className={styles.statDivider}></div>
         <div className={styles.statItem}>
           <span className={styles.statValue}>{voice.stats.usageCount.toLocaleString()}</span>
-          <span className={styles.statLabel}>Uses</span>
+          <span className={styles.statLabel}>Channelings</span>
         </div>
       </div>
 
       <div className={styles.pricing}>
         <div className={styles.priceSection}>
-          <h4 className={styles.priceTitle}>Licensing</h4>
+          <h4 className={styles.priceTitle}>The Binding</h4>
           <div className={styles.priceOptions}>
             <div className={styles.priceOption}>
-              <span className={styles.priceLabel}>EXCLUSIVE</span>
+              <span className={styles.priceLabel}>SOLE CLAIM</span>
               <span className={styles.priceValue}>{formatPrice(voice.pricing.exclusive)}</span>
             </div>
             <div className={styles.priceOption}>
-              <span className={styles.priceLabel}>PER USE</span>
+              <span className={styles.priceLabel}>PER INVOCATION</span>
               <span className={styles.priceValue}>{formatPrice(voice.pricing.nonExclusive)}</span>
             </div>
             <div className={styles.priceOption}>
-              <span className={styles.priceLabel}>REV SHARE</span>
+              <span className={styles.priceLabel}>SHARED TITHE</span>
               <span className={styles.priceValue}>
                 {voice.pricing.revShare.voiceActor}/{voice.pricing.revShare.creator}/{voice.pricing.revShare.platform}
               </span>
@@ -118,7 +118,7 @@ export function VoiceCard({ voice, onLicense }: VoiceCardProps) {
         onClick={onLicense}
         disabled={!voice.available}
       >
-        {voice.available ? 'LICENSE VOICE' : 'NOT AVAILABLE'}
+        {voice.available ? 'BIND VESSEL' : 'VESSEL CLAIMED'}
       </button>
     </div>
   );

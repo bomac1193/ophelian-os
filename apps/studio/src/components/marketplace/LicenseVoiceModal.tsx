@@ -41,7 +41,7 @@ export function LicenseVoiceModal({ voice, onClose, onSuccess }: LicenseVoiceMod
 
   const handleLicense = async () => {
     if (!agreedToTerms) {
-      setError('You must agree to the terms to continue');
+      setError('The covenant requires your acceptance');
       return;
     }
 
@@ -74,7 +74,7 @@ export function LicenseVoiceModal({ voice, onClose, onSuccess }: LicenseVoiceMod
       // Success!
       onSuccess();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to license voice');
+      setError(err instanceof Error ? err.message : 'The binding could not be forged');
     } finally {
       setIsProcessing(false);
     }
@@ -85,9 +85,9 @@ export function LicenseVoiceModal({ voice, onClose, onSuccess }: LicenseVoiceMod
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <div className={styles.header}>
           <div>
-            <h2 className={styles.title}>License Voice</h2>
+            <h2 className={styles.title}>Bind Vessel</h2>
             <p className={styles.voiceInfo}>
-              {voice.name} by {voice.actorName}
+              {voice.name} — channeled by {voice.actorName}
             </p>
           </div>
           <button onClick={onClose} className={styles.closeButton}>
@@ -97,7 +97,7 @@ export function LicenseVoiceModal({ voice, onClose, onSuccess }: LicenseVoiceMod
 
         <div className={styles.content}>
           <div className={styles.section}>
-            <h3 className={styles.sectionTitle}>Select License Type</h3>
+            <h3 className={styles.sectionTitle}>Choose Your Covenant</h3>
             <div className={styles.licenseTypes}>
               <label
                 className={`${styles.licenseType} ${selectedType === LicenseType.EXCLUSIVE ? styles.selected : ''}`}
@@ -111,13 +111,13 @@ export function LicenseVoiceModal({ voice, onClose, onSuccess }: LicenseVoiceMod
                 />
                 <div className={styles.licenseTypeContent}>
                   <div className={styles.licenseTypeHeader}>
-                    <span className={styles.licenseTypeName}>🔒 Exclusive</span>
+                    <span className={styles.licenseTypeName}>◆ Sole Claim</span>
                     <span className={styles.licenseTypePrice}>
                       {formatPrice(voice.pricing.exclusive)}
                     </span>
                   </div>
                   <p className={styles.licenseTypeDesc}>
-                    Full ownership. Only you can use this voice. One-time payment.
+                    This vessel speaks only for you. No other may invoke it.
                   </p>
                 </div>
               </label>
@@ -134,13 +134,13 @@ export function LicenseVoiceModal({ voice, onClose, onSuccess }: LicenseVoiceMod
                 />
                 <div className={styles.licenseTypeContent}>
                   <div className={styles.licenseTypeHeader}>
-                    <span className={styles.licenseTypeName}>🔓 Non-Exclusive</span>
+                    <span className={styles.licenseTypeName}>◇ Per Invocation</span>
                     <span className={styles.licenseTypePrice}>
-                      {formatPrice(voice.pricing.nonExclusive)} / use
+                      {formatPrice(voice.pricing.nonExclusive)} / channeling
                     </span>
                   </div>
                   <p className={styles.licenseTypeDesc}>
-                    Pay per usage. Others can license this voice too.
+                    Pay tribute each time the vessel speaks. Others may also call upon it.
                   </p>
                 </div>
               </label>
@@ -157,13 +157,13 @@ export function LicenseVoiceModal({ voice, onClose, onSuccess }: LicenseVoiceMod
                 />
                 <div className={styles.licenseTypeContent}>
                   <div className={styles.licenseTypeHeader}>
-                    <span className={styles.licenseTypeName}>💰 Revenue Share</span>
+                    <span className={styles.licenseTypeName}>◈ Shared Tithe</span>
                     <span className={styles.licenseTypePrice}>
                       {voice.pricing.revShare.voiceActor}% / {voice.pricing.revShare.creator}% / {voice.pricing.revShare.platform}%
                     </span>
                   </div>
                   <p className={styles.licenseTypeDesc}>
-                    Share revenue with voice actor. Best for monetized content.
+                    Fortunes divided among vessel, wielder, and sanctum.
                   </p>
                 </div>
               </label>
@@ -171,13 +171,13 @@ export function LicenseVoiceModal({ voice, onClose, onSuccess }: LicenseVoiceMod
           </div>
 
           <div className={styles.section}>
-            <h3 className={styles.sectionTitle}>What You Get</h3>
+            <h3 className={styles.sectionTitle}>What the Covenant Grants</h3>
             <ul className={styles.benefits}>
-              <li>✓ Unlimited voice synthesis via Chromox</li>
-              <li>✓ Commercial usage rights</li>
-              <li>✓ Prosody & emotion controls</li>
-              <li>✓ Transparent usage tracking</li>
-              <li>✓ Consent-verified & ethical AI</li>
+              <li>◇ Unlimited channeling through Chromox alchemy</li>
+              <li>◇ Rights to wield in commerce</li>
+              <li>◇ Command over tone, breath, and feeling</li>
+              <li>◇ Clear record of every invocation</li>
+              <li>◇ Bound by consent of the vessel</li>
             </ul>
           </div>
 
@@ -189,7 +189,7 @@ export function LicenseVoiceModal({ voice, onClose, onSuccess }: LicenseVoiceMod
                 onChange={(e) => setAgreedToTerms(e.target.checked)}
               />
               <span>
-                I agree to the <a href="/terms" target="_blank" className={styles.link}>terms of service</a> and understand that the voice actor receives royalties per the selected license type.
+                I accept the <a href="/terms" target="_blank" className={styles.link}>covenant terms</a> and acknowledge the vessel receives their due tithe.
               </span>
             </label>
           </div>
@@ -206,14 +206,14 @@ export function LicenseVoiceModal({ voice, onClose, onSuccess }: LicenseVoiceMod
               className={styles.cancelButton}
               disabled={isProcessing}
             >
-              Cancel
+              Withdraw
             </button>
             <button
               onClick={handleLicense}
               className={styles.licenseButton}
               disabled={isProcessing || !agreedToTerms}
             >
-              {isProcessing ? 'Processing...' : `License for ${getPriceForType(selectedType)}`}
+              {isProcessing ? 'Binding...' : `Bind for ${getPriceForType(selectedType)}`}
             </button>
           </div>
         </div>

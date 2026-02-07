@@ -89,24 +89,24 @@ export default function GlobesPage() {
   };
 
   if (loading) {
-    return <div className="loading">Loading globes...</div>;
+    return <div className="loading">Loading regions...</div>;
   }
 
   return (
     <div className={styles.page}>
       <div className={styles.header}>
         <div className={styles.headerContent}>
-          <h1 className={styles.title}>Globes</h1>
+          <h1 className={styles.title}>Regions</h1>
           <p className={styles.subtitle}>Worlds and realms in your universe</p>
         </div>
         <button className={styles.createButton} onClick={() => openModal()}>
-          New Globe
+          New Region
         </button>
       </div>
 
       {globes.length === 0 ? (
         <div className={styles.emptyState}>
-          <p>No globes yet. Create your first globe to get started.</p>
+          <p>No regions yet. Create your first region to get started.</p>
         </div>
       ) : (
         <div className={styles.grid}>
@@ -149,7 +149,7 @@ export default function GlobesPage() {
         <div className="modal-overlay" onClick={(e) => e.target === e.currentTarget && closeModal()}>
           <div className="modal modal-sm">
             <div className="modal-header">
-              <h2 className="modal-title">{editingGlobe ? 'Edit Globe' : 'New Globe'}</h2>
+              <h2 className="modal-title">{editingGlobe ? 'Edit Region' : 'New Region'}</h2>
               <button className="modal-close" onClick={closeModal}>&times;</button>
             </div>
             <form onSubmit={handleSubmit}>
@@ -181,7 +181,7 @@ export default function GlobesPage() {
                   className="input textarea"
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  placeholder="Describe this globe..."
+                  placeholder="Describe this region..."
                   rows={4}
                 />
               </div>
