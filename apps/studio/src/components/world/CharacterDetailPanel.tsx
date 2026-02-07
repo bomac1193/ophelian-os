@@ -6,12 +6,12 @@ import type { Character } from '@/lib/api';
 import { syncOripheonData } from '@/lib/api';
 import { getSubtasteInfo } from '@/components/world/SuggestedRelationshipsPanel';
 
-const WU_XING_SYMBOLS: Record<string, string> = {
-  wood: '\u6728 Wood',
-  fire: '\u706b Fire',
-  earth: '\u571f Earth',
-  metal: '\u91d1 Metal',
-  water: '\u6c34 Water',
+const MATERIA: Record<string, string> = {
+  wood: 'Verdant',
+  fire: 'Ardent',
+  earth: 'Grounded',
+  metal: 'Refined',
+  water: 'Fluid',
 };
 
 interface CharacterDetailPanelProps {
@@ -108,11 +108,11 @@ export function CharacterDetailPanel({ character, onClose, onRefresh }: Characte
 
           {showSubtaste && (
             <div className="subtaste-ref-body">
-              {/* Wu Xing Element */}
+              {/* Materia Element */}
               <div className="subtaste-ref-row">
-                <span className="subtaste-ref-key">Wu Xing</span>
+                <span className="subtaste-ref-key">Materia</span>
                 <span className="subtaste-ref-val">
-                  {WU_XING_SYMBOLS[subtasteInfo.wuXingElement] || subtasteInfo.wuXingElement}
+                  {MATERIA[subtasteInfo.wuXingElement] || subtasteInfo.wuXingElement}
                   <span className="subtaste-ref-dim"> ({subtasteInfo.phase} phase)</span>
                 </span>
               </div>
@@ -137,16 +137,16 @@ export function CharacterDetailPanel({ character, onClose, onRefresh }: Characte
 
               {/* Element Relationships */}
               <div className="subtaste-ref-row">
-                <span className="subtaste-ref-key">Generates</span>
+                <span className="subtaste-ref-key">Kindles</span>
                 <span className="subtaste-ref-val">
-                  {WU_XING_SYMBOLS[subtasteInfo.generates] || subtasteInfo.generates} types
+                  {MATERIA[subtasteInfo.generates] || subtasteInfo.generates} types
                 </span>
               </div>
 
               <div className="subtaste-ref-row">
-                <span className="subtaste-ref-key">Overcome by</span>
+                <span className="subtaste-ref-key">Tempered by</span>
                 <span className="subtaste-ref-val subtaste-ref-stress">
-                  {WU_XING_SYMBOLS[subtasteInfo.overcomeBy] || subtasteInfo.overcomeBy} types
+                  {MATERIA[subtasteInfo.overcomeBy] || subtasteInfo.overcomeBy} types
                 </span>
               </div>
             </div>
