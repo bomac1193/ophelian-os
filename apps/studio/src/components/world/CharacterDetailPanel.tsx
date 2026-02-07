@@ -122,7 +122,7 @@ export function CharacterDetailPanel({ character, onClose, onRefresh }: Characte
 
               {/* Growth explanation */}
               <div className="subtaste-ref-row">
-                <span className="subtaste-ref-key">Growth</span>
+                <span className="subtaste-ref-key">Ascends to</span>
                 <span className="subtaste-ref-val">
                   {subtasteInfo.growth}
                   <span className="subtaste-ref-dim"> — {subtasteInfo.growthLabel}</span>
@@ -131,7 +131,7 @@ export function CharacterDetailPanel({ character, onClose, onRefresh }: Characte
 
               {/* Stress explanation */}
               <div className="subtaste-ref-row">
-                <span className="subtaste-ref-key">Stress</span>
+                <span className="subtaste-ref-key">Descends to</span>
                 <span className="subtaste-ref-val subtaste-ref-stress">
                   {subtasteInfo.stress}
                   <span className="subtaste-ref-dim"> — {subtasteInfo.stressLabel}</span>
@@ -140,14 +140,14 @@ export function CharacterDetailPanel({ character, onClose, onRefresh }: Characte
 
               {/* Element Relationships */}
               <div className="subtaste-ref-row">
-                <span className="subtaste-ref-key">Kindles</span>
+                <span className="subtaste-ref-key">Awakens</span>
                 <span className="subtaste-ref-val">
                   {MATERIA[subtasteInfo.generates] || subtasteInfo.generates} types
                 </span>
               </div>
 
               <div className="subtaste-ref-row">
-                <span className="subtaste-ref-key">Checked by</span>
+                <span className="subtaste-ref-key">Anchored by</span>
                 <span className="subtaste-ref-val subtaste-ref-stress">
                   {MATERIA[subtasteInfo.overcomeBy] || subtasteInfo.overcomeBy} types
                 </span>
