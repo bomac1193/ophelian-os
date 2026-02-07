@@ -40,7 +40,7 @@ export default function ImprintDetailPage() {
   const [systemPrompt, setSystemPrompt] = useState<ImprintSystemPrompt | null>(null);
   const [promptLoading, setPromptLoading] = useState(false);
   const [promptStyle, setPromptStyle] = useState<'concise' | 'detailed' | 'poetic'>('detailed');
-  const [activeTab, setActiveTab] = useState<'overview' | 'multimodal' | 'narrative' | 'prompt' | 'content' | 'timeline' | 'voice' | 'avatar' | 'relationships' | 'stories' | 'merch' | 'social' | 'analytics' | 'certification'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'multimodal' | 'narrative' | 'prompt' | 'content' | 'timeline' | 'voice' | 'avatar' | 'relationships' | 'stories' | 'merch' | 'social' | 'analytics' | 'certification' | 'cosmology'>('overview');
   const [mysteriesUnlocked, setMysteriesUnlocked] = useState(false);
   const [hasAdvancedAccess, setHasAdvancedAccess] = useState(false);
   const [suggestedIntent, setSuggestedIntent] = useState<string>('');
@@ -310,7 +310,7 @@ export default function ImprintDetailPage() {
           flexWrap: 'wrap',
         }}
       >
-        {(['overview', 'timeline', 'multimodal', 'narrative', 'prompt', 'content', 'voice', 'avatar', 'relationships', 'stories', 'merch', 'social', 'analytics', 'certification'] as const).map((tab) => (
+        {(['overview', 'timeline', 'cosmology', 'multimodal', 'narrative', 'prompt', 'content', 'voice', 'avatar', 'relationships', 'stories', 'merch', 'social', 'analytics', 'certification'] as const).map((tab) => (
           <button
             key={tab}
             type="button"
@@ -329,7 +329,7 @@ export default function ImprintDetailPage() {
               transition: 'all 0.2s ease',
             }}
           >
-            {tab === 'multimodal' ? 'Multi-Modal' : tab === 'prompt' ? 'System Prompt' : tab === 'certification' ? 'Ethics' : tab}
+            {tab === 'multimodal' ? 'Multi-Modal' : tab === 'prompt' ? 'System Prompt' : tab === 'certification' ? 'Ethics' : tab === 'cosmology' ? 'Layers' : tab}
           </button>
         ))}
       </div>
@@ -1182,6 +1182,67 @@ export default function ImprintDetailPage() {
             characterName={genome.name}
             createdAt={genome.createdAt}
           />
+        </div>
+      )}
+
+      {activeTab === 'cosmology' && (
+        <div>
+          <p style={{ margin: '0 0 1.5rem', color: 'var(--muted-foreground)' }}>
+            The three layers of {genome.name}&apos;s cosmological identity.
+          </p>
+
+          {/* Layer 1: Bóveda */}
+          <div style={{ marginBottom: '2rem', padding: '1.5rem', background: '#000000', border: '1px solid var(--border)' }}>
+            <div style={{ fontFamily: 'var(--font-ui)', fontSize: '0.625rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--muted-foreground)', marginBottom: '1rem' }}>
+              Layer 1 — Bóveda
+            </div>
+            <div style={{ fontFamily: 'var(--font-heading)', fontSize: '1.25rem', fontWeight: 600, marginBottom: '0.5rem' }}>
+              Surface Classification
+            </div>
+            <p style={{ fontSize: '0.875rem', color: 'var(--muted-foreground)', lineHeight: 1.6 }}>
+              The visible layer of personality typing. Materia (elemental essence), growth/stress directions, and relational dynamics.
+            </p>
+          </div>
+
+          {/* Layer 2: Kabbalah */}
+          <div style={{ marginBottom: '2rem', padding: '1.5rem', background: '#000000', border: '1px solid var(--border)' }}>
+            <div style={{ fontFamily: 'var(--font-ui)', fontSize: '0.625rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--muted-foreground)', marginBottom: '1rem' }}>
+              Layer 2 — Sephirot
+            </div>
+            <div style={{ fontFamily: 'var(--font-heading)', fontSize: '1.25rem', fontWeight: 600, marginBottom: '0.5rem' }}>
+              Tree of Life Correspondence
+            </div>
+            <p style={{ fontSize: '0.875rem', color: 'var(--muted-foreground)', lineHeight: 1.6, marginBottom: '1rem' }}>
+              The Kabbalistic layer mapping character essence to the ten emanations of the Tree of Life.
+            </p>
+            <TreeOfLifeVisualization genome={genome} />
+          </div>
+
+          {/* Layer 3: Orisha */}
+          <div style={{ marginBottom: '2rem', padding: '1.5rem', background: '#000000', border: '1px solid var(--border)' }}>
+            <div style={{ fontFamily: 'var(--font-ui)', fontSize: '0.625rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--muted-foreground)', marginBottom: '1rem' }}>
+              Layer 3 — Orisha
+            </div>
+            <div style={{ fontFamily: 'var(--font-heading)', fontSize: '1.25rem', fontWeight: 600, marginBottom: '0.5rem' }}>
+              Spiritual Archetype
+            </div>
+            <p style={{ fontSize: '0.875rem', color: 'var(--muted-foreground)', lineHeight: 1.6 }}>
+              The deepest layer connecting character to Yoruba spiritual archetypes and their domains of influence.
+            </p>
+          </div>
+
+          {/* I Ching State */}
+          <div style={{ padding: '1.5rem', background: '#000000', border: '1px solid var(--border)' }}>
+            <div style={{ fontFamily: 'var(--font-ui)', fontSize: '0.625rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--muted-foreground)', marginBottom: '1rem' }}>
+              State — I Ching
+            </div>
+            <div style={{ fontFamily: 'var(--font-heading)', fontSize: '1.25rem', fontWeight: 600, marginBottom: '0.5rem' }}>
+              Current Hexagram
+            </div>
+            <p style={{ fontSize: '0.875rem', color: 'var(--muted-foreground)', lineHeight: 1.6 }}>
+              The character&apos;s present state and transformation trajectory according to the Book of Changes.
+            </p>
+          </div>
         </div>
       )}
 
