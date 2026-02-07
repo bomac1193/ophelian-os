@@ -21,7 +21,7 @@ interface CharacterDetailPanelProps {
 }
 
 export function CharacterDetailPanel({ character, onClose, onRefresh }: CharacterDetailPanelProps) {
-  const [showSubtaste, setShowSubtaste] = useState(false);
+  const [showSubtaste, setShowSubtaste] = useState(true);
   const [showTags, setShowTags] = useState(false);
   const [syncing, setSyncing] = useState(false);
 
@@ -129,7 +129,7 @@ export function CharacterDetailPanel({ character, onClose, onRefresh }: Characte
         </div>
       )}
 
-      {/* Subtaste Compatibility Reference */}
+      {/* Bóveda Profile */}
       {subtasteInfo && (
         <div className="detail-section">
           <div
@@ -140,7 +140,7 @@ export function CharacterDetailPanel({ character, onClose, onRefresh }: Characte
             onKeyDown={(e) => { if (e.key === 'Enter') setShowSubtaste(!showSubtaste); }}
           >
             <label className="label" style={{ cursor: 'pointer', margin: 0 }}>
-              Subtaste Profile
+              Bóveda
             </label>
             <span className="subtaste-ref-toggle">{showSubtaste ? '\u2212' : '+'}</span>
           </div>
