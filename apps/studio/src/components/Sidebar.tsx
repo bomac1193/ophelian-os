@@ -50,9 +50,19 @@ const navGroups: NavGroup[] = [
   },
 ];
 
+const BRAND_NAMES = ['ZÀNÀ', 'SÉLÒ', 'ÒRÍX'] as const;
+
 export function Sidebar() {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
+  const [brandIndex, setBrandIndex] = useState(0);
+
+  const currentBrand = BRAND_NAMES[brandIndex];
+  const brandInitial = currentBrand.charAt(0);
+
+  const cycleBrand = () => {
+    setBrandIndex((prev) => (prev + 1) % BRAND_NAMES.length);
+  };
 
   // Sync collapsed state with body class for main content offset
   useEffect(() => {
@@ -67,8 +77,8 @@ export function Sidebar() {
     <aside className={`${styles.sidebar} ${collapsed ? styles.collapsed : ''}`}>
       {/* Brand */}
       <div className={styles.brand}>
-        <span className={styles.brandText}>
-          {collapsed ? 'Z' : 'ZÀNÀ'}
+        <span className={styles.brandText} onClick={cycleBrand} style={{ cursor: 'pointer' }} title="Click to cycle brand names">
+          {collapsed ? brandInitial : currentBrand}
         </span>
         <button
           className={styles.collapseBtn}
