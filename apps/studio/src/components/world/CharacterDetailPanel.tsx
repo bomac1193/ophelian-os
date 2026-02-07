@@ -7,11 +7,11 @@ import { syncOripheonData } from '@/lib/api';
 import { getSubtasteInfo } from '@/components/world/SuggestedRelationshipsPanel';
 
 const MATERIA: Record<string, string> = {
-  wood: 'Verdant',
-  fire: 'Ardent',
-  earth: 'Grounded',
-  metal: 'Refined',
-  water: 'Fluid',
+  wood: 'Bloom',
+  fire: 'Blaze',
+  earth: 'Root',
+  metal: 'Edge',
+  water: 'Deep',
 };
 
 interface CharacterDetailPanelProps {
