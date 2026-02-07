@@ -31,11 +31,13 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  gap: var(--space-md);
   margin-bottom: var(--space-md);
 }
 
 .headerContent {
   flex: 1;
+  min-width: 0;
 }
 
 .title {
