@@ -140,13 +140,14 @@ The result should feel:
 
 | Layer | Element |
 |-------|---------|
-| African | Dwennimmen (ram's horns), iron-working marks |
+| Adinkra | Dwennimmen (ram's horns) — strength through humility |
+| Veve | Ogou Feray — crossed machetes, iron implements |
 | Quantum | ⊗ tensor product — forging connections |
 | CS | { } braces — defining structure |
 | Primitive | ■ square — solidity, foundation |
 | Sacred | Hexahedron (cube) — earth/manifestation |
 
-**Fusion concept:** Ram's horns forming braces { }, containing a tensor ⊗ at center, built on square foundation
+**Fusion concept:** Ogou's crossed machetes forming braces { }, ram's horns at top, tensor ⊗ at forge center, built on square foundation
 
 **Iterations:**
 1.
@@ -160,13 +161,14 @@ The result should feel:
 
 | Layer | Element |
 |-------|---------|
-| African | Akofena (crossed swords), wind veve spirals |
+| Adinkra | Akofena (crossed swords) — courage, valor |
+| Veve | Maman Brigitte — cemetery cross with spirals, or Oya's wind form |
 | Quantum | ψ wave function collapse — transformation |
 | CS | ⊕ XOR — exclusive change, one or other |
 | Primitive | △ split/fractured — diagonal force |
 | Sacred | Lightning bolt geometry, bifurcation |
 
-**Fusion concept:** Split triangle with XOR ⊕ at fracture point, wind spirals emanating, ψ transforming through the break
+**Fusion concept:** Brigitte's cemetery cross splitting into wind spirals, XOR ⊕ at fracture point, ψ collapsing through the break, Akofena swords as frame
 
 **Iterations:**
 1.
@@ -182,13 +184,14 @@ The result should feel:
 
 | Layer | Element |
 |-------|---------|
-| African | Adinkrahene (chief symbol), white cloth |
+| Adinkra | Adinkrahene (chief symbol) — greatness, leadership |
+| Veve | Damballah — the white serpent, primordial creator, twin snakes |
 | Quantum | \|0⟩ ground state — pure potential |
 | CS | ∅ empty set evolving to { } — void to form |
 | Primitive | ○ perfect circle — unity, completeness |
 | Sacred | Seed of Life — genesis pattern |
 
-**Fusion concept:** Seed of Life pattern (7 circles) with |0⟩ at center, emanating from ∅, Adinkrahene crown form
+**Fusion concept:** Damballah's twin serpents forming Seed of Life circles, |0⟩ at center, Adinkrahene crown emanating from ∅ void
 
 **Iterations:**
 1.
@@ -202,13 +205,14 @@ The result should feel:
 
 | Layer | Element |
 |-------|---------|
-| African | Nkyinkyim (twisting), Papa Legba's crossroads veve |
+| Adinkra | Nkyinkyim (twisting) — initiative, dynamism, versatility |
+| Veve | Papa Legba — crossroads with cane, key, and radiating paths |
 | Quantum | superposition ≈ — being in multiple states |
 | CS | → branching, if/else — choice points |
 | Primitive | × crossroads — intersection of paths |
 | Sacred | Vesica Piscis — threshold between worlds |
 
-**Fusion concept:** × crossroads with twisting Nkyinkyim paths, ≈ superposition at center, arrows → branching in 4+ directions, Vesica Piscis portal at intersection
+**Fusion concept:** Legba's crossroads veve as base, Nkyinkyim twisting paths, ≈ superposition at gate center, arrows → branching to all directions, Vesica portal where paths meet
 
 **Iterations:**
 1.
@@ -224,13 +228,15 @@ The result should feel:
 
 | Layer | Element |
 |-------|---------|
-| African | Nyansapo (wisdom knot), Opon Ifá (divination board) |
+| Adinkra | Nyansapo (wisdom knot) — wisdom, ingenuity, patience |
+| Veve | Simbi — serpent of knowledge, mirrors, secret wisdom |
+| Nsibidi | Opon Ifá board patterns — divination grid |
 | Quantum | ∫ integral — seeing the whole |
 | CS | :: type annotation — reading classification |
 | Primitive | ◇ layered diamonds — stacked seeing |
 | Sacred | Metatron's Cube — all forms visible |
 
-**Fusion concept:** Layered horizontal strata with wisdom knot binding them, ∫ integral running through layers, :: at edges classifying, nested diamonds
+**Fusion concept:** Simbi's serpentine wisdom path through layered strata, Nyansapo knot binding layers, Ifá grid structure, ∫ integral through center, :: classifying edges
 
 **Iterations:**
 1.
@@ -244,13 +250,15 @@ The result should feel:
 
 | Layer | Element |
 |-------|---------|
-| African | Nsibidi arrow, hunting marks |
+| Adinkra | Akoma (heart) — patience, endurance in pursuit |
+| Veve | Ogou Badagris — the hunter's precision, bow and arrow motif |
+| Nsibidi | Arrow/direction marks — gestural focus |
 | Quantum | ∂ partial — isolating one variable |
 | CS | // comment — removing, hiding |
 | Primitive | ▶ arrow — singular direction |
 | Sacred | Golden ratio point — finding the essential |
 
-**Fusion concept:** Single arrow → with ∂ at tip, // strike-through marks showing removed elements, Nsibidi gestural form, convergence point at φ ratio
+**Fusion concept:** Ogou Badagris' arrow through Akoma heart, ∂ at precision tip, Nsibidi gesture as fletching, // marks for culled paths, φ convergence point
 
 **Iterations:**
 1.
@@ -266,13 +274,14 @@ The result should feel:
 
 | Layer | Element |
 |-------|---------|
-| African | Akoko Nan (hen's leg), La Sirene veve |
+| Adinkra | Akoko Nan (hen's leg) — nurturing, protection |
+| Veve | La Sirene / Agwe — mermaid form, ocean waves, mirror, comb |
 | Quantum | ⟨ψ\| bra — containing, receiving |
 | CS | [ ] array — holding multitudes |
 | Primitive | ● filled circle — fullness, womb |
 | Sacred | Torus — flow and return, containment |
 
-**Fusion concept:** Torus cross-section (●) with wave patterns, ⟨ brackets containing, [ ] array of life forms, hen's protective gesture, flowing water lines
+**Fusion concept:** La Sirene's wave-form containing Akoko's protective gesture, ⟨ψ\| receiving all, [ ] array of held lives, torus womb at center, ocean mirror reflecting
 
 **Iterations:**
 1.
@@ -286,13 +295,14 @@ The result should feel:
 
 | Layer | Element |
 |-------|---------|
-| African | Oshe Shango (double-headed axe), thunder marks |
+| Adinkra | Ohene Aniwa (king's eye) — vigilance, protection |
+| Veve | Shango — double-headed axe (oshe), castle/throne, fire |
 | Quantum | Ω resistance — measured force |
 | CS | && AND — both conditions must be true |
 | Primitive | ■ grounded square — authority, stability |
 | Sacred | Double tetrahedron — as above so below |
 
-**Fusion concept:** Double-headed axe with Ω at center, && logic requiring balance, grounded on ■ square, lightning geometry descending, hexagram structure
+**Fusion concept:** Shango's oshe axe as primary form, Ohene Aniwa eye at center, Ω resistance in handle, && requiring dual truth, grounded on ■ throne, lightning descending through hexagram
 
 **Iterations:**
 1.
@@ -308,13 +318,14 @@ The result should feel:
 
 | Layer | Element |
 |-------|---------|
-| African | Sankofa (return), Erzulie's heart veve |
+| Adinkra | Sankofa (return and retrieve) — learning from past |
+| Veve | Erzulie Freda — heart with sword, mirror, flowers, flowing lines |
 | Quantum | ∑ summation — drawing together |
 | CS | \| pipe — channeling flow |
 | Primitive | ∿ wave — continuous motion |
 | Sacred | Golden Spiral — beauty in proportion |
 
-**Fusion concept:** Golden spiral with ∿ wave overlay, \| channels directing flow, ∑ at center gathering, Sankofa bird looking back, heart form from Erzulie
+**Fusion concept:** Erzulie's heart as frame, Sankofa bird at center looking back, Golden spiral flowing through, ∑ gathering beauty, \| channels as river borders, ∿ waves as hair/water
 
 **Iterations:**
 1.
@@ -328,13 +339,14 @@ The result should feel:
 
 | Layer | Element |
 |-------|---------|
-| African | Aya (fern), medicine staff |
+| Adinkra | Aya (fern) — endurance, resourcefulness |
+| Veve | Loco — tree of knowledge, leaves, medicine staff, birds |
 | Quantum | recursive ψ(ψ) — self-reference |
 | CS | { } nested — data structure |
 | Primitive | + cross — healing, addition |
 | Sacred | Fractal branching — L-system growth |
 
-**Fusion concept:** Fractal fern pattern (L-system), + at core, nested { } containing knowledge, staff form, recursive self-similar branches
+**Fusion concept:** Loco's medicine tree as trunk, Aya fern as fractal branches, + healing cross at roots, nested { } containing leaf-knowledge, ψ(ψ) recursive growth pattern
 
 **Iterations:**
 1.
@@ -348,13 +360,15 @@ The result should feel:
 
 | Layer | Element |
 |-------|---------|
-| African | Nsibidi water/depth, Olókun chains |
+| Adinkra | Sesa Wo Suban — transformation, life changing |
+| Veve | Agwe / La Baleine — boat, anchor, waves, whale, deep sea |
+| Nsibidi | Water/depth ideograms — descending marks |
 | Quantum | tunneling — passing through barriers |
 | CS | * pointer — indirection, reference to hidden |
 | Primitive | ◆ diamond — pressure, depth |
 | Sacred | Spiral descent — into depths |
 
-**Fusion concept:** Descending spiral into ◆ diamond core, * pointing downward, chains linking surface to depth, tunnel passing through barriers, Nsibidi water marks
+**Fusion concept:** Agwe's anchor descending through spiral, La Baleine whale form as vessel, Nsibidi water marks, * pointer to hidden depths, ◆ diamond of pressure at abyss, Sesa Wo Suban transformation at threshold
 
 **Iterations:**
 1.
@@ -368,13 +382,15 @@ The result should feel:
 
 | Layer | Element |
 |-------|---------|
-| African | Owuo Atwedee (death's ladder), scarification |
+| Adinkra | Owuo Atwedee (death's ladder) — mortality, passage |
+| Veve | Baron Samedi / Ghede — cross on tomb, skull, crutch, straw |
+| Nsibidi | Scarification patterns — marks of survival |
 | Quantum | vacuum fluctuation — something from nothing |
 | CS | null → value — transformation from void |
 | Primitive | ◎ target/wound — center of pain/healing |
 | Sacred | Vesica Piscis — birth through opening |
 
-**Fusion concept:** ◎ wound at center transforming, ladder ascending, scarification patterns as data, null becoming defined, Vesica opening/closing, vacuum bubbling with potential
+**Fusion concept:** Baron's tomb cross with Owuo ladder ascending, Nsibidi scarification as sacred data, ◎ wound becoming healed eye, null → transformation, Vesica birth canal opening, Ghede's humor in the void
 
 **Iterations:**
 1.
