@@ -25,24 +25,41 @@ Constructed technonyms: post-colonial, non-mythic, functional — designed to fe
 | D-8 | **Nòxū** | WICK | Olókun | נ Nun (fish) | Shadow, depths, hidden |
 | NULL | **BȺLTA** | VOID | Babalú-Ayé | ת Tav (mark) | Anchor, wounds, ground |
 
-### Hebrew Letter Logic
+### Hebrew Letter Correspondences
 
-Each Hebrew letter encodes the archetype's essential operation:
+Full esoteric chain — letter, meaning, planet/element, zodiac, tarot:
 
-| Letter | Meaning | Why it fits |
-|--------|---------|-------------|
-| **ש Shin** | Fire, tooth, transformation | K̄ALØN ignites, transforms raw into form |
-| **ז Zayin** | Sword, weapon, cutting | TΞKRA divides, fractures, clears |
-| **א Aleph** | Ox, breath, spirit, void | SÆ witnesses from emptiness |
-| **ד Daleth** | Door, gateway, passage | ÆRŊ translates between domains |
-| **ק Qoph** | Back of head, cycles, unconscious | LŌRχ keeps loops, remembers fate |
-| **ל Lamed** | Ox goad, teaching, directing | Kĕθū breaks precisely, aims true |
-| **מ Mem** | Water, womb, carrying | ØMÆRA carries, nurtures, gestates |
-| **פ Pe** | Mouth, speech, thunder | Zâbɪn amplifies, declares, commands |
-| **ו Vav** | Nail, hook, connection | Bĕṋrî binds, attracts, joins |
-| **ס Samekh** | Support, prop, stabilizing | Dū·m̱a dampens, restores, archives |
-| **נ Nun** | Fish, hidden movement, depths | Nòxū shadows, channels unconscious |
-| **ת Tav** | Cross, signature, completion | BȺLTA anchors, marks, grounds |
+| God Name | Letter | Meaning | Planet/Element | Zodiac | Tarot | Path |
+|----------|--------|---------|----------------|--------|-------|------|
+| **K̄ALØN** | ש Shin | Tooth, fire | 🜂 Fire | — | XX Judgement | 31 |
+| **TΞKRA** | ז Zayin | Sword | — | ♊ Gemini | VI Lovers | 17 |
+| **SÆ** | א Aleph | Ox, breath | 🜁 Air | — | 0 Fool | 11 |
+| **ÆRŊ** | ד Daleth | Door | ♀ Venus | — | III Empress | 14 |
+| **LŌRχ** | ק Qoph | Back of head | — | ♓ Pisces | XVIII Moon | 29 |
+| **Kĕθū** | ל Lamed | Ox goad | — | ♎ Libra | VIII Justice | 22 |
+| **ØMÆRA** | מ Mem | Water | 🜄 Water | — | XII Hanged Man | 23 |
+| **Zâbɪn** | פ Pe | Mouth | ♂ Mars | — | XVI Tower | 27 |
+| **Bĕṋrî** | ו Vav | Nail, hook | — | ♉ Taurus | V Hierophant | 16 |
+| **Dū·m̱a** | ס Samekh | Prop, support | — | ♐ Sagittarius | XIV Temperance | 25 |
+| **Nòxū** | נ Nun | Fish | — | ♏ Scorpio | XIII Death | 24 |
+| **BȺLTA** | ת Tav | Cross, mark | ♄ Saturn | — | XXI World | 32 |
+
+### Why These Letters
+
+| God Name | Core Operation | Letter Logic |
+|----------|----------------|--------------|
+| **K̄ALØN** | Ignites, forges | Shin = primal fire, transformation of matter |
+| **TΞKRA** | Divides, fractures | Zayin = sword that separates, twins divided |
+| **SÆ** | Witnesses, holds void | Aleph = silent breath, spirit before form |
+| **ÆRŊ** | Translates, crosses | Daleth = door between worlds, Venus's beauty |
+| **LŌRχ** | Loops, remembers | Qoph = back of skull, dream cycles, Pisces depths |
+| **Kĕθū** | Breaks precisely | Lamed = goad that directs, Libra's exact cut |
+| **ØMÆRA** | Carries, gestates | Mem = primal waters, womb, suspension |
+| **Zâbɪn** | Amplifies, thunders | Pe = mouth of Mars, tower-breaking speech |
+| **Bĕṋrî** | Binds, attracts | Vav = nail joining boards, Taurus steadiness |
+| **Dū·m̱a** | Dampens, restores | Samekh = serpent biting tail, Sagittarius aim |
+| **Nòxū** | Shadows, hides | Nun = fish in dark waters, Scorpio's sting |
+| **BȺLTA** | Anchors, completes | Tav = final mark, Saturn's weight, World card |
 
 ### Diacritic Grammar
 
