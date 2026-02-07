@@ -163,12 +163,13 @@ The result should feel:
 |-------|---------|
 | Adinkra | Akofena (crossed swords) — courage, valor |
 | Veve | Maman Brigitte — cemetery cross with spirals, or Oya's wind form |
+| Eglash | Bifurcation tree — lightning as recursive branching (Fulani textile patterns) |
 | Quantum | ψ wave function collapse — transformation |
 | CS | ⊕ XOR — exclusive change, one or other |
 | Primitive | △ split/fractured — diagonal force |
 | Sacred | Lightning bolt geometry, bifurcation |
 
-**Fusion concept:** Brigitte's cemetery cross splitting into wind spirals, XOR ⊕ at fracture point, ψ collapsing through the break, Akofena swords as frame
+**Fusion concept:** Brigitte's cemetery cross splitting into Eglash bifurcation branches, XOR ⊕ at each split point, ψ collapsing through recursive fractures, Akofena swords as outer frame
 
 **Iterations:**
 1.
@@ -207,12 +208,13 @@ The result should feel:
 |-------|---------|
 | Adinkra | Nkyinkyim (twisting) — initiative, dynamism, versatility |
 | Veve | Papa Legba — crossroads with cane, key, and radiating paths |
+| Nsibidi | Speech/message marks — the messenger's tongue, communication |
 | Quantum | superposition ≈ — being in multiple states |
 | CS | → branching, if/else — choice points |
 | Primitive | × crossroads — intersection of paths |
 | Sacred | Vesica Piscis — threshold between worlds |
 
-**Fusion concept:** Legba's crossroads veve as base, Nkyinkyim twisting paths, ≈ superposition at gate center, arrows → branching to all directions, Vesica portal where paths meet
+**Fusion concept:** Legba's crossroads veve as base, Nkyinkyim twisting paths, Nsibidi speech marks radiating as messages, ≈ superposition at gate center, arrows → branching to all directions, Vesica portal where paths meet
 
 **Iterations:**
 1.
@@ -231,12 +233,13 @@ The result should feel:
 | Adinkra | Nyansapo (wisdom knot) — wisdom, ingenuity, patience |
 | Veve | Simbi — serpent of knowledge, mirrors, secret wisdom |
 | Nsibidi | Opon Ifá board patterns — divination grid |
+| Eglash | Nested scaling — Bamana sand divination binary doubling |
 | Quantum | ∫ integral — seeing the whole |
 | CS | :: type annotation — reading classification |
 | Primitive | ◇ layered diamonds — stacked seeing |
 | Sacred | Metatron's Cube — all forms visible |
 
-**Fusion concept:** Simbi's serpentine wisdom path through layered strata, Nyansapo knot binding layers, Ifá grid structure, ∫ integral through center, :: classifying edges
+**Fusion concept:** Simbi's serpentine path through Eglash-nested strata, Nyansapo knot binding layers, Nsibidi Ifá grid as substrate, ∫ integral through center, :: edges reading all scales
 
 **Iterations:**
 1.
@@ -276,12 +279,13 @@ The result should feel:
 |-------|---------|
 | Adinkra | Akoko Nan (hen's leg) — nurturing, protection |
 | Veve | La Sirene / Agwe — mermaid form, ocean waves, mirror, comb |
+| Nsibidi | Love/unity marks — embracing forms, motherhood |
 | Quantum | ⟨ψ\| bra — containing, receiving |
 | CS | [ ] array — holding multitudes |
 | Primitive | ● filled circle — fullness, womb |
 | Sacred | Torus — flow and return, containment |
 
-**Fusion concept:** La Sirene's wave-form containing Akoko's protective gesture, ⟨ψ\| receiving all, [ ] array of held lives, torus womb at center, ocean mirror reflecting
+**Fusion concept:** La Sirene's wave-form containing Akoko's protective gesture, Nsibidi embrace marks as womb boundary, ⟨ψ\| receiving all, [ ] array of held lives, torus at center
 
 **Iterations:**
 1.
@@ -297,12 +301,13 @@ The result should feel:
 |-------|---------|
 | Adinkra | Ohene Aniwa (king's eye) — vigilance, protection |
 | Veve | Shango — double-headed axe (oshe), castle/throne, fire |
+| Nsibidi | Authority/command marks — chief's declaration, spoken law |
 | Quantum | Ω resistance — measured force |
 | CS | && AND — both conditions must be true |
 | Primitive | ■ grounded square — authority, stability |
 | Sacred | Double tetrahedron — as above so below |
 
-**Fusion concept:** Shango's oshe axe as primary form, Ohene Aniwa eye at center, Ω resistance in handle, && requiring dual truth, grounded on ■ throne, lightning descending through hexagram
+**Fusion concept:** Shango's oshe axe as primary form, Ohene Aniwa eye at center, Nsibidi command marks as spoken thunder, Ω resistance in handle, && requiring dual truth, grounded on ■ throne
 
 **Iterations:**
 1.
@@ -320,12 +325,13 @@ The result should feel:
 |-------|---------|
 | Adinkra | Sankofa (return and retrieve) — learning from past |
 | Veve | Erzulie Freda — heart with sword, mirror, flowers, flowing lines |
+| Eglash | Cornrow spiral — braiding mathematics, beauty as algorithm |
 | Quantum | ∑ summation — drawing together |
 | CS | \| pipe — channeling flow |
 | Primitive | ∿ wave — continuous motion |
 | Sacred | Golden Spiral — beauty in proportion |
 
-**Fusion concept:** Erzulie's heart as frame, Sankofa bird at center looking back, Golden spiral flowing through, ∑ gathering beauty, \| channels as river borders, ∿ waves as hair/water
+**Fusion concept:** Erzulie's heart as frame, Sankofa bird looking back, Eglash cornrow spirals as flowing hair/river, Golden spiral and ∑ gathering beauty, \| channels as borders
 
 **Iterations:**
 1.
@@ -341,12 +347,13 @@ The result should feel:
 |-------|---------|
 | Adinkra | Aya (fern) — endurance, resourcefulness |
 | Veve | Loco — tree of knowledge, leaves, medicine staff, birds |
+| Eglash | L-system branching — Ethiopian church crosses, recursive growth |
 | Quantum | recursive ψ(ψ) — self-reference |
 | CS | { } nested — data structure |
 | Primitive | + cross — healing, addition |
 | Sacred | Fractal branching — L-system growth |
 
-**Fusion concept:** Loco's medicine tree as trunk, Aya fern as fractal branches, + healing cross at roots, nested { } containing leaf-knowledge, ψ(ψ) recursive growth pattern
+**Fusion concept:** Loco's medicine tree as trunk, Aya fern and Eglash Ethiopian cross patterns as recursive branches, + at roots, nested { } containing leaf-knowledge, ψ(ψ) self-similar at every scale
 
 **Iterations:**
 1.
@@ -363,12 +370,13 @@ The result should feel:
 | Adinkra | Sesa Wo Suban — transformation, life changing |
 | Veve | Agwe / La Baleine — boat, anchor, waves, whale, deep sea |
 | Nsibidi | Water/depth ideograms — descending marks |
+| Eglash | Logarithmic spiral — shell descent, pressure scaling |
 | Quantum | tunneling — passing through barriers |
 | CS | * pointer — indirection, reference to hidden |
 | Primitive | ◆ diamond — pressure, depth |
 | Sacred | Spiral descent — into depths |
 
-**Fusion concept:** Agwe's anchor descending through spiral, La Baleine whale form as vessel, Nsibidi water marks, * pointer to hidden depths, ◆ diamond of pressure at abyss, Sesa Wo Suban transformation at threshold
+**Fusion concept:** Agwe's anchor descending through Eglash logarithmic spiral, La Baleine whale as vessel, Nsibidi water marks guiding descent, * pointer to hidden depths, ◆ diamond of crushing pressure at abyss
 
 **Iterations:**
 1.
