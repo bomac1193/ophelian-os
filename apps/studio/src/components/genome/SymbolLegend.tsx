@@ -294,16 +294,20 @@ export function SymbolLegend({ searchable = false }: SymbolLegendProps) {
               border: '1px solid var(--border)',
               cursor: 'pointer',
               transition: 'border-color 0.2s ease',
-              minWidth: '140px',
+              width: '120px',
+              height: '120px',
               textAlign: 'center',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
             onMouseEnter={(e) => e.currentTarget.style.borderColor = 'var(--foreground)'}
             onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--border)'}
             >
-              <div style={{ fontSize: '2rem', fontWeight: 300, marginBottom: '0.25rem' }}>{imprint.symbol}</div>
-              <div style={{ fontSize: '0.875rem', fontWeight: 700 }}>{subtaste?.glyph || imprint.label}</div>
-              <div style={{ fontSize: '0.7rem', color: 'var(--muted-foreground)', marginTop: '0.25rem' }}>{imprint.aestheticClass}</div>
-              <div style={{ fontSize: '0.65rem', color: 'var(--muted-foreground)', marginTop: '0.25rem', opacity: 0.7 }}>{subtaste?.label || ''}</div>
+              <div style={{ fontSize: '1.75rem', fontWeight: 300, marginBottom: '0.25rem' }}>{imprint.symbol}</div>
+              <div style={{ fontSize: '0.75rem', fontWeight: 700 }}>{subtaste?.glyph || imprint.label}</div>
+              <div style={{ fontSize: '0.625rem', color: 'var(--muted-foreground)', marginTop: '0.25rem' }}>{imprint.aestheticClass}</div>
             </div>
           );
         };
@@ -349,15 +353,16 @@ export function SymbolLegend({ searchable = false }: SymbolLegendProps) {
                 return (
                   <div key={phase} style={{
                     display: 'flex',
-                    alignItems: 'flex-start',
+                    alignItems: 'center',
                     gap: '2rem',
-                    padding: '1.5rem',
+                    padding: '1rem 1.5rem',
                     borderBottom: phase !== 'flow' ? '1px solid var(--border)' : 'none',
+                    minHeight: '140px',
                   }}>
                     {/* Phase Label */}
-                    <div style={{ minWidth: '140px', flexShrink: 0 }}>
+                    <div style={{ width: '120px', flexShrink: 0 }}>
                       <div style={{
-                        fontSize: '0.875rem',
+                        fontSize: '0.75rem',
                         fontWeight: 700,
                         textTransform: 'uppercase',
                         letterSpacing: '0.1em',
@@ -366,7 +371,7 @@ export function SymbolLegend({ searchable = false }: SymbolLegendProps) {
                         {phaseInfo.label}
                       </div>
                       <div style={{
-                        fontSize: '0.7rem',
+                        fontSize: '0.625rem',
                         color: 'var(--muted-foreground)',
                         lineHeight: 1.4,
                       }}>
@@ -375,7 +380,12 @@ export function SymbolLegend({ searchable = false }: SymbolLegendProps) {
                     </div>
 
                     {/* Phase Nodes */}
-                    <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                    <div style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(auto-fill, 120px)',
+                      gap: '1rem',
+                      flex: 1,
+                    }}>
                       {orishasInPhase.map((orisha) => (
                         <PhaseNode key={orisha} orisha={orisha} />
                       ))}
