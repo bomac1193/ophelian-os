@@ -1,10 +1,18 @@
 /* Typography: Canela (headers) + Inter (body) */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-/* Canela - Commercial Type (add font file to /public/fonts/) */
+/* Canela - Commercial Type */
 @font-face {
   font-family: 'Canela';
-  src: url('/fonts/Canela-Regular.ttf') format('truetype');
+  src: url('/fonts/canela_light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Canela';
+  src: url('/fonts/canela_roman.otf') format('opentype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -12,8 +20,8 @@
 
 @font-face {
   font-family: 'Canela';
-  src: url('/fonts/Canela-Medium.ttf') format('truetype');
-  font-weight: 500;
+  src: url('/fonts/canela_bold.otf') format('opentype');
+  font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
