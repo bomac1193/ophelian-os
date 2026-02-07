@@ -148,6 +148,13 @@ export function CharacterDetailPanel({ character, onClose, onRefresh }: Characte
         </div>
       )}
 
+      {character.bio && (
+        <div className="detail-section">
+          <label className="label">Bio</label>
+          <p className="detail-text">{character.bio}</p>
+        </div>
+      )}
+
       {character.aliases.length > 0 && (
         <div className="detail-section">
           <label className="label">Aliases</label>
@@ -158,13 +165,6 @@ export function CharacterDetailPanel({ character, onClose, onRefresh }: Characte
               </span>
             ))}
           </div>
-        </div>
-      )}
-
-      {character.bio && (
-        <div className="detail-section">
-          <label className="label">Bio</label>
-          <p className="detail-text">{character.bio}</p>
         </div>
       )}
 
