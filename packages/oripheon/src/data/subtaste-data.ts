@@ -198,6 +198,7 @@ export const ARCHETYPE_TO_SUBTASTE: Record<string, string> = {
   eshu: 'V-2',           // crossroads sees first
   oya: 'R-10',           // storm fractures productively
   orunmila: 'T-1',       // divination reads systems
+  oshosi: 'C-4',         // hunter edits, tracks, removes excess
   osanyin: 'P-7',        // herbs preserved as archive
   babalu_aye: 'H-6',     // healing through toll
   olokun: 'D-8',         // deep ocean channels
@@ -409,6 +410,7 @@ const ORISHA_ENERGY: Record<string, 'hot' | 'cool' | 'crossroads'> = {
   eshu: 'crossroads',
   oya: 'hot',
   orunmila: 'cool',
+  oshosi: 'hot',        // hunter energy
   osanyin: 'cool',
   babalu_aye: 'cool',
   olokun: 'cool',

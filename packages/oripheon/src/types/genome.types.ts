@@ -17,7 +17,9 @@ export type OrishaName =
   | 'Obàtálá'
   | 'Ọ̀rúnmìlà'
   | 'Ọ̀ṣọ́ọ̀sì'
-  | 'Ọ̀sanyìn';
+  | 'Ọ̀sanyìn'
+  | 'Olókun'
+  | 'Babalú-Ayé';
 
 export interface Camino {
   name: string;

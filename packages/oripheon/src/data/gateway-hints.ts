@@ -142,6 +142,30 @@ export const ENHANCED_GATEWAY_HINTS: Record<OrishaName, EnhancedGatewayHint> = {
     },
     actionableInsight: 'Release what\'s dead to make space for new life. Transformation requires loss.',
   },
+
+  'Olókun': {
+    shortHint: 'The deep holds what the surface cannot contain',
+    expandedContent: 'Olókun dwells in the ocean depths where light cannot reach, keeper of secrets and untold wealth. This character operates from profound depths of consciousness, channeling currents that move beneath visible reality. They understand that the deepest truths require pressure to form.',
+    correspondences: {
+      element: 'Deep Ocean',
+      day: 'Saturday',
+      number: 7,
+      colors: ['Deep Blue', 'Black', 'Silver'],
+    },
+    actionableInsight: 'Go deeper. The surface reveals nothing. True wealth lies in the unconscious depths.',
+  },
+
+  'Babalú-Ayé': {
+    shortHint: 'Wounds become wisdom, suffering transforms to healing',
+    expandedContent: 'Babalú-Ayé walks covered in the marks of what he has survived, his wounds the source of his healing power. This character has been through the fire and emerged with the ability to heal others. They understand that personal suffering, when alchemized, becomes medicine for the world.',
+    correspondences: {
+      element: 'Earth',
+      day: 'Wednesday',
+      number: 17,
+      colors: ['Purple', 'Brown', 'Burlap'],
+    },
+    actionableInsight: 'Your wounds are your credentials. What broke you becomes what heals others.',
+  },
 };
 
 /**

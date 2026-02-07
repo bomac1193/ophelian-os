@@ -17,6 +17,8 @@ const GRANT_ORISHA_SEPHIRA_MAP: Record<OrishaName, SephiraName> = {
   'Ọya': 'Daath',
   'Ọ̀ṣọ́ọ̀sì': 'Tiphareth',
   'Ọ̀sanyìn': 'Chesed',
+  'Olókun': 'Malkuth',
+  'Babalú-Ayé': 'Netzach',
 };
 
 export const ORISHA_DATA: Record<OrishaName, Orisha> = {
@@ -528,6 +530,72 @@ export const ORISHA_DATA: Record<OrishaName, Orisha> = {
       instrument: 'leaf sounds, bird calls, medicinal rattles',
       movementQuality: 'one-legged hopping, bird-like, eccentric',
       vocalPattern: 'high-pitched, bird-like, speaking in riddles about plants',
+    },
+  },
+  'Olókun': {
+    name: 'Olókun',
+    title: 'The Deep Ocean',
+    domain: ['ocean depths', 'mystery', 'wealth', 'unconscious', 'secrets'],
+    colors: ['deep blue', 'black', 'silver'],
+    element: 'water',
+    number: 7,
+    day: 'Saturday',
+    kabbalisticCorrespondence: 'Malkuth',
+    caminos: [
+      {
+        name: 'Olókun Ìyá',
+        aspect: 'The Ocean Mother',
+        description: 'Nurturing depths that hold all secrets. Source of primordial wealth.',
+        colors: ['deep blue', 'silver'],
+        correspondences: {
+          planet: 'Neptune',
+          offerings: ['seashells', 'blue cloth', 'molasses'],
+        },
+      },
+    ],
+    shadowForm: {
+      name: 'Drowned One',
+      aspect: 'Consuming depths',
+      manifestation: 'Pulls down into darkness, hoards secrets destructively',
+    },
+    multiModalSignature: {
+      rhythm: 'deep, slow waves, pressure',
+      instrument: 'deep drums, conch shell, water sounds',
+      movementQuality: 'heavy, undulating, gravitational',
+      vocalPattern: 'deep, echoing, from the abyss',
+    },
+  },
+  'Babalú-Ayé': {
+    name: 'Babalú-Ayé',
+    title: 'The Healer of Afflictions',
+    domain: ['healing', 'disease', 'suffering', 'compassion', 'transformation'],
+    colors: ['purple', 'brown', 'burlap'],
+    element: 'earth',
+    number: 17,
+    day: 'Wednesday',
+    kabbalisticCorrespondence: 'Netzach',
+    caminos: [
+      {
+        name: 'Babalú-Ayé Asojano',
+        aspect: 'The Covered One',
+        description: 'Walks covered to hide his wounds. Heals through understanding suffering.',
+        colors: ['purple', 'brown'],
+        correspondences: {
+          planet: 'Saturn',
+          offerings: ['beans', 'roasted corn', 'wine'],
+        },
+      },
+    ],
+    shadowForm: {
+      name: 'Plague Bringer',
+      aspect: 'Unhealed wounds',
+      manifestation: 'Spreads suffering, refuses healing, wallows in disease',
+    },
+    multiModalSignature: {
+      rhythm: 'limping, uneven, persistent',
+      instrument: 'ajá (broom rattle), low drums',
+      movementQuality: 'limping, dragging, relentless forward motion',
+      vocalPattern: 'raspy, labored breathing, words of endurance',
     },
   },
 };

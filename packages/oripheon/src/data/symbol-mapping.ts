@@ -15,9 +15,9 @@ import type { OrishaName, SephiraName } from '../types/genome.types.js';
 // SYMBOL TYPES
 // ============================================================================
 
-export type MathSymbol = 'λ' | 'Σ' | 'Δ' | 'Ω' | 'Φ' | '∞' | 'Ψ' | 'Θ' | 'Ξ' | 'Π';
+export type MathSymbol = 'λ' | 'Σ' | 'Δ' | 'Ω' | 'Φ' | '∞' | 'Ψ' | 'Θ' | 'Ξ' | 'Π' | 'Γ' | 'α';
 
-export type GeometricPrimitive = '⬡' | '●' | '▲' | '×' | '◆' | '◇' | '■' | '○' | '▶' | '+' | '≈';
+export type GeometricPrimitive = '⬡' | '●' | '▲' | '×' | '◆' | '◇' | '■' | '○' | '▶' | '+' | '≈' | '◎';
 
 export type AestheticClass =
   | 'S-0'  // KETH - Standard-Bearer
@@ -30,7 +30,8 @@ export type AestheticClass =
   | 'P-7'  // VAULT - Living Archive
   | 'D-8'  // WICK - Hollow Channel
   | 'F-9'  // ANVIL - Manifestor
-  | 'R-10'; // SCHISM - Productive Fracture
+  | 'R-10' // SCHISM - Productive Fracture
+  | 'NULL'; // VOID - Receptive Presence
 
 export interface SymbolicImprint {
   // Layer 1: What users see by default
@@ -61,7 +62,7 @@ export const SYMBOLIC_IMPRINTS: Record<OrishaName, SymbolicImprint> = {
     label: 'ANVIL',
     keywords: ['Forge', 'Structure', 'Creation'],
     essence: 'Shapes raw material into form through will and craft',
-    creativePhase: 'manifestation',
+    creativePhase: 'genesis',
     orisha: 'Ògún',
     sephira: 'Geburah',
   },
@@ -85,7 +86,7 @@ export const SYMBOLIC_IMPRINTS: Record<OrishaName, SymbolicImprint> = {
     label: 'OMEN',
     keywords: ['Chaos', 'Change', 'Crossroads'],
     essence: 'Disrupts patterns to enable transformation and new possibilities',
-    creativePhase: 'genesis',
+    creativePhase: 'vision',
     orisha: 'Èṣù',
     sephira: 'Daath',
   },
@@ -97,7 +98,7 @@ export const SYMBOLIC_IMPRINTS: Record<OrishaName, SymbolicImprint> = {
     label: 'TOLL',
     keywords: ['Justice', 'Thunder', 'Authority'],
     essence: 'Commands through presence and delivers swift judgment',
-    creativePhase: 'vision',
+    creativePhase: 'manifestation',
     orisha: 'Ṣàngó',
     sephira: 'Tiphareth',
   },
@@ -109,7 +110,7 @@ export const SYMBOLIC_IMPRINTS: Record<OrishaName, SymbolicImprint> = {
     label: 'SILT',
     keywords: ['Nurture', 'Depths', 'Mother'],
     essence: 'Holds space for all things to gestate and emerge in wholeness',
-    creativePhase: 'flow',
+    creativePhase: 'manifestation',
     orisha: 'Yemọja',
     sephira: 'Binah',
   },
@@ -121,7 +122,7 @@ export const SYMBOLIC_IMPRINTS: Record<OrishaName, SymbolicImprint> = {
     label: 'STRATA',
     keywords: ['Fate', 'Divination', 'Wisdom'],
     essence: 'Sees all possible futures and guides through uncertainty',
-    creativePhase: 'vision',
+    creativePhase: 'refinement',
     orisha: 'Ọ̀rúnmìlà',
     sephira: 'Kether',
   },
@@ -133,7 +134,7 @@ export const SYMBOLIC_IMPRINTS: Record<OrishaName, SymbolicImprint> = {
     label: 'KETH',
     keywords: ['Purity', 'Creation', 'Wholeness'],
     essence: 'Manifests form from emptiness through perfect clarity',
-    creativePhase: 'genesis',
+    creativePhase: 'vision',
     orisha: 'Obàtálá',
     sephira: 'Kether',
   },
@@ -157,7 +158,7 @@ export const SYMBOLIC_IMPRINTS: Record<OrishaName, SymbolicImprint> = {
     label: 'VAULT',
     keywords: ['Medicine', 'Cycles', 'Restoration'],
     essence: 'Restores balance through knowledge of natural rhythms',
-    creativePhase: 'refinement',
+    creativePhase: 'flow',
     orisha: 'Ọ̀sanyìn',
     sephira: 'Yesod',
   },
@@ -172,6 +173,30 @@ export const SYMBOLIC_IMPRINTS: Record<OrishaName, SymbolicImprint> = {
     creativePhase: 'genesis',
     orisha: 'Ọya',
     sephira: 'Chokmah',
+  },
+
+  'Olókun': {
+    symbol: 'Γ',
+    primitive: '◆',
+    aestheticClass: 'D-8',
+    label: 'WICK',
+    keywords: ['Depths', 'Secrets', 'Unconscious'],
+    essence: 'Channels the unfathomable currents of the deep',
+    creativePhase: 'flow',
+    orisha: 'Olókun',
+    sephira: 'Malkuth',
+  },
+
+  'Babalú-Ayé': {
+    symbol: 'α',
+    primitive: '◎',
+    aestheticClass: 'NULL',
+    label: 'VOID',
+    keywords: ['Wounds', 'Healing', 'Transformation'],
+    essence: 'Transmutes suffering into medicine for the world',
+    creativePhase: 'flow',
+    orisha: 'Babalú-Ayé',
+    sephira: 'Malkuth',
   },
 };
 

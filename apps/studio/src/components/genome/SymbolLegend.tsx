@@ -13,17 +13,20 @@ import { EnhancedGatewayTooltip } from './EnhancedGatewayTooltip';
 import { SymbolicImprint } from './SymbolicImprint';
 import styles from './SymbolLegend.module.css';
 
+// All 12 Orishas mapped to THE TWELVE subtastes + NULL
 const ALL_ORISHAS: OrishaName[] = [
-  'Èṣù',
-  'Ògún',
-  'Ọ̀ṣun',
-  'Yemọja',
-  'Ṣàngó',
-  'Ọya',
-  'Obàtálá',
-  'Ọ̀rúnmìlà',
-  'Ọ̀ṣọ́ọ̀sì',
-  'Ọ̀sanyìn',
+  'Obàtálá',    // S-0 KETH - vision
+  'Ọ̀rúnmìlà',  // T-1 STRATA - refinement
+  'Èṣù',        // V-2 OMEN - vision
+  'Yemọja',     // L-3 SILT - manifestation
+  'Ọ̀ṣọ́ọ̀sì',   // C-4 CULL - refinement
+  'Ọ̀ṣun',      // N-5 LIMN - flow
+  'Ṣàngó',      // H-6 TOLL - manifestation
+  'Ọ̀sanyìn',   // P-7 VAULT - flow
+  'Olókun',     // D-8 WICK - flow
+  'Ògún',       // F-9 ANVIL - genesis
+  'Ọya',        // R-10 SCHISM - genesis
+  'Babalú-Ayé', // NULL VOID - flow
 ];
 
 interface SymbolCardProps {
@@ -120,18 +123,25 @@ const CREATIVE_PHASES: Record<string, { label: string; description: string }> = 
   'flow': { label: 'Flow', description: 'Sustaining force — continuous creation' },
 };
 
-// Map Orisha to their Creative Phase
+// Map Orisha to their Creative Phase (aligned with SUBTASTE_DESIGNATIONS)
 const ORISHA_PHASES: Record<OrishaName, string> = {
-  'Èṣù': 'genesis',
-  'Obàtálá': 'genesis',
-  'Ọya': 'genesis',
-  'Ṣàngó': 'vision',
-  'Ọ̀rúnmìlà': 'vision',
-  'Ọ̀ṣọ́ọ̀sì': 'refinement',
-  'Ọ̀sanyìn': 'refinement',
-  'Ògún': 'manifestation',
-  'Ọ̀ṣun': 'flow',
-  'Yemọja': 'flow',
+  // Genesis phase (fire/creation) - F-9, R-10
+  'Ògún': 'genesis',       // F-9 ANVIL - manifestor, hammers will into shape
+  'Ọya': 'genesis',        // R-10 SCHISM - productive fracture
+  // Vision phase (wood/scouting) - S-0, V-2
+  'Obàtálá': 'vision',     // S-0 KETH - standard-bearer, sets the tone
+  'Èṣù': 'vision',         // V-2 OMEN - early witness, sees what approaches
+  // Refinement phase (metal/editing) - T-1, C-4
+  'Ọ̀rúnmìlà': 'refinement', // T-1 STRATA - system-seer, reads layers
+  'Ọ̀ṣọ́ọ̀sì': 'refinement',  // C-4 CULL - essential editor, removes excess
+  // Manifestation phase (earth/driving) - L-3, H-6
+  'Yemọja': 'manifestation', // L-3 SILT - patient cultivator
+  'Ṣàngó': 'manifestation',  // H-6 TOLL - relentless advocate
+  // Flow phase (water/channeling) - N-5, P-7, D-8, NULL
+  'Ọ̀ṣun': 'flow',          // N-5 LIMN - border illuminator
+  'Ọ̀sanyìn': 'flow',       // P-7 VAULT - living archive
+  'Olókun': 'flow',         // D-8 WICK - hollow channel, deep ocean
+  'Babalú-Ayé': 'flow',     // NULL VOID - receptive presence, healing
 };
 
 interface SymbolLegendProps {
