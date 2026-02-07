@@ -2,7 +2,67 @@
 
 ## Overview
 
-Developing a custom symbol system for THE TWELVE through syncretic fusion:
+Developing a custom symbol system for THE TWELVE through syncretic fusion.
+
+---
+
+## THE TWELVE — God Names
+
+Constructed technonyms: post-colonial, non-mythic, functional — designed to feel ancestral without referencing specific religious or linguistic sources.
+
+| Code | God Name | Glyph | Orisha | Hebrew | Domain |
+|------|----------|-------|--------|--------|--------|
+| F-9 | **K̄ALØN** | ANVIL | Ògún | ש Shin (fire) | Igniter, forge, first spark |
+| R-10 | **TΞKRA** | SCHISM | Ọya | ז Zayin (sword) | Divider, fracture, storm |
+| S-0 | **SÆ** | KETH | Obàtálá | א Aleph (breath) | Witness, purity, void |
+| V-2 | **ÆRŊ** | OMEN | Èṣù | ד Daleth (door) | Translator, crossroads |
+| T-1 | **LŌRχ** | STRATA | Ọ̀rúnmìlà | ק Qoph (cycles) | Loop-keeper, divination |
+| C-4 | **Kĕθū** | CULL | Ọ̀ṣọ́ọ̀sì | ל Lamed (goad) | Breaker, precision cut |
+| L-3 | **ØMÆRA** | SILT | Yemọja | מ Mem (water) | Carrier, ocean mother |
+| H-6 | **Zâbɪn** | TOLL | Ṣàngó | פ Pe (mouth) | Amplifier, thunder |
+| N-5 | **Bĕṋrî** | LIMN | Ọ̀ṣun | ו Vav (hook) | Binder, beauty, attraction |
+| P-7 | **Dū·m̱a** | VAULT | Ọ̀sanyìn | ס Samekh (support) | Dampener, medicine |
+| D-8 | **Nòxū** | WICK | Olókun | נ Nun (fish) | Shadow, depths, hidden |
+| NULL | **BȺLTA** | VOID | Babalú-Ayé | ת Tav (mark) | Anchor, wounds, ground |
+
+### Hebrew Letter Logic
+
+Each Hebrew letter encodes the archetype's essential operation:
+
+| Letter | Meaning | Why it fits |
+|--------|---------|-------------|
+| **ש Shin** | Fire, tooth, transformation | K̄ALØN ignites, transforms raw into form |
+| **ז Zayin** | Sword, weapon, cutting | TΞKRA divides, fractures, clears |
+| **א Aleph** | Ox, breath, spirit, void | SÆ witnesses from emptiness |
+| **ד Daleth** | Door, gateway, passage | ÆRŊ translates between domains |
+| **ק Qoph** | Back of head, cycles, unconscious | LŌRχ keeps loops, remembers fate |
+| **ל Lamed** | Ox goad, teaching, directing | Kĕθū breaks precisely, aims true |
+| **מ Mem** | Water, womb, carrying | ØMÆRA carries, nurtures, gestates |
+| **פ Pe** | Mouth, speech, thunder | Zâbɪn amplifies, declares, commands |
+| **ו Vav** | Nail, hook, connection | Bĕṋrî binds, attracts, joins |
+| **ס Samekh** | Support, prop, stabilizing | Dū·m̱a dampens, restores, archives |
+| **נ Nun** | Fish, hidden movement, depths | Nòxū shadows, channels unconscious |
+| **ת Tav** | Cross, signature, completion | BȺLTA anchors, marks, grounds |
+
+### Diacritic Grammar
+
+Each accent encodes function:
+
+| Mark | Meaning | Example |
+|------|---------|---------|
+| ¯ (macron) | Stability, sustain, memory | K̄, Ō, ū |
+| ` (grave) | Decay, shadow, latency | ò |
+| ˘ (breve) | Pulse, oscillation | ĕ |
+| ˆ (circumflex) | Ascent, recursion | â |
+| · (underdot/mid) | Grounding, materiality | m̱ |
+| Ø/Æ | Synthesis, hybrid states | ØMÆRA, SÆ |
+| Ξ/χ/θ | Unknown, mutation, interference | TΞKRA, LŌRχ, Kĕθū |
+| Ⱥ | Voided, crossed out, wounded | BȺLTA |
+| Ŋ | Nasal/bridge, between states | ÆRŊ |
+
+---
+
+## Visual Fusion Sources
 
 **African Diasporic Traditions** + **Quantum Mathematics** + **Computer Science** + **Primitive Symbols** + **Sacred Geometry**
 
@@ -135,8 +195,9 @@ The result should feel:
 
 ### Genesis Phase (Fire/Creation)
 
-#### F-9 ANVIL — Ògún
-**Domain:** Forge, structure, iron, creation through will
+#### F-9 ANVIL — K̄ALØN — Ògún
+**Hebrew:** ש Shin (fire, transformation)
+**Domain:** Igniter, forge, structure, iron, creation through will
 
 | Layer | Element |
 |-------|---------|
@@ -156,8 +217,9 @@ The result should feel:
 
 ---
 
-#### R-10 SCHISM — Ọya
-**Domain:** Storm, transformation, death, clearing
+#### R-10 SCHISM — TΞKRA — Ọya
+**Hebrew:** ז Zayin (sword, cutting)
+**Domain:** Divider, storm, transformation, death, clearing
 
 | Layer | Element |
 |-------|---------|
@@ -180,8 +242,9 @@ The result should feel:
 
 ### Vision Phase (Wood/Scouting)
 
-#### S-0 KETH — Obàtálá
-**Domain:** Purity, creation from void, wholeness, standard
+#### S-0 KETH — SÆ — Obàtálá
+**Hebrew:** א Aleph (breath, spirit, void)
+**Domain:** Witness, purity, creation from void, wholeness, standard
 
 | Layer | Element |
 |-------|---------|
@@ -201,8 +264,9 @@ The result should feel:
 
 ---
 
-#### V-2 OMEN — Èṣù
-**Domain:** Crossroads, chaos, change, trickster, messenger
+#### V-2 OMEN — ÆRŊ — Èṣù
+**Hebrew:** ד Daleth (door, gateway)
+**Domain:** Translator, crossroads, chaos, change, trickster, messenger
 
 | Layer | Element |
 |-------|---------|
@@ -225,8 +289,9 @@ The result should feel:
 
 ### Refinement Phase (Metal/Editing)
 
-#### T-1 STRATA — Ọ̀rúnmìlà
-**Domain:** Fate, divination, wisdom, seeing layers
+#### T-1 STRATA — LŌRχ — Ọ̀rúnmìlà
+**Hebrew:** ק Qoph (back of head, cycles)
+**Domain:** Loop-keeper, fate, divination, wisdom, seeing layers
 
 | Layer | Element |
 |-------|---------|
@@ -248,8 +313,9 @@ The result should feel:
 
 ---
 
-#### C-4 CULL — Ọ̀ṣọ́ọ̀sì
-**Domain:** Precision, hunting, focus, essential editing
+#### C-4 CULL — Kĕθū — Ọ̀ṣọ́ọ̀sì
+**Hebrew:** ל Lamed (ox goad, directing)
+**Domain:** Breaker, precision, hunting, focus, essential editing
 
 | Layer | Element |
 |-------|---------|
@@ -272,8 +338,9 @@ The result should feel:
 
 ### Manifestation Phase (Earth/Driving)
 
-#### L-3 SILT — Yemọja
-**Domain:** Nurture, ocean depths, mother, gestation
+#### L-3 SILT — ØMÆRA — Yemọja
+**Hebrew:** מ Mem (water, womb)
+**Domain:** Carrier, nurture, ocean depths, mother, gestation
 
 | Layer | Element |
 |-------|---------|
@@ -294,8 +361,9 @@ The result should feel:
 
 ---
 
-#### H-6 TOLL — Ṣàngó
-**Domain:** Justice, thunder, authority, advocacy
+#### H-6 TOLL — Zâbɪn — Ṣàngó
+**Hebrew:** פ Pe (mouth, speech, thunder)
+**Domain:** Amplifier, justice, thunder, authority, advocacy
 
 | Layer | Element |
 |-------|---------|
@@ -318,8 +386,9 @@ The result should feel:
 
 ### Flow Phase (Water/Channeling)
 
-#### N-5 LIMN — Ọ̀ṣun
-**Domain:** Beauty, attraction, river, fluidity, borders
+#### N-5 LIMN — Bĕṋrî — Ọ̀ṣun
+**Hebrew:** ו Vav (nail, hook, connection)
+**Domain:** Binder, beauty, attraction, river, fluidity, borders
 
 | Layer | Element |
 |-------|---------|
@@ -340,8 +409,9 @@ The result should feel:
 
 ---
 
-#### P-7 VAULT — Ọ̀sanyìn
-**Domain:** Medicine, cycles, herbs, restoration, archive
+#### P-7 VAULT — Dū·m̱a — Ọ̀sanyìn
+**Hebrew:** ס Samekh (support, prop)
+**Domain:** Dampener, medicine, cycles, herbs, restoration, archive
 
 | Layer | Element |
 |-------|---------|
@@ -362,8 +432,9 @@ The result should feel:
 
 ---
 
-#### D-8 WICK — Olókun
-**Domain:** Deep ocean, secrets, unconscious, channel
+#### D-8 WICK — Nòxū — Olókun
+**Hebrew:** נ Nun (fish, hidden movement)
+**Domain:** Shadow, deep ocean, secrets, unconscious, channel
 
 | Layer | Element |
 |-------|---------|
@@ -385,8 +456,9 @@ The result should feel:
 
 ---
 
-#### NULL VOID — Babalú-Ayé
-**Domain:** Wounds, healing, transformation through suffering
+#### NULL VOID — BȺLTA — Babalú-Ayé
+**Hebrew:** ת Tav (cross, signature, completion)
+**Domain:** Anchor, wounds, healing, transformation through suffering
 
 | Layer | Element |
 |-------|---------|
