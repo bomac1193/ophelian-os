@@ -88,71 +88,41 @@ export function CharacterDetailPanel({ character, onClose, onRefresh }: Characte
       {/* Bóveda Profile */}
       {subtasteInfo && (
         <div className="detail-section">
-          {/* Header with Bóveda, expand toggle, and A+ button */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <div
-              style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', flex: 1 }}
-              onClick={() => setShowSubtaste(!showSubtaste)}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => { if (e.key === 'Enter') setShowSubtaste(!showSubtaste); }}
-            >
-              <label className="label" style={{ cursor: 'pointer', margin: 0 }}>Bóveda</label>
-              <span style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)' }}>{showSubtaste ? '\u2212' : '+'}</span>
-            </div>
-            <div
-              onClick={(e) => { e.stopPropagation(); setShowAdvanced(!showAdvanced); }}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => { if (e.key === 'Enter') { e.stopPropagation(); setShowAdvanced(!showAdvanced); } }}
-              style={{
-                fontFamily: 'var(--font-ui)',
-                fontSize: '0.5rem',
-                fontWeight: 600,
-                letterSpacing: '0.05em',
-                padding: '0.25rem 0.375rem',
-                border: '1px solid var(--border)',
-                cursor: 'pointer',
-                color: showAdvanced ? 'var(--foreground)' : 'var(--muted-foreground)',
-              }}
-            >
-              A+
-            </div>
+          <div
+            className="subtaste-ref-header"
+            onClick={() => setShowSubtaste(!showSubtaste)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => { if (e.key === 'Enter') setShowSubtaste(!showSubtaste); }}
+          >
+            <label className="label" style={{ cursor: 'pointer', margin: 0 }}>
+              Bóveda
+            </label>
+            <span className="subtaste-ref-toggle">{showSubtaste ? '\u2212' : '+'}</span>
           </div>
 
-          {/* Classification + Archetype - always visible when expanded */}
-          {showSubtaste && (
-            <div style={{ display: 'flex', gap: '0.375rem', marginTop: '0.5rem', flexWrap: 'wrap' }}>
-              <span style={{ fontFamily: 'var(--font-ui)', fontSize: '0.625rem', fontWeight: 600, padding: '0.25rem 0.5rem', border: '1px solid var(--border)', background: '#000' }}>
-                {subtasteInfo.subtaste}
-              </span>
-              <span style={{ fontFamily: 'var(--font-ui)', fontSize: '0.625rem', fontWeight: 600, padding: '0.25rem 0.5rem', border: '1px solid var(--border)', background: '#000' }}>
-                {subtasteInfo.growth}
-              </span>
-              <span style={{ fontFamily: 'var(--font-ui)', fontSize: '0.625rem', fontWeight: 600, padding: '0.25rem 0.5rem', border: '1px solid var(--border)', background: '#000' }}>
-                {subtasteInfo.stress}
-              </span>
-            </div>
-          )}
+          {/* Compact summary - always visible */}
+          <div style={{ fontFamily: 'var(--font-ui)', fontSize: '0.6875rem', color: 'var(--foreground)', marginTop: '0.5rem' }}>
+            {MATERIA[subtasteInfo.wuXingElement] || subtasteInfo.wuXingElement}
+            <span style={{ color: 'var(--muted-foreground)', margin: '0 0.5rem' }}>·</span>
+            {subtasteInfo.growth}
+            <span style={{ color: 'var(--muted-foreground)', margin: '0 0.5rem' }}>·</span>
+            {subtasteInfo.stress}
+          </div>
 
-          {/* Advanced details */}
-          {showAdvanced && (
-            <div className="subtaste-ref-body" style={{ marginTop: '0.75rem' }}>
+          {showSubtaste && (
+            <div className="subtaste-ref-body">
               <div className="subtaste-ref-row">
                 <span className="subtaste-ref-key">Materia</span>
                 <span className="subtaste-ref-val">{MATERIA[subtasteInfo.wuXingElement] || subtasteInfo.wuXingElement}</span>
               </div>
               <div className="subtaste-ref-row">
-                <span className="subtaste-ref-key">Phase</span>
-                <span className="subtaste-ref-val">{subtasteInfo.phase}</span>
-              </div>
-              <div className="subtaste-ref-row">
                 <span className="subtaste-ref-key">Ascends to</span>
-                <span className="subtaste-ref-val">{subtasteInfo.growth} — {subtasteInfo.growthLabel}</span>
+                <span className="subtaste-ref-val">{subtasteInfo.growth}</span>
               </div>
               <div className="subtaste-ref-row">
                 <span className="subtaste-ref-key">Descends to</span>
-                <span className="subtaste-ref-val subtaste-ref-stress">{subtasteInfo.stress} — {subtasteInfo.stressLabel}</span>
+                <span className="subtaste-ref-val subtaste-ref-stress">{subtasteInfo.stress}</span>
               </div>
               <div className="subtaste-ref-row">
                 <span className="subtaste-ref-key">Awakens</span>
@@ -162,6 +132,37 @@ export function CharacterDetailPanel({ character, onClose, onRefresh }: Characte
                 <span className="subtaste-ref-key">Anchored by</span>
                 <span className="subtaste-ref-val subtaste-ref-stress">{MATERIA[subtasteInfo.overcomeBy] || subtasteInfo.overcomeBy}</span>
               </div>
+
+              {/* Advanced toggle */}
+              <div
+                style={{ marginTop: '0.75rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.375rem' }}
+                onClick={() => setShowAdvanced(!showAdvanced)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => { if (e.key === 'Enter') setShowAdvanced(!showAdvanced); }}
+              >
+                <span style={{ fontFamily: 'var(--font-ui)', fontSize: '0.5rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--muted-foreground)' }}>
+                  Advanced
+                </span>
+                <span style={{ fontSize: '0.625rem', color: 'var(--muted-foreground)' }}>{showAdvanced ? '\u2212' : '+'}</span>
+              </div>
+
+              {showAdvanced && (
+                <div style={{ marginTop: '0.5rem', paddingTop: '0.5rem', borderTop: '1px solid var(--border)' }}>
+                  <div className="subtaste-ref-row">
+                    <span className="subtaste-ref-key">Phase</span>
+                    <span className="subtaste-ref-val">{subtasteInfo.phase}</span>
+                  </div>
+                  <div className="subtaste-ref-row">
+                    <span className="subtaste-ref-key">{subtasteInfo.growth}</span>
+                    <span className="subtaste-ref-val">{subtasteInfo.growthLabel}</span>
+                  </div>
+                  <div className="subtaste-ref-row">
+                    <span className="subtaste-ref-key">{subtasteInfo.stress}</span>
+                    <span className="subtaste-ref-val subtaste-ref-stress">{subtasteInfo.stressLabel}</span>
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>
