@@ -68,7 +68,7 @@ export function Sidebar() {
       {/* Brand */}
       <div className={styles.brand}>
         <span className={styles.brandText}>
-          {collapsed ? 'B' : 'Bóveda'}
+          {collapsed ? 'S' : 'SÉLÒ'}
         </span>
         <button
           className={styles.collapseBtn}

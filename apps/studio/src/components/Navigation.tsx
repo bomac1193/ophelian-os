@@ -22,7 +22,7 @@ export function Navigation() {
 
   return (
     <nav className="nav">
-      <span className="nav-brand">Bóveda</span>
+      <span className="nav-brand">SÉLÒ</span>
       <div className="nav-links">
         {navLinks.map((link) => (
           <Link

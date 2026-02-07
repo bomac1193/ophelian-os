@@ -69,18 +69,18 @@ export function VoiceCard({ voice, onLicense }: VoiceCardProps) {
       <div className={styles.stats}>
         <div className={styles.statItem}>
           <span className={styles.statValue}>{voice.stats.totalLicenses}</span>
-          <span className={styles.statLabel}>Covenants</span>
+          <span className={styles.statLabel}>Licenses</span>
         </div>
         <div className={styles.statDivider}></div>
         <div className={styles.statItem}>
           <span className={styles.statValue}>{voice.stats.usageCount.toLocaleString()}</span>
-          <span className={styles.statLabel}>Channelings</span>
+          <span className={styles.statLabel}>Renderings</span>
         </div>
       </div>
 
       <div className={styles.pricing}>
         <div className={styles.priceSection}>
-          <h4 className={styles.priceTitle}>The Binding</h4>
+          <h4 className={styles.priceTitle}>Terms</h4>
           <div className={styles.priceOptions}>
             <div className={styles.priceOption}>
               <span className={styles.priceLabel}>SOLE CLAIM</span>
@@ -118,7 +118,7 @@ export function VoiceCard({ voice, onLicense }: VoiceCardProps) {
         onClick={onLicense}
         disabled={!voice.available}
       >
-        {voice.available ? 'BIND VESSEL' : 'VESSEL CLAIMED'}
+        {voice.available ? 'REQUEST ACCESS' : 'UNAVAILABLE'}
       </button>
     </div>
   );
