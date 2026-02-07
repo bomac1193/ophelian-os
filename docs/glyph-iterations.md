@@ -51,62 +51,60 @@ This means:
 
 Constructed technonyms: post-colonial, non-mythic, functional — designed to feel ancestral without referencing specific religious or linguistic sources.
 
-*Names locked. Mapped operatively — by what each name feels like it does.*
+## THE TWELVE — FINAL LOCKED (CANON)
 
-### Operative Mapping (by aesthetic feel)
+| Symbol | Glyph | Code | True Name | Pronunciation | Function |
+|--------|-------|------|-----------|---------------|----------|
+| λ | ANVIL | F-9 | **K̄ALØN** | KAH-luhn | Ignition |
+| Ψ | SCHISM | R-10 | **TΞχRA** | ZAI-khra | Division |
+| Θ | KETH | S-0 | **KĔṮU** | KEH-too | Witness |
+| Δ | OMEN | V-2 | **ØMÆRA** | uh-MAE-rah | Translation |
+| ∞ | STRATA | T-1 | **LŌRχE** | LOHR-kheh | Recursion |
+| Ξ | CULL | C-4 | **ΞDŌN** | ZAI-dohn | Interruption |
+| Φ | SILT | L-3 | **Dū·ṂȺ** | DOO-mah | Transport |
+| Ω | TOLL | H-6 | **ȺBŌLT** | uh-BOH-lt | Amplification |
+| Σ | LIMN | N-5 | **LIMŊ** | LIM-ng | Binding |
+| Π | VAULT | P-7 | **ȺRVŌ** | AR-voh | Dampening |
+| Γ | WICK | D-8 | **RŌχ** | Rox | Shadow |
+| α | VOID | NULL | **SÆ** | saeh | Anchor |
 
-| God Name | Typography Feel | Provisional Function | Glyph |
-|----------|-----------------|----------------------|-------|
-| **K̄ALØN** | Macron = stability, Ø = core/kernel | Boot, ignition, first motion | ANVIL |
-| **TΞKRA** | Ξ = fracture/glitch, sharp angles | Split, divide, clear away | SCHISM |
-| **SÆ** | Minimal ligature, almost silent | Observe, witness, null state | KETH |
-| **ÆRŊ** | Æ + Ŋ = bridging sounds | Translate, cross domains, mediate | OMEN |
-| **LŌRχ** | Macron = sustain, χ = recursive | Loop, remember, cycle back | STRATA |
-| **Kĕθū** | Breve = pulse, θ = threshold | Break, interrupt, cut precisely | CULL |
-| **ØMÆRA** | Ø + Æ = containing flow | Carry, gestate, transport | SILT |
-| **Zâbɪn** | Circumflex = rising pressure | Amplify, escalate, declare | TOLL |
-| **Bĕṋrî** | Soft consonants, under-hook = connection | Bind, attract, cohere | LIMN |
-| **Dū·m̱a** | Macron + underdot = weight | Dampen, smooth, restore | VAULT |
-| **Nòxū** | Grave = descent, shadow | Hide, channel latent, indirect | WICK |
-| **BȺLTA** | Ⱥ = crossed/marked, finality | Anchor, ground, reference | VOID |
+### Quick Reference
 
-### Summary Table
-
-| Code | God Name | Glyph | Function |
-|------|----------|-------|----------|
-| F-9 | K̄ALØN | ANVIL | Ignition |
-| R-10 | TΞKRA | SCHISM | Division |
-| S-0 | SÆ | KETH | Witness |
-| V-2 | ÆRŊ | OMEN | Translation |
-| T-1 | LŌRχ | STRATA | Recursion |
-| C-4 | Kĕθū | CULL | Interruption |
-| L-3 | ØMÆRA | SILT | Transport |
-| H-6 | Zâbɪn | TOLL | Amplification |
-| N-5 | Bĕṋrî | LIMN | Binding |
-| P-7 | Dū·m̱a | VAULT | Dampening |
-| D-8 | Nòxū | WICK | Shadow |
-| NULL | BȺLTA | VOID | Anchor |
+| Code | Symbol | True Name | Glyph |
+|------|--------|-----------|-------|
+| F-9 | λ | K̄ALØN | ANVIL |
+| R-10 | Ψ | TΞχRA | SCHISM |
+| S-0 | Θ | KĔṮU | KETH |
+| V-2 | Δ | ØMÆRA | OMEN |
+| T-1 | ∞ | LŌRχE | STRATA |
+| C-4 | Ξ | ΞDŌN | CULL |
+| L-3 | Φ | Dū·ṂȺ | SILT |
+| H-6 | Ω | ȺBŌLT | TOLL |
+| N-5 | Σ | LIMŊ | LIMN |
+| P-7 | Π | ȺRVŌ | VAULT |
+| D-8 | Γ | RŌχ | WICK |
+| NULL | α | SÆ | VOID |
 
 ### Deep Layers (Reference Only)
 
 The following are **not** the basis for mapping. They exist underneath — inherited from the original system architecture. Consult if useful. Ignore if not.
 
-| God Name | Orisha (Layer 3) | Glyph | Code |
-|----------|------------------|-------|------|
+| True Name | Orisha (Layer 3) | Glyph | Code |
+|-----------|------------------|-------|------|
 | K̄ALØN | Ògún | ANVIL | F-9 |
-| TΞKRA | Ọya | SCHISM | R-10 |
-| SÆ | Obàtálá | KETH | S-0 |
-| ÆRŊ | Èṣù | OMEN | V-2 |
-| LŌRχ | Ọ̀rúnmìlà | STRATA | T-1 |
-| Kĕθū | Ọ̀ṣọ́ọ̀sì | CULL | C-4 |
-| ØMÆRA | Yemọja | SILT | L-3 |
-| Zâbɪn | Ṣàngó | TOLL | H-6 |
-| Bĕṋrî | Ọ̀ṣun | LIMN | N-5 |
-| Dū·m̱a | Ọ̀sanyìn | VAULT | P-7 |
-| Nòxū | Olókun | WICK | D-8 |
-| BȺLTA | Babalú-Ayé | VOID | NULL |
+| TΞχRA | Ọya | SCHISM | R-10 |
+| KĔṮU | Obàtálá | KETH | S-0 |
+| ØMÆRA | Èṣù | OMEN | V-2 |
+| LŌRχE | Ọ̀rúnmìlà | STRATA | T-1 |
+| ΞDŌN | Ọ̀ṣọ́ọ̀sì | CULL | C-4 |
+| Dū·ṂȺ | Yemọja | SILT | L-3 |
+| ȺBŌLT | Ṣàngó | TOLL | H-6 |
+| LIMŊ | Ọ̀ṣun | LIMN | N-5 |
+| ȺRVŌ | Ọ̀sanyìn | VAULT | P-7 |
+| RŌχ | Olókun | WICK | D-8 |
+| SÆ | Babalú-Ayé | VOID | NULL |
 
-*The Orisha layer exists. It informed the original design. But the god names now stand on their own.*
+*The Orisha layer exists. It informed the original design. But the True Names now stand on their own.*
 
 ### Diacritic Grammar
 
@@ -259,9 +257,9 @@ The result should feel:
 
 ### Genesis Phase (Fire/Creation)
 
-#### F-9 ANVIL — K̄ALØN — Ògún
-**Hebrew:** ש Shin (fire, transformation)
-**Domain:** Igniter, forge, structure, iron, creation through will
+#### λ F-9 ANVIL — K̄ALØN (KAH-luhn) — Ògún
+**Function:** Ignition
+**Domain:** Forge, structure, iron, creation through will
 
 | Layer | Element |
 |-------|---------|
@@ -281,9 +279,9 @@ The result should feel:
 
 ---
 
-#### R-10 SCHISM — TΞKRA — Ọya
-**Hebrew:** ז Zayin (sword, cutting)
-**Domain:** Divider, storm, transformation, death, clearing
+#### Ψ R-10 SCHISM — TΞχRA (ZAI-khra) — Ọya
+**Function:** Division
+**Domain:** Storm, transformation, death, clearing
 
 | Layer | Element |
 |-------|---------|
@@ -306,9 +304,9 @@ The result should feel:
 
 ### Vision Phase (Wood/Scouting)
 
-#### S-0 KETH — SÆ — Obàtálá
-**Hebrew:** א Aleph (breath, spirit, void)
-**Domain:** Witness, purity, creation from void, wholeness, standard
+#### Θ S-0 KETH — KĔṮU (KEH-too) — Obàtálá
+**Function:** Witness
+**Domain:** Purity, creation from void, wholeness, standard
 
 | Layer | Element |
 |-------|---------|
@@ -328,9 +326,9 @@ The result should feel:
 
 ---
 
-#### V-2 OMEN — ÆRŊ — Èṣù
-**Hebrew:** ד Daleth (door, gateway)
-**Domain:** Translator, crossroads, chaos, change, trickster, messenger
+#### Δ V-2 OMEN — ØMÆRA (uh-MAE-rah) — Èṣù
+**Function:** Translation
+**Domain:** Crossroads, chaos, change, trickster, messenger
 
 | Layer | Element |
 |-------|---------|
@@ -353,9 +351,9 @@ The result should feel:
 
 ### Refinement Phase (Metal/Editing)
 
-#### T-1 STRATA — LŌRχ — Ọ̀rúnmìlà
-**Hebrew:** ק Qoph (back of head, cycles)
-**Domain:** Loop-keeper, fate, divination, wisdom, seeing layers
+#### ∞ T-1 STRATA — LŌRχE (LOHR-kheh) — Ọ̀rúnmìlà
+**Function:** Recursion
+**Domain:** Fate, divination, wisdom, seeing layers
 
 | Layer | Element |
 |-------|---------|
@@ -377,9 +375,9 @@ The result should feel:
 
 ---
 
-#### C-4 CULL — Kĕθū — Ọ̀ṣọ́ọ̀sì
-**Hebrew:** ל Lamed (ox goad, directing)
-**Domain:** Breaker, precision, hunting, focus, essential editing
+#### Ξ C-4 CULL — ΞDŌN (ZAI-dohn) — Ọ̀ṣọ́ọ̀sì
+**Function:** Interruption
+**Domain:** Precision, hunting, focus, essential editing
 
 | Layer | Element |
 |-------|---------|
@@ -402,9 +400,9 @@ The result should feel:
 
 ### Manifestation Phase (Earth/Driving)
 
-#### L-3 SILT — ØMÆRA — Yemọja
-**Hebrew:** מ Mem (water, womb)
-**Domain:** Carrier, nurture, ocean depths, mother, gestation
+#### Φ L-3 SILT — Dū·ṂȺ (DOO-mah) — Yemọja
+**Function:** Transport
+**Domain:** Nurture, ocean depths, mother, gestation
 
 | Layer | Element |
 |-------|---------|
@@ -425,9 +423,9 @@ The result should feel:
 
 ---
 
-#### H-6 TOLL — Zâbɪn — Ṣàngó
-**Hebrew:** פ Pe (mouth, speech, thunder)
-**Domain:** Amplifier, justice, thunder, authority, advocacy
+#### Ω H-6 TOLL — ȺBŌLT (uh-BOH-lt) — Ṣàngó
+**Function:** Amplification
+**Domain:** Justice, thunder, authority, advocacy
 
 | Layer | Element |
 |-------|---------|
@@ -450,9 +448,9 @@ The result should feel:
 
 ### Flow Phase (Water/Channeling)
 
-#### N-5 LIMN — Bĕṋrî — Ọ̀ṣun
-**Hebrew:** ו Vav (nail, hook, connection)
-**Domain:** Binder, beauty, attraction, river, fluidity, borders
+#### Σ N-5 LIMN — LIMŊ (LIM-ng) — Ọ̀ṣun
+**Function:** Binding
+**Domain:** Beauty, attraction, river, fluidity, borders
 
 | Layer | Element |
 |-------|---------|
@@ -473,9 +471,9 @@ The result should feel:
 
 ---
 
-#### P-7 VAULT — Dū·m̱a — Ọ̀sanyìn
-**Hebrew:** ס Samekh (support, prop)
-**Domain:** Dampener, medicine, cycles, herbs, restoration, archive
+#### Π P-7 VAULT — ȺRVŌ (AR-voh) — Ọ̀sanyìn
+**Function:** Dampening
+**Domain:** Medicine, cycles, herbs, restoration, archive
 
 | Layer | Element |
 |-------|---------|
@@ -496,9 +494,9 @@ The result should feel:
 
 ---
 
-#### D-8 WICK — Nòxū — Olókun
-**Hebrew:** נ Nun (fish, hidden movement)
-**Domain:** Shadow, deep ocean, secrets, unconscious, channel
+#### Γ D-8 WICK — RŌχ (Rox) — Olókun
+**Function:** Shadow
+**Domain:** Deep ocean, secrets, unconscious, channel
 
 | Layer | Element |
 |-------|---------|
@@ -520,9 +518,9 @@ The result should feel:
 
 ---
 
-#### NULL VOID — BȺLTA — Babalú-Ayé
-**Hebrew:** ת Tav (cross, signature, completion)
-**Domain:** Anchor, wounds, healing, transformation through suffering
+#### α NULL VOID — SÆ (saeh) — Babalú-Ayé
+**Function:** Anchor
+**Domain:** Wounds, healing, transformation through suffering
 
 | Layer | Element |
 |-------|---------|
