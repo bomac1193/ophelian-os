@@ -37,11 +37,6 @@ export function CharacterDetailPanel({ character, onClose, onRefresh }: Characte
 
   const subtasteInfo = getSubtasteInfo(character);
   const hasOripheonData = !!(character.timelineState as any)?.oripheon?.generated;
-  const hexagram = (character.timelineState as any)?.oripheon?.generated?.hexagram as {
-    presentHexagram: { number: number; name: string; chinese: string; image: string; judgment: string; lines: boolean[] };
-    transformingHexagram: { number: number; name: string; chinese: string; lines: boolean[] } | null;
-    movingLines: number[];
-  } | undefined;
 
   const handleSyncOripheon = async () => {
     setSyncing(true);
@@ -221,62 +216,6 @@ export function CharacterDetailPanel({ character, onClose, onRefresh }: Characte
         <div className="detail-section">
           <label className="label">Current Arc</label>
           <p className="detail-text">{character.currentArc}</p>
-        </div>
-      )}
-
-      {/* I Ching Hexagram - Compact Brutalist Module */}
-      {hexagram && (
-        <div className="detail-section" style={{ padding: '0.75rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            {/* Present Hexagram - Compact */}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.25rem' }}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', padding: '0.375rem', border: '1px solid var(--border)' }}>
-                {[...hexagram.presentHexagram.lines].reverse().map((yang, i) => (
-                  <div key={i} style={{
-                    width: '20px',
-                    height: '3px',
-                    background: yang ? 'var(--foreground)' : 'transparent',
-                    borderLeft: yang ? 'none' : '7px solid var(--foreground)',
-                    borderRight: yang ? 'none' : '7px solid var(--foreground)',
-                  }} />
-                ))}
-              </div>
-              <div style={{ fontFamily: 'var(--font-ui)', fontSize: '0.5rem', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase', color: 'var(--muted-foreground)' }}>Now</div>
-            </div>
-
-            {/* Arrow + Transforming */}
-            {hexagram.transformingHexagram && (
-              <>
-                <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)' }}>&rarr;</div>
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.25rem', opacity: 0.6 }}>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', padding: '0.375rem', border: '1px solid var(--border)' }}>
-                    {[...hexagram.transformingHexagram.lines].reverse().map((yang, i) => (
-                      <div key={i} style={{
-                        width: '20px',
-                        height: '3px',
-                        background: yang ? 'var(--foreground)' : 'transparent',
-                        borderLeft: yang ? 'none' : '7px solid var(--foreground)',
-                        borderRight: yang ? 'none' : '7px solid var(--foreground)',
-                      }} />
-                    ))}
-                  </div>
-                  <div style={{ fontFamily: 'var(--font-ui)', fontSize: '0.5rem', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase', color: 'var(--muted-foreground)' }}>Next</div>
-                </div>
-              </>
-            )}
-
-            {/* Info - Compact */}
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontFamily: 'var(--font-heading)', fontSize: '0.75rem', fontWeight: 600, color: 'var(--foreground)' }}>
-                {hexagram.presentHexagram.chinese} #{hexagram.presentHexagram.number} {hexagram.presentHexagram.name}
-              </div>
-              {hexagram.transformingHexagram && (
-                <div style={{ fontFamily: 'var(--font-ui)', fontSize: '0.5rem', color: 'var(--muted-foreground)', marginTop: '0.25rem' }}>
-                  &rarr; {hexagram.transformingHexagram.chinese} {hexagram.transformingHexagram.name}
-                </div>
-              )}
-            </div>
-          </div>
         </div>
       )}
 
