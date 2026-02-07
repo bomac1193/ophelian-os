@@ -140,16 +140,18 @@ export function CharacterDetailPanel({ character, onClose, onRefresh }: Characte
                 style={{
                   marginTop: '0.75rem',
                   cursor: 'pointer',
-                  display: 'inline-block',
-                  fontFamily: 'var(--font-ui)',
-                  fontSize: '0.5rem',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '1.25rem',
+                  height: '1.25rem',
+                  fontSize: '0.75rem',
                   fontWeight: 600,
-                  padding: '0.25rem 0.375rem',
                   border: '1px solid var(--border)',
                   color: showAdvanced ? 'var(--foreground)' : 'var(--muted-foreground)',
                 }}
               >
-                Expand {showAdvanced ? '\u2212' : '+'}
+                {showAdvanced ? '\u2212' : '+'}
               </div>
 
               {showAdvanced && (
