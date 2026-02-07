@@ -78,6 +78,19 @@ export function CharacterDetailPanel({ character, onClose, onRefresh }: Characte
         <div className="character-info-name">{character.name}</div>
       </div>
 
+      {character.aliases.length > 0 && (
+        <div className="detail-section">
+          <label className="label">Aliases</label>
+          <div className="tag-list">
+            {character.aliases.map((alias, i) => (
+              <span key={i} className="tag">
+                {alias}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Bóveda Profile */}
       {subtasteInfo && (
         <div className="detail-section">
@@ -152,19 +165,6 @@ export function CharacterDetailPanel({ character, onClose, onRefresh }: Characte
         <div className="detail-section">
           <label className="label">Bio</label>
           <p className="detail-text">{character.bio}</p>
-        </div>
-      )}
-
-      {character.aliases.length > 0 && (
-        <div className="detail-section">
-          <label className="label">Aliases</label>
-          <div className="tag-list">
-            {character.aliases.map((alias, i) => (
-              <span key={i} className="tag">
-                {alias}
-              </span>
-            ))}
-          </div>
         </div>
       )}
 
