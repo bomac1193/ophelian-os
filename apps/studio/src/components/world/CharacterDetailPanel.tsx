@@ -102,7 +102,7 @@ export function CharacterDetailPanel({ character, onClose, onRefresh }: Characte
           </div>
 
           {/* Designation tag */}
-          <div style={{ marginTop: '0.5rem' }}>
+          <div style={{ marginTop: '0.5rem', marginBottom: '1rem' }}>
             <span style={{ fontFamily: 'var(--font-ui)', fontSize: '0.625rem', fontWeight: 600, padding: '0.25rem 0.5rem', border: '1px solid var(--border)', background: '#000' }}>
               {subtasteInfo.subtaste} {subtasteInfo.label?.toUpperCase()}
             </span>
@@ -116,11 +116,11 @@ export function CharacterDetailPanel({ character, onClose, onRefresh }: Characte
               </div>
               <div className="subtaste-ref-row">
                 <span className="subtaste-ref-key">Ascends to</span>
-                <span className="subtaste-ref-val">{subtasteInfo.growth} {subtasteInfo.growthLabel?.toUpperCase()}</span>
+                <span className="subtaste-ref-val">{subtasteInfo.growth}</span>
               </div>
               <div className="subtaste-ref-row">
                 <span className="subtaste-ref-key">Descends to</span>
-                <span className="subtaste-ref-val subtaste-ref-stress">{subtasteInfo.stress} {subtasteInfo.stressLabel?.toUpperCase()}</span>
+                <span className="subtaste-ref-val subtaste-ref-stress">{subtasteInfo.stress}</span>
               </div>
               <div className="subtaste-ref-row">
                 <span className="subtaste-ref-key">Awakens</span>
