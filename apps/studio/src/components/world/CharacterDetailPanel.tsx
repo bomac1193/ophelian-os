@@ -78,57 +78,6 @@ export function CharacterDetailPanel({ character, onClose, onRefresh }: Characte
         <div className="character-info-name">{character.name}</div>
       </div>
 
-      {character.aliases.length > 0 && (
-        <div className="detail-section">
-          <label className="label">Aliases</label>
-          <div className="tag-list">
-            {character.aliases.map((alias, i) => (
-              <span key={i} className="tag">
-                {alias}
-              </span>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {character.bio && (
-        <div className="detail-section">
-          <label className="label">Bio</label>
-          <p className="detail-text">{character.bio}</p>
-        </div>
-      )}
-
-      {character.personaTags.length > 0 && (
-        <div className="detail-section" style={{ padding: '0.75rem' }}>
-          <div
-            style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer' }}
-            onClick={() => setShowTags(!showTags)}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => { if (e.key === 'Enter') setShowTags(!showTags); }}
-          >
-            <span style={{ fontFamily: 'var(--font-ui)', fontSize: '0.625rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--muted-foreground)' }}>
-              Persona Tags ({character.personaTags.length})
-            </span>
-            <span style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)' }}>{showTags ? '\u2212' : '+'}</span>
-          </div>
-          {showTags && (
-            <div className="tag-list" style={{ marginTop: '0.5rem' }}>
-              {character.personaTags.map((tag, i) => (
-                <span key={i} className="tag">{tag}</span>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
-
-      {character.currentArc && (
-        <div className="detail-section">
-          <label className="label">Current Arc</label>
-          <p className="detail-text">{character.currentArc}</p>
-        </div>
-      )}
-
       {/* Bóveda Profile */}
       {subtasteInfo && (
         <div className="detail-section">
@@ -196,6 +145,57 @@ export function CharacterDetailPanel({ character, onClose, onRefresh }: Characte
               </div>
             </div>
           )}
+        </div>
+      )}
+
+      {character.aliases.length > 0 && (
+        <div className="detail-section">
+          <label className="label">Aliases</label>
+          <div className="tag-list">
+            {character.aliases.map((alias, i) => (
+              <span key={i} className="tag">
+                {alias}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {character.bio && (
+        <div className="detail-section">
+          <label className="label">Bio</label>
+          <p className="detail-text">{character.bio}</p>
+        </div>
+      )}
+
+      {character.personaTags.length > 0 && (
+        <div className="detail-section" style={{ padding: '0.75rem' }}>
+          <div
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer' }}
+            onClick={() => setShowTags(!showTags)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => { if (e.key === 'Enter') setShowTags(!showTags); }}
+          >
+            <span style={{ fontFamily: 'var(--font-ui)', fontSize: '0.625rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--muted-foreground)' }}>
+              Persona Tags ({character.personaTags.length})
+            </span>
+            <span style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)' }}>{showTags ? '\u2212' : '+'}</span>
+          </div>
+          {showTags && (
+            <div className="tag-list" style={{ marginTop: '0.5rem' }}>
+              {character.personaTags.map((tag, i) => (
+                <span key={i} className="tag">{tag}</span>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {character.currentArc && (
+        <div className="detail-section">
+          <label className="label">Current Arc</label>
+          <p className="detail-text">{character.currentArc}</p>
         </div>
       )}
 
