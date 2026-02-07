@@ -51,55 +51,62 @@ This means:
 
 Constructed technonyms: post-colonial, non-mythic, functional — designed to feel ancestral without referencing specific religious or linguistic sources.
 
-*These names are locked. The correspondences below are reference layers, not canonical bindings.*
+*Names locked. Mapped operatively — by what each name feels like it does.*
 
-| Code | God Name | Glyph | Provisional Function |
-|------|----------|-------|----------------------|
-| F-9 | **K̄ALØN** | ANVIL | Ignition, compression, first spark |
-| R-10 | **TΞKRA** | SCHISM | Division, fracture, clearing |
-| S-0 | **SÆ** | KETH | Observation, null state, witness |
-| V-2 | **ÆRŊ** | OMEN | Translation, mediation, crossing |
-| T-1 | **LŌRχ** | STRATA | Recursion, memory, cycles |
-| C-4 | **Kĕθū** | CULL | Interruption, precision, editing |
-| L-3 | **ØMÆRA** | SILT | Transport, gestation, carrying |
-| H-6 | **Zâbɪn** | TOLL | Amplification, pressure, declaration |
-| N-5 | **Bĕṋrî** | LIMN | Binding, cohesion, attraction |
-| P-7 | **Dū·m̱a** | VAULT | Reduction, smoothing, restoration |
-| D-8 | **Nòxū** | WICK | Indirection, latency, shadow |
-| NULL | **BȺLTA** | VOID | Grounding, reference, anchor |
+### Operative Mapping (by aesthetic feel)
 
-### Reference Layers (Not Canonical)
+| God Name | Typography Feel | Provisional Function | Glyph |
+|----------|-----------------|----------------------|-------|
+| **K̄ALØN** | Macron = stability, Ø = core/kernel | Boot, ignition, first motion | ANVIL |
+| **TΞKRA** | Ξ = fracture/glitch, sharp angles | Split, divide, clear away | SCHISM |
+| **SÆ** | Minimal ligature, almost silent | Observe, witness, null state | KETH |
+| **ÆRŊ** | Æ + Ŋ = bridging sounds | Translate, cross domains, mediate | OMEN |
+| **LŌRχ** | Macron = sustain, χ = recursive | Loop, remember, cycle back | STRATA |
+| **Kĕθū** | Breve = pulse, θ = threshold | Break, interrupt, cut precisely | CULL |
+| **ØMÆRA** | Ø + Æ = containing flow | Carry, gestate, transport | SILT |
+| **Zâbɪn** | Circumflex = rising pressure | Amplify, escalate, declare | TOLL |
+| **Bĕṋrî** | Soft consonants, under-hook = connection | Bind, attract, cohere | LIMN |
+| **Dū·m̱a** | Macron + underdot = weight | Dampen, smooth, restore | VAULT |
+| **Nòxū** | Grave = descent, shadow | Hide, channel latent, indirect | WICK |
+| **BȺLTA** | Ⱥ = crossed/marked, finality | Anchor, ground, reference | VOID |
 
-The following correspondences exist as reference material. They may inform, but do not define.
+### Summary Table
 
-| God Name | Orisha | Hebrew | Planet/Element | Zodiac | Tarot |
-|----------|--------|--------|----------------|--------|-------|
-| K̄ALØN | Ògún | ש Shin | 🜂 Fire | — | XX Judgement |
-| TΞKRA | Ọya | ז Zayin | — | ♊ Gemini | VI Lovers |
-| SÆ | Obàtálá | א Aleph | 🜁 Air | — | 0 Fool |
-| ÆRŊ | Èṣù | ד Daleth | ♀ Venus | — | III Empress |
-| LŌRχ | Ọ̀rúnmìlà | ק Qoph | — | ♓ Pisces | XVIII Moon |
-| Kĕθū | Ọ̀ṣọ́ọ̀sì | ל Lamed | — | ♎ Libra | VIII Justice |
-| ØMÆRA | Yemọja | מ Mem | 🜄 Water | — | XII Hanged Man |
-| Zâbɪn | Ṣàngó | פ Pe | ♂ Mars | — | XVI Tower |
-| Bĕṋrî | Ọ̀ṣun | ו Vav | — | ♉ Taurus | V Hierophant |
-| Dū·m̱a | Ọ̀sanyìn | ס Samekh | — | ♐ Sagittarius | XIV Temperance |
-| Nòxū | Olókun | נ Nun | — | ♏ Scorpio | XIII Death |
-| BȺLTA | Babalú-Ayé | ת Tav | ♄ Saturn | — | XXI World |
+| Code | God Name | Glyph | Function |
+|------|----------|-------|----------|
+| F-9 | K̄ALØN | ANVIL | Ignition |
+| R-10 | TΞKRA | SCHISM | Division |
+| S-0 | SÆ | KETH | Witness |
+| V-2 | ÆRŊ | OMEN | Translation |
+| T-1 | LŌRχ | STRATA | Recursion |
+| C-4 | Kĕθū | CULL | Interruption |
+| L-3 | ØMÆRA | SILT | Transport |
+| H-6 | Zâbɪn | TOLL | Amplification |
+| N-5 | Bĕṋrî | LIMN | Binding |
+| P-7 | Dū·m̱a | VAULT | Dampening |
+| D-8 | Nòxū | WICK | Shadow |
+| NULL | BȺLTA | VOID | Anchor |
 
-*These mappings are not random. They are not Hermetic doctrine either. They are working hypotheses.*
+### Deep Layers (Reference Only)
 
-### On Correspondences
+The following are **not** the basis for mapping. They exist underneath — inherited from the original system architecture. Consult if useful. Ignore if not.
 
-The Hebrew letters, planets, and Tarot cards listed above are not assignments. They are resonances noticed during design.
+| God Name | Orisha (Layer 3) | Glyph | Code |
+|----------|------------------|-------|------|
+| K̄ALØN | Ògún | ANVIL | F-9 |
+| TΞKRA | Ọya | SCHISM | R-10 |
+| SÆ | Obàtálá | KETH | S-0 |
+| ÆRŊ | Èṣù | OMEN | V-2 |
+| LŌRχ | Ọ̀rúnmìlà | STRATA | T-1 |
+| Kĕθū | Ọ̀ṣọ́ọ̀sì | CULL | C-4 |
+| ØMÆRA | Yemọja | SILT | L-3 |
+| Zâbɪn | Ṣàngó | TOLL | H-6 |
+| Bĕṋrî | Ọ̀ṣun | LIMN | N-5 |
+| Dū·m̱a | Ọ̀sanyìn | VAULT | P-7 |
+| Nòxū | Olókun | WICK | D-8 |
+| BȺLTA | Babalú-Ayé | VOID | NULL |
 
-Whether to formalize them — or let them remain loose associations — is an open question.
-
-The operative principle:
-> If invoking K̄ALØN repeatedly does something useful in practice — the correspondence strengthens.
-> If not — it weakens or dissolves.
-
-Meaning is not decided. It is observed.
+*The Orisha layer exists. It informed the original design. But the god names now stand on their own.*
 
 ### Diacritic Grammar
 
