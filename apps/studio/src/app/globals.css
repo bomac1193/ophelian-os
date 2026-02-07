@@ -1,45 +1,45 @@
-/* Typography: Canela (headers) + Inter (body) */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+/* Typography: Fraunces (headers) + Söhne (body) */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&display=swap');
 
-/* Canela - Commercial Type */
+/* Söhne - Klim Type Foundry */
 @font-face {
-  font-family: 'Canela';
-  src: url('/fonts/Canela-Light-Trial.otf') format('opentype');
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Canela';
-  src: url('/fonts/Canela-Regular-Trial.otf') format('opentype');
+  font-family: 'Sohne';
+  src: url('/fonts/TestSohne-Buch-BF663d89cd32e6a.otf') format('opentype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Canela';
-  src: url('/fonts/Canela-Medium-Trial.otf') format('opentype');
+  font-family: 'Sohne';
+  src: url('/fonts/TestSohne-Kraftig-BF663d89cd37e26.otf') format('opentype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Canela';
-  src: url('/fonts/Canela-Bold-Trial.otf') format('opentype');
+  font-family: 'Sohne';
+  src: url('/fonts/TestSohne-Halbfett-BF663d89cd2d67b.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Sohne';
+  src: url('/fonts/TestSohne-Fett-BF663d89cca89ff.otf') format('opentype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
 :root {
-  /* Typography - Canela + Inter */
-  --font-display: 'Canela', Georgia, 'Times New Roman', serif;
-  --font-heading: 'Canela', Georgia, 'Times New Roman', serif;
-  --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  /* Typography - Fraunces + Söhne */
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-heading: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-ui: 'Sohne', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Sohne', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
   /* Spacing System (8px base) */
   --space-xs: 8px;
