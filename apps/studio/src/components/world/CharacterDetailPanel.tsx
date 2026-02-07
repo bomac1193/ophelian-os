@@ -22,6 +22,7 @@ interface CharacterDetailPanelProps {
 
 export function CharacterDetailPanel({ character, onClose, onRefresh }: CharacterDetailPanelProps) {
   const [showSubtaste, setShowSubtaste] = useState(true);
+  const [showAdvanced, setShowAdvanced] = useState(false);
   const [showTags, setShowTags] = useState(false);
   const [syncing, setSyncing] = useState(false);
 
@@ -104,54 +105,64 @@ export function CharacterDetailPanel({ character, onClose, onRefresh }: Characte
           <div style={{ fontFamily: 'var(--font-ui)', fontSize: '0.6875rem', color: 'var(--foreground)', marginTop: '0.5rem' }}>
             {MATERIA[subtasteInfo.wuXingElement] || subtasteInfo.wuXingElement}
             <span style={{ color: 'var(--muted-foreground)', margin: '0 0.5rem' }}>·</span>
-            {subtasteInfo.growth} {subtasteInfo.growthLabel?.toUpperCase()}
+            {subtasteInfo.growth}
             <span style={{ color: 'var(--muted-foreground)', margin: '0 0.5rem' }}>·</span>
-            {subtasteInfo.stress} {subtasteInfo.stressLabel?.toUpperCase()}
+            {subtasteInfo.stress}
           </div>
 
           {showSubtaste && (
             <div className="subtaste-ref-body">
-              {/* Materia explanation */}
               <div className="subtaste-ref-row">
                 <span className="subtaste-ref-key">Materia</span>
-                <span className="subtaste-ref-val">
-                  {MATERIA[subtasteInfo.wuXingElement] || subtasteInfo.wuXingElement}
-                  <span className="subtaste-ref-dim"> — {subtasteInfo.phase} phase</span>
-                </span>
+                <span className="subtaste-ref-val">{MATERIA[subtasteInfo.wuXingElement] || subtasteInfo.wuXingElement}</span>
               </div>
-
-              {/* Growth explanation */}
               <div className="subtaste-ref-row">
                 <span className="subtaste-ref-key">Ascends to</span>
-                <span className="subtaste-ref-val">
-                  {subtasteInfo.growth}
-                  <span className="subtaste-ref-dim"> — {subtasteInfo.growthLabel}</span>
-                </span>
+                <span className="subtaste-ref-val">{subtasteInfo.growth}</span>
               </div>
-
-              {/* Stress explanation */}
               <div className="subtaste-ref-row">
                 <span className="subtaste-ref-key">Descends to</span>
-                <span className="subtaste-ref-val subtaste-ref-stress">
-                  {subtasteInfo.stress}
-                  <span className="subtaste-ref-dim"> — {subtasteInfo.stressLabel}</span>
-                </span>
+                <span className="subtaste-ref-val subtaste-ref-stress">{subtasteInfo.stress}</span>
               </div>
-
-              {/* Element Relationships */}
               <div className="subtaste-ref-row">
                 <span className="subtaste-ref-key">Awakens</span>
-                <span className="subtaste-ref-val">
-                  {MATERIA[subtasteInfo.generates] || subtasteInfo.generates} types
-                </span>
+                <span className="subtaste-ref-val">{MATERIA[subtasteInfo.generates] || subtasteInfo.generates}</span>
               </div>
-
               <div className="subtaste-ref-row">
                 <span className="subtaste-ref-key">Anchored by</span>
-                <span className="subtaste-ref-val subtaste-ref-stress">
-                  {MATERIA[subtasteInfo.overcomeBy] || subtasteInfo.overcomeBy} types
-                </span>
+                <span className="subtaste-ref-val subtaste-ref-stress">{MATERIA[subtasteInfo.overcomeBy] || subtasteInfo.overcomeBy}</span>
               </div>
+
+              {/* Advanced toggle */}
+              <div
+                style={{ marginTop: '0.75rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.375rem' }}
+                onClick={() => setShowAdvanced(!showAdvanced)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => { if (e.key === 'Enter') setShowAdvanced(!showAdvanced); }}
+              >
+                <span style={{ fontFamily: 'var(--font-ui)', fontSize: '0.5rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--muted-foreground)' }}>
+                  Advanced
+                </span>
+                <span style={{ fontSize: '0.625rem', color: 'var(--muted-foreground)' }}>{showAdvanced ? '\u2212' : '+'}</span>
+              </div>
+
+              {showAdvanced && (
+                <div style={{ marginTop: '0.5rem', paddingTop: '0.5rem', borderTop: '1px solid var(--border)' }}>
+                  <div className="subtaste-ref-row">
+                    <span className="subtaste-ref-key">Phase</span>
+                    <span className="subtaste-ref-val">{subtasteInfo.phase}</span>
+                  </div>
+                  <div className="subtaste-ref-row">
+                    <span className="subtaste-ref-key">{subtasteInfo.growth}</span>
+                    <span className="subtaste-ref-val">{subtasteInfo.growthLabel}</span>
+                  </div>
+                  <div className="subtaste-ref-row">
+                    <span className="subtaste-ref-key">{subtasteInfo.stress}</span>
+                    <span className="subtaste-ref-val subtaste-ref-stress">{subtasteInfo.stressLabel}</span>
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>
