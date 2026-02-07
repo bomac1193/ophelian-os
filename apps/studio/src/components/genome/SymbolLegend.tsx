@@ -15,18 +15,18 @@ import styles from './SymbolLegend.module.css';
 
 // All 12 Orishas mapped to THE TWELVE subtastes + NULL
 const ALL_ORISHAS: OrishaName[] = [
-  'Obàtálá',    // S-0 KETH - vision
-  'Ọ̀rúnmìlà',  // T-1 STRATA - refinement
-  'Èṣù',        // V-2 OMEN - vision
-  'Yemọja',     // L-3 SILT - manifestation
-  'Ọ̀ṣọ́ọ̀sì',   // C-4 CULL - refinement
-  'Ọ̀ṣun',      // N-5 LIMN - flow
-  'Ṣàngó',      // H-6 TOLL - manifestation
-  'Ọ̀sanyìn',   // P-7 VAULT - flow
-  'Olókun',     // D-8 WICK - flow
-  'Ògún',       // F-9 ANVIL - genesis
-  'Ọya',        // R-10 SCHISM - genesis
-  'Babalú-Ayé', // NULL VOID - flow
+  'Obàtálá',    // S-0 KĔṮU - vision
+  'Ọ̀rúnmìlà',  // T-1 LŌRχE - refinement
+  'Èṣù',        // V-2 ØMÆRA - vision
+  'Yemọja',     // L-3 Dū·ṂȺ - manifestation
+  'Ọ̀ṣọ́ọ̀sì',   // C-4 ΞDŌN - refinement
+  'Ọ̀ṣun',      // N-5 LIMŊ - flow
+  'Ṣàngó',      // H-6 ȺBŌLT - manifestation
+  'Ọ̀sanyìn',   // P-7 ȺRVŌ - flow
+  'Olókun',     // D-8 RŌχ - flow
+  'Ògún',       // F-9 K̄ALØN - genesis
+  'Ọya',        // R-10 TΞχRA - genesis
+  'Babalú-Ayé', // NULL SÆ - flow
 ];
 
 interface SymbolCardProps {
@@ -126,22 +126,22 @@ const CREATIVE_PHASES: Record<string, { label: string; description: string }> = 
 // Map Orisha to their Creative Phase (aligned with SUBTASTE_DESIGNATIONS)
 const ORISHA_PHASES: Record<OrishaName, string> = {
   // Genesis phase (fire/creation) - F-9, R-10
-  'Ògún': 'genesis',       // F-9 ANVIL - manifestor, hammers will into shape
-  'Ọya': 'genesis',        // R-10 SCHISM - productive fracture
+  'Ògún': 'genesis',       // F-9 K̄ALØN - ignition
+  'Ọya': 'genesis',        // R-10 TΞχRA - division
   // Vision phase (wood/scouting) - S-0, V-2
-  'Obàtálá': 'vision',     // S-0 KETH - standard-bearer, sets the tone
-  'Èṣù': 'vision',         // V-2 OMEN - early witness, sees what approaches
+  'Obàtálá': 'vision',     // S-0 KĔṮU - witness
+  'Èṣù': 'vision',         // V-2 ØMÆRA - translation
   // Refinement phase (metal/editing) - T-1, C-4
-  'Ọ̀rúnmìlà': 'refinement', // T-1 STRATA - system-seer, reads layers
-  'Ọ̀ṣọ́ọ̀sì': 'refinement',  // C-4 CULL - essential editor, removes excess
+  'Ọ̀rúnmìlà': 'refinement', // T-1 LŌRχE - recursion
+  'Ọ̀ṣọ́ọ̀sì': 'refinement',  // C-4 ΞDŌN - interruption
   // Manifestation phase (earth/driving) - L-3, H-6
-  'Yemọja': 'manifestation', // L-3 SILT - patient cultivator
-  'Ṣàngó': 'manifestation',  // H-6 TOLL - relentless advocate
+  'Yemọja': 'manifestation', // L-3 Dū·ṂȺ - transport
+  'Ṣàngó': 'manifestation',  // H-6 ȺBŌLT - amplification
   // Flow phase (water/channeling) - N-5, P-7, D-8, NULL
-  'Ọ̀ṣun': 'flow',          // N-5 LIMN - border illuminator
-  'Ọ̀sanyìn': 'flow',       // P-7 VAULT - living archive
-  'Olókun': 'flow',         // D-8 WICK - hollow channel, deep ocean
-  'Babalú-Ayé': 'flow',     // NULL VOID - receptive presence, healing
+  'Ọ̀ṣun': 'flow',          // N-5 LIMŊ - binding
+  'Ọ̀sanyìn': 'flow',       // P-7 ȺRVŌ - dampening
+  'Olókun': 'flow',         // D-8 RŌχ - shadow
+  'Babalú-Ayé': 'flow',     // NULL SÆ - anchor
 };
 
 interface SymbolLegendProps {
@@ -438,7 +438,7 @@ export function SymbolLegend({ searchable = false }: SymbolLegendProps) {
             <h3>Layer 1: Surface</h3>
             <p>
               Every character displays their imprint upfront: a mathematical symbol
-              paired with a geometric primitive. The glyph name (ANVIL, OMEN, VAULT)
+              paired with a geometric primitive. The True Name (K̄ALØN, ØMÆRA, ȺRVŌ)
               and classification code (F-9, V-2, P-7) reveal their creative archetype
               within THE TWELVE pantheon.
             </p>

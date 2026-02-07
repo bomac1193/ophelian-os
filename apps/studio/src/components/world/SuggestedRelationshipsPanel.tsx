@@ -13,8 +13,8 @@ type PipelinePhase = 'genesis' | 'vision' | 'refinement' | 'manifestation' | 'fl
 type RelationalCycle = 'generating' | 'overcoming' | 'neutral';
 type ComparisonPattern = 'mirror' | 'complement' | 'parallel' | 'friction' | 'neutral';
 type SubtasteDesignation =
-  | 'S-0 KETH' | 'T-1 STRATA' | 'V-2 OMEN' | 'L-3 SILT' | 'C-4 CULL' | 'N-5 LIMN'
-  | 'H-6 TOLL' | 'P-7 VAULT' | 'D-8 WICK' | 'F-9 ANVIL' | 'R-10 SCHISM' | 'NULL VOID';
+  | 'S-0 KĔṮU' | 'T-1 LŌRχE' | 'V-2 ØMÆRA' | 'L-3 Dū·ṂȺ' | 'C-4 ΞDŌN' | 'N-5 LIMŊ'
+  | 'H-6 ȺBŌLT' | 'P-7 ȺRVŌ' | 'D-8 RŌχ' | 'F-9 K̄ALØN' | 'R-10 TΞχRA' | 'NULL SÆ';
 
 interface Axes {
   orderChaos: number;
@@ -57,10 +57,10 @@ interface RelationshipMatrix {
 const PIPELINE: PipelinePhase[] = ['genesis', 'vision', 'refinement', 'manifestation', 'flow'];
 
 const PHASE_MAP: Record<SubtasteDesignation, PipelinePhase> = {
-  'S-0 KETH': 'genesis', 'T-1 STRATA': 'vision', 'V-2 OMEN': 'vision',
-  'L-3 SILT': 'manifestation', 'C-4 CULL': 'refinement', 'N-5 LIMN': 'flow',
-  'H-6 TOLL': 'genesis', 'P-7 VAULT': 'manifestation', 'D-8 WICK': 'flow',
-  'F-9 ANVIL': 'refinement', 'R-10 SCHISM': 'genesis', 'NULL VOID': 'flow',
+  'S-0 KĔṮU': 'vision', 'T-1 LŌRχE': 'refinement', 'V-2 ØMÆRA': 'vision',
+  'L-3 Dū·ṂȺ': 'manifestation', 'C-4 ΞDŌN': 'refinement', 'N-5 LIMŊ': 'flow',
+  'H-6 ȺBŌLT': 'manifestation', 'P-7 ȺRVŌ': 'flow', 'D-8 RŌχ': 'flow',
+  'F-9 K̄ALØN': 'genesis', 'R-10 TΞχRA': 'genesis', 'NULL SÆ': 'flow',
 };
 
 const ELEMENT_MAP: Record<PipelinePhase, WuXingElement> = {
@@ -75,23 +75,23 @@ const WU_XING_KE: Record<WuXingElement, WuXingElement> = {
 };
 
 const GROWTH_ARROWS: Record<SubtasteDesignation, SubtasteDesignation> = {
-  'S-0 KETH': 'D-8 WICK', 'T-1 STRATA': 'N-5 LIMN', 'V-2 OMEN': 'L-3 SILT',
-  'L-3 SILT': 'S-0 KETH', 'C-4 CULL': 'H-6 TOLL', 'N-5 LIMN': 'V-2 OMEN',
-  'H-6 TOLL': 'T-1 STRATA', 'P-7 VAULT': 'C-4 CULL', 'D-8 WICK': 'F-9 ANVIL',
-  'F-9 ANVIL': 'N-5 LIMN', 'R-10 SCHISM': 'H-6 TOLL', 'NULL VOID': 'R-10 SCHISM',
+  'S-0 KĔṮU': 'D-8 RŌχ', 'T-1 LŌRχE': 'N-5 LIMŊ', 'V-2 ØMÆRA': 'L-3 Dū·ṂȺ',
+  'L-3 Dū·ṂȺ': 'S-0 KĔṮU', 'C-4 ΞDŌN': 'H-6 ȺBŌLT', 'N-5 LIMŊ': 'V-2 ØMÆRA',
+  'H-6 ȺBŌLT': 'T-1 LŌRχE', 'P-7 ȺRVŌ': 'C-4 ΞDŌN', 'D-8 RŌχ': 'F-9 K̄ALØN',
+  'F-9 K̄ALØN': 'N-5 LIMŊ', 'R-10 TΞχRA': 'H-6 ȺBŌLT', 'NULL SÆ': 'R-10 TΞχRA',
 };
 const STRESS_ARROWS: Record<SubtasteDesignation, SubtasteDesignation> = {
-  'S-0 KETH': 'R-10 SCHISM', 'T-1 STRATA': 'P-7 VAULT', 'V-2 OMEN': 'C-4 CULL',
-  'L-3 SILT': 'D-8 WICK', 'C-4 CULL': 'R-10 SCHISM', 'N-5 LIMN': 'NULL VOID',
-  'H-6 TOLL': 'F-9 ANVIL', 'P-7 VAULT': 'L-3 SILT', 'D-8 WICK': 'N-5 LIMN',
-  'F-9 ANVIL': 'C-4 CULL', 'R-10 SCHISM': 'S-0 KETH', 'NULL VOID': 'T-1 STRATA',
+  'S-0 KĔṮU': 'R-10 TΞχRA', 'T-1 LŌRχE': 'P-7 ȺRVŌ', 'V-2 ØMÆRA': 'C-4 ΞDŌN',
+  'L-3 Dū·ṂȺ': 'D-8 RŌχ', 'C-4 ΞDŌN': 'R-10 TΞχRA', 'N-5 LIMŊ': 'NULL SÆ',
+  'H-6 ȺBŌLT': 'F-9 K̄ALØN', 'P-7 ȺRVŌ': 'L-3 Dū·ṂȺ', 'D-8 RŌχ': 'N-5 LIMŊ',
+  'F-9 K̄ALØN': 'C-4 ΞDŌN', 'R-10 TΞχRA': 'S-0 KĔṮU', 'NULL SÆ': 'T-1 LŌRχE',
 };
 
 const SUBTASTE_LABELS: Record<SubtasteDesignation, string> = {
-  'S-0 KETH': 'Standard-Setter', 'T-1 STRATA': 'Analyst', 'V-2 OMEN': 'Seer',
-  'L-3 SILT': 'Cultivator', 'C-4 CULL': 'Editor', 'N-5 LIMN': 'Illuminator',
-  'H-6 TOLL': 'Advocate', 'P-7 VAULT': 'Archive', 'D-8 WICK': 'Channel',
-  'F-9 ANVIL': 'Forge', 'R-10 SCHISM': 'Fracture', 'NULL VOID': 'Stillness',
+  'S-0 KĔṮU': 'Witness', 'T-1 LŌRχE': 'Recursion', 'V-2 ØMÆRA': 'Translation',
+  'L-3 Dū·ṂȺ': 'Transport', 'C-4 ΞDŌN': 'Interruption', 'N-5 LIMŊ': 'Binding',
+  'H-6 ȺBŌLT': 'Amplification', 'P-7 ȺRVŌ': 'Dampening', 'D-8 RŌχ': 'Shadow',
+  'F-9 K̄ALØN': 'Ignition', 'R-10 TΞχRA': 'Division', 'NULL SÆ': 'Anchor',
 };
 
 function deriveSubtaste(axes: Axes): SubtasteDesignation {
@@ -101,18 +101,18 @@ function deriveSubtaste(axes: Axes): SubtasteDesignation {
   const action = (orderChaos + introvertExtrovert) / 2;
   const reception = ((1 - orderChaos) + (1 - introvertExtrovert)) / 2;
 
-  if (authority > 0.7 && orderChaos > 0.6) return 'S-0 KETH';
-  if (introvertExtrovert < 0.35 && faithDoubt < 0.4) return 'T-1 STRATA';
-  if (faithDoubt > 0.7 && intuition > 0.6) return 'V-2 OMEN';
-  if (mercyRuthlessness < 0.4 && action < 0.4) return 'L-3 SILT';
-  if (mercyRuthlessness > 0.65 && orderChaos > 0.4 && orderChaos < 0.7) return 'C-4 CULL';
-  if (introvertExtrovert > 0.65 && faithDoubt > 0.5) return 'N-5 LIMN';
-  if (mercyRuthlessness < 0.35 && introvertExtrovert > 0.55) return 'H-6 TOLL';
-  if (introvertExtrovert < 0.4 && orderChaos > 0.6) return 'P-7 VAULT';
-  if (orderChaos < 0.35 && reception > 0.5) return 'D-8 WICK';
-  if (action > 0.6 && mercyRuthlessness > 0.55) return 'F-9 ANVIL';
-  if (orderChaos < 0.25) return 'R-10 SCHISM';
-  return 'NULL VOID';
+  if (authority > 0.7 && orderChaos > 0.6) return 'S-0 KĔṮU';
+  if (introvertExtrovert < 0.35 && faithDoubt < 0.4) return 'T-1 LŌRχE';
+  if (faithDoubt > 0.7 && intuition > 0.6) return 'V-2 ØMÆRA';
+  if (mercyRuthlessness < 0.4 && action < 0.4) return 'L-3 Dū·ṂȺ';
+  if (mercyRuthlessness > 0.65 && orderChaos > 0.4 && orderChaos < 0.7) return 'C-4 ΞDŌN';
+  if (introvertExtrovert > 0.65 && faithDoubt > 0.5) return 'N-5 LIMŊ';
+  if (mercyRuthlessness < 0.35 && introvertExtrovert > 0.55) return 'H-6 ȺBŌLT';
+  if (introvertExtrovert < 0.4 && orderChaos > 0.6) return 'P-7 ȺRVŌ';
+  if (orderChaos < 0.35 && reception > 0.5) return 'D-8 RŌχ';
+  if (action > 0.6 && mercyRuthlessness > 0.55) return 'F-9 K̄ALØN';
+  if (orderChaos < 0.25) return 'R-10 TΞχRA';
+  return 'NULL SÆ';
 }
 
 function analyzeProfile(axes: Axes): ProfileAnalysis {
