@@ -101,13 +101,11 @@ export function CharacterDetailPanel({ character, onClose, onRefresh }: Characte
             <span className="subtaste-ref-toggle">{showSubtaste ? '\u2212' : '+'}</span>
           </div>
 
-          {/* Compact summary - always visible */}
-          <div style={{ fontFamily: 'var(--font-ui)', fontSize: '0.6875rem', color: 'var(--foreground)', marginTop: '0.5rem' }}>
-            {MATERIA[subtasteInfo.wuXingElement] || subtasteInfo.wuXingElement}
-            <span style={{ color: 'var(--muted-foreground)', margin: '0 0.5rem' }}>·</span>
-            {subtasteInfo.growth}
-            <span style={{ color: 'var(--muted-foreground)', margin: '0 0.5rem' }}>·</span>
-            {subtasteInfo.stress}
+          {/* Designation tag */}
+          <div style={{ marginTop: '0.5rem' }}>
+            <span style={{ fontFamily: 'var(--font-ui)', fontSize: '0.625rem', fontWeight: 600, padding: '0.25rem 0.5rem', border: '1px solid var(--border)', background: '#000' }}>
+              {subtasteInfo.subtaste} {subtasteInfo.label?.toUpperCase()}
+            </span>
           </div>
 
           {showSubtaste && (
@@ -118,11 +116,11 @@ export function CharacterDetailPanel({ character, onClose, onRefresh }: Characte
               </div>
               <div className="subtaste-ref-row">
                 <span className="subtaste-ref-key">Ascends to</span>
-                <span className="subtaste-ref-val">{subtasteInfo.growth}</span>
+                <span className="subtaste-ref-val">{subtasteInfo.growth} {subtasteInfo.growthLabel?.toUpperCase()}</span>
               </div>
               <div className="subtaste-ref-row">
                 <span className="subtaste-ref-key">Descends to</span>
-                <span className="subtaste-ref-val subtaste-ref-stress">{subtasteInfo.stress}</span>
+                <span className="subtaste-ref-val subtaste-ref-stress">{subtasteInfo.stress} {subtasteInfo.stressLabel?.toUpperCase()}</span>
               </div>
               <div className="subtaste-ref-row">
                 <span className="subtaste-ref-key">Awakens</span>
@@ -133,18 +131,25 @@ export function CharacterDetailPanel({ character, onClose, onRefresh }: Characte
                 <span className="subtaste-ref-val subtaste-ref-stress">{MATERIA[subtasteInfo.overcomeBy] || subtasteInfo.overcomeBy}</span>
               </div>
 
-              {/* Advanced toggle */}
+              {/* A+ toggle */}
               <div
-                style={{ marginTop: '0.75rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.375rem' }}
                 onClick={() => setShowAdvanced(!showAdvanced)}
                 role="button"
                 tabIndex={0}
                 onKeyDown={(e) => { if (e.key === 'Enter') setShowAdvanced(!showAdvanced); }}
+                style={{
+                  marginTop: '0.75rem',
+                  cursor: 'pointer',
+                  display: 'inline-block',
+                  fontFamily: 'var(--font-ui)',
+                  fontSize: '0.5rem',
+                  fontWeight: 600,
+                  padding: '0.25rem 0.375rem',
+                  border: '1px solid var(--border)',
+                  color: showAdvanced ? 'var(--foreground)' : 'var(--muted-foreground)',
+                }}
               >
-                <span style={{ fontFamily: 'var(--font-ui)', fontSize: '0.5rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--muted-foreground)' }}>
-                  Advanced
-                </span>
-                <span style={{ fontSize: '0.625rem', color: 'var(--muted-foreground)' }}>{showAdvanced ? '\u2212' : '+'}</span>
+                A+
               </div>
 
               {showAdvanced && (
@@ -152,14 +157,6 @@ export function CharacterDetailPanel({ character, onClose, onRefresh }: Characte
                   <div className="subtaste-ref-row">
                     <span className="subtaste-ref-key">Phase</span>
                     <span className="subtaste-ref-val">{subtasteInfo.phase}</span>
-                  </div>
-                  <div className="subtaste-ref-row">
-                    <span className="subtaste-ref-key">{subtasteInfo.growth}</span>
-                    <span className="subtaste-ref-val">{subtasteInfo.growthLabel}</span>
-                  </div>
-                  <div className="subtaste-ref-row">
-                    <span className="subtaste-ref-key">{subtasteInfo.stress}</span>
-                    <span className="subtaste-ref-val subtaste-ref-stress">{subtasteInfo.stressLabel}</span>
                   </div>
                 </div>
               )}
