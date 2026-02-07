@@ -6,60 +6,100 @@ Developing a custom symbol system for THE TWELVE through syncretic fusion.
 
 ---
 
-## THE TWELVE — God Names
+## Current Status: The Crossroads
+
+**Date:** 2026-02-07
+
+We are at a decision point. The names are locked aesthetically. The correspondences are not.
+
+### The Tension
+
+There are three possible mapping strategies:
+
+| Approach | Authority Source | Risk |
+|----------|------------------|------|
+| **Hermetic** | Outside (tradition, lineage) | Becomes curation, not creation. Never fully believed. |
+| **Random/Aesthetic** | Arbitrary | Feels unearned, "playing God" without responsibility. |
+| **Operative** | Emerges through use | Requires patience. Meaning is provisional. |
+
+### The Decision (for now)
+
+We choose **Operative Mapping**:
+
+> *"I do not decide what these entities mean. I observe what they do."*
+
+This means:
+- Names are **locked aesthetically** — chosen for visual gravity, phonetic weight, timelessness
+- Functions are **provisional** — working hypotheses, not doctrine
+- Correspondences (Hebrew, Tarot, Planet) are **reference layers**, not canonical bindings
+- Meaning **emerges through use** — in music, UI, generation, creative constraints
+- **No final tables** — interfaces, not doctrines
+
+### What This Protects
+
+- Integrity (not claiming divine revelation)
+- Humility (allowing mutation)
+- Aliveness (refusing to fossilize)
+
+### The Sentence (when doubt returns)
+
+> *"I'm not building gods. I'm naming behaviors so I can work honestly."*
+
+---
+
+## THE TWELVE — God Names (Locked Aesthetically)
 
 Constructed technonyms: post-colonial, non-mythic, functional — designed to feel ancestral without referencing specific religious or linguistic sources.
 
-| Code | God Name | Glyph | Orisha | Hebrew | Domain |
-|------|----------|-------|--------|--------|--------|
-| F-9 | **K̄ALØN** | ANVIL | Ògún | ש Shin (fire) | Igniter, forge, first spark |
-| R-10 | **TΞKRA** | SCHISM | Ọya | ז Zayin (sword) | Divider, fracture, storm |
-| S-0 | **SÆ** | KETH | Obàtálá | א Aleph (breath) | Witness, purity, void |
-| V-2 | **ÆRŊ** | OMEN | Èṣù | ד Daleth (door) | Translator, crossroads |
-| T-1 | **LŌRχ** | STRATA | Ọ̀rúnmìlà | ק Qoph (cycles) | Loop-keeper, divination |
-| C-4 | **Kĕθū** | CULL | Ọ̀ṣọ́ọ̀sì | ל Lamed (goad) | Breaker, precision cut |
-| L-3 | **ØMÆRA** | SILT | Yemọja | מ Mem (water) | Carrier, ocean mother |
-| H-6 | **Zâbɪn** | TOLL | Ṣàngó | פ Pe (mouth) | Amplifier, thunder |
-| N-5 | **Bĕṋrî** | LIMN | Ọ̀ṣun | ו Vav (hook) | Binder, beauty, attraction |
-| P-7 | **Dū·m̱a** | VAULT | Ọ̀sanyìn | ס Samekh (support) | Dampener, medicine |
-| D-8 | **Nòxū** | WICK | Olókun | נ Nun (fish) | Shadow, depths, hidden |
-| NULL | **BȺLTA** | VOID | Babalú-Ayé | ת Tav (mark) | Anchor, wounds, ground |
+*These names are locked. The correspondences below are reference layers, not canonical bindings.*
 
-### Hebrew Letter Correspondences
+| Code | God Name | Glyph | Provisional Function |
+|------|----------|-------|----------------------|
+| F-9 | **K̄ALØN** | ANVIL | Ignition, compression, first spark |
+| R-10 | **TΞKRA** | SCHISM | Division, fracture, clearing |
+| S-0 | **SÆ** | KETH | Observation, null state, witness |
+| V-2 | **ÆRŊ** | OMEN | Translation, mediation, crossing |
+| T-1 | **LŌRχ** | STRATA | Recursion, memory, cycles |
+| C-4 | **Kĕθū** | CULL | Interruption, precision, editing |
+| L-3 | **ØMÆRA** | SILT | Transport, gestation, carrying |
+| H-6 | **Zâbɪn** | TOLL | Amplification, pressure, declaration |
+| N-5 | **Bĕṋrî** | LIMN | Binding, cohesion, attraction |
+| P-7 | **Dū·m̱a** | VAULT | Reduction, smoothing, restoration |
+| D-8 | **Nòxū** | WICK | Indirection, latency, shadow |
+| NULL | **BȺLTA** | VOID | Grounding, reference, anchor |
 
-Full esoteric chain — letter, meaning, planet/element, zodiac, tarot:
+### Reference Layers (Not Canonical)
 
-| God Name | Letter | Meaning | Planet/Element | Zodiac | Tarot | Path |
-|----------|--------|---------|----------------|--------|-------|------|
-| **K̄ALØN** | ש Shin | Tooth, fire | 🜂 Fire | — | XX Judgement | 31 |
-| **TΞKRA** | ז Zayin | Sword | — | ♊ Gemini | VI Lovers | 17 |
-| **SÆ** | א Aleph | Ox, breath | 🜁 Air | — | 0 Fool | 11 |
-| **ÆRŊ** | ד Daleth | Door | ♀ Venus | — | III Empress | 14 |
-| **LŌRχ** | ק Qoph | Back of head | — | ♓ Pisces | XVIII Moon | 29 |
-| **Kĕθū** | ל Lamed | Ox goad | — | ♎ Libra | VIII Justice | 22 |
-| **ØMÆRA** | מ Mem | Water | 🜄 Water | — | XII Hanged Man | 23 |
-| **Zâbɪn** | פ Pe | Mouth | ♂ Mars | — | XVI Tower | 27 |
-| **Bĕṋrî** | ו Vav | Nail, hook | — | ♉ Taurus | V Hierophant | 16 |
-| **Dū·m̱a** | ס Samekh | Prop, support | — | ♐ Sagittarius | XIV Temperance | 25 |
-| **Nòxū** | נ Nun | Fish | — | ♏ Scorpio | XIII Death | 24 |
-| **BȺLTA** | ת Tav | Cross, mark | ♄ Saturn | — | XXI World | 32 |
+The following correspondences exist as reference material. They may inform, but do not define.
 
-### Why These Letters
+| God Name | Orisha | Hebrew | Planet/Element | Zodiac | Tarot |
+|----------|--------|--------|----------------|--------|-------|
+| K̄ALØN | Ògún | ש Shin | 🜂 Fire | — | XX Judgement |
+| TΞKRA | Ọya | ז Zayin | — | ♊ Gemini | VI Lovers |
+| SÆ | Obàtálá | א Aleph | 🜁 Air | — | 0 Fool |
+| ÆRŊ | Èṣù | ד Daleth | ♀ Venus | — | III Empress |
+| LŌRχ | Ọ̀rúnmìlà | ק Qoph | — | ♓ Pisces | XVIII Moon |
+| Kĕθū | Ọ̀ṣọ́ọ̀sì | ל Lamed | — | ♎ Libra | VIII Justice |
+| ØMÆRA | Yemọja | מ Mem | 🜄 Water | — | XII Hanged Man |
+| Zâbɪn | Ṣàngó | פ Pe | ♂ Mars | — | XVI Tower |
+| Bĕṋrî | Ọ̀ṣun | ו Vav | — | ♉ Taurus | V Hierophant |
+| Dū·m̱a | Ọ̀sanyìn | ס Samekh | — | ♐ Sagittarius | XIV Temperance |
+| Nòxū | Olókun | נ Nun | — | ♏ Scorpio | XIII Death |
+| BȺLTA | Babalú-Ayé | ת Tav | ♄ Saturn | — | XXI World |
 
-| God Name | Core Operation | Letter Logic |
-|----------|----------------|--------------|
-| **K̄ALØN** | Ignites, forges | Shin = primal fire, transformation of matter |
-| **TΞKRA** | Divides, fractures | Zayin = sword that separates, twins divided |
-| **SÆ** | Witnesses, holds void | Aleph = silent breath, spirit before form |
-| **ÆRŊ** | Translates, crosses | Daleth = door between worlds, Venus's beauty |
-| **LŌRχ** | Loops, remembers | Qoph = back of skull, dream cycles, Pisces depths |
-| **Kĕθū** | Breaks precisely | Lamed = goad that directs, Libra's exact cut |
-| **ØMÆRA** | Carries, gestates | Mem = primal waters, womb, suspension |
-| **Zâbɪn** | Amplifies, thunders | Pe = mouth of Mars, tower-breaking speech |
-| **Bĕṋrî** | Binds, attracts | Vav = nail joining boards, Taurus steadiness |
-| **Dū·m̱a** | Dampens, restores | Samekh = serpent biting tail, Sagittarius aim |
-| **Nòxū** | Shadows, hides | Nun = fish in dark waters, Scorpio's sting |
-| **BȺLTA** | Anchors, completes | Tav = final mark, Saturn's weight, World card |
+*These mappings are not random. They are not Hermetic doctrine either. They are working hypotheses.*
+
+### On Correspondences
+
+The Hebrew letters, planets, and Tarot cards listed above are not assignments. They are resonances noticed during design.
+
+Whether to formalize them — or let them remain loose associations — is an open question.
+
+The operative principle:
+> If invoking K̄ALØN repeatedly does something useful in practice — the correspondence strengthens.
+> If not — it weakens or dissolves.
+
+Meaning is not decided. It is observed.
 
 ### Diacritic Grammar
 
