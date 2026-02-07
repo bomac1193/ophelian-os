@@ -51,8 +51,8 @@ export function VoiceCard({ voice, onLicense }: VoiceCardProps) {
           <p className={styles.actorName}>{voice.actorName}</p>
         </div>
         <div className={styles.rating}>
-          <span className={styles.stars}>{renderStars(voice.rating)}</span>
-          <span className={styles.ratingValue}>{voice.rating}</span>
+          <span className={styles.stars}>{renderStars(voice.stats.rating)}</span>
+          <span className={styles.ratingValue}>{voice.stats.rating}</span>
         </div>
       </div>
 

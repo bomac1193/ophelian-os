@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import styles from './Sidebar.module.css';
 
 interface NavItem {
@@ -20,7 +20,7 @@ const navGroups: NavGroup[] = [
   {
     title: 'Create',
     items: [
-      { href: '/', label: 'Operators', icon: 'O' },
+      { href: '/operators', label: 'Operators', icon: 'O' },
       { href: '/imprint', label: 'Imprint', icon: 'I' },
     ],
   },
@@ -54,13 +54,20 @@ const BRAND_NAMES = ['ZÀNÀ', 'SÉLÒ', 'ÒRÍX'] as const;
 
 export function Sidebar() {
   const pathname = usePathname();
+  const router = useRouter();
   const [collapsed, setCollapsed] = useState(false);
   const [brandIndex, setBrandIndex] = useState(0);
 
   const currentBrand = BRAND_NAMES[brandIndex];
   const brandInitial = currentBrand.charAt(0);
 
-  const cycleBrand = () => {
+  const handleBrandClick = () => {
+    router.push('/');
+  };
+
+  const cycleBrand = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
     setBrandIndex((prev) => (prev + 1) % BRAND_NAMES.length);
   };
 
@@ -77,7 +84,7 @@ export function Sidebar() {
     <aside className={`${styles.sidebar} ${collapsed ? styles.collapsed : ''}`}>
       {/* Brand */}
       <div className={styles.brand}>
-        <span className={styles.brandText} onClick={cycleBrand} style={{ cursor: 'pointer' }} title="Click to cycle brand names">
+        <span className={styles.brandText} onClick={handleBrandClick} onContextMenu={cycleBrand} style={{ cursor: 'pointer' }} title="Click to go home, right-click to cycle names">
           {collapsed ? brandInitial : currentBrand}
         </span>
         <button

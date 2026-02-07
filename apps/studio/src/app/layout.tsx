@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { Sidebar } from '@/components/Sidebar';
+import { LayoutContent } from '@/components/LayoutContent';
 
 export const metadata: Metadata = {
-  title: 'Living Character OS - Studio',
+  title: 'ZÀNÀ',
   description: 'Manage your AI characters, content, and publishing',
 };
 
@@ -15,8 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Sidebar />
-        <main className="main-content">{children}</main>
+        <LayoutContent>{children}</LayoutContent>
       </body>
     </html>
   );

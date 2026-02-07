@@ -1,4 +1,25 @@
-/* Typography: Fraunces (headers) + Söhne (body) */
+/*
+ * TYPOGRAPHY HIERARCHY
+ * ====================
+ * If the text must be interpreted → Fraunces is forbidden.
+ * If the text must be obeyed or understood → Söhne only.
+ *
+ * H1-H3 (Primary): Fraunces — "Where am I?"
+ *   Presence · Naming · Orientation
+ *   Short (1-6 words), no paragraphs, no explanation
+ *   Examples: THRESHOLD, Trajectories, Sources
+ *
+ * H4-H6 (Secondary): Söhne Halbfett — "What is this part?"
+ *   Structural labels, not expressive moments
+ *   Explains how something works, groups content
+ *   Examples: How Access Works, The Agreement, Revenue Distribution
+ *
+ * Body/UI: Söhne Buch — "What does it do?"
+ *   Law, clarity, trust. No exceptions.
+ *   Paragraphs, explanations, buttons, metadata
+ *
+ * Fraunces lets people feel. Söhne makes things real.
+ */
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&display=swap');
 
 /* Söhne - Klim Type Foundry */
@@ -35,11 +56,12 @@
 }
 
 :root {
-  /* Typography - Fraunces + Söhne */
-  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
-  --font-heading: 'Fraunces', Georgia, 'Times New Roman', serif;
-  --font-ui: 'Sohne', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-body: 'Sohne', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  /* Typography Hierarchy */
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;    /* Brand name */
+  --font-heading: 'Fraunces', Georgia, 'Times New Roman', serif;    /* H1-H3: presence */
+  --font-subheading: 'Sohne', -apple-system, BlinkMacSystemFont, sans-serif; /* H4-H6: structure */
+  --font-ui: 'Sohne', -apple-system, BlinkMacSystemFont, sans-serif;         /* Buttons, nav */
+  --font-body: 'Sohne', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; /* Body text */
 
   /* Spacing System (8px base) */
   --space-xs: 8px;
@@ -111,6 +133,28 @@ body {
   font-family: var(--font-body);
   line-height: 1.5;
 }
+
+/* Typography Hierarchy: H1-H3 = Fraunces (presence), H4-H6 = Söhne (structure) */
+h1, h2, h3 {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+h4, h5, h6 {
+  font-family: var(--font-subheading);
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.3;
+}
+
+h1 { font-size: 3rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.5rem; }
+h4 { font-size: 1.125rem; }
+h5 { font-size: 1rem; }
+h6 { font-size: 0.875rem; }
 
 .container {
   max-width: 1200px;

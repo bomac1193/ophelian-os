@@ -33,6 +33,8 @@ const ORISHA_NUMBERS: Record<OrishaName, number> = {
   'Ọ̀rúnmìlà': 16,
   'Ọ̀ṣọ́ọ̀sì': 7,
   'Ọ̀sanyìn': 1,
+  'Olókun': 7,
+  'Babalú-Ayé': 17,
 };
 
 // Orisha elements
@@ -47,6 +49,8 @@ const ORISHA_ELEMENTS: Record<OrishaName, string> = {
   'Ọ̀rúnmìlà': 'wisdom',
   'Ọ̀ṣọ́ọ̀sì': 'forest',
   'Ọ̀sanyìn': 'herbs',
+  'Olókun': 'depths',
+  'Babalú-Ayé': 'earth',
 };
 
 // Camino hints (simplified)

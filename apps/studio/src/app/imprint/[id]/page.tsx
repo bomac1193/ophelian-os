@@ -1095,9 +1095,9 @@ export default function ImprintDetailPage() {
                         characterName: genome.name,
                         genome: {
                           visual: (genome as any).multiModalSignature?.visual,
-                          orisha: genome.personality?.orisha,
-                          sephira: genome.personality?.sephira,
-                          traits: genome.personality?.traits || []
+                          orisha: (genome as any).personality?.orisha,
+                          sephira: (genome as any).personality?.sephira,
+                          traits: (genome as any).personality?.traits || []
                         },
                         content: {
                           type: 'story',
@@ -1215,7 +1215,7 @@ export default function ImprintDetailPage() {
             <p style={{ fontSize: '0.875rem', color: 'var(--muted-foreground)', lineHeight: 1.6, marginBottom: '1rem' }}>
               The Kabbalistic layer mapping character essence to the ten emanations of the Tree of Life.
             </p>
-            <TreeOfLifeVisualization genome={genome} />
+            <TreeOfLifeVisualization selectedSephira={(genome as any).personality?.sephira} />
           </div>
 
           {/* Layer 3: Orisha */}
