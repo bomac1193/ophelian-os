@@ -171,7 +171,7 @@ export function CharacterDetailPanel({ character, onClose, onRefresh }: Characte
             onKeyDown={(e) => { if (e.key === 'Enter') setShowTags(!showTags); }}
           >
             <span style={{ fontFamily: 'var(--font-ui)', fontSize: '0.625rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--muted-foreground)' }}>
-              Persona Tags ({character.personaTags.length})
+              Traits ({character.personaTags.length})
             </span>
             <span style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)' }}>{showTags ? '\u2212' : '+'}</span>
           </div>
