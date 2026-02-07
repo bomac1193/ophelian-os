@@ -131,7 +131,7 @@ export function CharacterDetailPanel({ character, onClose, onRefresh }: Characte
                 <span className="subtaste-ref-val subtaste-ref-stress">{MATERIA[subtasteInfo.overcomeBy] || subtasteInfo.overcomeBy}</span>
               </div>
 
-              {/* A+ toggle */}
+              {/* Expand toggle */}
               <div
                 onClick={() => setShowAdvanced(!showAdvanced)}
                 role="button"
@@ -149,14 +149,30 @@ export function CharacterDetailPanel({ character, onClose, onRefresh }: Characte
                   color: showAdvanced ? 'var(--foreground)' : 'var(--muted-foreground)',
                 }}
               >
-                A+
+                Expand {showAdvanced ? '\u2212' : '+'}
               </div>
 
               {showAdvanced && (
                 <div style={{ marginTop: '0.5rem', paddingTop: '0.5rem', borderTop: '1px solid var(--border)' }}>
                   <div className="subtaste-ref-row">
-                    <span className="subtaste-ref-key">Phase</span>
-                    <span className="subtaste-ref-val">{subtasteInfo.phase}</span>
+                    <span className="subtaste-ref-key">Materia</span>
+                    <span className="subtaste-ref-val">{MATERIA[subtasteInfo.wuXingElement]} — {subtasteInfo.phase} phase</span>
+                  </div>
+                  <div className="subtaste-ref-row">
+                    <span className="subtaste-ref-key">Ascends to</span>
+                    <span className="subtaste-ref-val">{subtasteInfo.growth} — {subtasteInfo.growthLabel}</span>
+                  </div>
+                  <div className="subtaste-ref-row">
+                    <span className="subtaste-ref-key">Descends to</span>
+                    <span className="subtaste-ref-val subtaste-ref-stress">{subtasteInfo.stress} — {subtasteInfo.stressLabel}</span>
+                  </div>
+                  <div className="subtaste-ref-row">
+                    <span className="subtaste-ref-key">Awakens</span>
+                    <span className="subtaste-ref-val">{MATERIA[subtasteInfo.generates]} types — generates energy</span>
+                  </div>
+                  <div className="subtaste-ref-row">
+                    <span className="subtaste-ref-key">Anchored by</span>
+                    <span className="subtaste-ref-val subtaste-ref-stress">{MATERIA[subtasteInfo.overcomeBy]} types — provides balance</span>
                   </div>
                 </div>
               )}
