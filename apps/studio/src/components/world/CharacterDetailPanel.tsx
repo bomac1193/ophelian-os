@@ -100,38 +100,41 @@ export function CharacterDetailPanel({ character, onClose, onRefresh }: Characte
             <span className="subtaste-ref-toggle">{showSubtaste ? '\u2212' : '+'}</span>
           </div>
 
-          {/* Always show the designation tag */}
-          <div className="subtaste-ref-designation">
-            <span className="subtaste-ref-tag">{subtasteInfo.subtaste}</span>
-            <span className="subtaste-ref-label">{subtasteInfo.label}</span>
+          {/* Compact summary - always visible */}
+          <div style={{ fontFamily: 'var(--font-ui)', fontSize: '0.6875rem', color: 'var(--foreground)', marginTop: '0.5rem' }}>
+            {MATERIA[subtasteInfo.wuXingElement] || subtasteInfo.wuXingElement}
+            <span style={{ color: 'var(--muted-foreground)', margin: '0 0.5rem' }}>·</span>
+            {subtasteInfo.growth} {subtasteInfo.growthLabel?.toUpperCase()}
+            <span style={{ color: 'var(--muted-foreground)', margin: '0 0.5rem' }}>·</span>
+            {subtasteInfo.stress} {subtasteInfo.stressLabel?.toUpperCase()}
           </div>
 
           {showSubtaste && (
             <div className="subtaste-ref-body">
-              {/* Materia Element */}
+              {/* Materia explanation */}
               <div className="subtaste-ref-row">
                 <span className="subtaste-ref-key">Materia</span>
                 <span className="subtaste-ref-val">
                   {MATERIA[subtasteInfo.wuXingElement] || subtasteInfo.wuXingElement}
-                  <span className="subtaste-ref-dim"> ({subtasteInfo.phase} phase)</span>
+                  <span className="subtaste-ref-dim"> — {subtasteInfo.phase} phase</span>
                 </span>
               </div>
 
-              {/* Growth Arrow */}
+              {/* Growth explanation */}
               <div className="subtaste-ref-row">
-                <span className="subtaste-ref-key">Growth &rarr;</span>
+                <span className="subtaste-ref-key">Growth</span>
                 <span className="subtaste-ref-val">
                   {subtasteInfo.growth}
-                  <span className="subtaste-ref-dim"> ({subtasteInfo.growthLabel})</span>
+                  <span className="subtaste-ref-dim"> — {subtasteInfo.growthLabel}</span>
                 </span>
               </div>
 
-              {/* Stress Arrow */}
+              {/* Stress explanation */}
               <div className="subtaste-ref-row">
-                <span className="subtaste-ref-key">Stress &rarr;</span>
+                <span className="subtaste-ref-key">Stress</span>
                 <span className="subtaste-ref-val subtaste-ref-stress">
                   {subtasteInfo.stress}
-                  <span className="subtaste-ref-dim"> ({subtasteInfo.stressLabel})</span>
+                  <span className="subtaste-ref-dim"> — {subtasteInfo.stressLabel}</span>
                 </span>
               </div>
 
@@ -144,7 +147,7 @@ export function CharacterDetailPanel({ character, onClose, onRefresh }: Characte
               </div>
 
               <div className="subtaste-ref-row">
-                <span className="subtaste-ref-key">Tempered by</span>
+                <span className="subtaste-ref-key">Checked by</span>
                 <span className="subtaste-ref-val subtaste-ref-stress">
                   {MATERIA[subtasteInfo.overcomeBy] || subtasteInfo.overcomeBy} types
                 </span>
