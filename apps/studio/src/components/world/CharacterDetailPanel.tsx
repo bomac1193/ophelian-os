@@ -22,6 +22,7 @@ interface CharacterDetailPanelProps {
 
 export function CharacterDetailPanel({ character, onClose, onRefresh }: CharacterDetailPanelProps) {
   const [showSubtaste, setShowSubtaste] = useState(false);
+  const [showTags, setShowTags] = useState(false);
   const [syncing, setSyncing] = useState(false);
 
   const getInitials = (name: string) => {
@@ -98,15 +99,26 @@ export function CharacterDetailPanel({ character, onClose, onRefresh }: Characte
       )}
 
       {character.personaTags.length > 0 && (
-        <div className="detail-section">
-          <label className="label">Persona Tags</label>
-          <div className="tag-list">
-            {character.personaTags.map((tag, i) => (
-              <span key={i} className="tag">
-                {tag}
-              </span>
-            ))}
+        <div className="detail-section" style={{ padding: '0.75rem' }}>
+          <div
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer' }}
+            onClick={() => setShowTags(!showTags)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => { if (e.key === 'Enter') setShowTags(!showTags); }}
+          >
+            <span style={{ fontFamily: 'var(--font-ui)', fontSize: '0.625rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--muted-foreground)' }}>
+              Persona Tags ({character.personaTags.length})
+            </span>
+            <span style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)' }}>{showTags ? '\u2212' : '+'}</span>
           </div>
+          {showTags && (
+            <div className="tag-list" style={{ marginTop: '0.5rem' }}>
+              {character.personaTags.map((tag, i) => (
+                <span key={i} className="tag">{tag}</span>
+              ))}
+            </div>
+          )}
         </div>
       )}
 
