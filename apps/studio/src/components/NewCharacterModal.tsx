@@ -27,6 +27,7 @@ import {
   generateSampleTweet,
   type CharenomePreview,
 } from '@/lib/charenome';
+import { SUBTASTE_DESIGNATIONS } from '@lcos/oripheon';
 
 // ============================================================================
 // OPTION CONSTANTS (matching Slayt's GeneratorPanel format)
@@ -1094,8 +1095,8 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
                       ) : lcosGenerated.subtaste ? (
                         <>
                           <GenBadge variant="purple">{lcosGenerated.subtaste.code}</GenBadge>
-                          <GenBadge variant="amber">{lcosGenerated.subtaste.glyph}</GenBadge>
-                          <GenBadge>{lcosGenerated.subtaste.label}</GenBadge>
+                          <GenBadge variant="amber">{SUBTASTE_DESIGNATIONS[lcosGenerated.subtaste.code]?.glyph || lcosGenerated.subtaste.glyph}</GenBadge>
+                          <GenBadge>{SUBTASTE_DESIGNATIONS[lcosGenerated.subtaste.code]?.label || lcosGenerated.subtaste.label}</GenBadge>
                         </>
                       ) : null}
                     </div>
@@ -1154,7 +1155,7 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
                   borderColor="rgba(255,255,255,0.1)"
                   summary={(() => {
                     const parts: string[] = [];
-                    if (lcosGenerated.subtaste) parts.push(`${lcosGenerated.subtaste.code} ${lcosGenerated.subtaste.glyph}`);
+                    if (lcosGenerated.subtaste) parts.push(`${lcosGenerated.subtaste.code} ${SUBTASTE_DESIGNATIONS[lcosGenerated.subtaste.code]?.glyph || lcosGenerated.subtaste.glyph}`);
                     if (lcosGenerated.subdominantArcana?.[0]?.subtaste) parts.push(lcosGenerated.subdominantArcana[0].subtaste.code);
                     if (lcosGenerated.subdominantArcana?.[1]?.subtaste) parts.push(lcosGenerated.subdominantArcana[1].subtaste.code);
                     return parts.join(' · ');
@@ -1180,11 +1181,11 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
                             </span>
                           )}
                           {lcosGenerated.subtaste && (
-                            <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.5)' }}>{lcosGenerated.subtaste.glyph}</span>
+                            <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.5)' }}>{SUBTASTE_DESIGNATIONS[lcosGenerated.subtaste.code]?.glyph || lcosGenerated.subtaste.glyph}</span>
                           )}
                           {lcosGenerated.subtaste && (
                             <span style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.55)', fontFamily: 'monospace' }}>
-                              — {lcosGenerated.subtaste.label}
+                              — {SUBTASTE_DESIGNATIONS[lcosGenerated.subtaste.code]?.label || lcosGenerated.subtaste.label}
                             </span>
                           )}
                         </div>
@@ -1233,9 +1234,9 @@ export function NewCharacterModal({ isOpen, onClose, onCreated }: NewCharacterMo
                                 <span style={{ fontSize: '0.7rem', fontWeight: 600, color: 'rgba(255,255,255,0.75)', fontFamily: 'monospace' }}>
                                   {sub.subtaste.code}
                                 </span>
-                                <span style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.4)' }}>{sub.subtaste.glyph}</span>
+                                <span style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.4)' }}>{SUBTASTE_DESIGNATIONS[sub.subtaste.code]?.glyph || sub.subtaste.glyph}</span>
                                 <span style={{ fontSize: '0.55rem', color: 'rgba(255,255,255,0.45)', fontFamily: 'monospace' }}>
-                                  — {sub.subtaste.label}
+                                  — {SUBTASTE_DESIGNATIONS[sub.subtaste.code]?.label || sub.subtaste.label}
                                 </span>
                               </div>
                               {isSubExpanded && (

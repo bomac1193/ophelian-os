@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { getCharacters, type Character } from '@/lib/api';
 import { NewCharacterModal } from '@/components/NewCharacterModal';
+import { SUBTASTE_DESIGNATIONS } from '@lcos/oripheon';
 
 // Helper to check if character is a relic
 function isRelic(character: Character) {
@@ -13,11 +14,17 @@ function isRelic(character: Character) {
 }
 
 // Helper to get subtaste data from character
+// Uses current glyph names from SUBTASTE_DESIGNATIONS (True Names) instead of stored values
 function getSubtaste(character: Character): { glyph: string; code: string; label: string } | null {
   const ts = character.timelineState as Record<string, any>;
   const subtaste = ts?.oripheon?.generated?.subtaste;
-  if (!subtaste?.glyph || !subtaste?.code || !subtaste?.label) return null;
-  return { glyph: subtaste.glyph, code: subtaste.code, label: subtaste.label };
+  if (!subtaste?.code) return null;
+
+  // Look up current designation from the code to get updated glyph/label
+  const designation = SUBTASTE_DESIGNATIONS[subtaste.code];
+  if (!designation) return null;
+
+  return { glyph: designation.glyph, code: subtaste.code, label: designation.label };
 }
 
 // Parse avatar position string "50% 50% 1.5" into position and zoom

@@ -512,7 +512,7 @@ export default function ImprintLibraryPage() {
                 </div>
                 {gen?.arcana?.archetype && (
                   <div style={{ fontSize: '0.7rem', color: 'var(--muted-foreground)', marginTop: '2px' }}>
-                    {gen.arcana.archetype}{gen.subtaste?.glyph ? ` \u00b7 ${gen.subtaste.glyph}` : ''}
+                    {gen.arcana.archetype}{gen.subtaste?.code ? ` \u00b7 ${SUBTASTE_DESIGNATIONS[gen.subtaste.code]?.glyph || gen.subtaste.glyph}` : ''}
                     {gen.hexagram?.presentHexagram ? ` \u00b7 ${gen.hexagram.presentHexagram.chinese} #${gen.hexagram.presentHexagram.number}` : ''}
                   </div>
                 )}
