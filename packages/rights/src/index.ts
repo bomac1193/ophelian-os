@@ -114,3 +114,17 @@ export function isLicenseActive(_license: License): boolean {
 }
 
 export { LicenseAction, SubjectType } from '@lcos/shared';
+
+// o8 Protocol integration
+export {
+  getO8Identity,
+  getO8License,
+  validateVoiceUsage,
+  getVoiceRoyaltyRate,
+  linkBovedaGenome,
+  getVoiceDNA,
+  type O8Identity,
+  type O8LicensingTerms,
+  type O8VoiceDNA,
+  type VoiceUsageValidation,
+} from './o8-client.js';

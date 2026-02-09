@@ -13,6 +13,7 @@ import {
   type VoiceProviderConfig,
   type GenerateAudioOptions,
 } from './base.js';
+import { validateVoiceUsage } from '@lcos/rights';
 
 export interface ChromoxConfig extends VoiceProviderConfig {
   apiKey?: string;
@@ -64,6 +65,15 @@ export class ChromoxProvider extends VoiceProvider {
       pronunciationHints = {},
       accentType,
     } = options;
+
+    // Validate o8 license if the voice has an o8 identity
+    if (profile.o8IdentityId) {
+      const validation = await validateVoiceUsage(profile.o8IdentityId, 'synthesize');
+      if (!validation.allowed) {
+        throw new Error(`Voice synthesis not permitted: ${validation.reason}`);
+      }
+      console.log(`[Chromox] License validated for ${profile.o8IdentityId}`);
+    }
 
     try {
       // Prepare request payload with Chromox API format

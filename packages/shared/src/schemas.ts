@@ -45,6 +45,9 @@ export const VoiceProfileSchema = CreateVoiceProfileSchema.extend({
   id: z.string().cuid(),
   createdAt: z.date(),
   updatedAt: z.date(),
+  // o8 Provenance integration
+  o8IdentityId: z.string().nullable().optional(),
+  voiceFingerprint: z.string().nullable().optional(),
 });
 export type VoiceProfile = z.infer<typeof VoiceProfileSchema>;
 
